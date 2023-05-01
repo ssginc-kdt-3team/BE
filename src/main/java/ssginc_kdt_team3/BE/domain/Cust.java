@@ -46,7 +46,7 @@ public class Cust {
   @Enumerated(EnumType.STRING)
   @Column(name = "cust_status")
   private UserStatus status;
-  @OneToMany(mappedBy = "cust")
-  @Column(name = "grade_id")
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "grade_id")
   private Grade grade;
 }
