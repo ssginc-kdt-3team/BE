@@ -12,6 +12,7 @@ public class Shop {
     @Id
     @NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "shpo_id")
     private long id;
 
     @NotNull
