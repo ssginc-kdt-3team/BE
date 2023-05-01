@@ -50,7 +50,16 @@ public class Shop {
 
     @NotNull
     @OneToOne
+
     @JoinColumn(name = "operation_info")
     private Operation_info operationInfo;
     private long operationInfoId;
+
+    @JoinColumn(name = "store_id")
+    private Store storeId;
+
+    @NotNull
+    @OneToOne
+    @JoinColumn(name = "operation_info_id")
+    private OperationInfo operationInfo;
 }

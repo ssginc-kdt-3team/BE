@@ -10,4 +10,8 @@ public class Operation_info {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @NotNull
+    private long op_info;
+
+    @NotNull
+    @Column()
 }

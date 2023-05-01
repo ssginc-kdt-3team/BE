@@ -56,4 +56,8 @@ public class Owner{
     @Column(name = "owner_status")
     private UserStatus status;
 
+    @OneToOne
+    @JoinColumn(name = "shop_id")
+    private Shop shop;
+
 }
