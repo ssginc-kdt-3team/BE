@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Entity
 @Getter
@@ -23,8 +24,7 @@ public class Grade {
   @NotNull
   @Column(name = "grade_history")
   private String history;
-  @ManyToOne
-  @JoinColumn(name = "cust_id")
-  private Cust cust;
+  @OneToMany(mappedBy = "grade")
+  private List<Cust> cust;
 
 }
