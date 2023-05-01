@@ -1,7 +1,8 @@
-package ssginc_kdt_team3.BE.DTOs.owner;
+package ssginc_kdt_team3.BE.domain;
 
 import com.sun.istack.NotNull;
 import lombok.ToString;
+import ssginc_kdt_team3.BE.enums.UserStatus;
 
 import javax.persistence.*;
 
@@ -24,7 +25,7 @@ public class Shop {
     @NotNull
     @Column(name = "shop_status")
     @Enumerated(EnumType.STRING)
-    private String status;
+    private UserStatus status;
 
     @NotNull
     @Column(name = "shop_location", length = 20)
@@ -49,7 +50,10 @@ public class Shop {
     @NotNull
     @OneToMany
     @JoinColumn(name = "store_id")
-    private long store_id;
+    private long storeId;
 
-
+    @NotNull
+    @OneToMany
+    @JoinColumn(name = "operation_info")
+    private long operationInfo;
 }
