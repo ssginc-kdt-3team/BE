@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import ssginc_kdt_team3.BE.enums.UserRole;
+import ssginc_kdt_team3.BE.enums.UserStatus;
 
 
 import javax.persistence.*;
