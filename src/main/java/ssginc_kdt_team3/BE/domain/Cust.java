@@ -18,6 +18,7 @@ public class Cust {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "cust_id")
   private Long id;
+
   @NotNull
   @Column(name = "cust_email")
   private String email;
@@ -25,16 +26,21 @@ public class Cust {
   @NotNull
   @Column(name = "cust_password")
   private String password;
+
   @NotNull
   @Column(name = "cust_name")
   private String name;
+
   @NotNull
   @Column(name = "cust_phone")
   private String phone;
+
   @Column(name = "cust_gender")
   private Boolean gender;
+
   @Column(name = "cust_birthdate")
   private LocalDateTime birthdate;
+
   @Column(name = "cust_address")
   private Address address;
 
@@ -42,10 +48,12 @@ public class Cust {
   @Enumerated(EnumType.STRING)
   @Column(name = "cust_role")
   private Role role;
+
   @NotNull
   @Enumerated(EnumType.STRING)
   @Column(name = "cust_status")
   private UserStatus status;
+
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "grade_id")
   private Grade grade;

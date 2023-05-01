@@ -48,12 +48,12 @@ public class Shop {
     private String business_name;
 
     @NotNull
-    @OneToMany
+    @OneToOne
     @JoinColumn(name = "store_id")
-    private long storeId;
+    private Store storeId;
 
     @NotNull
-    @OneToMany
-    @JoinColumn(name = "operation_info")
-    private long operationInfo;
+    @OneToOne
+    @JoinColumn(name = "operation_info_id")
+    private OperationInfo operationInfo;
 }
