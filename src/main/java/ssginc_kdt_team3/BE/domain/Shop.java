@@ -6,6 +6,7 @@ import ssginc_kdt_team3.BE.enums.UserStatus;
 
 import javax.persistence.*;
 
+
 @Entity
 @Table(name = "shop")
 public class Shop {
@@ -48,12 +49,8 @@ public class Shop {
     private String business_name;
 
     @NotNull
-    @OneToMany
-    @JoinColumn(name = "store_id")
-    private long storeId;
-
-    @NotNull
-    @OneToMany
+    @OneToOne
     @JoinColumn(name = "operation_info")
-    private long operationInfo;
+    private Operation_info operationInfo;
+    private long operationInfoId;
 }
