@@ -21,6 +21,7 @@ import java.time.LocalDate;
 public class Owner{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "owner_id")
     private long id;
 
     @NotNull
