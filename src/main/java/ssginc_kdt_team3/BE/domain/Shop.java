@@ -6,6 +6,7 @@ import ssginc_kdt_team3.BE.enums.UserStatus;
 
 import javax.persistence.*;
 
+
 @Entity
 @Table(name = "shop")
 public class Shop {
@@ -51,6 +52,11 @@ public class Shop {
 
     @NotNull
     @OneToOne
+
+    @JoinColumn(name = "operation_info")
+    private Operation_info operationInfo;
+    private long operationInfoId;
+
     @JoinColumn(name = "store_id")
     private Store storeId;
 
