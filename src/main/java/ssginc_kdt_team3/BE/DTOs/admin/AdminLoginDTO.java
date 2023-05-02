@@ -8,9 +8,10 @@ import javax.validation.constraints.NotNull;
 
 @Data
 public class AdminLoginDTO {
+
     @NotEmpty
     @Max(20)
-    private String id;
+    private String email;
 
     @NotEmpty
     @Max(12)

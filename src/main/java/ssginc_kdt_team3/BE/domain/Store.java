@@ -1,6 +1,7 @@
 package ssginc_kdt_team3.BE.domain;
 
 import lombok.Getter;
+import ssginc_kdt_team3.BE.DTOs.cust.Address;
 import ssginc_kdt_team3.BE.enums.StoreStatus;
 
 import javax.persistence.*;
@@ -17,8 +18,13 @@ public class Store {
     @Column(name = "str_name", length = 20)
     private String name;
 
-    @Column(name = "str_address", length = 100)
-    private String address;
+    //String -> Address 수정 (0502 임태경)
+    //Column명 각각 지정하는 방식으로 변경 (0502 임태경)
+    @AttributeOverride(name = "city", column = @Column(name = "str_city"))
+    @AttributeOverride(name = "district", column = @Column(name = "str_district"))
+    @AttributeOverride(name = "detail", column = @Column(name = "str_detail"))
+    @AttributeOverride(name = "zipCode", column = @Column(name = "str_zipCode"))
+    private Address address;
 
     @Column(name = "str_phone", length = 20)
     private String phone;

@@ -28,9 +28,10 @@ public class Shop {
     @Enumerated(EnumType.STRING)
     private UserStatus status;
 
+    //int -> String으로 수정 (0502 임태경)
     @NotNull
     @Column(name = "shop_location", length = 20)
-    private int location;
+    private String location;
 
     @NotNull
     @Column(name = "shop_img", length = 100)
