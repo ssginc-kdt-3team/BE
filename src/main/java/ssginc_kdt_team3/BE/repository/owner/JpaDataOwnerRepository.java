@@ -6,8 +6,10 @@ import ssginc_kdt_team3.BE.domain.Owner;
 
 import java.util.Optional;
 
-public interface JpaDataOwnerRepository extends JpaRepository<Cust, Long> {
+public interface JpaDataOwnerRepository extends JpaRepository<Owner, Long> {
 
-    Optional<Owner> saveAll(Owner owner);
+//    void saveAll(Owner owner);
 
+    Optional<Owner> findByIdAndPw(String email,String password);
 }
+

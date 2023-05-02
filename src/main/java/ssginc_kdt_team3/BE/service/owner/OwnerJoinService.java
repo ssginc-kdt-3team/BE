@@ -27,7 +27,7 @@ public class OwnerJoinService {
         owner.setAddress(ownerJoinDTO.getAdddress());
         owner.setGender(ownerJoinDTO.isGender());
 
-        jpaDataOwnerRepository.saveAll(owner);
+        jpaDataOwnerRepository.save(owner);
     }
 
 }
