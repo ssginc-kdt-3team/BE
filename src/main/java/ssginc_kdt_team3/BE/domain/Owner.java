@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import ssginc_kdt_team3.BE.DTOs.cust.Address;
 import ssginc_kdt_team3.BE.enums.UserRole;
 import ssginc_kdt_team3.BE.enums.UserStatus;
 
@@ -46,8 +47,13 @@ public class Owner{
     @Column(name = "owner_gender")
     private boolean gender;
 
-    @Column(name="owner_address")
-    private String address;
+    //String -> Address로 수정 (0502 임태경)
+    //Column명 각각 지정하는 방식으로 변경 (0502 임태경)
+    @AttributeOverride(name = "city", column = @Column(name = "owner_city"))
+    @AttributeOverride(name = "district", column = @Column(name = "owner_district"))
+    @AttributeOverride(name = "detail", column = @Column(name = "owner_detail"))
+    @AttributeOverride(name = "zipCode", column = @Column(name = "owner_zipCode"))
+    private Address address;
 
     @Column(name="owner_role")
     @Enumerated(EnumType.STRING)

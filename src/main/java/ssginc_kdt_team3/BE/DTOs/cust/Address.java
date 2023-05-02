@@ -11,5 +11,4 @@ public class Address {
   private String district; // 구
   private String detail; // 상세주소
   private String zipCode; // 우편번호
-
 }
