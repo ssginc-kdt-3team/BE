@@ -5,6 +5,7 @@ import lombok.Getter;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Entity
 @Getter
@@ -15,14 +16,17 @@ public class OperationInfo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    //LocalDateTime -> LocalTime으로 수정 (0502 임태경)
     @Column(name = "open_time")
-    private LocalDateTime openTime;
+    private LocalTime openTime;
 
+    //LocalDateTime -> LocalTime으로 수정 (0502 임태경)
     @Column(name = "close_time")
-    private LocalDateTime closeTime;
+    private LocalTime closeTime;
 
+    //LocalDateTime -> LocalTime으로 수정 (0502 임태경)
     @Column(name = "order_close")
-    private LocalDateTime orderCloseTime;
+    private LocalTime orderCloseTime;
 
     @Column(name = "open_date")
     private LocalDate openDate;

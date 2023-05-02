@@ -25,9 +25,10 @@ public class Grade {
   @Column(name = "grade_rate")
   private Double rate;
 
-  @NotNull
-  @Column(name = "grade_history")
-  private String history;
+  //주석처리 처리 (0502 임태경)
+  //  @NotNull
+  //  @Column(name = "grade_history")
+  //  private String history;
 
   @OneToMany(mappedBy = "grade")
   private List<Cust> cust;
