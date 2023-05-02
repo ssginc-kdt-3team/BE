@@ -7,10 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ssginc_kdt_team3.BE.DTOs.cust.Address;
-import ssginc_kdt_team3.BE.DTOs.cust.CustJoinDTO;
-import ssginc_kdt_team3.BE.DTOs.cust.CustListDTO;
-import ssginc_kdt_team3.BE.DTOs.cust.CustUpdateDTO;
+import ssginc_kdt_team3.BE.DTOs.cust.*;
 import ssginc_kdt_team3.BE.domain.Admin;
 import ssginc_kdt_team3.BE.domain.Cust;
 import ssginc_kdt_team3.BE.domain.Grade;
@@ -30,16 +27,39 @@ public class AdminCustService {
     private final JpaDateCustRepository custRepository;
 
     public Page<CustListDTO> findAllCust(Pageable pageable) {
-
         return custRepository.findAllBy(pageable);
     }
 
-    public Optional<Cust> findCustById(Long custId) {
-        return custRepository.findById(custId);
+    public CustDetailDTO findCustById(Long custId) {
+
+        Optional<Cust> byId = custRepository.findById(custId);
+
+        if (byId.isPresent()) {
+            Cust cust = byId.get();
+            CustDetailDTO custDetailDTO = new CustDetailDTO(cust.getId(), cust.getEmail(), cust.getPassword(),
+                    cust.getName(), cust.getPhone(), cust.getGender(), cust.getBirthday(), cust.getAddress(),
+                    cust.getRole(), cust.getStatus(), cust.getGrade().getName());
+
+            return custDetailDTO;
+        }
+
+
+        return new CustDetailDTO();
     }
 
-    public Optional<Cust> findCustByEmail(String custEmail) {
-        return custRepository.findCustByEmail(custEmail);
+    public CustDetailDTO findCustByEmail(String custEmail) {
+        Optional<Cust> byEmail = custRepository.findCustByEmail(custEmail);
+
+        if (byEmail.isPresent()) {
+            Cust cust = byEmail.get();
+            CustDetailDTO custDetailDTO = new CustDetailDTO(cust.getId(), cust.getEmail(), cust.getPassword(),
+                    cust.getName(), cust.getPhone(), cust.getGender(), cust.getBirthday(), cust.getAddress(),
+                    cust.getRole(), cust.getStatus(), cust.getGrade().getName());
+
+            return custDetailDTO;
+        }
+
+        return null;
     }
 
     public boolean updateCustInfo(Long custId, CustUpdateDTO custDTO) {
