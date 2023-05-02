@@ -37,7 +37,7 @@ public class CustDetailDTO {
 
     private UserStatus status;
 
-    private String grade;
+    private String grade = null;
 
     public CustDetailDTO(Long id, String email, String password, String name, String phone, Boolean gender, LocalDate birthday, Address address, UserRole role, UserStatus status, String grade) {
         this.id = id;
