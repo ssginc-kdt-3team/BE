@@ -1,14 +1,13 @@
 package ssginc_kdt_team3.BE.controller.owner;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import ssginc_kdt_team3.BE.DTOs.owner.OwnerJoinDTO;
+import org.springframework.web.bind.annotation.*;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerLoginDTO;
-import ssginc_kdt_team3.BE.service.owner.OwnerJoinService;
+import ssginc_kdt_team3.BE.domain.Owner;
 import ssginc_kdt_team3.BE.service.owner.OwnerLoginService;
 
 @RequestMapping("/owner")
@@ -17,11 +16,22 @@ import ssginc_kdt_team3.BE.service.owner.OwnerLoginService;
 @Controller
 
 public class OwnerLoginController {
+    @Autowired
     private final OwnerLoginService Service;
 
-    @PostMapping("/login")
+    @GetMapping("/login")
     public void loginControl(@RequestBody OwnerLoginDTO ownerLoginDTO) {
-
         Service.loginCheck(ownerLoginDTO);
+    }
+    @PostMapping("/login")
+    public ResponseEntity<Void> loginCheck(@RequestBody OwnerLoginDTO ownerLoginDTO){
+        Owner owner = Service.loginCheck(ownerLoginDTO);
+        if(owner != null){
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
     }
 }

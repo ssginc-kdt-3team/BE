@@ -29,5 +29,4 @@ public class OwnerJoinDTO {
     private boolean gender;
     private Address adddress;
 
-
 }
