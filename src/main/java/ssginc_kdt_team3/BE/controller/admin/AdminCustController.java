@@ -18,6 +18,7 @@ public class AdminCustController {
 
     @GetMapping("/findAllCUst")
     public List<CustListDTO> findAllCust() {
+
         return custService.findAllCust();
     }
 
