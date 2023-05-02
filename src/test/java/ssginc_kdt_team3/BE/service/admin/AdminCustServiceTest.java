@@ -118,8 +118,6 @@ class AdminCustServiceTest {
 
         assertThat(cust.getPassword()).isEqualTo("zxc123");
         assertThat(cust.getName()).isEqualTo("hello");
-
-
     }
 
 

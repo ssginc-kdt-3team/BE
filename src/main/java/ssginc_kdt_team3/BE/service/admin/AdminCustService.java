@@ -40,8 +40,8 @@ public class AdminCustService {
         return custRepository.findById(custId);
     }
 
-    public Optional<Cust> findCustByName(String custName) {
-        return custRepository.findCustByName(custName);
+    public Optional<Cust> findCustByEmail(String custEmail) {
+        return custRepository.findCustByEmail(custEmail);
     }
 
     public boolean updateCustInfo(Long custId, CustUpdateDTO custDTO) {
@@ -67,7 +67,6 @@ public class AdminCustService {
 
             return true;
         } else {
-
             return false;
         }
     }

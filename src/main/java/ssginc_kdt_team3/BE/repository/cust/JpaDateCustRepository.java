@@ -8,6 +8,6 @@ import java.util.Optional;
 
 public interface JpaDateCustRepository extends JpaRepository<Cust, Long> {
 
-    Optional<Cust> findCustByName(String custName);
+    Optional<Cust> findCustByEmail(String Email);
 
 }
