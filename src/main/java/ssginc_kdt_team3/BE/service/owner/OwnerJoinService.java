@@ -1,7 +1,6 @@
 package ssginc_kdt_team3.BE.service.owner;
 
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerJoinDTO;
 import ssginc_kdt_team3.BE.domain.Owner;
@@ -14,11 +13,16 @@ import javax.transaction.Transactional;
 @Service
 public class OwnerJoinService {
     private final OwnerJoinRepository ownerJoinRepository;
-    private final ModelMapper modelMapper;
 
-    public OwnerJoinDTO join(OwnerJoinDTO ownerJoinDTO){
-        Owner owner = modelMapper.map(ownerJoinDTO,Owner.class);
-        Owner savedOwner = ownerJoinRepository.save(owner);
-        return ModelMapper.map(savedOwner,OwnerJoinDTO.class);
+    public static void join(OwnerJoinDTO ownerJoinDTO){
+        Owner owner = new Owner();
+        owner.setEmail(ownerJoinDTO.getEmail());
+        owner.setPassword(ownerJoinDTO.getPassword());
+        owner.setName(ownerJoinDTO.getName());
+        owner.setPhone(ownerJoinDTO.getPhone());
+        owner.setBirthday(ownerJoinDTO.getBirthday());
+        owner.setAddress(ownerJoinDTO.getAdddress());
+        owner.setGender(ownerJoinDTO.isGender());
+        OwnerJoinRepository.save(owner);
     }
 }

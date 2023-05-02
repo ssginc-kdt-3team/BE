@@ -2,9 +2,9 @@ package ssginc_kdt_team3.BE.repository.owner;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import ssginc_kdt_team3.BE.DTOs.owner.OwnerJoinDTO;
 import ssginc_kdt_team3.BE.domain.Owner;
 import ssginc_kdt_team3.BE.repository.interfaces.owner.OwnerJoin;
+import ssginc_kdt_team3.BE.service.owner.OwnerJoinService;
 
 import javax.persistence.EntityManager;
 import java.util.Optional;
@@ -14,9 +14,8 @@ import java.util.Optional;
 public class OwnerJoinRepository implements OwnerJoin {
     private final EntityManager em;
 
-
     @Override
-    public Owner save(Owner owner) {
+    public static Owner save(Owner owner) {
         em.merge(owner);
         return owner;
     }
