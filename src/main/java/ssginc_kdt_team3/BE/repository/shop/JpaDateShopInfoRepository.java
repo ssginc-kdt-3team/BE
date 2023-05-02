@@ -6,6 +6,6 @@ import ssginc_kdt_team3.BE.domain.Shop;
 
 import java.util.Optional;
 
-public interface JpaDateShopRepository extends JpaRepository<Shop, Long> {
-
-}
+//public interface JpaDateShopRepository extends JpaRepository<Shop, Long> {
+//
+//}

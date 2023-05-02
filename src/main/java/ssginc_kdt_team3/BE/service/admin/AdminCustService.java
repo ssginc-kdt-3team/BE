@@ -3,6 +3,8 @@ package ssginc_kdt_team3.BE.service.admin;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssginc_kdt_team3.BE.DTOs.cust.Address;
@@ -27,13 +29,9 @@ public class AdminCustService {
 
     private final JpaDateCustRepository custRepository;
 
-    public List<CustListDTO> findAllCust() {
-        List<CustListDTO> result = new ArrayList<>();
+    public Page<CustListDTO> findAllCust(Pageable pageable) {
 
-        custRepository.findAll().forEach(x ->
-                result.add(new CustListDTO(x.getId(), x.getName(), x.getEmail(), x.getStatus(), x.getGrade())));
-
-        return result;
+        return custRepository.findAllBy(pageable);
     }
 
     public Optional<Cust> findCustById(Long custId) {

@@ -8,7 +8,6 @@ import ssginc_kdt_team3.BE.enums.UserStatus;
 
 @Getter
 @Setter
-@AllArgsConstructor
 public class CustListDTO {
 
     private Long id;
@@ -19,5 +18,16 @@ public class CustListDTO {
 
     private UserStatus status;
 
-    private Grade grade;
+    private String grade;
+
+    public CustListDTO(Long id, String name, String email, UserStatus status, String grade) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.status = status;
+        this.grade = grade;
+    }
+
+    public CustListDTO() {
+    }
 }
