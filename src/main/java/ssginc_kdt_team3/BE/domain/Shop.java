@@ -1,6 +1,8 @@
 package ssginc_kdt_team3.BE.domain;
 
 import com.sun.istack.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 import ssginc_kdt_team3.BE.enums.UserStatus;
 
@@ -8,6 +10,8 @@ import javax.persistence.*;
 
 
 @Entity
+@Getter
+@Setter
 @Table(name = "shop")
 public class Shop {
     @Id
@@ -36,35 +40,29 @@ public class Shop {
 
     @NotNull
     @Column(name = "shop_img", length = 100)
-    private String img;
+    private String shopImg;
 
     @NotNull
     @Column(name = "business_img", length = 100)
-    private String business_img;
+    private String businessImg;
 
     @NotNull
     @Column(name = "business_num", length = 100)
-    private String business_num;
+    private String businessNum;
 
     @NotNull
     @Column(name = "business_name", length = 10)
-    private String business_name;
+    private String businessName;
 
+
+    // 변수 명 storeId를 store로 변경해야한다.
     @NotNull
-    @OneToOne
-/**
- * operation_info_id컬럼이  [operation_info_id], [operationInfoId] 두개와 매핑되어서
- * 하이버네이트에서 충돌이 발생함
- */
-//    @JoinColumn(name = "operation_info")
-//    private OperationInfo operationInfo;
-//    private long operationInfoId;
-
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "store_id")
-    private Store storeId;
+    private Store store;
 
     @NotNull
-    @OneToOne
-    @JoinColumn(name = "operation_info_id")
-    private OperationInfo operation_Info;
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "shop_operation_info_id")
+    private ShopOperationInfo operationInfo;
 }
