@@ -25,7 +25,7 @@ import java.util.Optional;
 public class AdminCustService {
 
     private final JpaDateCustRepository custRepository;
-    private final EntityManager em;
+//    private final EntityManager em;
 
     JPQLQueryFactory queryFactory;
 
