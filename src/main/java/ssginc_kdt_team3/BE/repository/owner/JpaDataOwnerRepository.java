@@ -13,6 +13,7 @@ import java.util.Optional;
 public interface JpaDataOwnerRepository extends JpaRepository<Owner, Long> {
 
     boolean existsByEmail(String email);
+
     Optional<Owner> findByEmail(String email);
 
 //    boolean CheckEmail(String email);
