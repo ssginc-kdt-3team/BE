@@ -4,14 +4,13 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ssginc_kdt_team3.BE.DTOs.cust.CustListDTO;
-import ssginc_kdt_team3.BE.DTOs.cust.CustUpdateDTO;
+import ssginc_kdt_team3.BE.DTOs.cust.InfoUpdateDTO;
 import ssginc_kdt_team3.BE.domain.Cust;
 import ssginc_kdt_team3.BE.enums.UserRole;
 import ssginc_kdt_team3.BE.enums.UserStatus;
 import ssginc_kdt_team3.BE.repository.cust.JpaDateCustRepository;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
@@ -106,7 +105,7 @@ class AdminCustServiceTest {
         Cust saveCust = repository.save(cust3);
         Long saveID = saveCust.getId();
 
-        CustUpdateDTO custDTO = new CustUpdateDTO();
+        InfoUpdateDTO custDTO = new InfoUpdateDTO();
         custDTO.setName("hello");
         custDTO.setPassword("zxc123");
         custDTO.setPhone("01000000000");

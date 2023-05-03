@@ -2,14 +2,11 @@ package ssginc_kdt_team3.BE.service.admin;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssginc_kdt_team3.BE.DTOs.cust.Address;
-import ssginc_kdt_team3.BE.DTOs.cust.CustJoinDTO;
 import ssginc_kdt_team3.BE.DTOs.cust.CustListDTO;
-import ssginc_kdt_team3.BE.DTOs.cust.CustUpdateDTO;
-import ssginc_kdt_team3.BE.domain.Admin;
+import ssginc_kdt_team3.BE.DTOs.cust.InfoUpdateDTO;
 import ssginc_kdt_team3.BE.domain.Cust;
 import ssginc_kdt_team3.BE.domain.Grade;
 import ssginc_kdt_team3.BE.enums.UserStatus;
@@ -44,7 +41,7 @@ public class AdminCustService {
         return custRepository.findCustByName(custName);
     }
 
-    public boolean updateCustInfo(Long custId, CustUpdateDTO custDTO) {
+    public boolean updateCustInfo(Long custId, InfoUpdateDTO custDTO) {
 
         Optional<Cust> cust = custRepository.findById(custId);
 

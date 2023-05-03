@@ -10,9 +10,6 @@ public interface CustRepository {
   public Cust save (Cust cust); //저장
   public Optional<Cust> findCust(Long id); //조회
   public List<Cust> findAll(); //전체조회
-  public Optional<Cust> findByEmail(String email); //로그인
+  public Optional<Cust> findByEmail(String email); //이메일 조회 -> 로그인
   public void update (Long id, Cust cust); //수정
-
-
-
 }
