@@ -1,6 +1,7 @@
 package ssginc_kdt_team3.BE.controller.admin;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -8,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ssginc_kdt_team3.BE.DTOs.cust.CustDetailDTO;
@@ -23,41 +26,67 @@ import java.util.Optional;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/admin")
+@RequestMapping("/admin/cust")
 public class AdminCustController {
 
     private final AdminCustService custService;
 
-    @GetMapping("/findAllCust")
-    public Page<CustListDTO> findAllCust() {
+    @GetMapping("/findAll")
+    public ResponseEntity<Page<CustListDTO>> findAllCust() {
         Pageable pageable = PageRequest.of(0, 5);
-        return custService.findAllCust(pageable);
+        ResponseEntity<Page<CustListDTO>> response = ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .body(custService.findAllCust(pageable));
+        return response;
     }
 
-    @GetMapping("/findCustById/{id}")
-    public CustDetailDTO findOneCust(@PathVariable(name = "id") Long custId) throws JsonProcessingException {
+        @GetMapping("/findById/{id}")
+    public Cust findOneCust(@PathVariable(name = "id") Long custId) throws JsonProcessingException {
         CustDetailDTO custDetailDTO = custService.findCustById(custId);
 
+        Optional<Cust> custById = custService.temp(custId);
 
-        if (custDetailDTO.getId() != null) {
-//            ObjectMapper objectMapper = new ObjectMapper();
-//            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//            objectMapper.setDateFormat(dateFormat);
+        if (custById.isPresent()) {
+            Cust cust = custById.get();
+
+            ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            objectMapper.setDateFormat(dateFormat);
+
+            String custJson = objectMapper.writeValueAsString(cust);
+
+            log.info("============================== {} ", cust.getAddress());
+            log.info("============================== {} ", cust.getName());
+            log.info("============================== {} ", cust.getGrade());
+            log.info("============================== {} ", cust.getBirthday());
+
+            return cust;
+        }
+
+        return null;
 //
-//            String custJson = objectMapper.writeValueAsString(custById.get());
-//            Cust cust = custById.get();
 //
-//            log.info("============================== {} ", cust.getAddress());
-//            log.info("============================== {} ", cust.getName());
-//            log.info("============================== {} ", cust.getGrade());
-//            log.info("============================== {} ", cust.getBirthday());
-            return custDetailDTO;
+//
+//        if (custDetailDTO.getId() != null ) {
+//
+//            return custDetailDTO;
+//        } else {
+//            return null;
+//        }
+    }
+
+    @GetMapping("/findById2/{id}")
+    public Cust findOneCust2(@PathVariable(name = "id") Long custId) throws JsonProcessingException {
+        Optional<Cust> custById = custService.findCustById2(custId);
+
+        if (custById.isPresent()) {
+            return custById.get();
         } else {
             return null;
         }
     }
 
-    @GetMapping("/findCustByEmail")
+    @GetMapping("/findByEmail")
     public CustDetailDTO findOneCustByName(@RequestBody HashMap map) {
         String email = map.get("email").toString();
         log.info("email = {}", email);
@@ -70,7 +99,7 @@ public class AdminCustController {
         }
     }
 
-    @PostMapping("/custUpdate/{id}")
+    @PostMapping("/update/{id}")
     public boolean custUpdate(@PathVariable(name = "id") Long custId,
                                     @RequestBody CustUpdateDTO updateDTO) {
         boolean result = custService.updateCustInfo(custId, updateDTO);

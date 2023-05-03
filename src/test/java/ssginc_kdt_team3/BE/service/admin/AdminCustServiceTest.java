@@ -3,7 +3,11 @@ package ssginc_kdt_team3.BE.service.admin;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import ssginc_kdt_team3.BE.DTOs.cust.CustDetailDTO;
+import ssginc_kdt_team3.BE.DTOs.cust.CustListDTO;
 import ssginc_kdt_team3.BE.DTOs.cust.CustUpdateDTO;
 import ssginc_kdt_team3.BE.domain.Cust;
 import ssginc_kdt_team3.BE.enums.UserRole;
@@ -52,10 +56,10 @@ class AdminCustServiceTest {
         Cust save1 = repository.save(cust2);
     }
 
-    @AfterEach
-    public void clean() {
-        repository.deleteAll();
-    }
+//    @AfterEach
+//    public void clean() {
+//        repository.deleteAll();
+//    }
 
 //    @Test
 //    public void findAllTest() {
