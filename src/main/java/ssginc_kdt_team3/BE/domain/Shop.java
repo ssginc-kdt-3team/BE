@@ -52,10 +52,13 @@ public class Shop {
 
     @NotNull
     @OneToOne
-
-    @JoinColumn(name = "operation_info")
-    private Operation_info operationInfo;
-    private long operationInfoId;
+/**
+ * operation_info_id컬럼이  [operation_info_id], [operationInfoId] 두개와 매핑되어서
+ * 하이버네이트에서 충돌이 발생함
+ */
+//    @JoinColumn(name = "operation_info")
+//    private OperationInfo operationInfo;
+//    private long operationInfoId;
 
     @JoinColumn(name = "store_id")
     private Store storeId;
@@ -63,5 +66,5 @@ public class Shop {
     @NotNull
     @OneToOne
     @JoinColumn(name = "operation_info_id")
-    private OperationInfo operationInfo;
+    private OperationInfo operation_Info;
 }

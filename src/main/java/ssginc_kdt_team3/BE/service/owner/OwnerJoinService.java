@@ -9,6 +9,7 @@ import ssginc_kdt_team3.BE.repository.owner.JpaDataOwnerRepository;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Transactional
@@ -17,7 +18,7 @@ public class OwnerJoinService {
     @Autowired
     private final JpaDataOwnerRepository jpaDataOwnerRepository;
 
-    public void join(OwnerJoinDTO ownerJoinDTO){
+    public void join(OwnerJoinDTO ownerJoinDTO) throws Exception {
         Owner owner = new Owner();
 
         owner.setEmail(ownerJoinDTO.getEmail());
@@ -28,7 +29,11 @@ public class OwnerJoinService {
         owner.setAddress(ownerJoinDTO.getAdddress());
         owner.setGender(ownerJoinDTO.isGender());
 
-        jpaDataOwnerRepository.save(owner);
+        if(jpaDataOwnerRepository.existsByEmail(owner.getEmail())){
+            throw new Exception("중복된 이메일 입니다.");
+        }else{
+            jpaDataOwnerRepository.save(owner);
+        }
     }
 
 }

@@ -20,18 +20,14 @@ public class OwnerLoginController {
     private final OwnerLoginService Service;
 
     @GetMapping("/login")
-    public void loginControl(@RequestBody OwnerLoginDTO ownerLoginDTO) {
-        Service.loginCheck(ownerLoginDTO);
-    }
-    @PostMapping("/login")
-    public ResponseEntity<Void> loginCheck(@RequestBody OwnerLoginDTO ownerLoginDTO){
-        Owner owner = Service.loginCheck(ownerLoginDTO);
-        if(owner != null){
-            return new ResponseEntity<>(HttpStatus.OK);
-        }
-        else{
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public ResponseEntity<String> loginCheck(@RequestBody OwnerLoginDTO ownerLogin) {
 
+        try {
+            String OwnerName = Service.loginCheck(ownerLogin);
+            return ResponseEntity.status(HttpStatus.OK).body(OwnerName);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+
+        }
     }
 }
