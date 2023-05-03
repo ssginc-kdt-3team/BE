@@ -15,6 +15,8 @@ public interface JpaDateCustRepository extends JpaRepository<Cust, Long> {
     @Query("select new ssginc_kdt_team3.BE.DTOs.cust.CustListDTO(c.id, c.name, c.email, c.status, c.grade.name) from Cust c")
     Page<CustListDTO> findAllBy(Pageable pageable);
 
-    Optional<Cust> findCustByEmail(String Email);
+//    Page<Cust> findAllBy(Pageable pageable);
+
+            Optional<Cust> findCustByEmail(String Email);
 
 }

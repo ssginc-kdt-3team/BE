@@ -63,7 +63,8 @@ public class Cust {
   @Column(name = "cust_status")
   private UserStatus status;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "grade_id")
   private Grade grade;
 }

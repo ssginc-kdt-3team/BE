@@ -1,5 +1,6 @@
 package ssginc_kdt_team3.BE.service.admin;
 
+import com.querydsl.jpa.JPQLQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,12 +9,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssginc_kdt_team3.BE.DTOs.cust.*;
-import ssginc_kdt_team3.BE.domain.Admin;
-import ssginc_kdt_team3.BE.domain.Cust;
-import ssginc_kdt_team3.BE.domain.Grade;
+import ssginc_kdt_team3.BE.domain.*;
 import ssginc_kdt_team3.BE.enums.UserStatus;
 import ssginc_kdt_team3.BE.repository.cust.JpaDateCustRepository;
 
+import javax.persistence.EntityManager;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -25,9 +25,17 @@ import java.util.Optional;
 public class AdminCustService {
 
     private final JpaDateCustRepository custRepository;
+    private final EntityManager em;
+
+    JPQLQueryFactory queryFactory;
+
 
     public Page<CustListDTO> findAllCust(Pageable pageable) {
         return custRepository.findAllBy(pageable);
+    }
+
+    public Optional<Cust> temp(Long custId) {
+        return custRepository.findById(custId);
     }
 
     public CustDetailDTO findCustById(Long custId) {
@@ -45,6 +53,18 @@ public class AdminCustService {
 
 
         return new CustDetailDTO();
+    }
+
+    public Optional<Cust> findCustById2(Long custId) {
+        QCust cust = new QCust("cust");
+
+        Optional<Cust> findCust= Optional.of(queryFactory
+                .select(cust)
+                .from(cust)
+                .where(cust.id.eq(custId))
+                .fetchOne());
+
+        return findCust;
     }
 
     public CustDetailDTO findCustByEmail(String custEmail) {

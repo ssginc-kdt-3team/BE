@@ -30,7 +30,7 @@ public class Grade {
   //  @Column(name = "grade_history")
   //  private String history;
 
-  @OneToMany(mappedBy = "grade")
-  private List<Cust> cust;
+//  @OneToMany(mappedBy = "grade")
+//  private List<Cust> cust;
 
 }

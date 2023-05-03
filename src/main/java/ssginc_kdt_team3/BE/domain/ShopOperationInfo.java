@@ -1,36 +1,38 @@
 package ssginc_kdt_team3.BE.domain;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Entity
 @Getter
-public class OperationInfo {
+@Setter
+@Table(name = "shop_operation_info")
+public class ShopOperationInfo {
 
     @Id
-    @Column(name = "op_info_id")
+    @Column(name = "shop_op_info_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     //LocalDateTime -> LocalTime으로 수정 (0502 임태경)
-    @Column(name = "open_time")
+    @Column(name = "shop_open_time")
     private LocalTime openTime;
 
     //LocalDateTime -> LocalTime으로 수정 (0502 임태경)
-    @Column(name = "close_time")
+    @Column(name = "shop_close_time")
     private LocalTime closeTime;
 
     //LocalDateTime -> LocalTime으로 수정 (0502 임태경)
-    @Column(name = "order_close")
+    @Column(name = "shop_order_close")
     private LocalTime orderCloseTime;
 
-    @Column(name = "open_date")
+    @Column(name = "shop_open_date")
     private LocalDate openDate;
 
-    @Column(name = "out_date")
+    @Column(name = "shop_out_date")
     private LocalDate out_date;
 }
