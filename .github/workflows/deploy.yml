@@ -5,7 +5,6 @@ on:
     branches:
       - main
 
-
 env:
   AWS_REGION: ap-northeast-2
   S3_BUCKET_NAME: ssginc-team-s3
@@ -22,7 +21,6 @@ jobs:
     environment: production
 
     steps:
-
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -38,6 +36,9 @@ jobs:
           touch ./application-prd.properties 
           echo "${{ secrets.PROPERTIES_PRD }}" > ./application-prd.properties
         shell: bash
+
+      - name: Make gradlew executable
+        run: chmod +x gradlew
 
       - name: Build with Gradle
         uses: gradle/gradle-build-action@0d13054264b0bb894ded474f08ebb30921341cee
@@ -58,6 +59,7 @@ jobs:
           --ignore-hidden-files \
           --s3-location s3://$S3_BUCKET_NAME/$GITHUB_SHA.zip \
           --source .
+
       - name: Deploy to AWS EC2 from S3
         run: |
           aws deploy create-deployment \
@@ -65,3 +67,4 @@ jobs:
           --deployment-config-name CodeDeployDefault.AllAtOnce \
           --deployment-group-name ${{ env.CODE_DEPLOY_DEPLOYMENT_GROUP_NAME }} \
           --s3-location bucket=$S3_BUCKET_NAME,key=$GITHUB_SHA.zip,bundleType=zip
+
