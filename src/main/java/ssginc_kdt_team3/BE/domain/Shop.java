@@ -8,6 +8,7 @@ import ssginc_kdt_team3.BE.enums.UserStatus;
 
 import javax.persistence.*;
 
+
 @Entity
 @Getter
 @Setter
