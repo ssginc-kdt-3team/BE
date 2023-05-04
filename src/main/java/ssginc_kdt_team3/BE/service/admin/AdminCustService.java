@@ -1,19 +1,22 @@
 package ssginc_kdt_team3.BE.service.admin;
 
+import com.querydsl.jpa.JPQLQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssginc_kdt_team3.BE.DTOs.cust.Address;
 import ssginc_kdt_team3.BE.DTOs.cust.CustListDTO;
-import ssginc_kdt_team3.BE.DTOs.cust.InfoUpdateDTO;
+import ssginc_kdt_team3.BE.DTOs.cust.CustUpdateDTO;
 import ssginc_kdt_team3.BE.domain.Cust;
 import ssginc_kdt_team3.BE.domain.Grade;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import ssginc_kdt_team3.BE.DTOs.cust.*;
+import ssginc_kdt_team3.BE.domain.QCust;
 import ssginc_kdt_team3.BE.enums.UserStatus;
 import ssginc_kdt_team3.BE.repository.cust.JpaDateCustRepository;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -23,25 +26,64 @@ import java.util.Optional;
 public class AdminCustService {
 
     private final JpaDateCustRepository custRepository;
+//    private final EntityManager em;
 
-    public List<CustListDTO> findAllCust() {
-        List<CustListDTO> result = new ArrayList<>();
+    JPQLQueryFactory queryFactory;
 
-        custRepository.findAll().forEach(x ->
-                result.add(new CustListDTO(x.getId(), x.getName(), x.getEmail(), x.getStatus(), x.getGrade())));
 
-        return result;
+    public Page<CustListDTO> findAllCust(Pageable pageable) {
+        return custRepository.findAllBy(pageable);
     }
 
-    public Optional<Cust> findCustById(Long custId) {
+    public Optional<Cust> temp(Long custId) {
         return custRepository.findById(custId);
     }
 
-    public Optional<Cust> findCustByName(String custName) {
-        return custRepository.findCustByName(custName);
+    public CustDetailDTO findCustById(Long custId) {
+
+        Optional<Cust> byId = custRepository.findById(custId);
+
+        if (byId.isPresent()) {
+            Cust cust = byId.get();
+            CustDetailDTO custDetailDTO = new CustDetailDTO(cust.getId(), cust.getEmail(), cust.getPassword(),
+                    cust.getName(), cust.getPhone(), cust.getGender(), cust.getBirthday(), cust.getAddress(),
+                    cust.getRole(), cust.getStatus(), cust.getGrade().getName());
+
+            return custDetailDTO;
+        }
+
+
+        return new CustDetailDTO();
     }
 
-    public boolean updateCustInfo(Long custId, InfoUpdateDTO custDTO) {
+    public Optional<Cust> findCustById2(Long custId) {
+        QCust cust = new QCust("cust");
+
+        Optional<Cust> findCust= Optional.of(queryFactory
+                .select(cust)
+                .from(cust)
+                .where(cust.id.eq(custId))
+                .fetchOne());
+
+        return findCust;
+    }
+
+    public CustDetailDTO findCustByEmail(String custEmail) {
+        Optional<Cust> byEmail = custRepository.findCustByEmail(custEmail);
+
+        if (byEmail.isPresent()) {
+            Cust cust = byEmail.get();
+            CustDetailDTO custDetailDTO = new CustDetailDTO(cust.getId(), cust.getEmail(), cust.getPassword(),
+                    cust.getName(), cust.getPhone(), cust.getGender(), cust.getBirthday(), cust.getAddress(),
+                    cust.getRole(), cust.getStatus(), cust.getGrade().getName());
+
+            return custDetailDTO;
+        }
+
+        return null;
+    }
+
+    public boolean updateCustInfo(Long custId, CustUpdateDTO custDTO) {
 
         Optional<Cust> cust = custRepository.findById(custId);
 
@@ -64,7 +106,6 @@ public class AdminCustService {
 
             return true;
         } else {
-
             return false;
         }
     }

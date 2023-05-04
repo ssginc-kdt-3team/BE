@@ -90,11 +90,11 @@ public class CustService {
 
   // 개인정보 변경
   @Transactional
-  public void updateInfo(InfoUpdateDTO infoUpdateDTO, Long id) { //이게 cust의 id인지 어떻게 알아 ? 내가 repository findCust에 Long id 싸놔서 ...?
+  public void updateInfo(CustUpdateDTO custUpdateDTO, Long id) { //이게 cust의 id인지 어떻게 알아 ? 내가 repository findCust에 Long id 싸놔서 ...?
     // 로그인 후 -> cust의 id 정보 필요
     Cust findCustId = custRepository.findCust(id).get(); // 왜 .get 안하고 Optional<Cust> 로 들어오면 set이 안 되지
-    findCustId.setPhone(infoUpdateDTO.getPhone());
-    findCustId.setAddress(infoUpdateDTO.getAddress()); // 알아서 update 쿼리가 날아간다고 ..?
+    findCustId.setPhone(custUpdateDTO.getPhone());
+    findCustId.setAddress(custUpdateDTO.getAddress()); // 알아서 update 쿼리가 날아간다고 ..?
   }
 
   // PW 변경

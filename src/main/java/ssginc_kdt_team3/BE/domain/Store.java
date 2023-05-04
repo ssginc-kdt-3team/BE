@@ -29,14 +29,13 @@ public class Store {
     @Column(name = "str_phone", length = 20)
     private String phone;
 
+    //Enumerated EnumType 추가 (0503 임태경)
     @Column(name = "str_status")
+    @Enumerated(EnumType.STRING)
     private StoreStatus status;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "st_op_id")
     private StoreOperationInfo storeOperationInfoId;
-
-
-
 
 }

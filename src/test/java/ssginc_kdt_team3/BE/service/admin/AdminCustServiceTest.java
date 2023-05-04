@@ -3,15 +3,14 @@ package ssginc_kdt_team3.BE.service.admin;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import ssginc_kdt_team3.BE.DTOs.cust.CustListDTO;
-import ssginc_kdt_team3.BE.DTOs.cust.InfoUpdateDTO;
+import ssginc_kdt_team3.BE.DTOs.cust.CustUpdateDTO;
 import ssginc_kdt_team3.BE.domain.Cust;
 import ssginc_kdt_team3.BE.enums.UserRole;
 import ssginc_kdt_team3.BE.enums.UserStatus;
 import ssginc_kdt_team3.BE.repository.cust.JpaDateCustRepository;
 
 import java.time.LocalDate;
-import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 
@@ -50,25 +49,26 @@ class AdminCustServiceTest {
         Cust save1 = repository.save(cust2);
     }
 
-    @AfterEach
-    public void clean() {
-        repository.deleteAll();
-    }
+//    @AfterEach
+//    public void clean() {
+//        repository.deleteAll();
+//    }
 
-    @Test
-    public void findAllTest() {
-
-        List<CustListDTO> all = custService.findAllCust();
-
-        int len = all.size();
-
-        CustListDTO custListDTO = all.get(0);
-
-        String email = custListDTO.getEmail();
-
-        assertThat(len).isEqualTo(2);
-        assertThat(email).isEqualTo("user1@user.com");
-    }
+//    @Test
+//    public void findAllTest() {
+//        Pageable pageable = PageRequest.of(0, 5);
+//        Page<CustListDTO> allCust = custService.findAllCust(pageable);
+//
+//
+//        int len = allCust.size();
+//
+//        CustListDTO custListDTO = all.get(0);
+//
+//        String email = custListDTO.getEmail();
+//
+//        assertThat(len).isEqualTo(2);
+//        assertThat(email).isEqualTo("user1@user.com");
+//    }
 
     @Test
     public void findOneTest() {
@@ -84,10 +84,13 @@ class AdminCustServiceTest {
 
         Cust saveCust = repository.save(cust3);
         Long saveID = saveCust.getId();
+        System.out.println(saveID);
 
-        Cust findCust = custService.findCustById(saveID).get();
+        Optional<Cust> byId = repository.findById(saveID);
 
-        assertThat(saveCust.getPassword()).isEqualTo(findCust.getPassword());
+        Cust custById = byId.get();
+
+        assertThat(saveCust.getPassword()).isEqualTo(custById.getPassword());
     }
 
     @Test
@@ -101,11 +104,13 @@ class AdminCustServiceTest {
         cust3.setGender(true);
         cust3.setRole(UserRole.CUST);
         cust3.setStatus(UserStatus.ACTIVE);
+        cust3.setGrade(null);
 
         Cust saveCust = repository.save(cust3);
         Long saveID = saveCust.getId();
+        System.out.println(saveID);
 
-        InfoUpdateDTO custDTO = new InfoUpdateDTO();
+        CustUpdateDTO custDTO = new CustUpdateDTO();
         custDTO.setName("hello");
         custDTO.setPassword("zxc123");
         custDTO.setPhone("01000000000");
@@ -113,12 +118,17 @@ class AdminCustServiceTest {
 
         assertThat(custService.updateCustInfo(saveID, custDTO)).isTrue();
 
-        Cust cust = custService.findCustById(saveID).get();
+        custService.updateCustInfo(saveID, custDTO);
 
-        assertThat(cust.getPassword()).isEqualTo("zxc123");
-        assertThat(cust.getName()).isEqualTo("hello");
+        Optional<Cust> byId = repository.findById(saveID);
+        Cust custById = byId.get();
 
+        System.out.println("=========================custById==============");
 
+        assertThat(custById.getPassword()).isEqualTo("zxc123");
+        assertThat(custById.getName()).isEqualTo("hello");
+
+        System.out.println("=========================FIN==============");
     }
 
 

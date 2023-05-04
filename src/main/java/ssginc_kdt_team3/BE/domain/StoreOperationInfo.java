@@ -26,4 +26,5 @@ public class StoreOperationInfo {
 
     @Column(name = "st_open_day")
     private LocalDate openDay;
+
 }
