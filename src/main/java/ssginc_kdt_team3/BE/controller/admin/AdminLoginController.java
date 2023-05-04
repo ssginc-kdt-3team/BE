@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ssginc_kdt_team3.BE.DTOs.admin.AdminLoginDTO;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerLoginDTO;
 import ssginc_kdt_team3.BE.service.admin.AdminService;
@@ -23,7 +20,7 @@ public class AdminLoginController {
 
     private final AdminService adminService;
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     public ResponseEntity<Long> loginCheck(@RequestBody AdminLoginDTO loginDTO) {
 
         Long loginAdminId = adminService.adminLogin(loginDTO);
