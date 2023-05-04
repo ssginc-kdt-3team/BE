@@ -32,11 +32,12 @@ class CustServiceTest {
     // given
     Cust cust = new Cust();
     cust.setEmail("test@gmail.com");
-    cust.setPassword("1234");
+    cust.setPassword("12345678");
     cust.setName("test");
     cust.setPhone("01012345678");
-    cust.setRole(UserRole.valueOf("CUST"));
-    cust.setStatus(UserStatus.valueOf("ACTIVE"));
+    cust.setRole(UserRole.CUST);
+    cust.setStatus(UserStatus.ACTIVE);
+    cust.setGrade(null);
 
     // when
     Cust saveId = custRepository.save(cust);
@@ -73,17 +74,34 @@ class CustServiceTest {
   }
 
   @Test
-  void 로그인() throws NoSuchElementException {
+  void 로그인() {
     // given
     CustLoginDTO custLoginDTO = new CustLoginDTO();
-    custLoginDTO.setEmail("test@gmail.com");
-    custLoginDTO.setPassword("12345678");
+    custLoginDTO.setEmail("user1@user.com");
+    custLoginDTO.setPassword("qwer1234");
 
     // when
-    CustLoginDTO loginCust = custService.login(custLoginDTO);
+    boolean loginCust = custService.login(custLoginDTO);
 
     // then
-    assertThat(custLoginDTO).isEqualTo(loginCust);
+    assertThat(loginCust).isEqualTo(true);
+  }
 
+
+  @Test
+  void 이메일찾기() {
+
+  }
+
+  @Test
+  void 비밀번호_찾기() {
+  }
+
+  @Test
+  void 개인정보_변경() {
+  }
+
+  @Test
+  void 비밀번호_변경() {
   }
 }
