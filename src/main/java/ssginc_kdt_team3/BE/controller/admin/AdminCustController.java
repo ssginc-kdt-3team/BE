@@ -41,7 +41,7 @@ public class AdminCustController {
         return response;
     }
 
-        @GetMapping("/findById/{id}")
+    @GetMapping("/findById/{id}")
     public Cust findOneCust(@PathVariable(name = "id") Long custId) throws JsonProcessingException {
         CustDetailDTO custDetailDTO = custService.findCustById(custId);
 

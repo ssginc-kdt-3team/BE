@@ -33,11 +33,7 @@ class OwnerJoinServiceTest {
         owner1.setGender(true);
         owner1.setStatus(UserStatus.ACTIVE);
 
-
-
         repo.save(owner1);
-
-
     }
 
     @AfterEach
