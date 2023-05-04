@@ -3,21 +3,13 @@ package ssginc_kdt_team3.BE.service.admin;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import ssginc_kdt_team3.BE.DTOs.cust.CustDetailDTO;
-import ssginc_kdt_team3.BE.DTOs.cust.CustListDTO;
 import ssginc_kdt_team3.BE.DTOs.cust.CustUpdateDTO;
 import ssginc_kdt_team3.BE.domain.Cust;
 import ssginc_kdt_team3.BE.enums.UserRole;
 import ssginc_kdt_team3.BE.enums.UserStatus;
 import ssginc_kdt_team3.BE.repository.cust.JpaDateCustRepository;
 
-import javax.persistence.EntityManager;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;

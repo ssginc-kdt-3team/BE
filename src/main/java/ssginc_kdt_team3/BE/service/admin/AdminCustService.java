@@ -3,19 +3,20 @@ package ssginc_kdt_team3.BE.service.admin;
 import com.querydsl.jpa.JPQLQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ssginc_kdt_team3.BE.DTOs.cust.Address;
+import ssginc_kdt_team3.BE.DTOs.cust.CustListDTO;
+import ssginc_kdt_team3.BE.DTOs.cust.CustUpdateDTO;
+import ssginc_kdt_team3.BE.domain.Cust;
+import ssginc_kdt_team3.BE.domain.Grade;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import ssginc_kdt_team3.BE.DTOs.cust.*;
-import ssginc_kdt_team3.BE.domain.*;
+import ssginc_kdt_team3.BE.domain.QCust;
 import ssginc_kdt_team3.BE.enums.UserStatus;
 import ssginc_kdt_team3.BE.repository.cust.JpaDateCustRepository;
 
-import javax.persistence.EntityManager;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Slf4j
