@@ -102,7 +102,7 @@ public class AdminCustController {
 
     @PostMapping("/update/{id}")
     public boolean custUpdate(@PathVariable(name = "id") Long custId,
-                                    @RequestBody CustUpdateDTO updateDTO) {
+                              @RequestBody CustUpdateDTO updateDTO) {
         boolean result = custService.updateCustInfo(custId, updateDTO);
 
         return result;

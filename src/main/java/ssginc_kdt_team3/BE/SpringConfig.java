@@ -4,8 +4,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import ssginc_kdt_team3.BE.repository.cust.JpaDateCustRepository;
-import ssginc_kdt_team3.BE.service.admin.AdminCustService;
+
 
 import javax.persistence.EntityManager;
 
