@@ -37,7 +37,6 @@ class OwnerJoinServiceTest {
         ownerJoinDTO = new OwnerJoinDTO();
     }
     @Test
-<<<<<<< HEAD
     public void joinServiceTest1() throws Exception{
         ownerJoinDTO.setName("User1");
         ownerJoinDTO.setEmail("User1@naver.com");
@@ -51,20 +50,6 @@ class OwnerJoinServiceTest {
         }catch (Exception e){
             throw new Exception();
         }
-=======
-    public void join(){
-        Owner owner1 = new Owner();
-
-        owner1.setEmail("www@naver.com");
-        owner1.setPassword("Qwe@123!!");
-        owner1.setName("User1");
-        owner1.setPhone("010-1234-4567");
-        owner1.setRole(UserRole.OWNER);
-        owner1.setGender(true);
-        owner1.setStatus(UserStatus.ACTIVE);
-
-        repo.save(owner1);
->>>>>>> 1a35726138cf41b702e64eb1f36492ea64ae72fd
     }
 
     @BeforeEach
