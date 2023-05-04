@@ -51,7 +51,6 @@ public class Cust {
   @AttributeOverride(name = "zipCode", column = @Column(name = "cust_zipCode"))
   private Address address;
 
-
   //Role -> UserRole로 수정 (0502 임태경)
   @NotNull
   @Enumerated(EnumType.STRING)
@@ -62,7 +61,6 @@ public class Cust {
   @Enumerated(EnumType.STRING)
   @Column(name = "cust_status")
   private UserStatus status;
-
 
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "grade_id")

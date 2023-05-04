@@ -18,7 +18,7 @@ public class JpaCustRepository implements CustRepository {
   @Override
   public Cust save(Cust cust){
     em.persist(cust);
-    return cust;
+    return cust; //이건 받아온 cust 그대로 리턴해서 참일 수밖에 없어
   }
 
   //조회

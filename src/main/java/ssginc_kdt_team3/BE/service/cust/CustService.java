@@ -1,6 +1,7 @@
 package ssginc_kdt_team3.BE.service.cust;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssginc_kdt_team3.BE.DTOs.cust.*;
@@ -9,8 +10,10 @@ import ssginc_kdt_team3.BE.enums.UserRole;
 import ssginc_kdt_team3.BE.enums.UserStatus;
 import ssginc_kdt_team3.BE.repository.cust.JpaCustRepository;
 
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -46,31 +49,35 @@ public class CustService {
   }
 
   //로그인
-  public CustLoginDTO login (CustLoginDTO custLoginDTO) {
+  public boolean login (CustLoginDTO custLoginDTO) {
     String email = custLoginDTO.getEmail();
     String password = custLoginDTO.getPassword();
-    Optional<Cust> CustInfo = custRepository.findByEmail(email);
+    Optional<Cust> custInfo = custRepository.findByEmail(email);
 
-    if(CustInfo.equals(email) && CustInfo.equals(password)) {
-      System.out.println("로그인 성공");
+    // custInfo가 널인지 아닌지 모르니까 Optional 을 isPresent로 체크한다
+    if(custInfo.isPresent()) { //null이 아니면(이메일 존재하면)
+      log.info("이메일 일치");
+
+      if(custInfo.get().getPassword().equals(password)) { // .get으로 옵셔널 벗겨서 비교
+        log.info("로그인 성공");
+        return true;
+      }
+
     } else {
-      System.out.println("로그인 실패");
+      log.info("로그인 실패");
     }
-    return custLoginDTO;
+    return false;
   }
 
   // Email 찾기 : name, password 로 찾기
-  public String getCustEmail(CustFindDTO custFindDTO) { // DTO를 새로 만들어야 되...나 ?
+  public Cust getCustEmail(CustFindDTO custFindDTO) { // DTO를 새로 만들어야 되...나 ?
     Cust cust = new Cust();
     cust.setName(custFindDTO.getName());
     cust.setPhone(custFindDTO.getPhone());
 
     Optional<Cust> findCustInfo = custRepository.findCust(cust.getId());
 
-    if(!findCustInfo.isEmpty()) { //일치하는 값이 있으면
-      return cust.getEmail();
-    }
-    return null; // 값이 없으면 여기 뭘 뿌려야 하지 ..
+    return findCustInfo.orElseThrow(() -> new NoSuchElementException("일치하는 정보가 없습니다."));
   }
 
   // PW 찾기
