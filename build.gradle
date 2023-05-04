@@ -86,3 +86,6 @@ configurations {
 	querydsl.extendsFrom compileClasspath
 }
 
+test.onlyIf {
+	!project.hasProperty('test')
+}
