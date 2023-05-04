@@ -45,6 +45,9 @@ dependencies {
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+
+	// 이현 - 카카오 로그인 API 파싱 목적
+	implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1'
 	// https://mvnrepository.com/artifact/com.fasterxml.jackson.datatype/jackson-datatype-jsr310
 	implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.15.0'
 
@@ -54,7 +57,6 @@ dependencies {
 
     //H2 Connect설정
     runtimeOnly 'com.h2database:h2'
-
 }
 
 
