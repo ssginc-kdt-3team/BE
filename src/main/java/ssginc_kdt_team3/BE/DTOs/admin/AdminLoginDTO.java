@@ -10,10 +10,8 @@ import javax.validation.constraints.NotNull;
 public class AdminLoginDTO {
 
     @NotEmpty
-    @Max(20)
     private String email;
 
     @NotEmpty
-    @Max(12)
     private String password;
 }
