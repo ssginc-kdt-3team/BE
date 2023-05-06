@@ -29,7 +29,7 @@ public class CustController {
   }
 
   @RequestMapping("/login")
-  public CustLoginDTO login(CustLoginDTO custLoginDTO) {
+  public boolean login(CustLoginDTO custLoginDTO) {
     return custService.login(custLoginDTO);
   }
 
