@@ -1,8 +1,8 @@
 package ssginc_kdt_team3.BE.controller.owner;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +24,7 @@ public class OwnerFindPwController {
     private final OwnerFindPwService ownerFindPwService;
 
     @PostMapping("/findpw")
-    public ResponseEntity<Map<Object, String>> OwnerFindPw(@RequestBody OwnerFindPwDTO ownerFindPwDTO) throws Exception{
+    public ResponseEntity<String> OwnerFindPw(@RequestBody OwnerFindPwDTO ownerFindPwDTO) throws Exception{
 
 
         try {
@@ -39,6 +39,9 @@ public class OwnerFindPwController {
         ResponseBody.put("data","임시 비밀번호 발급 완료");
         ResponseBody.put("TempPassword",TempPw);
 
-        return new ResponseEntity<>(ResponseBody,HttpStatus.OK);
+        ObjectMapper Mapper = new ObjectMapper();
+        String jsonBody = Mapper.writeValueAsString(ResponseBody);
+
+        return new ResponseEntity<>(jsonBody,HttpStatus.OK);
     }
 }

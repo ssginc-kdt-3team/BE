@@ -1,14 +1,10 @@
 package ssginc_kdt_team3.BE.DTOs.owner;
 
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
-import org.hibernate.validator.constraints.Length;
-import ssginc_kdt_team3.BE.DTOs.cust.Address;
+
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import java.time.LocalDate;
 
 @Data
 public class OwnerFindPwDTO {

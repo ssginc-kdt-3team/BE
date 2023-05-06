@@ -23,7 +23,7 @@ public class OwnerLoginService {
 
         String email = login.getEmail();
         String pw = login.getPassword();
-
+        //입력받은 거
         Optional<Owner> OwnerEmail = Repository.findByEmail(email);
 
         if(OwnerEmail == null || OwnerEmail.isEmpty()){
@@ -34,6 +34,7 @@ public class OwnerLoginService {
         Owner EmailMat = OwnerEmail.get();
         String OwnerPassword = EmailMat.getPassword();
         String OwnerName = EmailMat.getName();
+
 
         if(!OwnerPassword.equals(pw)){
             throw new Exception("아이디 혹은 비밀번호를 확인해주세요.");

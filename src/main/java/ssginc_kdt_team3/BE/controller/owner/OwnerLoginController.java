@@ -7,7 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerLoginDTO;
-import ssginc_kdt_team3.BE.domain.Owner;
 import ssginc_kdt_team3.BE.service.owner.OwnerLoginService;
 
 @RequestMapping("/owner")
@@ -16,17 +15,25 @@ import ssginc_kdt_team3.BE.service.owner.OwnerLoginService;
 @Controller
 
 public class OwnerLoginController {
+
     @Autowired
     private final OwnerLoginService Service;
 
-    @GetMapping("/login")
+//    @GetMapping("/login")
+//    public String login(){
+//        return "login";
+//        //로그인 창을 띄우는 것 까지는 Get방식으로 처리하고
+//        //로그인 확인 버튼을 누르는 순간 Post방식으로 처리
+//    }
+
+    @PostMapping("/login")
     public ResponseEntity<String> loginCheck(@RequestBody OwnerLoginDTO ownerLogin) {
 
         try {
             String OwnerName = Service.loginCheck(ownerLogin);
-            return ResponseEntity.status(HttpStatus.OK).body(OwnerName);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 }

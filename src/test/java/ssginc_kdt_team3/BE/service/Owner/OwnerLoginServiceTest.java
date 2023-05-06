@@ -1,5 +1,6 @@
 package ssginc_kdt_team3.BE.service.Owner;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,7 @@ public class OwnerLoginServiceTest {
         JoinDTO = new OwnerJoinDTO();
         LoginDTO = new OwnerLoginDTO();
     }
+
     @Test
     public void OwnerLoginTest() throws Exception{
 
@@ -70,6 +72,10 @@ public class OwnerLoginServiceTest {
         }catch (Exception e){
             throw new Exception();
         }
+    }
+    @AfterEach
+    public void clean(){
+        repo.deleteAll();
     }
 
 }

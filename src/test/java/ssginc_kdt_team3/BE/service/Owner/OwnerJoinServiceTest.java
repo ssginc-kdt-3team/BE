@@ -68,6 +68,7 @@ class OwnerJoinServiceTest {
 
         Optional<Owner> owner2 = repo.findByEmail(owner2JoinDTO.getEmail());
         System.out.println("JoinTest결과 : " + owner2);
+        System.out.println("==============================");
 
     }
     @AfterEach
