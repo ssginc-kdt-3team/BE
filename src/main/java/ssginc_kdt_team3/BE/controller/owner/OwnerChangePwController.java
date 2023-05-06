@@ -21,10 +21,12 @@ public class OwnerChangePwController {
 
     @PostMapping("/changepassword")
     public ResponseEntity<String> pwCheckController (@RequestBody OwnerChangePwDTO changePwDTO) {
-        boolean PwCheck = changePwSer.CheckPw(changePwDTO);
-        if (!PwCheck) {
-            return new ResponseEntity<>("비밀번호가 일치하지 않습니다.", HttpStatus.BAD_REQUEST);
+        try{
+            changePwSer.CheckPw(changePwDTO);
+        }catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
         }
+
         try {
             changePwSer.ChangePw(changePwDTO);
         }catch (Exception e){

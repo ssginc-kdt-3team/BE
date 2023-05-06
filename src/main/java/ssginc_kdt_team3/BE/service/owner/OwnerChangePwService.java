@@ -19,7 +19,7 @@ public class OwnerChangePwService{
     @Autowired
     private final JpaDataOwnerRepository repo;
 
-    public boolean CheckPw(OwnerChangePwDTO changePwDTO){
+    public void CheckPw(OwnerChangePwDTO changePwDTO) throws Exception{
 
         String email = changePwDTO.getEmail();
         String in_Password = changePwDTO.getNowPassword();
@@ -27,10 +27,8 @@ public class OwnerChangePwService{
 
         Owner owner = PwCheck.get();
         String Rpassword = owner.getPassword();
-        if (Rpassword.equals(in_Password)){
-            return true;
-        }else {
-            return false;
+        if (!Rpassword.equals(in_Password)) {
+            throw new Exception("비밀번호가 다릅니다!");
         }
     }
     public void ChangePw(OwnerChangePwDTO changePwDTO) throws Exception{
@@ -38,7 +36,7 @@ public class OwnerChangePwService{
         String pw2 = changePwDTO.getNewPassword2();
 
         if (pw1 != pw2){
-            throw new Exception();
+            throw new Exception("비밀번호가 서로 일치하지 않습니다!");
         }
         repo.updatePassword(pw1);
     }

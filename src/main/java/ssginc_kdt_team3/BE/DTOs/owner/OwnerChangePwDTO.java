@@ -1,5 +1,6 @@
 package ssginc_kdt_team3.BE.DTOs.owner;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
@@ -8,6 +9,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 @Getter
 @Setter
+@Data
 public class OwnerChangePwDTO {
     @NotEmpty(message = "이메일은 필수 입력값 입니다.")
     @Email(message = "올바른 이메일 형식을 입력해주세요.")

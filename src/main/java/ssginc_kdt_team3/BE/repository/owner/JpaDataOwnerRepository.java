@@ -27,12 +27,12 @@ public interface JpaDataOwnerRepository extends JpaRepository<Owner, Long> {
     @Modifying
     void updatePassword(@Param("password") String password);
 
-//    @Query("UPDATE Owner o SET o.phone = :phone,o.address = :address,o.status = :status")
-//    @Modifying
-//    void updateOwnerInfo(@Param("phone")String phone,@Param("address") Address address,@Param("status") UserStatus status);
-    void updateOwnerInfo(Owner owner);
+    @Query("UPDATE Owner o SET o.phone = :phone,o.address = :address,o.status = :status")
+    @Modifying
+    void updateOwnerInfo(@Param("phone")String phone,@Param("address") Address address,@Param("status") UserStatus status);
+//        void updateOwnerInfo(Owner owner);
 
-    boolean checkPassword(String password);
+//    boolean checkPassword(String password);
 
 //    boolean CheckPassword(String password);
 //

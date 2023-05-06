@@ -1,99 +1,82 @@
 package ssginc_kdt_team3.BE.service.Owner;
 
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerFindPwDTO;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerJoinDTO;
-import ssginc_kdt_team3.BE.domain.Owner;
+import ssginc_kdt_team3.BE.DTOs.owner.OwnerNewPwDTO;
 import ssginc_kdt_team3.BE.repository.owner.JpaDataOwnerRepository;
 import ssginc_kdt_team3.BE.service.owner.OwnerFindPwService;
 import ssginc_kdt_team3.BE.service.owner.OwnerJoinService;
+import ssginc_kdt_team3.BE.service.owner.OwnerNewPwService;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 @SpringBootTest
 public class OwnerFindPwTest {
 
+    @Autowired
+    OwnerNewPwService NewpwService;
     @Autowired
     OwnerFindPwService ownerFindPwService;
     @Autowired
     OwnerJoinService ownerJoinService;
     @Autowired
     JpaDataOwnerRepository repo;
+    @Autowired
+    OwnerNewPwService newPwService;
 
-    private OwnerFindPwDTO ownerFindPwDTO;
+    private OwnerFindPwDTO FindPwDTO;
 
-    private OwnerJoinDTO owner3JoinDTO;
+    private OwnerJoinDTO joinDTO;
 
-    private Owner owner;
+    private OwnerNewPwDTO newPwDTO;
 
-    @BeforeEach
-    public void before() {
-            ownerFindPwDTO = new OwnerFindPwDTO();
-            owner3JoinDTO = new OwnerJoinDTO();
-            owner = new Owner();
-    }
-    @BeforeEach
+    @AfterEach
     public void clean() {
 
         repo.deleteAll();
     }
-    @Test
-    public void findTest()throws Exception{
 
-        owner3JoinDTO.setName("User123");
-        owner3JoinDTO.setEmail("User123@naver.com");
-        owner3JoinDTO.setPassword("Qwe@123123!!");
-        owner3JoinDTO.setPhone("010-1234-9999");
-        owner3JoinDTO.setGender(false);
-        owner3JoinDTO.setBirthday(LocalDate.parse("1997-01-25"));
+        @Test
+        public void before() throws  Exception{
+            FindPwDTO = new OwnerFindPwDTO();
+            joinDTO = new OwnerJoinDTO();
+            newPwDTO = new OwnerNewPwDTO();
 
-        try {
-            ownerJoinService.join(owner3JoinDTO);
-            System.out.println("OwnerJoinTest! : " + owner3JoinDTO);
-            System.out.println("==================================");
+            joinDTO.setName("User123");
+            joinDTO.setEmail("User123@naver.com");
+            joinDTO.setPassword("Qwe@123123!!");
+            joinDTO.setPhone("010-1234-9999");
+            joinDTO.setGender(false);
+            joinDTO.setBirthday(LocalDate.parse("1997-01-25"));
+
+            ownerJoinService.join(joinDTO);
+
+            FindPwDTO.setName("User123");
+            FindPwDTO.setEmail("User123@naver.com");
+            FindPwDTO.setPhone("010-1234-9998");
+            try {
+                ownerFindPwService.findPw(FindPwDTO);
+                System.out.println("=============FindPwService=============");
+            }catch (Exception e){
+                System.out.println(e.getMessage());
+            }
+            newPwDTO.setNewPassword1("1234568889");
+            newPwDTO.setNewPassword2("123456789");
+
+            try {
+                NewpwService.NewPw(newPwDTO);
+                System.out.println("=============NewPw=============");
+            }catch (Exception e){
+                System.out.println(e.getMessage());
+            }
         }
-        catch (Exception e){
-            throw new Exception();
-        }
-
-        ownerFindPwDTO.setName("User123");
-        ownerFindPwDTO.setEmail("User123@naver.com");
-        ownerFindPwDTO.setPhone("010-1234-9999");
-
-        System.out.println("FindPwDTO Setting Test : " + ownerFindPwDTO);
-        System.out.println("==================================");
-
-        boolean emailCheck = repo.existsByEmail(ownerFindPwDTO.getEmail());
-        System.out.println("existsByEmail? " + emailCheck);
-        System.out.println("==================================");
 
 
-        Optional<Owner> InfoOwner = repo.findByEmail(ownerFindPwDTO.getEmail());
-        System.out.println("Exists Account " + InfoOwner);
-        System.out.println("==================================");
-
-        Owner EmaillMat = InfoOwner.get();
-
-        String RepoEmail = EmaillMat.getEmail();
-        String RepoName = EmaillMat.getName();
-        String RepoPhone = EmaillMat.getPhone();
-
-        System.out.println(RepoEmail);
-        System.out.println(RepoName);
-        System.out.println(RepoPhone);
-        System.out.println("=============================");
-        try {
-            ownerFindPwService.findPw(ownerFindPwDTO);
-            String pw = ownerFindPwService.TemporaryPw();
-            System.out.println("TemporaryPw =" + pw);
-        }catch (Exception e){
-            throw new Exception();
-        }
 
     }
 
@@ -115,4 +98,4 @@ public class OwnerFindPwTest {
 //        System.out.println("666666666666666666");
 //        System.out.println(TempPassword);
 //    }
-}
+

@@ -1,24 +1,29 @@
 package ssginc_kdt_team3.BE.service.Owner;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ssginc_kdt_team3.BE.DTOs.cust.Address;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerJoinDTO;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerUpdateDTO;
+import ssginc_kdt_team3.BE.domain.Owner;
 import ssginc_kdt_team3.BE.enums.UserStatus;
+import ssginc_kdt_team3.BE.repository.owner.JpaDataOwnerRepository;
 import ssginc_kdt_team3.BE.service.owner.OwnerUpdateService;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @SpringBootTest
 public class OwnerUpdateTest {
-
+    @Autowired
+    JpaDataOwnerRepository repo;
     @Autowired
     OwnerUpdateService updateService;
-    @BeforeEach
-    public void OwnerJoinTest(){
+
+    @Test
+    public void OwnerUpdate(){
+
         OwnerJoinDTO JoinDTO = new OwnerJoinDTO();
 
         JoinDTO.setName("가나다");
@@ -28,9 +33,10 @@ public class OwnerUpdateTest {
         JoinDTO.setGender(true);
         JoinDTO.setBirthday(LocalDate.parse("2000-01-04"));
 
-    }
-    @Test
-    public void OwnerUpdate(){
+        Address address0 = new Address("부산시","사상구","5층","112-222");
+        JoinDTO.setAdddress(address0);
+
+        System.out.println("업데이트 전 : " + JoinDTO);
 
         OwnerUpdateDTO UpdateDTO = new OwnerUpdateDTO();
 
@@ -41,6 +47,8 @@ public class OwnerUpdateTest {
 
         UpdateDTO.setUserStatus(UserStatus.ACTIVE);
         updateService.OwnerUpdate(UpdateDTO);
+
+
 
     }
 }
