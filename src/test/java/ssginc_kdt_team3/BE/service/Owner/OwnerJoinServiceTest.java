@@ -5,18 +5,12 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.thymeleaf.standard.expression.Each;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerJoinDTO;
-import ssginc_kdt_team3.BE.DTOs.owner.OwnerLoginDTO;
 import ssginc_kdt_team3.BE.domain.Owner;
-import ssginc_kdt_team3.BE.enums.UserRole;
-import ssginc_kdt_team3.BE.enums.UserStatus;
 import ssginc_kdt_team3.BE.repository.owner.JpaDataOwnerRepository;
 import ssginc_kdt_team3.BE.service.owner.OwnerJoinService;
-import ssginc_kdt_team3.BE.service.owner.OwnerLoginService;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 
 @SpringBootTest
