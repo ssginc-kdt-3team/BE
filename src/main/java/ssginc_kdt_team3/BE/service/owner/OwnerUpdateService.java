@@ -19,13 +19,18 @@ public class OwnerUpdateService {
 
     public void OwnerUpdate(OwnerUpdateDTO ownerUpdateDTO){
 
-        OwnerUpdateDTO update = new OwnerUpdateDTO();
+        Owner owner = new Owner();
+
+        owner.setPhone(ownerUpdateDTO.getPhone());
+        owner.setAddress(ownerUpdateDTO.getAdddress());
+        owner.setStatus(ownerUpdateDTO.getUserStatus());
 
         String bePhone = ownerUpdateDTO.getPhone();
         Address beAddress = ownerUpdateDTO.getAdddress();
         UserStatus beStatus = ownerUpdateDTO.getUserStatus();
 
-        repo.updateOwnerInfo(bePhone,beAddress,beStatus);
+//        repo.updateOwnerInfo(bePhone,beAddress,beStatus);
+        repo.updateOwnerInfo(owner);
 
         System.out.println("변경 후 전화번호 : " + bePhone);
         System.out.println("변경 후 주소 : " + beAddress.toString());

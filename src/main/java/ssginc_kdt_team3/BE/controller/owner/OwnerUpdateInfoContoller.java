@@ -17,7 +17,7 @@ public class OwnerUpdateInfoContoller {
     @Autowired
     private final OwnerUpdateService update;
 
-    @PostMapping("/owner/updateinfo")
+    @PostMapping("/updateinfo")
     public ResponseEntity<String> updateInfo(@RequestBody OwnerUpdateDTO ownerUpdateDTO){
 
         update.OwnerUpdate(ownerUpdateDTO);
