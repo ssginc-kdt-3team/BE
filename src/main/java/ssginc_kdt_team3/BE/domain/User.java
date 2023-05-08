@@ -1,10 +1,12 @@
 package ssginc_kdt_team3.BE.domain;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
 import ssginc_kdt_team3.BE.DTOs.cust.Address;
 import ssginc_kdt_team3.BE.enums.UserRole;
+import ssginc_kdt_team3.BE.enums.UserStatus;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -14,6 +16,7 @@ import java.time.LocalDate;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter
+@Setter
 public class User {
 
     @Id
@@ -42,7 +45,7 @@ public class User {
     //LocalDateTime -> LocalDate로 수정 (0502 임태경)
     //birthdate -> birthday로 수정 (0502 임태경)
     @Column(name = "user_birthday")
-    private LocalDate birthday;
+    protected LocalDate birthday;
 
     @Column(name = "user_gender")
     protected Boolean gender;
@@ -52,7 +55,7 @@ public class User {
     @AttributeOverride(name = "district", column = @Column(name = "user_district"))
     @AttributeOverride(name = "detail", column = @Column(name = "user_detail"))
     @AttributeOverride(name = "zipCode", column = @Column(name = "user_zipCode"))
-    private Address address;
+    protected Address address;
 
     @NotNull
     @Column(name = "user_role")
@@ -62,6 +65,6 @@ public class User {
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "user_status")
-    private UserStatus status;
+    protected UserStatus status;
 
 }

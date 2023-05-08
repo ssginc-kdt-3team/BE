@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import ssginc_kdt_team3.BE.DTOs.cust.CustDetailDTO;
 import ssginc_kdt_team3.BE.DTOs.cust.CustListDTO;
 import ssginc_kdt_team3.BE.DTOs.cust.CustUpdateDTO;
-import ssginc_kdt_team3.BE.domain.Cust;
+import ssginc_kdt_team3.BE.domain.Customer;
 import ssginc_kdt_team3.BE.service.admin.AdminCustService;
 
 import java.text.SimpleDateFormat;
@@ -42,13 +42,13 @@ public class AdminCustController {
     }
 
     @GetMapping("/findById/{id}")
-    public Cust findOneCust(@PathVariable(name = "id") Long custId) throws JsonProcessingException {
+    public Customer findOneCust(@PathVariable(name = "id") Long custId) throws JsonProcessingException {
         CustDetailDTO custDetailDTO = custService.findCustById(custId);
 
-        Optional<Cust> custById = custService.temp(custId);
+        Optional<Customer> custById = custService.temp(custId);
 
         if (custById.isPresent()) {
-            Cust cust = custById.get();
+            Customer cust = custById.get();
 
             ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -76,16 +76,16 @@ public class AdminCustController {
 //        }
     }
 
-    @GetMapping("/findById2/{id}")
-    public Cust findOneCust2(@PathVariable(name = "id") Long custId) throws JsonProcessingException {
-        Optional<Cust> custById = custService.findCustById2(custId);
-
-        if (custById.isPresent()) {
-            return custById.get();
-        } else {
-            return null;
-        }
-    }
+//    @GetMapping("/findById2/{id}")
+//    public Customer findOneCust2(@PathVariable(name = "id") Long custId) throws JsonProcessingException {
+//        Optional<Customer> custById = custService.findCustById2(custId);
+//
+//        if (custById.isPresent()) {
+//            return custById.get();
+//        } else {
+//            return null;
+//        }
+//    }
 
     @GetMapping("/findByEmail")
     public CustDetailDTO findOneCustByName(@RequestBody HashMap map) {
