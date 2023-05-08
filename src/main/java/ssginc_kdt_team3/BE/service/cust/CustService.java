@@ -6,9 +6,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssginc_kdt_team3.BE.DTOs.cust.*;
 import ssginc_kdt_team3.BE.domain.Cust;
+import ssginc_kdt_team3.BE.domain.Store;
 import ssginc_kdt_team3.BE.enums.UserRole;
 import ssginc_kdt_team3.BE.enums.UserStatus;
 import ssginc_kdt_team3.BE.repository.cust.JpaCustRepository;
+import ssginc_kdt_team3.BE.repository.cust.StoreRepository;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -20,6 +22,7 @@ import java.util.Optional;
 public class CustService {
 
   private final JpaCustRepository custRepository;
+  private final StoreRepository storeRepository;
 
   // 회원가입
   @Transactional
@@ -69,16 +72,16 @@ public class CustService {
     return false;
   }
 
-  // Email 찾기 : name, password 로 찾기
-  public Cust getCustEmail(CustFindDTO custFindDTO) { // DTO를 새로 만들어야 되...나 ?
+  // Email 찾기 : phone 으로 찾기
+  public Cust getCustEmail(CustFindDTO custFindDTO) {
     Cust cust = new Cust();
-    cust.setName(custFindDTO.getName());
     cust.setPhone(custFindDTO.getPhone());
 
-    Optional<Cust> findCustInfo = custRepository.findCust(cust.getId());
-
-    return findCustInfo.orElseThrow(() -> new NoSuchElementException("일치하는 정보가 없습니다."));
+    //이메일이 있다고 가정하고 -> phone과 일치하는 경우 (PK: 중복X)
+    Optional<Cust> emailByPhone = custRepository.findEmailByPhone(cust.getPhone());
+    return emailByPhone.orElseThrow(() -> new NoSuchElementException("일치하는 정보가 없습니다."));
   }
+
 
   // PW 찾기
   public String getCustPassword (CustFindDTO custFindDTO) {
@@ -99,7 +102,7 @@ public class CustService {
   @Transactional
   public void updateInfo(CustUpdateDTO custUpdateDTO, Long id) { //이게 cust의 id인지 어떻게 알아 ? 내가 repository findCust에 Long id 싸놔서 ...?
     // 로그인 후 -> cust의 id 정보 필요
-    Cust findCustId = custRepository.findCust(id).get(); // 왜 .get 안하고 Optional<Cust> 로 들어오면 set이 안 되지
+    Cust findCustId = custRepository.findCust(id).get();
     findCustId.setPhone(custUpdateDTO.getPhone());
     findCustId.setAddress(custUpdateDTO.getAddress()); // 알아서 update 쿼리가 날아간다고 ..?
   }
@@ -133,6 +136,9 @@ public class CustService {
 
 
   // 지점조회
-
+  public Optional<Store> findStore(Long id) {
+    Optional<Store> store = storeRepository.findStore(id);
+    return store;
+  }
 
 }

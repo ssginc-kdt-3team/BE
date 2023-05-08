@@ -2,7 +2,6 @@ package ssginc_kdt_team3.BE.DTOs.cust;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
-
 import javax.persistence.Embedded;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;

@@ -2,6 +2,7 @@ package ssginc_kdt_team3.BE.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import ssginc_kdt_team3.BE.enums.GradeType;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -19,7 +20,8 @@ public class Grade {
 
   @NotNull
   @Column(name = "grade_name")
-  private String name;
+  @Enumerated(EnumType.STRING)
+  private GradeType name;
 
   @NotNull
   @Column(name = "grade_rate")

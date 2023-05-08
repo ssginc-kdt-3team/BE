@@ -46,7 +46,8 @@ public class AdminCustService {
             Cust cust = byId.get();
             CustDetailDTO custDetailDTO = new CustDetailDTO(cust.getId(), cust.getEmail(), cust.getPassword(),
                     cust.getName(), cust.getPhone(), cust.getGender(), cust.getBirthday(), cust.getAddress(),
-                    cust.getRole(), cust.getStatus(), cust.getGrade().getName());
+                    cust.getRole(), cust.getStatus(), cust.getGrade().toString());
+            // 0506 이현: Grade name부분 enum 추가로 기존 cust.getGrade().getName() 에러 -> cust.getGrade().toString() 으로 수정
 
             return custDetailDTO;
         }
@@ -74,7 +75,8 @@ public class AdminCustService {
             Cust cust = byEmail.get();
             CustDetailDTO custDetailDTO = new CustDetailDTO(cust.getId(), cust.getEmail(), cust.getPassword(),
                     cust.getName(), cust.getPhone(), cust.getGender(), cust.getBirthday(), cust.getAddress(),
-                    cust.getRole(), cust.getStatus(), cust.getGrade().getName());
+                    cust.getRole(), cust.getStatus(), cust.getGrade().toString());
+            // 0506 이현: Grade name부분 enum 추가로 기존 코드 수정
 
             return custDetailDTO;
         }

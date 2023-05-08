@@ -1,6 +1,7 @@
 package ssginc_kdt_team3.BE.domain;
 
 import lombok.Getter;
+import lombok.ToString;
 import ssginc_kdt_team3.BE.DTOs.cust.Address;
 import ssginc_kdt_team3.BE.enums.StoreStatus;
 
@@ -8,6 +9,7 @@ import javax.persistence.*;
 
 @Entity
 @Getter
+@ToString
 public class Store {
 
     @Id
