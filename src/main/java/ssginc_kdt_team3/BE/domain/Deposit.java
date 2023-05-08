@@ -18,6 +18,7 @@ public class Deposit {
     private Long id;
 
     @Column(name = "deposit_status")
+    @Enumerated(EnumType.STRING)
     private DepositStatus status;
 
     @Column(name = "deposit_origin_value")

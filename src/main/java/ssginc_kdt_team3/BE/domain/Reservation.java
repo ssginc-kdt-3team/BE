@@ -30,6 +30,7 @@ public class Reservation {
     private String memo;
 
     @Column(name = "reservation_status")
+    @Enumerated(EnumType.STRING)
     private ReservationStatus status;
 
     @Column(name = "reservation_cancel_reason")
