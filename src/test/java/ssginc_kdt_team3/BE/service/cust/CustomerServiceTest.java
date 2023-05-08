@@ -10,7 +10,6 @@ import ssginc_kdt_team3.BE.DTOs.cust.CustLoginDTO;
 import ssginc_kdt_team3.BE.domain.Cust;
 import ssginc_kdt_team3.BE.domain.Store;
 import ssginc_kdt_team3.BE.enums.UserRole;
-import ssginc_kdt_team3.BE.enums.UserStatus;
 import ssginc_kdt_team3.BE.repository.cust.JpaCustRepository;
 import ssginc_kdt_team3.BE.repository.cust.StoreRepository;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;

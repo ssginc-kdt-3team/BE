@@ -6,12 +6,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import ssginc_kdt_team3.BE.DTOs.cust.Address;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerJoinDTO;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerUpdateDTO;
-import ssginc_kdt_team3.BE.enums.UserStatus;
 import ssginc_kdt_team3.BE.repository.owner.JpaDataOwnerRepository;
 import ssginc_kdt_team3.BE.service.owner.OwnerUpdateService;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 @SpringBootTest
 public class OwnerUpdateTest {

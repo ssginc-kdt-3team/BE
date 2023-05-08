@@ -14,7 +14,7 @@ import java.time.LocalTime;
 public class ShopOperationInfo {
 
     @Id
-    @Column(name = "shop_op_info_id")
+    @Column(name = "shop_operation_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
@@ -35,4 +35,7 @@ public class ShopOperationInfo {
 
     @Column(name = "shop_out_date")
     private LocalDate out_date;
+
+    @Column(name = "shop_seats")
+    private int seats;
 }

@@ -14,7 +14,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import ssginc_kdt_team3.BE.DTOs.cust.*;
 import ssginc_kdt_team3.BE.domain.QCust;
-import ssginc_kdt_team3.BE.enums.UserStatus;
 import ssginc_kdt_team3.BE.repository.cust.JpaDateCustRepository;
 
 import java.util.Optional;

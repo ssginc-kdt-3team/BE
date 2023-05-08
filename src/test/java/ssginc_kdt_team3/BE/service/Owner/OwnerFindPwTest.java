@@ -8,7 +8,6 @@ import ssginc_kdt_team3.BE.DTOs.cust.Address;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerFindPwDTO;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerNewPwDTO;
 import ssginc_kdt_team3.BE.domain.Owner;
-import ssginc_kdt_team3.BE.enums.UserStatus;
 import ssginc_kdt_team3.BE.repository.owner.JpaDataOwnerRepository;
 import ssginc_kdt_team3.BE.service.owner.OwnerFindPwService;
 import ssginc_kdt_team3.BE.service.owner.OwnerJoinService;

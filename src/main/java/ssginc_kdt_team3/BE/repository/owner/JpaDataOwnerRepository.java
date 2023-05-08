@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ssginc_kdt_team3.BE.domain.Owner;
-import ssginc_kdt_team3.BE.enums.UserStatus;
 import ssginc_kdt_team3.BE.DTOs.cust.Address;
 import java.util.Optional;
 
