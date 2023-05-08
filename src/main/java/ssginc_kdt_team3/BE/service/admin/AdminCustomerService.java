@@ -1,6 +1,5 @@
 package ssginc_kdt_team3.BE.service.admin;
 
-import com.querydsl.jpa.JPQLQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -15,7 +14,6 @@ import ssginc_kdt_team3.BE.domain.Grade;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import ssginc_kdt_team3.BE.DTOs.customer.*;
-import ssginc_kdt_team3.BE.domain.QCustomer;
 import ssginc_kdt_team3.BE.enums.UserStatus;
 import ssginc_kdt_team3.BE.repository.customer.JpaDateCustomerRepository;
 
