@@ -8,6 +8,7 @@ import ssginc_kdt_team3.BE.DTOs.cust.Address;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerFindPwDTO;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerNewPwDTO;
 import ssginc_kdt_team3.BE.domain.Owner;
+import ssginc_kdt_team3.BE.enums.UserStatus;
 import ssginc_kdt_team3.BE.repository.owner.JpaDataOwnerRepository;
 import ssginc_kdt_team3.BE.service.owner.OwnerFindPwService;
 import ssginc_kdt_team3.BE.service.owner.OwnerJoinService;
@@ -50,7 +51,7 @@ public class OwnerFindPwTest {
             owner.setEmail("?????@gmail.com");
             owner.setName("가나다");
             owner.setPassword("123456789");
-            owner.setPhone("010-1234-9998");
+            owner.setPhoneNumber("010-1234-9998");
             owner.setAddress(address);
             owner.setGender(false);
             owner.setStatus(UserStatus.ACTIVE);
