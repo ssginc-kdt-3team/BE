@@ -21,7 +21,7 @@ public class OwnerJoinService {
         owner.setEmail(ownerJoinDTO.getEmail());
         owner.setPassword(ownerJoinDTO.getPassword());
         owner.setName(ownerJoinDTO.getName());
-        owner.setPhone(ownerJoinDTO.getPhone());
+        owner.setPhoneNumber(ownerJoinDTO.getPhone());
         owner.setBirthday(ownerJoinDTO.getBirthday());
         owner.setAddress(ownerJoinDTO.getAdddress());
         owner.setGender(ownerJoinDTO.isGender());
