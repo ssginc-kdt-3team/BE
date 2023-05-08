@@ -16,6 +16,6 @@ public interface JpaDateCustRepository extends JpaRepository<Cust, Long> {
 
 //    Page<Cust> findAllBy(Pageable pageable);
 
-            Optional<Cust> findCustByEmail(String Email);
+    Optional<Cust> findCustByEmail(String Email);
 
 }

@@ -27,7 +27,6 @@ public class OwnerLoginController {
             return ResponseEntity.status(HttpStatus.OK).body(OwnerName);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
-
         }
     }
 }

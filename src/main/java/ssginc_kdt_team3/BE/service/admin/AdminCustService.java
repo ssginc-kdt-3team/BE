@@ -30,7 +30,6 @@ public class AdminCustService {
 
     JPQLQueryFactory queryFactory;
 
-
     public Page<CustListDTO> findAllCust(Pageable pageable) {
         return custRepository.findAllBy(pageable);
     }
