@@ -1,11 +1,11 @@
 package ssginc_kdt_team3.BE.DTOs.owner;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-
+@AllArgsConstructor
 @Data
 public class OwnerFindPwDTO {
     @NotEmpty(message = "이메일은 필수 입력값 입니다.")
@@ -15,4 +15,7 @@ public class OwnerFindPwDTO {
     private String name;
     @NotEmpty(message = "전화번호는 필수 입력값입니다.")
     private String phone;
+    public OwnerFindPwDTO(){
+
+    }
 }

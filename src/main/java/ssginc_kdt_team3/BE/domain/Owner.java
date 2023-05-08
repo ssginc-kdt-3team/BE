@@ -12,12 +12,12 @@ import javax.persistence.*;
 import java.time.LocalDate;
 
 @RequiredArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "owner")
 @Getter
 @Setter
 @ToString
-@NoArgsConstructor
 
 public class Owner{
     @Id
@@ -63,8 +63,5 @@ public class Owner{
     @Column(name = "owner_status")
     private UserStatus status;
 
-    @OneToOne
-    @JoinColumn(name = "shop_id")
-    private Shop shop;
 
 }

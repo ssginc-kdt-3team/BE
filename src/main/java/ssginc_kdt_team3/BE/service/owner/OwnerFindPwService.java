@@ -8,6 +8,7 @@ import ssginc_kdt_team3.BE.DTOs.owner.OwnerFindPwDTO;
 import ssginc_kdt_team3.BE.domain.Owner;
 import ssginc_kdt_team3.BE.repository.owner.JpaDataOwnerRepository;
 
+
 import java.util.Optional;
 
 @Service

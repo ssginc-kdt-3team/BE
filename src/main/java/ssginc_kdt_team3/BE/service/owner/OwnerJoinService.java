@@ -6,10 +6,7 @@ import org.springframework.stereotype.Service;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerJoinDTO;
 import ssginc_kdt_team3.BE.domain.Owner;
 import ssginc_kdt_team3.BE.repository.owner.JpaDataOwnerRepository;
-
 import javax.transaction.Transactional;
-import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Transactional

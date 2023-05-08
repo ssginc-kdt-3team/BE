@@ -1,19 +1,18 @@
 package ssginc_kdt_team3.BE.service.Owner;
 
 import org.junit.jupiter.api.AfterEach;
-
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import ssginc_kdt_team3.BE.DTOs.cust.Address;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerFindPwDTO;
-import ssginc_kdt_team3.BE.DTOs.owner.OwnerJoinDTO;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerNewPwDTO;
+import ssginc_kdt_team3.BE.domain.Owner;
+import ssginc_kdt_team3.BE.enums.UserStatus;
 import ssginc_kdt_team3.BE.repository.owner.JpaDataOwnerRepository;
 import ssginc_kdt_team3.BE.service.owner.OwnerFindPwService;
 import ssginc_kdt_team3.BE.service.owner.OwnerJoinService;
 import ssginc_kdt_team3.BE.service.owner.OwnerNewPwService;
-
-import java.time.LocalDate;
 
 @SpringBootTest
 public class OwnerFindPwTest {
@@ -31,7 +30,7 @@ public class OwnerFindPwTest {
 
     private OwnerFindPwDTO FindPwDTO;
 
-    private OwnerJoinDTO joinDTO;
+    private Owner owner;
 
     private OwnerNewPwDTO newPwDTO;
 
@@ -39,63 +38,54 @@ public class OwnerFindPwTest {
     public void clean() {
 
         repo.deleteAll();
+
     }
 
         @Test
-        public void before() throws  Exception{
-            FindPwDTO = new OwnerFindPwDTO();
-            joinDTO = new OwnerJoinDTO();
-            newPwDTO = new OwnerNewPwDTO();
+        public void before() throws Exception{
 
-            joinDTO.setName("User123");
-            joinDTO.setEmail("User123@naver.com");
-            joinDTO.setPassword("Qwe@123123!!");
-            joinDTO.setPhone("010-1234-9999");
-            joinDTO.setGender(false);
-            joinDTO.setBirthday(LocalDate.parse("1997-01-25"));
+            owner = new Owner();
 
-            ownerJoinService.join(joinDTO);
+            Address address = new Address("부산시","해운대구","센텀 리더스마크","123-123");
 
-            FindPwDTO.setName("User123");
-            FindPwDTO.setEmail("User123@naver.com");
-            FindPwDTO.setPhone("010-1234-9998");
+            owner.setEmail("?????@gmail.com");
+            owner.setName("가나다");
+            owner.setPassword("123456789");
+            owner.setPhone("010-1234-9998");
+            owner.setAddress(address);
+            owner.setGender(false);
+            owner.setStatus(UserStatus.ACTIVE);
+
+            System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+            repo.save(owner);
+            System.out.println("??????????????????????????????");
+            FindPwDTO = new OwnerFindPwDTO("?????@gmail.com","가나다","010-1234-9998");
+
             try {
                 ownerFindPwService.findPw(FindPwDTO);
-                System.out.println("=============FindPwService=============");
+                System.out.println("성공");
             }catch (Exception e){
                 System.out.println(e.getMessage());
             }
-            newPwDTO.setNewPassword1("1234568889");
-            newPwDTO.setNewPassword2("123456789");
+
+            newPwDTO = new OwnerNewPwDTO("qwerty1234","qwerty9999");
+            try {
+                NewpwService.NewPw(newPwDTO);
+                System.out.println("업데이트 된 비밀번호 : " + repo.PasswordMatchEmail(owner.getEmail()));
+            }catch (Exception e){
+                System.out.println(e.getMessage());
+            }
+            newPwDTO.setNewPassword1("qwerty9999");
+            newPwDTO.setNewPassword2("qwerty9999");
 
             try {
                 NewpwService.NewPw(newPwDTO);
-                System.out.println("=============NewPw=============");
+                System.out.println("업데이트 된 비밀번호 : " + repo.PasswordMatchEmail(owner.getEmail()));
             }catch (Exception e){
                 System.out.println(e.getMessage());
             }
         }
 
+}
 
-
-    }
-
-//    @Test
-//    @Transactional
-//    public void TemporaryPw(){
-//        String alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+";
-//        StringBuilder TempPw = new StringBuilder();
-//        Random random = new Random();
-//        int length = 10;
-//        for(int i = 0; i < length;i++){
-//            int index = random.nextInt(alphabet.length());
-//            TempPw.append(alphabet.charAt(index));
-//        }
-//
-//        String TempPassword = TempPw.toString();
-//        repo.updatePassword(TempPassword);
-//
-//        System.out.println("666666666666666666");
-//        System.out.println(TempPassword);
-//    }
 
