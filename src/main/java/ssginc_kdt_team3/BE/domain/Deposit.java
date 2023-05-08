@@ -31,7 +31,10 @@ public class Deposit {
     private int couponDiscount;
 
     @Column(name = "deposit_pay_value")
-    private int pay_value;
+    private int payValue;
+
+    @Column(name = "deposit_penalty_value")
+    private int penaltyValue;
 
     @OneToOne
     @JoinColumn(name = "reservation_id")
