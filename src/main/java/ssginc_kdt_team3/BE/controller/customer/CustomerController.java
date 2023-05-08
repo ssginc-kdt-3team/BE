@@ -1,31 +1,30 @@
-package ssginc_kdt_team3.BE.controller.cust;
+package ssginc_kdt_team3.BE.controller.customer;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
 
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ssginc_kdt_team3.BE.DTOs.cust.CustJoinDTO;
-import ssginc_kdt_team3.BE.DTOs.cust.CustLoginDTO;
-import ssginc_kdt_team3.BE.service.cust.CustService;
-import ssginc_kdt_team3.BE.service.cust.KakaoService;
+import ssginc_kdt_team3.BE.DTOs.customer.CustomerJoinDTO;
+import ssginc_kdt_team3.BE.DTOs.customer.CustomerLoginDTO;
+import ssginc_kdt_team3.BE.service.customer.CustomerService;
+import ssginc_kdt_team3.BE.service.customer.KakaoService;
 
 import java.io.IOException;
 import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/cust")
-public class CustController {
-  private final CustService custService;
+@RequestMapping("/Customer")
+public class CustomerController {
+  private final CustomerService customerService;
   private final KakaoService kakaoService;
 
   //회원가입
   @PostMapping("/join")
-  public CustJoinDTO join(@RequestBody CustJoinDTO custJoinDTO){
-    return custService.join(custJoinDTO);
+  public CustomerJoinDTO join(@RequestBody CustomerJoinDTO customerJoinDTO){
+    return customerService.join(customerJoinDTO);
   }
 
   /**
@@ -33,8 +32,8 @@ public class CustController {
   */
 
   @RequestMapping("/login")
-  public boolean login(CustLoginDTO custLoginDTO) {
-    return custService.login(custLoginDTO);
+  public boolean login(CustomerLoginDTO customerLoginDTO) {
+    return customerService.login(customerLoginDTO);
   }
 
   // 카카오톡 사용자에게 인가코드 받고, 그걸로 토큰 받아서, 사용자 정보 조회하고

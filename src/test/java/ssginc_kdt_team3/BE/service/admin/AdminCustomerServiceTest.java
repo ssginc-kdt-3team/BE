@@ -3,12 +3,19 @@ package ssginc_kdt_team3.BE.service.admin;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+<<<<<<< HEAD
+import ssginc_kdt_team3.BE.DTOs.customer.CustomeromerUpdateDTO;
+import ssginc_kdt_team3.BE.domain.Customer;
+import ssginc_kdt_team3.BE.enums.UserRole;
+import ssginc_kdt_team3.BE.repository.Customer.JpaDateCustomerRepository;
+=======
 import ssginc_kdt_team3.BE.DTOs.cust.CustUpdateDTO;
 import ssginc_kdt_team3.BE.domain.Cust;
 import ssginc_kdt_team3.BE.domain.Customer;
 import ssginc_kdt_team3.BE.enums.UserRole;
 import ssginc_kdt_team3.BE.enums.UserStatus;
 import ssginc_kdt_team3.BE.repository.cust.JpaDateCustRepository;
+>>>>>>> e626bc0e6d9f35c7568696371595dc31f268bfb7
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -16,16 +23,40 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
-class AdminCustServiceTest {
+class AdminCustomerServiceTest {
 
     @Autowired
-    JpaDateCustRepository repository;
+    JpaDateCustomerRepository repository;
 
     @Autowired
-    AdminCustService custService = new AdminCustService(repository);
+    AdminCustomerService CustomerService = new AdminCustomerService(repository);
 
     @BeforeEach
     public void make() {
+<<<<<<< HEAD
+        Customer Customer = new Customer();
+        Customer.setName("유저1");
+        Customer.setEmail("user1@user.com");
+        Customer.setPassword("qwer1234");
+        Customer.setPhone("01012341234");
+        Customer.setBirthday(LocalDate.now());
+        Customer.setGender(true);
+        Customer.setRole(UserRole.Customer);
+        Customer.setStatus(UserStatus.ACTIVE);
+
+        Customer Customer2 = new Customer();
+        Customer2.setName("유저2");
+        Customer2.setEmail("user2@user.com");
+        Customer2.setPassword("aaaa1234");
+        Customer2.setPhone("01011112222");
+        Customer2.setBirthday(LocalDate.now());
+        Customer2.setGender(true);
+        Customer2.setRole(UserRole.Customer);
+        Customer2.setStatus(UserStatus.ACTIVE);
+
+        repository.save(Customer);
+        Customer save1 = repository.save(Customer2);
+=======
         Customer cust = new Customer();
         cust.setName("유저1");
         cust.setEmail("user1@user.com");
@@ -48,6 +79,7 @@ class AdminCustServiceTest {
 
         repository.save(cust);
         Customer save1 = repository.save(cust2);
+>>>>>>> e626bc0e6d9f35c7568696371595dc31f268bfb7
     }
 
 //    @AfterEach
@@ -58,14 +90,14 @@ class AdminCustServiceTest {
 //    @Test
 //    public void findAllTest() {
 //        Pageable pageable = PageRequest.of(0, 5);
-//        Page<CustListDTO> allCust = custService.findAllCust(pageable);
+//        Page<CustomerListDTO> allCustomer = CustomerService.findAllCustomer(pageable);
 //
 //
-//        int len = allCust.size();
+//        int len = allCustomer.size();
 //
-//        CustListDTO custListDTO = all.get(0);
+//        CustomerListDTO CustomerListDTO = all.get(0);
 //
-//        String email = custListDTO.getEmail();
+//        String email = CustomerListDTO.getEmail();
 //
 //        assertThat(len).isEqualTo(2);
 //        assertThat(email).isEqualTo("user1@user.com");
@@ -73,6 +105,20 @@ class AdminCustServiceTest {
 
     @Test
     public void findOneTest() {
+<<<<<<< HEAD
+        Customer Customer3 = new Customer();
+        Customer3.setName("유저3");
+        Customer3.setEmail("user3@user.com");
+        Customer3.setPassword("qwer1234");
+        Customer3.setPhone("01012341234");
+        Customer3.setBirthday(LocalDate.now());
+        Customer3.setGender(true);
+        Customer3.setRole(UserRole.Customer);
+        Customer3.setStatus(UserStatus.ACTIVE);
+
+        Customer saveCustomer = repository.save(Customer3);
+        Long saveID = saveCustomer.getId();
+=======
         Customer cust3 = new Customer();
         cust3.setName("유저3");
         cust3.setEmail("user3@user.com");
@@ -85,17 +131,37 @@ class AdminCustServiceTest {
 
         Customer saveCust = repository.save(cust3);
         Long saveID = saveCust.getId();
+>>>>>>> e626bc0e6d9f35c7568696371595dc31f268bfb7
         System.out.println(saveID);
 
         Optional<Customer> byId = repository.findById(saveID);
 
+<<<<<<< HEAD
+        Customer CustomerById = byId.get();
+=======
         Customer custById = byId.get();
+>>>>>>> e626bc0e6d9f35c7568696371595dc31f268bfb7
 
-        assertThat(saveCust.getPassword()).isEqualTo(custById.getPassword());
+        assertThat(saveCustomer.getPassword()).isEqualTo(CustomerById.getPassword());
     }
 
     @Test
     public void updateTest() {
+<<<<<<< HEAD
+        Customer Customer3 = new Customer();
+        Customer3.setName("유저3");
+        Customer3.setEmail("user3@user.com");
+        Customer3.setPassword("qwer1234");
+        Customer3.setPhone("01012341234");
+        Customer3.setBirthday(LocalDate.now());
+        Customer3.setGender(true);
+        Customer3.setRole(UserRole.Customer);
+        Customer3.setStatus(UserStatus.ACTIVE);
+        Customer3.setGrade(null);
+
+        Customer saveCustomer = repository.save(Customer3);
+        Long saveID = saveCustomer.getId();
+=======
         Customer cust3 = new Customer();
         cust3.setName("유저3");
         cust3.setEmail("user3@user.com");
@@ -109,25 +175,30 @@ class AdminCustServiceTest {
 
         Customer saveCust = repository.save(cust3);
         Long saveID = saveCust.getId();
+>>>>>>> e626bc0e6d9f35c7568696371595dc31f268bfb7
         System.out.println(saveID);
 
-        CustUpdateDTO custDTO = new CustUpdateDTO();
-        custDTO.setName("hello");
-        custDTO.setPassword("zxc123");
-        custDTO.setPhone("01000000000");
-        custDTO.setStatus(UserStatus.QUIT);
+        CustomeromerUpdateDTO CustomerDTO = new CustomeromerUpdateDTO();
+        CustomerDTO.setName("hello");
+        CustomerDTO.setPassword("zxc123");
+        CustomerDTO.setPhone("01000000000");
+        CustomerDTO.setStatus(UserStatus.QUIT);
 
-        assertThat(custService.updateCustInfo(saveID, custDTO)).isTrue();
+        assertThat(CustomerService.updateCustomerInfo(saveID, CustomerDTO)).isTrue();
 
-        custService.updateCustInfo(saveID, custDTO);
+        CustomerService.updateCustomerInfo(saveID, CustomerDTO);
 
         Optional<Customer> byId = repository.findById(saveID);
+<<<<<<< HEAD
+        Customer CustomerById = byId.get();
+=======
         Customer custById = byId.get();
+>>>>>>> e626bc0e6d9f35c7568696371595dc31f268bfb7
 
-        System.out.println("=========================custById==============");
+        System.out.println("=========================CustomerById==============");
 
-        assertThat(custById.getPassword()).isEqualTo("zxc123");
-        assertThat(custById.getName()).isEqualTo("hello");
+        assertThat(CustomerById.getPassword()).isEqualTo("zxc123");
+        assertThat(CustomerById.getName()).isEqualTo("hello");
 
         System.out.println("=========================FIN==============");
     }

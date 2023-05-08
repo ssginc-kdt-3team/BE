@@ -1,5 +1,4 @@
 package ssginc_kdt_team3.BE.controller.admin;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -8,14 +7,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import ssginc_kdt_team3.BE.DTOs.cust.CustListDTO;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerJoinDTO;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerUpdateDTO;
 import ssginc_kdt_team3.BE.domain.Owner;
-import ssginc_kdt_team3.BE.domain.Shop;
-import ssginc_kdt_team3.BE.repository.owner.JpaDataOwnerRepository;
 import ssginc_kdt_team3.BE.service.admin.AdminOwnerService;
 import ssginc_kdt_team3.BE.service.owner.OwnerJoinService;
 

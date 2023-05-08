@@ -8,7 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ssginc_kdt_team3.BE.domain.Owner;
-import ssginc_kdt_team3.BE.DTOs.cust.Address;
+import ssginc_kdt_team3.BE.DTOs.customer.Address;
 import ssginc_kdt_team3.BE.enums.UserStatus;
 
 import java.util.Optional;
@@ -29,9 +29,10 @@ public interface JpaDataOwnerRepository extends JpaRepository<Owner, Long> {
     @Modifying
     void updatePassword(@Param("password") String password);
 
-    @Query("UPDATE Owner o SET o.phoneNumber = :phone,o.address = :address,o.status = :status")
+    @Query("UPDATE Owner o SET o.phoneNumber = :phoneNumber,o.address = :address,o.status = :status")
+
     @Modifying
-    void updateOwnerInfo(@Param("phone")String phone,@Param("address") Address address,@Param("status") UserStatus status);
+    void updateOwnerInfo(@Param("phoneNumber")String phone,@Param("address") Address address,@Param("status") UserStatus status);
 //        void updateOwnerInfo(Owner owner);
 
 //    boolean checkPassword(String password);

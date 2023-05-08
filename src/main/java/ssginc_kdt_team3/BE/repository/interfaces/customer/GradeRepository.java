@@ -1,4 +1,4 @@
-package ssginc_kdt_team3.BE.repository.interfaces.cust;
+package ssginc_kdt_team3.BE.repository.interfaces.customer;
 
 import org.springframework.data.repository.CrudRepository;
 import ssginc_kdt_team3.BE.domain.Grade;
