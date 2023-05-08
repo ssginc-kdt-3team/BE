@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import ssginc_kdt_team3.BE.DTOs.cust.CustListDTO;
+import ssginc_kdt_team3.BE.domain.Cust;
 import ssginc_kdt_team3.BE.domain.Customer;
 
 import java.util.Optional;

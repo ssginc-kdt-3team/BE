@@ -8,6 +8,7 @@ import ssginc_kdt_team3.BE.DTOs.owner.CheckPwDTO;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerChangePwDTO;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerJoinDTO;
 import ssginc_kdt_team3.BE.domain.Owner;
+import ssginc_kdt_team3.BE.enums.UserStatus;
 import ssginc_kdt_team3.BE.repository.owner.JpaDataOwnerRepository;
 import ssginc_kdt_team3.BE.service.owner.OwnerChangePwService;
 import ssginc_kdt_team3.BE.DTOs.cust.Address;
@@ -39,7 +40,7 @@ public class OwnerChangePwTest {
         owner.setEmail("?????@gmail.com");
         owner.setName("가나다");
         owner.setPassword("123456789");
-        owner.setPhone("010-1234-9998");
+        owner.setPhoneNumber("010-1234-9998");
         owner.setAddress(address);
         owner.setGender(false);
         owner.setStatus(UserStatus.ACTIVE);
