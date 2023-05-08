@@ -3,7 +3,7 @@ package ssginc_kdt_team3.BE.service.Owner;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import ssginc_kdt_team3.BE.DTOs.cust.Address;
+import ssginc_kdt_team3.BE.DTOs.customer.Address;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerJoinDTO;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerUpdateDTO;
 import ssginc_kdt_team3.BE.repository.owner.JpaDataOwnerRepository;

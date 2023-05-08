@@ -7,7 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerJoinDTO;
 import ssginc_kdt_team3.BE.repository.owner.JpaDataOwnerRepository;
 import ssginc_kdt_team3.BE.service.owner.OwnerJoinService;
-import ssginc_kdt_team3.BE.DTOs.cust.Address;
+import ssginc_kdt_team3.BE.DTOs.customer.Address;
 import javax.sql.DataSource;
 
 import java.time.LocalDate;

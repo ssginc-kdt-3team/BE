@@ -4,7 +4,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import ssginc_kdt_team3.BE.DTOs.cust.Address;
+import ssginc_kdt_team3.BE.DTOs.customer.Address;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerFindPwDTO;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerNewPwDTO;
 import ssginc_kdt_team3.BE.domain.Owner;

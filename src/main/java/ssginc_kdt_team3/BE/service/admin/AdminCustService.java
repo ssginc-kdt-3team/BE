@@ -5,16 +5,16 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ssginc_kdt_team3.BE.DTOs.cust.Address;
-import ssginc_kdt_team3.BE.DTOs.cust.CustListDTO;
-import ssginc_kdt_team3.BE.DTOs.cust.CustUpdateDTO;
-import ssginc_kdt_team3.BE.domain.Cust;
+import ssginc_kdt_team3.BE.DTOs.customer.Address;
+import ssginc_kdt_team3.BE.DTOs.customer.CustomeromerListDTO;
+import ssginc_kdt_team3.BE.DTOs.customer.CustomeromerUpdateDTO;
+import ssginc_kdt_team3.BE.domain.Customer;
 import ssginc_kdt_team3.BE.domain.Grade;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import ssginc_kdt_team3.BE.DTOs.cust.*;
-import ssginc_kdt_team3.BE.domain.QCust;
-import ssginc_kdt_team3.BE.repository.cust.JpaDateCustRepository;
+import ssginc_kdt_team3.BE.DTOs.Customer.*;
+import ssginc_kdt_team3.BE.domain.QCustomer;
+import ssginc_kdt_team3.BE.repository.Customer.JpaDateCustomerRepository;
 
 import java.util.Optional;
 
@@ -22,87 +22,87 @@ import java.util.Optional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class AdminCustService {
+public class AdminCustomerService {
 
-    private final JpaDateCustRepository custRepository;
+    private final JpaDateCustomerRepository CustomerRepository;
 //    private final EntityManager em;
 
     JPQLQueryFactory queryFactory;
 
-    public Page<CustListDTO> findAllCust(Pageable pageable) {
-        return custRepository.findAllBy(pageable);
+    public Page<CustomeromerListDTO> findAllCustomer(Pageable pageable) {
+        return CustomerRepository.findAllBy(pageable);
     }
 
-    public Optional<Cust> temp(Long custId) {
-        return custRepository.findById(custId);
+    public Optional<Customer> temp(Long CustomerId) {
+        return CustomerRepository.findById(CustomerId);
     }
 
-    public CustDetailDTO findCustById(Long custId) {
+    public CustomeromerDetailDTO findCustomerById(Long CustomerId) {
 
-        Optional<Cust> byId = custRepository.findById(custId);
+        Optional<Customer> byId = CustomerRepository.findById(CustomerId);
 
         if (byId.isPresent()) {
-            Cust cust = byId.get();
-            CustDetailDTO custDetailDTO = new CustDetailDTO(cust.getId(), cust.getEmail(), cust.getPassword(),
-                    cust.getName(), cust.getPhone(), cust.getGender(), cust.getBirthday(), cust.getAddress(),
-                    cust.getRole(), cust.getStatus(), cust.getGrade().toString());
-            // 0506 이현: Grade name부분 enum 추가로 기존 cust.getGrade().getName() 에러 -> cust.getGrade().toString() 으로 수정
+            Customer Customer = byId.get();
+            CustomeromerDetailDTO CustomeromerDetailDTO = new CustomeromerDetailDTO(Customer.getId(), Customer.getEmail(), Customer.getPassword(),
+                    Customer.getName(), Customer.getPhone(), Customer.getGender(), Customer.getBirthday(), Customer.getAddress(),
+                    Customer.getRole(), Customer.getStatus(), Customer.getGrade().toString());
+            // 0506 이현: Grade name부분 enum 추가로 기존 Customer.getGrade().getName() 에러 -> Customer.getGrade().toString() 으로 수정
 
-            return custDetailDTO;
+            return CustomeromerDetailDTO;
         }
 
 
-        return new CustDetailDTO();
+        return new CustomeromerDetailDTO();
     }
 
-    public Optional<Cust> findCustById2(Long custId) {
-        QCust cust = new QCust("cust");
+    public Optional<Customer> findCustomerById2(Long CustomerId) {
+        QCustomer Customer = new QCustomer("Customer");
 
-        Optional<Cust> findCust= Optional.of(queryFactory
-                .select(cust)
-                .from(cust)
-                .where(cust.id.eq(custId))
+        Optional<Customer> findCustomer= Optional.of(queryFactory
+                .select(Customer)
+                .from(Customer)
+                .where(Customer.id.eq(CustomerId))
                 .fetchOne());
 
-        return findCust;
+        return findCustomer;
     }
 
-    public CustDetailDTO findCustByEmail(String custEmail) {
-        Optional<Cust> byEmail = custRepository.findCustByEmail(custEmail);
+    public CustomeromerDetailDTO findCustomerByEmail(String CustomerEmail) {
+        Optional<Customer> byEmail = CustomerRepository.findCustomerByEmail(CustomerEmail);
 
         if (byEmail.isPresent()) {
-            Cust cust = byEmail.get();
-            CustDetailDTO custDetailDTO = new CustDetailDTO(cust.getId(), cust.getEmail(), cust.getPassword(),
-                    cust.getName(), cust.getPhone(), cust.getGender(), cust.getBirthday(), cust.getAddress(),
-                    cust.getRole(), cust.getStatus(), cust.getGrade().toString());
+            Customer Customer = byEmail.get();
+            CustomeromerDetailDTO CustomeromerDetailDTO = new CustomeromerDetailDTO(Customer.getId(), Customer.getEmail(), Customer.getPassword(),
+                    Customer.getName(), Customer.getPhone(), Customer.getGender(), Customer.getBirthday(), Customer.getAddress(),
+                    Customer.getRole(), Customer.getStatus(), Customer.getGrade().toString());
             // 0506 이현: Grade name부분 enum 추가로 기존 코드 수정
 
-            return custDetailDTO;
+            return CustomeromerDetailDTO;
         }
 
         return null;
     }
 
-    public boolean updateCustInfo(Long custId, CustUpdateDTO custDTO) {
+    public boolean updateCustomerInfo(Long CustomerId, CustomeromerUpdateDTO CustomerDTO) {
 
-        Optional<Cust> cust = custRepository.findById(custId);
+        Optional<Customer> Customer = CustomerRepository.findById(CustomerId);
 
-        String name = custDTO.getName();
-        String password = custDTO.getPassword();
-        String phone = custDTO.getPhone();
-        Address address = custDTO.getAddress();
-        UserStatus status = custDTO.getStatus();
-        Grade grade = custDTO.getGrade();
+        String name = CustomerDTO.getName();
+        String password = CustomerDTO.getPassword();
+        String phone = CustomerDTO.getPhone();
+        Address address = CustomerDTO.getAddress();
+        UserStatus status = CustomerDTO.getStatus();
+        Grade grade = CustomerDTO.getGrade();
 
-        if (cust.isPresent()) {
-            Cust findCust = cust.get();
+        if (Customer.isPresent()) {
+            Customer findCustomer = Customer.get();
 
-            findCust.setPassword(password);
-            findCust.setName(name);
-            findCust.setPhone(phone);
-            findCust.setAddress(address);
-            findCust.setStatus(status);
-            findCust.setGrade(grade);
+            findCustomer.setPassword(password);
+            findCustomer.setName(name);
+            findCustomer.setPhone(phone);
+            findCustomer.setAddress(address);
+            findCustomer.setStatus(status);
+            findCustomer.setGrade(grade);
 
             return true;
         } else {

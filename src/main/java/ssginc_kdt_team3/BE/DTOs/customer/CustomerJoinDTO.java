@@ -1,4 +1,4 @@
-package ssginc_kdt_team3.BE.DTOs.cust;
+package ssginc_kdt_team3.BE.DTOs.customer;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
@@ -7,8 +7,9 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 
+
 @Data
-public class CustJoinDTO {
+public class CustomerJoinDTO {
     @NotEmpty(message = "이메일은 필수 입력 값입니다.")
     @Email(message = "이메일 형식으로 입력해주세요.")
     private String email;

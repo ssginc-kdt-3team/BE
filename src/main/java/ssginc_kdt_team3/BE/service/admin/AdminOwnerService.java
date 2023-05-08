@@ -6,7 +6,7 @@
 //import org.springframework.data.domain.Pageable;
 //import org.springframework.stereotype.Service;
 //import org.springframework.transaction.annotation.Transactional;
-//import ssginc_kdt_team3.BE.DTOs.cust.Address;
+//import ssginc_kdt_team3.BE.DTOs.Customer.Address;
 //import ssginc_kdt_team3.BE.DTOs.owner.OwnerUpdateDTO;
 //import ssginc_kdt_team3.BE.domain.Owner;
 //import ssginc_kdt_team3.BE.enums.UserStatus;

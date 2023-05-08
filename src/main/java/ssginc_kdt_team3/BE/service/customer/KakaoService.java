@@ -1,4 +1,4 @@
-package ssginc_kdt_team3.BE.service.cust;
+package ssginc_kdt_team3.BE.service.customer;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -29,7 +29,7 @@ public class KakaoService {
       StringBuilder sb = new StringBuilder();
       sb.append("grant_type=authorization_code");
       sb.append("&client_id=e7293e102967c3d3a4289b15815c5154");
-      sb.append("&redirect_uri=http://127.0.0.1:8080/cust/kakao");
+      sb.append("&redirect_uri=http://127.0.0.1:8080/Customer/kakao");
       sb.append("&code=" + code); // 인가코드를 전달해서 토큰을 받아야해
 
       bw.write(sb.toString());

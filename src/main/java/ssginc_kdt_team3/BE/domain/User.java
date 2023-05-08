@@ -1,10 +1,12 @@
 package ssginc_kdt_team3.BE.domain;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
-import ssginc_kdt_team3.BE.DTOs.cust.Address;
+import ssginc_kdt_team3.BE.DTOs.customer.Address;
 import ssginc_kdt_team3.BE.enums.UserRole;
+import ssginc_kdt_team3.BE.enums.UserStatus;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
@@ -14,6 +16,7 @@ import java.time.LocalDate;
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter
+@Setter
 public class User {
 
     @Id

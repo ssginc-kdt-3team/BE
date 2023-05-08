@@ -1,17 +1,23 @@
-package ssginc_kdt_team3.BE.service.cust;
+package ssginc_kdt_team3.BE.service.customer;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import ssginc_kdt_team3.BE.DTOs.cust.CustFindDTO;
-import ssginc_kdt_team3.BE.DTOs.cust.CustJoinDTO;
-import ssginc_kdt_team3.BE.DTOs.cust.CustLoginDTO;
-import ssginc_kdt_team3.BE.domain.Cust;
-import ssginc_kdt_team3.BE.domain.Store;
+
+
+import ssginc_kdt_team3.BE.DTOs.customer.CustomerFindDTO;
+import ssginc_kdt_team3.BE.DTOs.customer.CustomerJoinDTO;
+import ssginc_kdt_team3.BE.DTOs.customer.CustomerLoginDTO;
+import ssginc_kdt_team3.BE.domain.Branch;
+import ssginc_kdt_team3.BE.domain.Customer;
+
 import ssginc_kdt_team3.BE.enums.UserRole;
-import ssginc_kdt_team3.BE.repository.cust.JpaCustRepository;
-import ssginc_kdt_team3.BE.repository.cust.StoreRepository;
+import ssginc_kdt_team3.BE.enums.UserStatus;
+import ssginc_kdt_team3.BE.repository.customer.BranchRepository;
+import ssginc_kdt_team3.BE.repository.customer.JpaCustomerRepository;
+import ssginc_kdt_team3.BE.repository.customer.JpaDateCustomerRepository;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -19,53 +25,53 @@ import static org.junit.jupiter.api.Assertions.*;
 @SpringBootTest
 @Transactional
 
-class CustServiceTest {
+class CustomerServiceTest {
   @Autowired
-  CustService custService;
+  CustomerService customerService;
   @Autowired
-  JpaCustRepository custRepository;
+  JpaCustomerRepository customerRepository;
 
   @Autowired
-  StoreRepository storeRepository;
+  BranchRepository branchRepository;
 
   @Test
   void 회원가입() throws Exception {
     // given
-    Cust cust = new Cust();
-    cust.setEmail("test@gmail.com");
-    cust.setPassword("12345678");
-    cust.setName("test");
-    cust.setPhone("01012345678");
-    cust.setRole(UserRole.CUST);
-    cust.setStatus(UserStatus.ACTIVE);
-    cust.setGrade(null);
+    Customer customer = new Customer();
+    customer.setEmail("test@gmail.com");
+    customer.setPassword("12345678");
+    customer.setName("test");
+    customer.setPhoneNumber("01012345678");
+    customer.setRole(UserRole.Customer);
+    customer.setStatus(UserStatus.ACTIVE);
+    customer.setGrade(null);
 
     // when
-    Cust saveId = custRepository.save(cust);
+    Customer saveId = customerRepository.save(customer);
 
     // then
-    assertThat(cust).isEqualTo(saveId);
+    assertThat(customer).isEqualTo(saveId);
   }
 
   @Test
   void 중복이메일_검증() throws Exception {
     // given : 프론트에서 넘어오는 값
-    CustJoinDTO custJoinDTO1 = new CustJoinDTO();
-    custJoinDTO1.setEmail("test@gmail.com");
-    custJoinDTO1.setPassword("12345678");
-    custJoinDTO1.setName("test");
-    custJoinDTO1.setPhone("01012345678");
+    CustomerJoinDTO customerJoinDTO1 = new CustomerJoinDTO();
+    customerJoinDTO1.setEmail("test@gmail.com");
+    customerJoinDTO1.setPassword("12345678");
+    customerJoinDTO1.setName("test");
+    customerJoinDTO1.setPhone("01012345678");
 
-    CustJoinDTO custJoinDTO2 = new CustJoinDTO();
-    custJoinDTO2.setEmail("test@gmail.com");
-    custJoinDTO2.setPassword("12345678");
-    custJoinDTO2.setName("test");
-    custJoinDTO2.setPhone("01012345679");
+    CustomerJoinDTO customerJoinDTO2 = new CustomerJoinDTO();
+    customerJoinDTO2.setEmail("test@gmail.com");
+    customerJoinDTO2.setPassword("12345678");
+    customerJoinDTO2.setName("test");
+    customerJoinDTO2.setPhone("01012345679");
 
     // when : Back
-    custService.join(custJoinDTO1);
+    customerService.join(customerJoinDTO1);
     try {
-      custService.join(custJoinDTO2); //예외발생
+      customerService.join(customerJoinDTO2); //예외발생
     } catch (IllegalStateException e) {
       return;
     }
@@ -77,28 +83,27 @@ class CustServiceTest {
   @Test
   void 로그인() {
     // given
-    CustLoginDTO custLoginDTO = new CustLoginDTO();
-    custLoginDTO.setEmail("user1@user.com");
-    custLoginDTO.setPassword("qwer1234");
+    CustomerLoginDTO customerLoginDTO = new CustomerLoginDTO();
+    customerLoginDTO.setEmail("user1@user.com");
+    customerLoginDTO.setPassword("qwer1234");
 
     // when
-    boolean loginCust = custService.login(custLoginDTO);
+    boolean loginCustomer = customerService.login(customerLoginDTO);
 
     // then
-    assertThat(loginCust).isEqualTo(true);
+    assertThat(loginCustomer).isEqualTo(true);
   }
 
 
   @Test
   void 이메일찾기() {
-    CustFindDTO custFindDTO = new CustFindDTO();
-    custFindDTO.setPhone("01012345678");
+    CustomerFindDTO customerFindDTO = new CustomerFindDTO();
+    customerFindDTO.setPhone("01012345678");
 
-    Cust custEmail = custService.getCustEmail(custFindDTO);
+    Customer customerEmail = customerService.getCustomerEmail(customerFindDTO);
 
-//    assertThat(custEmail).isEqualTo(custFindDTO.getEmail()); // phone만 넣었으니까 여긴 email 정보가없어
-    System.out.println(custEmail.getEmail());
-    assertThat(custEmail).isEqualTo("abc@abc.abc");
+    System.out.println(customerEmail.getEmail());
+    assertThat(customerEmail).isEqualTo("abc@abc.abc");
 
   }
 
@@ -109,31 +114,30 @@ class CustServiceTest {
   @Test
   void 개인정보_변경() {
     // given
-    Cust custId = custRepository.findCust(8L).get();// Long 타입은 직접 값을 넣을 때 L 붙여줘야 돼
-// findCust로 DB에 있는걸 넣어줘야지
+    Customer customerId = customerRepository.findCustomer(8L).get();// Long 타입은 직접 값을 넣을 때 L 붙여줘야 돼
+// findCustomer로 DB에 있는걸 넣어줘야지
 
-    custId.setPhone("test");
+    customerId.setPhoneNumber("test");
 
-    assertThat(custId.getPhone()).isEqualTo("test");
+    assertThat(customerId.getPhoneNumber()).isEqualTo("test");
 
   }
 
   @Test
   void 비밀번호_변경() {
 
-    Cust custId = custRepository.findCust(8L).get();
+    Customer customerId = customerRepository.findCustomer(8L).get();
 
-    custId.setPassword("abc");
+    customerId.setPassword("abc");
 
-    assertThat(custId.getPassword()).isEqualTo("abc");
+    assertThat(customerId.getPassword()).isEqualTo("abc");
 
   }
 
   @Test
   void findStore() {
-    Store store = custService.findStore(1L).get();
-    System.out.println("store :" +store);
-
+    Branch branch = customerService.findBranch(1L).get();
+    System.out.println("branch :" +branch);
 
   }
 }

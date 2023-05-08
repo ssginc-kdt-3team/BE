@@ -1,4 +1,4 @@
-package ssginc_kdt_team3.BE.DTOs.cust;
+package ssginc_kdt_team3.BE.DTOs.customer;
 
 import lombok.Getter;
 

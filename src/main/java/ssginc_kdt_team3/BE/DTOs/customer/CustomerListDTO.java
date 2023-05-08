@@ -1,16 +1,17 @@
-package ssginc_kdt_team3.BE.DTOs.cust;
+package ssginc_kdt_team3.BE.DTOs.customer;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ssginc_kdt_team3.BE.enums.GradeType;
+import ssginc_kdt_team3.BE.enums.UserStatus;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CustListDTO {
+public class CustomerListDTO {
 
     private Long id;
 

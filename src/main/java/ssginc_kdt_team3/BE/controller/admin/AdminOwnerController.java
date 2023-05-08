@@ -10,7 +10,7 @@
 //import org.springframework.http.ResponseEntity;
 //import org.springframework.stereotype.Controller;
 //import org.springframework.web.bind.annotation.*;
-//import ssginc_kdt_team3.BE.DTOs.cust.CustListDTO;
+//import ssginc_kdt_team3.BE.DTOs.Customer.CustomerListDTO;
 //import ssginc_kdt_team3.BE.DTOs.owner.OwnerJoinDTO;
 //import ssginc_kdt_team3.BE.DTOs.owner.OwnerUpdateDTO;
 //import ssginc_kdt_team3.BE.domain.Owner;

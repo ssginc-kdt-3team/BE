@@ -1,7 +1,8 @@
 package ssginc_kdt_team3.BE.DTOs.shop;
 
 import ssginc_kdt_team3.BE.domain.ShopOperationInfo;
-import ssginc_kdt_team3.BE.domain.Store;
+
+import ssginc_kdt_team3.BE.enums.ShopStatus;
 
 import java.time.LocalTime;
 
@@ -11,7 +12,7 @@ public class ShopListDTO {
 
     private String name;
 
-    private UserStatus status;
+    private ShopStatus status;
 
     private String location;
 

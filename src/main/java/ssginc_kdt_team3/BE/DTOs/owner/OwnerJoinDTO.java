@@ -3,7 +3,7 @@ package ssginc_kdt_team3.BE.DTOs.owner;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
-import ssginc_kdt_team3.BE.DTOs.cust.Address;
+import ssginc_kdt_team3.BE.DTOs.customer.Address;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;

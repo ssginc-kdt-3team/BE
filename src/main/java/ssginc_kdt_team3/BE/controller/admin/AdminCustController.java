@@ -5,7 +5,6 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -13,97 +12,96 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ssginc_kdt_team3.BE.DTOs.cust.CustDetailDTO;
-import ssginc_kdt_team3.BE.DTOs.cust.CustListDTO;
-import ssginc_kdt_team3.BE.DTOs.cust.CustUpdateDTO;
-import ssginc_kdt_team3.BE.domain.Cust;
-import ssginc_kdt_team3.BE.service.admin.AdminCustService;
+import ssginc_kdt_team3.BE.DTOs.customer.CustomeromerDetailDTO;
+import ssginc_kdt_team3.BE.DTOs.customer.CustomeromerListDTO;
+import ssginc_kdt_team3.BE.DTOs.customer.CustomeromerUpdateDTO;
+import ssginc_kdt_team3.BE.domain.Customer;
+import ssginc_kdt_team3.BE.service.admin.AdminCustomerService;
 
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Optional;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/admin/cust")
-public class AdminCustController {
+@RequestMapping("/admin/Customer")
+public class AdminCustomerController {
 
-    private final AdminCustService custService;
+    private final AdminCustomerService CustomerService;
 
     @GetMapping("/findAll")
-    public ResponseEntity<Page<CustListDTO>> findAllCust() {
+    public ResponseEntity<Page<CustomeromerListDTO>> findAllCustomer() {
         Pageable pageable = PageRequest.of(0, 5);
-        ResponseEntity<Page<CustListDTO>> response = ResponseEntity.ok()
+        ResponseEntity<Page<CustomeromerListDTO>> response = ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .body(custService.findAllCust(pageable));
+                .body(CustomerService.findAllCustomer(pageable));
         return response;
     }
 
     @GetMapping("/findById/{id}")
-    public Cust findOneCust(@PathVariable(name = "id") Long custId) throws JsonProcessingException {
-        CustDetailDTO custDetailDTO = custService.findCustById(custId);
+    public Customer findOneCustomer(@PathVariable(name = "id") Long CustomerId) throws JsonProcessingException {
+        CustomeromerDetailDTO CustomeromerDetailDTO = CustomerService.findCustomerById(CustomerId);
 
-        Optional<Cust> custById = custService.temp(custId);
+        Optional<Customer> CustomerById = CustomerService.temp(CustomerId);
 
-        if (custById.isPresent()) {
-            Cust cust = custById.get();
+        if (CustomerById.isPresent()) {
+            Customer Customer = CustomerById.get();
 
             ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             objectMapper.setDateFormat(dateFormat);
 
-            String custJson = objectMapper.writeValueAsString(cust);
+            String CustomerJson = objectMapper.writeValueAsString(Customer);
 
-            log.info("============================== {} ", cust.getAddress());
-            log.info("============================== {} ", cust.getName());
-            log.info("============================== {} ", cust.getGrade());
-            log.info("============================== {} ", cust.getBirthday());
+            log.info("============================== {} ", Customer.getAddress());
+            log.info("============================== {} ", Customer.getName());
+            log.info("============================== {} ", Customer.getGrade());
+            log.info("============================== {} ", Customer.getBirthday());
 
-            return cust;
+            return Customer;
         }
 
         return null;
 //
 //
 //
-//        if (custDetailDTO.getId() != null ) {
+//        if (CustomerDetailDTO.getId() != null ) {
 //
-//            return custDetailDTO;
+//            return CustomerDetailDTO;
 //        } else {
 //            return null;
 //        }
     }
 
     @GetMapping("/findById2/{id}")
-    public Cust findOneCust2(@PathVariable(name = "id") Long custId) throws JsonProcessingException {
-        Optional<Cust> custById = custService.findCustById2(custId);
+    public Customer findOneCustomer2(@PathVariable(name = "id") Long CustomerId) throws JsonProcessingException {
+        Optional<Customer> CustomerById = CustomerService.findCustomerById2(CustomerId);
 
-        if (custById.isPresent()) {
-            return custById.get();
+        if (CustomerById.isPresent()) {
+            return CustomerById.get();
         } else {
             return null;
         }
     }
 
     @GetMapping("/findByEmail")
-    public CustDetailDTO findOneCustByName(@RequestBody HashMap map) {
+    public CustomeromerDetailDTO findOneCustomerByName(@RequestBody HashMap map) {
         String email = map.get("email").toString();
         log.info("email = {}", email);
-        CustDetailDTO custDetailDTO = custService.findCustByEmail(email);
+        CustomeromerDetailDTO CustomeromerDetailDTO = CustomerService.findCustomerByEmail(email);
 
-        if (custDetailDTO.getId() != null) {
-            return custDetailDTO;
+        if (CustomeromerDetailDTO.getId() != null) {
+            return CustomeromerDetailDTO;
         } else {
             return null;
         }
     }
 
     @PostMapping("/update/{id}")
-    public boolean custUpdate(@PathVariable(name = "id") Long custId,
-                              @RequestBody CustUpdateDTO updateDTO) {
-        boolean result = custService.updateCustInfo(custId, updateDTO);
+    public boolean CustomerUpdate(@PathVariable(name = "id") Long CustomerId,
+                              @RequestBody CustomeromerUpdateDTO updateDTO) {
+        boolean result = CustomerService.updateCustomerInfo(CustomerId, updateDTO);
 
         return result;
     }

@@ -1,12 +1,13 @@
-package ssginc_kdt_team3.BE.DTOs.cust;
+package ssginc_kdt_team3.BE.DTOs.customer;
 
 import lombok.Data;
 import ssginc_kdt_team3.BE.enums.UserRole;
+import ssginc_kdt_team3.BE.enums.UserStatus;
 
 import java.time.LocalDate;
 
 @Data
-public class CustDetailDTO {
+public class CustomerDetailDTO {
 
     private Long id;
 
@@ -35,7 +36,7 @@ public class CustDetailDTO {
 
     private String grade = null;
 
-    public CustDetailDTO(Long id, String email, String password, String name, String phone, Boolean gender, LocalDate birthday, Address address, UserRole role, UserStatus status, String grade) {
+    public CustomerDetailDTO(Long id, String email, String password, String name, String phone, Boolean gender, LocalDate birthday, Address address, UserRole role, UserStatus status, String grade) {
         this.id = id;
         this.email = email;
         this.password = password;
@@ -49,6 +50,6 @@ public class CustDetailDTO {
         this.grade = grade;
     }
 
-    public CustDetailDTO() {
+    public CustomerDetailDTO() {
     }
 }
