@@ -8,23 +8,23 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-public class StoreOperationInfo {
+public class BranchOperationInfo {
 
     @Id
-    @Column(name = "st_op_id")
+    @Column(name = "branch_operation_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "st_open_time")
+    @Column(name = "branch_open_time")
     private LocalDateTime openTime;
 
-    @Column(name = "st_close_time")
+    @Column(name = "branch_close_time")
     private LocalDateTime closeTime;
 
-    @Column(name = "st_out_day")
-    private LocalDate outDay;
-
-    @Column(name = "st_open_day")
+    @Column(name = "branch_open_day")
     private LocalDate openDay;
 
+
+    @Column(name = "branch_out_day")
+    private LocalDate outDay;
 }
