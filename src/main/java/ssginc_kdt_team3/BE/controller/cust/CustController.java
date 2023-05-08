@@ -28,6 +28,10 @@ public class CustController {
     return custService.join(custJoinDTO);
   }
 
+  /**
+  5.4 회원가입 -> 중복이메일 체크 서비스에서 가져와 추가하기
+  */
+
   @RequestMapping("/login")
   public boolean login(CustLoginDTO custLoginDTO) {
     return custService.login(custLoginDTO);

@@ -4,8 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import ssginc_kdt_team3.BE.domain.Grade;
-import ssginc_kdt_team3.BE.enums.UserStatus;
+import ssginc_kdt_team3.BE.enums.GradeType;
 
 @Getter
 @Setter
@@ -21,6 +20,6 @@ public class CustListDTO {
 
     private UserStatus status;
 
-    private String grade;
+    private GradeType grade; //0506 이현: grade enum 추가로 기존 String grade 수정
 
 }

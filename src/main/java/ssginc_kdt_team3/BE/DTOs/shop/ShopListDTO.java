@@ -1,11 +1,8 @@
 package ssginc_kdt_team3.BE.DTOs.shop;
 
-import com.sun.istack.NotNull;
 import ssginc_kdt_team3.BE.domain.ShopOperationInfo;
 import ssginc_kdt_team3.BE.domain.Store;
-import ssginc_kdt_team3.BE.enums.UserStatus;
 
-import javax.persistence.*;
 import java.time.LocalTime;
 
 public class ShopListDTO {

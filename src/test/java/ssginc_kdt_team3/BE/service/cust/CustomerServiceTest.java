@@ -1,31 +1,32 @@
 package ssginc_kdt_team3.BE.service.cust;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
+import ssginc_kdt_team3.BE.DTOs.cust.CustFindDTO;
 import ssginc_kdt_team3.BE.DTOs.cust.CustJoinDTO;
 import ssginc_kdt_team3.BE.DTOs.cust.CustLoginDTO;
 import ssginc_kdt_team3.BE.domain.Cust;
+import ssginc_kdt_team3.BE.domain.Store;
 import ssginc_kdt_team3.BE.enums.UserRole;
-import ssginc_kdt_team3.BE.enums.UserStatus;
 import ssginc_kdt_team3.BE.repository.cust.JpaCustRepository;
-
-import java.util.NoSuchElementException;
-import java.util.Optional;
-
+import ssginc_kdt_team3.BE.repository.cust.StoreRepository;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
+
 @SpringBootTest
 @Transactional
+
 class CustServiceTest {
   @Autowired
   CustService custService;
   @Autowired
   JpaCustRepository custRepository;
+
+  @Autowired
+  StoreRepository storeRepository;
 
   @Test
   void 회원가입() throws Exception {
@@ -90,6 +91,14 @@ class CustServiceTest {
 
   @Test
   void 이메일찾기() {
+    CustFindDTO custFindDTO = new CustFindDTO();
+    custFindDTO.setPhone("01012345678");
+
+    Cust custEmail = custService.getCustEmail(custFindDTO);
+
+//    assertThat(custEmail).isEqualTo(custFindDTO.getEmail()); // phone만 넣었으니까 여긴 email 정보가없어
+    System.out.println(custEmail.getEmail());
+    assertThat(custEmail).isEqualTo("abc@abc.abc");
 
   }
 
@@ -99,9 +108,32 @@ class CustServiceTest {
 
   @Test
   void 개인정보_변경() {
+    // given
+    Cust custId = custRepository.findCust(8L).get();// Long 타입은 직접 값을 넣을 때 L 붙여줘야 돼
+// findCust로 DB에 있는걸 넣어줘야지
+
+    custId.setPhone("test");
+
+    assertThat(custId.getPhone()).isEqualTo("test");
+
   }
 
   @Test
   void 비밀번호_변경() {
+
+    Cust custId = custRepository.findCust(8L).get();
+
+    custId.setPassword("abc");
+
+    assertThat(custId.getPassword()).isEqualTo("abc");
+
+  }
+
+  @Test
+  void findStore() {
+    Store store = custService.findStore(1L).get();
+    System.out.println("store :" +store);
+
+
   }
 }
