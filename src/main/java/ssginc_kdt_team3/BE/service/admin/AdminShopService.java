@@ -9,8 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 import ssginc_kdt_team3.BE.DTOs.shop.ShopUpdateDTO;
 import ssginc_kdt_team3.BE.domain.Shop;
 import ssginc_kdt_team3.BE.domain.ShopOperationInfo;
-import ssginc_kdt_team3.BE.repository.shop.JpaDateShopOperationInfoRepository;
-import ssginc_kdt_team3.BE.repository.shop.JpaDateShopRepository;
+import ssginc_kdt_team3.BE.enums.ShopStatus;
+import ssginc_kdt_team3.BE.enums.UserStatus;
+import ssginc_kdt_team3.BE.repository.owner.shop.JpaDateShopOperationInfoRepository;
+import ssginc_kdt_team3.BE.repository.owner.shop.JpaDateShopRepository;
 
 import java.time.LocalTime;
 import java.util.Optional;
@@ -44,7 +46,7 @@ public class AdminShopService {
             String businessName = shopUpdateDTO.getBusinessName();
             String shopInfo = shopUpdateDTO.getShopInfo();
             String shopLocation = shopUpdateDTO.getShopLocation();
-            UserStatus shopStatus = shopUpdateDTO.getShopStatus();
+            ShopStatus shopStatus = shopUpdateDTO.getShopStatus();
             String shopImg = shopUpdateDTO.getShopImg();
             LocalTime openTime = shopUpdateDTO.getOpenTime();
             LocalTime closeTime = shopUpdateDTO.getCloseTime();

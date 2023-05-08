@@ -8,6 +8,8 @@ import ssginc_kdt_team3.BE.DTOs.customer.CustomerListDTO;
 
 import ssginc_kdt_team3.BE.domain.Customer;
 
+import java.util.Optional;
+
 public interface JpaDateCustomerRepository extends JpaRepository<Customer, Long> {
 
     @Query("select new ssginc_kdt_team3.BE.DTOs.Customer.CustomerListDTO(c.id, c.name, c.email, c.status, c.grade.name) from Customer c")

@@ -45,7 +45,7 @@ public class User {
     //LocalDateTime -> LocalDate로 수정 (0502 임태경)
     //birthdate -> birthday로 수정 (0502 임태경)
     @Column(name = "user_birthday")
-    private LocalDate birthday;
+    protected LocalDate birthday;
 
     @Column(name = "user_gender")
     protected Boolean gender;
@@ -55,7 +55,7 @@ public class User {
     @AttributeOverride(name = "district", column = @Column(name = "user_district"))
     @AttributeOverride(name = "detail", column = @Column(name = "user_detail"))
     @AttributeOverride(name = "zipCode", column = @Column(name = "user_zipCode"))
-    private Address address;
+    protected Address address;
 
     @NotNull
     @Column(name = "user_role")
@@ -65,6 +65,6 @@ public class User {
     @NotNull
     @Enumerated(EnumType.STRING)
     @Column(name = "user_status")
-    private UserStatus status;
+    protected UserStatus status;
 
 }

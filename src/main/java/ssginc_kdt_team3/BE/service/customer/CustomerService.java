@@ -13,6 +13,7 @@ import ssginc_kdt_team3.BE.domain.Customer;
 import ssginc_kdt_team3.BE.enums.UserRole;
 import ssginc_kdt_team3.BE.enums.UserStatus;
 import ssginc_kdt_team3.BE.repository.customer.BranchRepository;
+import ssginc_kdt_team3.BE.repository.interfaces.customer.CustomerRepository;
 
 
 import java.util.NoSuchElementException;
@@ -24,7 +25,7 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class CustomerService {
 
-  private final ssginc_kdt_team3.BE.repository.interfaces.Customer.CustomerRepository customerRepository;
+  private final CustomerRepository customerRepository;
   private final BranchRepository branchRepository;
 
   // 회원가입

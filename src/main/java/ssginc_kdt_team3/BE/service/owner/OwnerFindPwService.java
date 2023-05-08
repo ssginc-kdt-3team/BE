@@ -37,7 +37,7 @@ public class OwnerFindPwService{
         Owner EmaillMat = InfoOwner.get();
 
         String RepoName = EmaillMat.getName();
-        String RepoPhone = EmaillMat.getPhone();
+        String RepoPhone = EmaillMat.getPhoneNumber();
         //Repo에서 넘어온 email이 속해있는 레코드의 필드 값들
         //email과 같은 레코드에 있는 name,phone인지 확인
 
