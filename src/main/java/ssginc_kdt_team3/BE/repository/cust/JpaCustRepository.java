@@ -3,6 +3,8 @@ package ssginc_kdt_team3.BE.repository.cust;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import ssginc_kdt_team3.BE.domain.Cust;
+import ssginc_kdt_team3.BE.domain.Grade;
+import ssginc_kdt_team3.BE.enums.GradeType;
 import ssginc_kdt_team3.BE.repository.interfaces.cust.CustRepository;
 
 import javax.persistence.EntityManager;
@@ -49,5 +51,29 @@ public class JpaCustRepository implements CustRepository {
   public void update(Long id, Cust cust) {
   }
 
+  @Override
+  public Optional<Cust> findEmailByPhone(String phone) {
+    return em.createQuery("SELECT c FROM Cust c WHERE c.phone = :phone", Cust.class)
+        .setParameter("phone", phone)
+        .getResultList()
+        .stream()
+        .findAny();
+  }
+
+//  public List<Cust> findByGrade (Long custId) { // 등급조회
+//    return em.createQuery("SELECT c FROM Cust c INNER JOIN Grade g ON c.gId = g.gId WHERE g.getName() = :name", Cust.class)
+//        .setParameter("name", name)
+//        .getResultList()
+//        .stream()
+//        .findAny();
+//  }
+
+//  public Grade findGradeId(Long id) {
+//    return em.createQuery("SELECT c FROM Cust c join Grade g ON c.grade.id = g.id WHERE g.name=:gradeName()", Cust.class)
+//        .setParameter()
+//        .getResultList()
+//        .stream()
+//        .findAny();
+//  }
 
 }
