@@ -38,8 +38,8 @@ public class OwnerFindPwService{
 
         String RepoName = EmaillMat.getName();
         String RepoPhone = EmaillMat.getPhoneNumber();
-        //Repo에서 넘어온 email이 속해있는 레코드의 필드 값들
-        //email과 같은 레코드에 있는 name,phone인지 확인
+//        Repo에서 넘어온 email이 속해있는 레코드의 필드 값들
+//        email과 같은 레코드에 있는 name,phone인지 확인
 
         if (!RepoName.equals(name)){
             throw new Exception("이름이 다릅니다.");

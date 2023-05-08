@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssginc_kdt_team3.BE.DTOs.customer.Address;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerUpdateDTO;
+import ssginc_kdt_team3.BE.domain.Owner;
 import ssginc_kdt_team3.BE.enums.UserStatus;
 import ssginc_kdt_team3.BE.repository.owner.JpaDataOwnerRepository;
 
@@ -18,17 +19,17 @@ public class OwnerUpdateService {
 
     public void OwnerUpdate(OwnerUpdateDTO ownerUpdateDTO){
 
-//        Owner owner = new Owner();
+        Owner owner = new Owner();
 
-//        owner.setPhone(ownerUpdateDTO.getPhone());
-//        owner.setAddress(ownerUpdateDTO.getAdddress());
-//        owner.setStatus(ownerUpdateDTO.getUserStatus());
+        owner.setPhoneNumber(ownerUpdateDTO.getPhone());
+        owner.setAddress(ownerUpdateDTO.getAdddress());
+        owner.setStatus(ownerUpdateDTO.getUserStatus());
 
         String bePhone = ownerUpdateDTO.getPhone();
         Address beAddress = ownerUpdateDTO.getAdddress();
         UserStatus beStatus = ownerUpdateDTO.getUserStatus();
 
-        repo.updateOwnerInfo(bePhone,beAddress,beStatus);
+//        repo.updateOwnerInfo(bePhone,beAddress,beStatus);
 //        repo.updateOwnerInfo(owner);
 
 

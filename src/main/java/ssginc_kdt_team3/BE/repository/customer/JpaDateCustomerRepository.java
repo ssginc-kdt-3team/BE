@@ -12,7 +12,7 @@ import java.util.Optional;
 
 public interface JpaDateCustomerRepository extends JpaRepository<Customer, Long> {
 
-    @Query("select new ssginc_kdt_team3.BE.DTOs.Customer.CustomerListDTO(c.id, c.name, c.email, c.status, c.grade.name) from Customer c")
+    @Query("select new ssginc_kdt_team3.BE.DTOs.customer.CustomerListDTO(c.id, c.name, c.email, c.status, c.grade.name) from Customer c")
     Page<CustomerListDTO> findAllBy(Pageable pageable);
 
 //    Page<Customer> findAllBy(Pageable pageable);

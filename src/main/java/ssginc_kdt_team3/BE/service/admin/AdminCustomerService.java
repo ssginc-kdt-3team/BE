@@ -28,7 +28,7 @@ public class AdminCustomerService {
 
     private final JpaDateCustomerRepository customerRepository;
 //    private final EntityManager em;
-
+//
 //    JPQLQueryFactory queryFactory;
 
     public Page<CustomerListDTO> findAllCustomer(Pageable pageable) {

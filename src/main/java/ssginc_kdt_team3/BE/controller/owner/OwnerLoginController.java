@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerLoginDTO;
-import ssginc_kdt_team3.BE.service.owner.OwnerLoginService;
+//import ssginc_kdt_team3.BE.service.owner.OwnerLoginService;
 
 @RequestMapping("/owner")
 @RestController
@@ -19,17 +19,17 @@ import ssginc_kdt_team3.BE.service.owner.OwnerLoginService;
 
 public class OwnerLoginController {
 
-    @Autowired
-    private final OwnerLoginService Service;
-
-    @PostMapping("/login")
-    public ResponseEntity<String> loginCheck(@RequestBody OwnerLoginDTO ownerLogin) {
-
-        try {
-            String OwnerEmail = Service.loginCheck(ownerLogin);
-            return new ResponseEntity<>(OwnerEmail+"님, 환영합니다!", HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
+//    @Autowired
+//    private final OwnerLoginService Service;
+//
+//    @PostMapping("/login")
+//    public ResponseEntity<String> loginCheck(@RequestBody OwnerLoginDTO ownerLogin) {
+//
+//        try {
+//            String OwnerEmail = Service.loginCheck(ownerLogin);
+//            return new ResponseEntity<>(OwnerEmail+"님, 환영합니다!", HttpStatus.OK);
+//        } catch (Exception e) {
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+//        }
+//    }
 }

@@ -12,7 +12,7 @@ import javax.validation.constraints.NotNull;
 public class Customer extends User{
 
   @NotNull
-  @Column(name = "Customeromer_alarm")
+  @Column(name = "customeromer_alarm")
   private boolean alarmBoolean;
 
   @ManyToOne(fetch = FetchType.EAGER)

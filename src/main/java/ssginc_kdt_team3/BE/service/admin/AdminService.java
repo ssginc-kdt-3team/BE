@@ -22,7 +22,7 @@ public class AdminService {
 
         String adminEmail = loginDTO.getEmail();
         String adminPassword = loginDTO.getPassword();
-        Optional<Admin> tryAdmin = repository.findByloginId(adminEmail);
+        Optional<Admin> tryAdmin = repository.findByLoginId(adminEmail);
 
         if (tryAdmin.isPresent() && tryAdmin.get().getPassword().equals(adminPassword)) {
             log.info("suceess");

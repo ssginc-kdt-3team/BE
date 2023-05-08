@@ -1,15 +1,17 @@
 package ssginc_kdt_team3.BE.domain;
 
 import com.sun.istack.NotNull;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name = "shop_menu")
+@Getter
+@Setter
 public class Shop_menu {
 
     @Id
-    @NotNull
     @Column(name = "menu_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;

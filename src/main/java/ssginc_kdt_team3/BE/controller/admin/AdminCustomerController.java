@@ -30,14 +30,14 @@ public class AdminCustomerController {
 
     private final AdminCustomerService customerService;
 
-    @GetMapping("/findAll")
-    public ResponseEntity<Page<CustomerListDTO>> findAllCustomer() {
-        Pageable pageable = PageRequest.of(0, 5);
-        ResponseEntity<Page<CustomerListDTO>> response = ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .body(customerService.findAllCustomer(pageable));
-        return response;
-    }
+//    @GetMapping("/findAll")
+//    public ResponseEntity<Page<CustomerListDTO>> findAllCustomer() {
+//        Pageable pageable = PageRequest.of(0, 5);
+//        ResponseEntity<Page<CustomerListDTO>> response = ResponseEntity.ok()
+//                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+//                .body(customerService.findAllCustomer(pageable));
+//        return response;
+//    }
 
     @GetMapping("/findById/{id}")
 

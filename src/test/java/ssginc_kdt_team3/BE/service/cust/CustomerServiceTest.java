@@ -42,7 +42,7 @@ class CustomerServiceTest {
     customer.setPassword("12345678");
     customer.setName("test");
     customer.setPhoneNumber("01012345678");
-    customer.setRole(UserRole.Customer);
+    customer.setRole(UserRole.CUSTOMER);
     customer.setStatus(UserStatus.ACTIVE);
     customer.setGrade(null);
 

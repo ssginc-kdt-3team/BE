@@ -14,7 +14,7 @@ import javax.persistence.*;
 public class Shop {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "shpo_id")
+    @Column(name = "shop_id")
     private long id;
 
     @NotNull
@@ -59,7 +59,7 @@ public class Shop {
     private Owner owner;
 
     @NotNull
-    @OneToOne(fetch = FetchType.EAGER)
+    @OneToOne
     @JoinColumn(name = "shop_operation_id")
     private ShopOperationInfo operationInfo;
 }

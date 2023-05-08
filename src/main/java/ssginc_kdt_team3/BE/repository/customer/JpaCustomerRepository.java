@@ -3,6 +3,7 @@ package ssginc_kdt_team3.BE.repository.customer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import ssginc_kdt_team3.BE.domain.Customer;
+import ssginc_kdt_team3.BE.domain.Grade;
 import ssginc_kdt_team3.BE.repository.interfaces.customer.CustomerRepository;
 
 import javax.persistence.EntityManager;
@@ -65,7 +66,7 @@ public class JpaCustomerRepository implements CustomerRepository {
 //        .stream()
 //        .findAny();
 //  }
-
+//
 //  public Grade findGradeId(Long id) {
 //    return em.createQuery("SELECT c FROM Customer c join Grade g ON c.grade.id = g.id WHERE g.name=:gradeName()", Customer.class)
 //        .setParameter()

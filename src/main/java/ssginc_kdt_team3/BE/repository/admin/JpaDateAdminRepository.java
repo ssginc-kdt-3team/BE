@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface JpaDateAdminRepository extends JpaRepository<Admin, Long> {
 
-    Optional<Admin> findByloginId(String loginId);
+    Optional<Admin> findByLoginId(String loginId);
 }

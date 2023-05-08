@@ -6,9 +6,8 @@ import lombok.*;
 import javax.persistence.*;
 
 @RequiredArgsConstructor
-@NoArgsConstructor
+//@NoArgsConstructor
 @Entity
-@Table(name = "owner")
 @Getter
 @Setter
 @ToString

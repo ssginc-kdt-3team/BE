@@ -21,25 +21,25 @@ public class OwnerChangePwController {
     @Autowired
     private final OwnerChangePwService changePwSer;
 
-    @PostMapping("/infocheck")
-    public ResponseEntity<String> pwCheckController (@RequestBody CheckPwDTO check) {
-        try {
-            changePwSer.CheckPw(check);
-            return new ResponseEntity<>("인증 성공", HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-    }
-    @PostMapping("/changepassword")
-    public ResponseEntity<String> pwChangeController(@RequestBody OwnerChangePwDTO changePwDTO){
-        try {
-            changePwSer.ChangePw(changePwDTO);
-            return new ResponseEntity<>("비밀번호 변경이 완료되었습니다.",HttpStatus.OK);
-        }catch (Exception e){
-            return new ResponseEntity<>("비밀번호가 서로 다릅니다.",HttpStatus.BAD_REQUEST);
-        }
+//    @PostMapping("/infocheck")
+//    public ResponseEntity<String> pwCheckController (@RequestBody CheckPwDTO check) {
+//        try {
+//            changePwSer.CheckPw(check);
+//            return new ResponseEntity<>("인증 성공", HttpStatus.OK);
+//        } catch (Exception e) {
+//            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+//        }
+//    }
+//    @PostMapping("/changepassword")
+//    public ResponseEntity<String> pwChangeController(@RequestBody OwnerChangePwDTO changePwDTO){
+//        try {
+//            changePwSer.ChangePw(changePwDTO);
+//            return new ResponseEntity<>("비밀번호 변경이 완료되었습니다.",HttpStatus.OK);
+//        }catch (Exception e){
+//            return new ResponseEntity<>("비밀번호가 서로 다릅니다.",HttpStatus.BAD_REQUEST);
+//        }
 
-    }
+//    }
 }
 
 

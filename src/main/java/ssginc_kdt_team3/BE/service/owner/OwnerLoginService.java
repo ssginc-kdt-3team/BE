@@ -19,7 +19,7 @@ public class OwnerLoginService {
 
         String email = login.getEmail();
         String pw = login.getPassword();
-        //입력받은 거
+//        입력받은 거
 
 
         boolean checkEmail = Repository.existsByEmail(email);

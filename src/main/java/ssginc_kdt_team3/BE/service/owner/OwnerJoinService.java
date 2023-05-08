@@ -9,6 +9,7 @@ import ssginc_kdt_team3.BE.repository.owner.JpaDataOwnerRepository;
 import javax.transaction.Transactional;
 
 @RequiredArgsConstructor
+
 @Transactional
 @Service
 public class OwnerJoinService {
