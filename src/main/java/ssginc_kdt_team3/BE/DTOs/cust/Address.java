@@ -21,4 +21,10 @@ public class Address {
 
   public Address() {
   }
+  @Override
+  public String toString() {
+    return String.format("%s %s %s %s", city, district, detail, zipCode);
+  }
+  //문자열로 변환하려고 코드를 추가했습니다.
+  //0506 고신영
 }

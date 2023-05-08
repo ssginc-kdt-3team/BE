@@ -1,10 +1,8 @@
 package ssginc_kdt_team3.BE.domain;
 
 import com.sun.istack.NotNull;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+
 import ssginc_kdt_team3.BE.DTOs.cust.Address;
 import ssginc_kdt_team3.BE.enums.UserRole;
 import ssginc_kdt_team3.BE.enums.UserStatus;
@@ -13,12 +11,14 @@ import ssginc_kdt_team3.BE.enums.UserStatus;
 import javax.persistence.*;
 import java.time.LocalDate;
 
+@RequiredArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "owner")
 @Getter
 @Setter
 @ToString
-@NoArgsConstructor
+
 public class Owner{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -63,8 +63,5 @@ public class Owner{
     @Column(name = "owner_status")
     private UserStatus status;
 
-    @OneToOne
-    @JoinColumn(name = "shop_id")
-    private Shop shop;
 
 }
