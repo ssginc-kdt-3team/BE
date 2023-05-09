@@ -27,7 +27,7 @@ public class AdminDepositDTO {
 
     private DepositStatus status;
 
-    public void makeDepositDTO(Deposit deposit) {
+    public AdminDepositDTO(Deposit deposit) {
         this.reservationId = deposit.getId();
         this.customerId = deposit.getReservation().getCustomer().getId();
         this.originDeposit = deposit.getOrigin_value();
