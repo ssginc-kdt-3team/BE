@@ -15,6 +15,8 @@ public class AdminDepositDTO {
 
     private Long customerId;
 
+    private String customerName;
+
     private int originDeposit;
 
     private int payDeposit;
@@ -30,6 +32,7 @@ public class AdminDepositDTO {
     public AdminDepositDTO(Deposit deposit) {
         this.reservationId = deposit.getId();
         this.customerId = deposit.getReservation().getCustomer().getId();
+        this.customerName = deposit.getReservation().getCustomer().getName();
         this.originDeposit = deposit.getOrigin_value();
         this.payDeposit = deposit.getPayValue();
         this.penalty = deposit.getPenaltyValue();
