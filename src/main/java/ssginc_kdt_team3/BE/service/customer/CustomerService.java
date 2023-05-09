@@ -7,16 +7,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ssginc_kdt_team3.BE.DTOs.customer.*;
-import ssginc_kdt_team3.BE.domain.Branch;
 import ssginc_kdt_team3.BE.domain.Customer;
 
 import ssginc_kdt_team3.BE.enums.UserRole;
 import ssginc_kdt_team3.BE.enums.UserStatus;
-import ssginc_kdt_team3.BE.repository.customer.BranchRepository;
 import ssginc_kdt_team3.BE.repository.customer.JpaCustomerRepository;
-
-
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -27,7 +22,6 @@ import java.util.Optional;
 public class CustomerService {
 
   private final JpaCustomerRepository customerRepository;
-  private final BranchRepository branchRepository;
 
   // 회원가입
   @Transactional
@@ -135,17 +129,5 @@ public class CustomerService {
 
 
   // 등급조회
-
-
-  // 지점조회
-  public List<Branch> findAllBranch() {
-    List<Branch> allBranch = branchRepository.findAllBranch();
-    return allBranch;
-  }
-
-  public Optional<Branch> findBranch(Long id) {
-    Optional<Branch> branch = branchRepository.findBranch(id);
-    return branch;
-  }
 
 }
