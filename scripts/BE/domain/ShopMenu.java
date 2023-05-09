@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "shop_menu")
-public class Shop_menu {
+public class ShopMenu {
 
     @Id
     @NotNull

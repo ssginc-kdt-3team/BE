@@ -2,6 +2,7 @@ package ssginc_kdt_team3.BE.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import ssginc_kdt_team3.BE.enums.ReservationStatus;
 
 import javax.persistence.*;
@@ -10,7 +11,8 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-public class Reservation {
+@ToString
+public class Reservation { // 이현: NotNull 체크가 없어요.
 
     @Id
     @Column(name = "reservation_id")

@@ -25,7 +25,7 @@ public class AdminService {
         Optional<Admin> tryAdmin = repository.findByLoginId(adminEmail);
 
         if (tryAdmin.isPresent() && tryAdmin.get().getPassword().equals(adminPassword)) {
-            log.info("suceess");
+            log.info("success");
             return tryAdmin.get().getId();
         } else {
             log.info("fail");
