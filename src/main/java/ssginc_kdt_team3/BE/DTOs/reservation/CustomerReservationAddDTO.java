@@ -18,7 +18,7 @@ import java.time.format.DateTimeFormatter;
 public class CustomerReservationAddDTO {
 
     @NotEmpty(message = "예약일은 필수값 입니다.")
-    private LocalDateTime reservationDate;
+    private String reservationDate;
 
     @NotEmpty(message = "인원 수는 필수값 입니다.")
     private int people;
@@ -37,7 +37,7 @@ public class CustomerReservationAddDTO {
     public void setReservationInfo(Reservation reservation, Shop shop, Customer customer) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-        LocalDateTime reservationTime = LocalDateTime.parse(this.reservationDate.format(formatter), formatter);
+        LocalDateTime reservationTime = LocalDateTime.parse(reservationDate, formatter);
         reservation.setReservationDate(reservationTime);
         reservation.setPeople(this.people);
         reservation.setChild(this.child);
