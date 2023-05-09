@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import ssginc_kdt_team3.BE.DTOs.deposit.AdminDepositDTO;
 import ssginc_kdt_team3.BE.domain.Deposit;
+import ssginc_kdt_team3.BE.domain.Reservation;
 
 import java.util.List;
 
@@ -16,7 +17,16 @@ public class AdminDepositRepositoryTest {
 
     @Test
     public void DepositList() {
-        List<Deposit> depositList = repository.findDepositList(1L);
-        System.out.println(depositList.get(0).getOrigin_value());
+        //w
+
+        //t
+        List<Deposit> depositList = repository.findShopDepositList(1L);
+        System.out.println(depositList.size());
+    }
+
+    @Test
+    public void DepositList2() {
+        List<Deposit> depositList = repository.findBranchDepositList(2L);
+        System.out.println(depositList.size());
     }
 }

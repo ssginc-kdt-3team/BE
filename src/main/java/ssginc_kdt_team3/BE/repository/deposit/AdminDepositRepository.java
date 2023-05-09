@@ -13,6 +13,9 @@ import java.util.List;
 
 public interface AdminDepositRepository extends JpaRepository<Deposit, Long> {
     @Query("select d from Deposit d inner join Reservation r on d.reservation.id = r.id inner join Shop s on r.shop.id = s.id where s.id = :shopId")
-    List<Deposit> findDepositList(@Param("shopId") Long shopId);
+    List<Deposit> findShopDepositList(@Param("shopId") Long shopId);
+
+    @Query("select d from Deposit d where d.reservation.shop.branch.id = :branchId")
+    List<Deposit> findBranchDepositList(@Param("branchId") Long branchId);
 
 }

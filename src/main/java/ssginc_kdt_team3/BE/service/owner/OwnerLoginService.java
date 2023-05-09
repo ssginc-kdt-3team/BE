@@ -22,18 +22,18 @@ public class OwnerLoginService {
 //        입력받은 거
 
 
-        boolean checkEmail = Repository.existsByEmail(email);
-        String CheckPassword = Repository.PasswordMatchEmail(email);
+//        boolean checkEmail = Repository.existsByEmail(email);
+//        String CheckPassword = Repository.PasswordMatchEmail(email);
 
-        if (!checkEmail) {
-            throw new Exception("이메일이 일치하지 않습니다!");
-        } else if (!pw.equals(CheckPassword)) {
-            throw new Exception("비밀번호가 일치하지 않습니다!");
-        }else {
-            return email;
-        }
+//        if (!checkEmail) {
+//            throw new Exception("이메일이 일치하지 않습니다!");
+//        } else if (!pw.equals(CheckPassword)) {
+//            throw new Exception("비밀번호가 일치하지 않습니다!");
+//        }else {
+//            return email;
+//        }
 
-
+        return null;
     }
 
 }

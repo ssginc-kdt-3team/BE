@@ -36,32 +36,32 @@ public class AdminOwnerController {
         }
     }
 
-//    @GetMapping("/findAll")
-//    public ResponseEntity<Page<Owner>> findAll() {
-//        Pageable pageable = PageRequest.of(0, 5);
-//        ResponseEntity<Page<Owner>> response = ResponseEntity.ok()
-//                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-//                .body(ownerService.findAllOwner(pageable));
-//
-//        return response;
-//    }
-//
-//    @GetMapping("/findOne/{id}")
-//    public ResponseEntity<Owner> findOne(@PathVariable(name = "id") Long ownerId) {
+    @GetMapping("/findAll")
+    public ResponseEntity<Page<Owner>> findAll() {
+        Pageable pageable = PageRequest.of(0, 5);
+        ResponseEntity<Page<Owner>> response = ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .body(ownerService.findAllOwner(pageable));
 
-//        Optional<Owner> one = ownerService.findOne(ownerId);
+        return response;
+    }
 
-//        if (one.isPresent()) {
-//            return ResponseEntity.ok(one.get());
-//        } else {
-//            return null;
-//        }
-//    }
-//
-//    @PostMapping("/update/{id}")
-//    public boolean updateOwner(@PathVariable(name = "id") Long ownerId,
-//                               @RequestBody OwnerUpdateDTO ownerUpdateDTO) {
-//
-//        return ownerService.updateOwnerInfo(ownerId, ownerUpdateDTO);
-//    }
+    @GetMapping("/findOne/{id}")
+    public ResponseEntity<Owner> findOne(@PathVariable(name = "id") Long ownerId) {
+
+        Optional<Owner> one = ownerService.findOne(ownerId);
+
+        if (one.isPresent()) {
+            return ResponseEntity.ok(one.get());
+        } else {
+            return null;
+        }
+    }
+
+    @PostMapping("/update/{id}")
+    public boolean updateOwner(@PathVariable(name = "id") Long ownerId,
+                               @RequestBody OwnerUpdateDTO ownerUpdateDTO) {
+
+        return ownerService.updateOwnerInfo(ownerId, ownerUpdateDTO);
+    }
 }
