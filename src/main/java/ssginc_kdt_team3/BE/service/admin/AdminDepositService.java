@@ -42,9 +42,7 @@ public class AdminDepositService {
         List<AdminDepositDTO> depositDTOList = new ArrayList<>();
 
         for ( Deposit d : branchDepositList) {
-            log.info( "aaaa = {}" , d.getReservation().getId());
-            AdminDepositDTO ad = new AdminDepositDTO();
-            ad.makeDepositDTO(d);
+            AdminDepositDTO ad = new AdminDepositDTO(d);
             depositDTOList.add(ad);
 
             log.info(ad.toString());
