@@ -1,4 +1,6 @@
 package ssginc_kdt_team3.BE.enums;
+
 public enum ReservationStatus {
-  beforeUse, Use, Cancel, noShow, RESERVATION
-} //사용 전, 사용, 취소, 노쇼
+    RESERVATION, DONE, CANCEL, IMMINENT, NOSHOW
+}   // 예약       방문    취소   취소(위약금)  노쇼
+
