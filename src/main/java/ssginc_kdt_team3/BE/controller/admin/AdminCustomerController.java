@@ -25,22 +25,21 @@ import java.util.Optional;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/admin/Customer")
+@RequestMapping("/admin/customer")
 public class AdminCustomerController {
 
     private final AdminCustomerService customerService;
 
-//    @GetMapping("/findAll")
-//    public ResponseEntity<Page<CustomerListDTO>> findAllCustomer() {
-//        Pageable pageable = PageRequest.of(0, 5);
-//        ResponseEntity<Page<CustomerListDTO>> response = ResponseEntity.ok()
-//                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-//                .body(customerService.findAllCustomer(pageable));
-//        return response;
-//    }
+    @GetMapping("/findAll")
+    public ResponseEntity<Page<CustomerListDTO>> findAllCustomer() {
+        Pageable pageable = PageRequest.of(0, 5);
+        ResponseEntity<Page<CustomerListDTO>> response = ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .body(customerService.findAllCustomer(pageable));
+        return response;
+    }
 
     @GetMapping("/findById/{id}")
-
     public Customer findOneCustomer(@PathVariable(name = "id") Long CustomerId) throws JsonProcessingException {
         CustomerDetailDTO CustomerDetailDTO = customerService.findCustomerById(CustomerId);
 

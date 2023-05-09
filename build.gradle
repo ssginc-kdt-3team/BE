@@ -57,6 +57,9 @@ dependencies {
 
     //H2 Connect설정
     runtimeOnly 'com.h2database:h2'
+
+	//My sql
+	runtimeOnly 'com.mysql:mysql-connector-j'
 }
 
 
