@@ -27,10 +27,7 @@ public class AdminDepositDTO {
 
     private DepositStatus status;
 
-    public AdminDepositDTO makeDepositDTO(Deposit deposit) {
-
-        AdminDepositDTO adminDepositDTO = new AdminDepositDTO();
-
+    public void makeDepositDTO(Deposit deposit) {
         this.reservationId = deposit.getId();
         this.customerId = deposit.getReservation().getCustomer().getId();
         this.originDeposit = deposit.getOrigin_value();
@@ -39,7 +36,5 @@ public class AdminDepositDTO {
         this.expectedDay = deposit.getReservation().getReservationDate().toLocalDate();
         this.expectedTime = deposit.getReservation().getReservationDate().toLocalTime();
         this.status = deposit.getStatus();
-
-        return adminDepositDTO;
     }
 }
