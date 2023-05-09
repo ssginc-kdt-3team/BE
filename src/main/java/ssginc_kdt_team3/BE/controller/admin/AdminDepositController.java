@@ -22,15 +22,27 @@ public class AdminDepositController {
 
     private final AdminDepositService adminDepositService;
 
-    @GetMapping("/lists")
-    public ResponseEntity<Page<AdminDepositDTO>> showDepositList(@RequestBody Map<String, String> param) {
+    @GetMapping("/branch/{id}")
+    public ResponseEntity<Page<AdminDepositDTO>> showBranchDepositList(@PathVariable(name = "id") Long id) {
 
         Pageable pageable = PageRequest.of(0, 10);
 
-        String type = param.get("type");
-        Long id = Long.parseLong(param.get("id"));
+        Optional<Page<AdminDepositDTO>> depositList = adminDepositService.findDepositList(pageable, "branch", id);
 
-        Optional<Page<AdminDepositDTO>> depositList = adminDepositService.findDepositList(pageable, type, id);
+        if (depositList.isPresent()) {
+            Page<AdminDepositDTO> adminDepositDTOPage = depositList.get();
+            return ResponseEntity.ok(adminDepositDTOPage);
+        } else {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+    @GetMapping("/shop/{id}")
+    public ResponseEntity<Page<AdminDepositDTO>> showShopDepositList(@PathVariable(name = "id") Long id) {
+
+        Pageable pageable = PageRequest.of(0, 10);
+
+        Optional<Page<AdminDepositDTO>> depositList = adminDepositService.findDepositList(pageable, "shop", id);
 
         if (depositList.isPresent()) {
             Page<AdminDepositDTO> adminDepositDTOPage = depositList.get();
