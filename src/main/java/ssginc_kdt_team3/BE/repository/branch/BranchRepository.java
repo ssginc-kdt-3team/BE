@@ -1,4 +1,4 @@
-package ssginc_kdt_team3.BE.repository.customer;
+package ssginc_kdt_team3.BE.repository.branch;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -15,11 +15,12 @@ import java.util.Optional;
 public class BranchRepository {
   private final EntityManager em;
 
-  //조회: Branch에서 조회할거니까 <Store>
-  public Optional<Branch> findBranch(Long id){
-    return Optional.ofNullable(em.find(Branch.class, id));
+  // 조회
+  public Branch findBranch(Long id){
+    return em.find(Branch.class, id);
   }
 
+  // 전체 지점조회
   public List<Branch> findAllBranch(){
     List<Branch> resultReserve = em.createQuery("SELECT b FROM Branch b", Branch.class)
         .getResultList();

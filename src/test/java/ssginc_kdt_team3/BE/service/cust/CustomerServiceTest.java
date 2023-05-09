@@ -7,6 +7,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 
+import ssginc_kdt_team3.BE.DTOs.branch.BranchDTO;
 import ssginc_kdt_team3.BE.DTOs.customer.CustomerFindDTO;
 import ssginc_kdt_team3.BE.DTOs.customer.CustomerJoinDTO;
 import ssginc_kdt_team3.BE.DTOs.customer.CustomerLoginDTO;
@@ -15,9 +16,9 @@ import ssginc_kdt_team3.BE.domain.Customer;
 
 import ssginc_kdt_team3.BE.enums.UserRole;
 import ssginc_kdt_team3.BE.enums.UserStatus;
-import ssginc_kdt_team3.BE.repository.customer.BranchRepository;
+import ssginc_kdt_team3.BE.repository.branch.BranchRepository;
 import ssginc_kdt_team3.BE.repository.customer.JpaCustomerRepository;
-import ssginc_kdt_team3.BE.repository.customer.JpaDateCustomerRepository;
+import ssginc_kdt_team3.BE.service.branch.BranchService;
 
 import java.util.List;
 
@@ -35,7 +36,7 @@ class CustomerServiceTest {
   JpaCustomerRepository customerRepository;
 
   @Autowired
-  BranchRepository branchRepository;
+  BranchService branchService;
 
   @Test
   @Rollback(value = false)
@@ -149,14 +150,14 @@ class CustomerServiceTest {
 
   @Test
   void findStore() {
-    Branch branch = customerService.findBranch(1L).get();
-    System.out.println("branch :" +branch);
+    Branch branch = branchService.getBranch(1L);
+    System.out.println("branch ==========>" +branch);
 
   }
 
   @Test
   void findAllBranch() {
-    List<Branch> allBranch = customerService.findAllBranch();
+    List<BranchDTO> allBranch = branchService.getAllBranch();
     System.out.println("allBranch============>" + allBranch.size());
 
   }

@@ -16,7 +16,7 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/Customer")
+@RequestMapping("/customer")
 public class CustomerController {
   private final CustomerService customerService;
   private final KakaoService kakaoService;
