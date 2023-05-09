@@ -25,7 +25,7 @@ public interface JpaDataOwnerRepository extends JpaRepository<Owner, Long> {
 
     Page<Owner> findAllBy(Pageable pageable);
 
-    @Query("UPDATE Owner o SET o.password = :password")
+    @Query("UPDATE Owner o SET o.password = :password where 1=1")
     @Modifying
     void updatePassword(@Param("password") String password);
 

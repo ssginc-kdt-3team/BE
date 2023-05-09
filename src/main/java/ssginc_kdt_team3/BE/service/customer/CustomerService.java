@@ -13,9 +13,10 @@ import ssginc_kdt_team3.BE.domain.Customer;
 import ssginc_kdt_team3.BE.enums.UserRole;
 import ssginc_kdt_team3.BE.enums.UserStatus;
 import ssginc_kdt_team3.BE.repository.customer.BranchRepository;
-import ssginc_kdt_team3.BE.repository.interfaces.customer.CustomerRepository;
+import ssginc_kdt_team3.BE.repository.customer.JpaCustomerRepository;
 
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -25,7 +26,7 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class CustomerService {
 
-  private final CustomerRepository customerRepository;
+  private final JpaCustomerRepository customerRepository;
   private final BranchRepository branchRepository;
 
   // 회원가입
@@ -88,18 +89,15 @@ public class CustomerService {
 
 
   // PW 찾기
-  public String getCustomerPassword (CustomerFindDTO customerFindDTO) {
+  public Customer getCustomerPassword (CustomerFindDTO customerFindDTO) {
     Customer customer = new Customer();
     customer.setEmail(customerFindDTO.getEmail());
-    customer.setName(customerFindDTO.getName());
     customer.setPhoneNumber(customerFindDTO.getPhone());
 
-    Optional<Customer> findCustomerInfo = customerRepository.findCustomer(customer.getId());
+    Optional<Customer> emailAndPhone = customerRepository.findEmailAndPhone(customerFindDTO.getEmail(), customer.getPhoneNumber());
+    System.out.println("emailAndPhone :" + emailAndPhone);
 
-    if(!findCustomerInfo.isEmpty()){ // 일치하는 값이 있으면
-      return customer.getPassword();
-    }
-    return null;
+    return emailAndPhone.orElseThrow(() -> new NoSuchElementException("일치하는 정보가 없습니다."));
   }
 
   // 개인정보 변경
@@ -140,6 +138,11 @@ public class CustomerService {
 
 
   // 지점조회
+  public List<Branch> findAllBranch() {
+    List<Branch> allBranch = branchRepository.findAllBranch();
+    return allBranch;
+  }
+
   public Optional<Branch> findBranch(Long id) {
     Optional<Branch> branch = branchRepository.findBranch(id);
     return branch;

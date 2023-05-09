@@ -26,10 +26,10 @@ public class AdminShopService {
     private final JpaDateShopRepository shopRepository;
     private final JpaDateShopOperationInfoRepository shopOperationInfoRepository;
 
-    public Page<Shop> findAllShop(Long storeId, Pageable pageable) {
-        log.info("service id = {}", storeId);
-        return shopRepository.findAllByStoreId(storeId, pageable);
-    }
+//    public Page<Shop> findAllShop(Long storeId, Pageable pageable) {
+//        log.info("service id = {}", storeId);
+//        return shopRepository.findAllByStoreId(storeId, pageable);
+//    }
 
     public Optional<Shop> findShopById(Long shopId) {
         return shopRepository.findById(shopId);

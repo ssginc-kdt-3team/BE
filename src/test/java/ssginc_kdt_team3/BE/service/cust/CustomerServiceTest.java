@@ -3,6 +3,7 @@ package ssginc_kdt_team3.BE.service.customer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 
@@ -17,6 +18,8 @@ import ssginc_kdt_team3.BE.enums.UserStatus;
 import ssginc_kdt_team3.BE.repository.customer.BranchRepository;
 import ssginc_kdt_team3.BE.repository.customer.JpaCustomerRepository;
 import ssginc_kdt_team3.BE.repository.customer.JpaDateCustomerRepository;
+
+import java.util.List;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
@@ -35,6 +38,7 @@ class CustomerServiceTest {
   BranchRepository branchRepository;
 
   @Test
+  @Rollback(value = false)
   void 회원가입() throws Exception {
     // given
     Customer customer = new Customer();
@@ -48,6 +52,7 @@ class CustomerServiceTest {
 
     // when
     Customer saveId = customerRepository.save(customer);
+    System.out.println("saveId :" +saveId);
 
     // then
     assertThat(customer).isEqualTo(saveId);
@@ -103,12 +108,20 @@ class CustomerServiceTest {
     Customer customerEmail = customerService.getCustomerEmail(customerFindDTO);
 
     System.out.println(customerEmail.getEmail());
-    assertThat(customerEmail).isEqualTo("abc@abc.abc");
+    assertThat(customerEmail.getEmail()).isEqualTo("test@gmail.com");
 
   }
 
   @Test
   void 비밀번호_찾기() {
+    CustomerFindDTO customerFindDTO = new CustomerFindDTO();
+    customerFindDTO.setEmail("test@gmail.com");
+    customerFindDTO.setPhone("01012345678");
+
+    Customer customerPassword = customerService.getCustomerPassword(customerFindDTO);
+    System.out.println("customerPassword :" + customerPassword.getPassword());
+
+    assertThat(customerPassword.getPassword()).isEqualTo("12345678");
   }
 
   @Test
@@ -138,6 +151,13 @@ class CustomerServiceTest {
   void findStore() {
     Branch branch = customerService.findBranch(1L).get();
     System.out.println("branch :" +branch);
+
+  }
+
+  @Test
+  void findAllBranch() {
+    List<Branch> allBranch = customerService.findAllBranch();
+    System.out.println("allBranch============>" + allBranch.size());
 
   }
 }

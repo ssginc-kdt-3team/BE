@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-public class Shop_menu {
+public class ShopMenu {
 
     @Id
     @Column(name = "menu_id")

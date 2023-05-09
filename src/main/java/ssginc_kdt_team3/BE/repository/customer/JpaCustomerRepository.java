@@ -68,11 +68,21 @@ public class JpaCustomerRepository implements CustomerRepository {
 //  }
 //
 //  public Grade findGradeId(Long id) {
-//    return em.createQuery("SELECT c FROM Customer c join Grade g ON c.grade.id = g.id WHERE g.name=:gradeName()", Customer.class)
+//    return em.createQuery("SELECT c FROM Customer c INNER JOIN Grade g ON c.gradeId = g.id WHERE g.name=:gradeName()", Customer.class)
 //        .setParameter()
 //        .getResultList()
 //        .stream()
 //        .findAny();
 //  }
+
+  // PW 찾기
+  public Optional<Customer> findEmailAndPhone(String email, String phoneNumber){
+    return em.createQuery("SELECT c FROM Customer c WHERE c.email = :email AND c.phoneNumber = :phoneNumber", Customer.class)
+        .setParameter("email", email)
+        .setParameter("phoneNumber", phoneNumber)
+        .getResultList()
+        .stream()
+        .findAny();
+  }
 
 }
