@@ -23,9 +23,9 @@ public class AdminShopController {
 
     private final AdminShopService shopService;
 
-    @GetMapping("/findAll/{id}")
-    public ResponseEntity<Page<Shop>> findAllCustomer(@PathVariable(name = "id") Long storeId) {
-        Pageable pageable = PageRequest.of(0, 5);
+    @GetMapping("/findAll/{id}/{page}")
+    public ResponseEntity<Page<Shop>> findAllCustomer(@PathVariable(name = "id") Long storeId,  @PathVariable(name = "page") int page) {
+        Pageable pageable = PageRequest.of(page-1, 5);
         ResponseEntity<Page<Shop>> response = ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .body(shopService.findAllShop(storeId, pageable));

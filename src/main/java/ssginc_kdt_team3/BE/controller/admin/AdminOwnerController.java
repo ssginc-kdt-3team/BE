@@ -37,9 +37,9 @@ public class AdminOwnerController {
         }
     }
 
-    @GetMapping("/findAll")
-    public ResponseEntity<Page<Owner>> findAll() {
-        Pageable pageable = PageRequest.of(0, 5);
+    @GetMapping("/findAll/{page}")
+    public ResponseEntity<Page<Owner>> findAll( @PathVariable(name = "page") int page) {
+        Pageable pageable = PageRequest.of(page-1, 5);
         ResponseEntity<Page<Owner>> response = ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .body(ownerService.findAllOwner(pageable));
