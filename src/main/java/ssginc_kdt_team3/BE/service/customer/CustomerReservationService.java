@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import ssginc_kdt_team3.BE.DTOs.reservation.CustomerReservationAddDTO;
+import ssginc_kdt_team3.BE.DTOs.reservation.CustomerReservationDetailDTO;
 import ssginc_kdt_team3.BE.DTOs.reservation.CustomerReservationListDTO;
 import ssginc_kdt_team3.BE.DTOs.reservation.CustomerReservationUpdateDTO;
 import ssginc_kdt_team3.BE.domain.Customer;
@@ -226,5 +227,20 @@ public class CustomerReservationService {
             return true;
         }
         return false;
+    }
+
+    public Optional<CustomerReservationDetailDTO> findOne(Long id) {
+        Optional<Reservation> byId = reservationRepository.findById(id);
+
+        if (byId.isPresent()) {
+            Reservation reservation = byId.get();
+            Deposit reservationDeposit = depositRepository.findReservationDeposit(reservation.getId());
+
+            CustomerReservationDetailDTO dto = new CustomerReservationDetailDTO(reservation, reservationDeposit);
+
+            return Optional.ofNullable(dto);
+        }
+
+        return Optional.ofNullable(null);
     }
 }
