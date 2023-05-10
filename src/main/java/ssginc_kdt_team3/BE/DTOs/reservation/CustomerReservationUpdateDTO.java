@@ -13,7 +13,7 @@ CustomerReservationUpdateDTO {
     private Long reservationId;
     private String branchName;
     private String shopName;
-    private String reservationDateTIme;
+    private String reservationDateTime;
     private int people;
     private int child;
     private String memo;
@@ -28,7 +28,7 @@ CustomerReservationUpdateDTO {
         this.reservationId = reservation.getId();
         this.branchName = reservation.getShop().getBranch().getName();
         this.shopName = reservation.getShop().getName();
-        this.reservationDateTIme = time;
+        this.reservationDateTime = time;
         this.people = reservation.getPeople();
         this.child = reservation.getChild();
         this.memo = reservation.getMemo();

@@ -125,7 +125,7 @@ public class CustomerReservationService {
     //예약 정보를 dto로 받아온 새로운 정보로 변경
     private void update(Reservation before, CustomerReservationUpdateDTO after) {
         LocalDateTime updateTime = TimeUtils.findNow();
-        LocalDateTime reservationTime = TimeUtils.stringParseLocalDataTime(after.getReservationDateTIme());
+        LocalDateTime reservationTime = TimeUtils.stringParseLocalDataTime(after.getReservationDateTime());
         String memo = after.getMemo();
         int people = after.getPeople();
         int child = after.getChild();
