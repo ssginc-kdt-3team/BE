@@ -71,4 +71,32 @@ public class OwnerReservationService {
         }
         return false;
     }
+
+    public boolean customerCancel(Long id) {
+        Optional<Reservation> byId = reservationRepository.findById(id);
+
+        if (byId.isPresent()) {
+            Reservation reservation = byId.get();
+
+            ReservationStatus status = reservation.getStatus();
+
+            if (status == ReservationStatus.RESERVATION) {
+                reservation.setStatus(ReservationStatus.CANCEL);
+                reservationRepository.save(reservation);
+
+                Deposit reservationDeposit = ownerDepositRepository.findReservationDeposit(id);
+                int originValue = reservationDeposit.getOrigin_value();
+                reservationDeposit.setStatus(DepositStatus.RETURN);
+
+                log.info("reservationDeposit.setStatus========= {}", reservationDeposit.getStatus());
+                log.info("reservationDeposit.setPenaltyValue=== {}", reservationDeposit.getPenaltyValue());
+
+                ownerDepositRepository.save(reservationDeposit);
+
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
 }

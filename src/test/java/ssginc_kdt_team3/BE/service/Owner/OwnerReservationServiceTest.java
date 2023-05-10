@@ -25,4 +25,9 @@ class OwnerReservationServiceTest {
     void customerNoShow() {
         boolean b = reservationService.customerNoShow(10L);
     }
+
+    @Test
+    void customerCancel() {
+        boolean b = reservationService.customerCancel(11L);
+    }
 }
