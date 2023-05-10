@@ -10,7 +10,7 @@ import javax.validation.constraints.NotNull;
 public class AdminLoginDTO {
 
     @NotEmpty
-    private String email;
+    private String loginId;
 
     @NotEmpty
     private String password;

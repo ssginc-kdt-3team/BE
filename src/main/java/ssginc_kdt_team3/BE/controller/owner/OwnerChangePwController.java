@@ -16,7 +16,6 @@ import ssginc_kdt_team3.BE.service.owner.OwnerChangePwService;
 @RestController
 @RequestMapping("/owner")
 @RequiredArgsConstructor
-
 public class OwnerChangePwController {
     @Autowired
     private final OwnerChangePwService changePwSer;
