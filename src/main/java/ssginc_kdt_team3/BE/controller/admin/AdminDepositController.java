@@ -22,10 +22,10 @@ public class AdminDepositController {
 
     private final AdminDepositService adminDepositService;
 
-    @GetMapping("/branch/{id}")
-    public ResponseEntity<Page<AdminDepositDTO>> showBranchDepositList(@PathVariable(name = "id") Long id) {
+    @GetMapping("/branch/{id}/{page}")
+    public ResponseEntity<Page<AdminDepositDTO>> showBranchDepositList(@PathVariable(name = "id") Long id,  @PathVariable(name = "page") int page) {
 
-        Pageable pageable = PageRequest.of(0, 10);
+        Pageable pageable = PageRequest.of(page-1, 10);
 
         Optional<Page<AdminDepositDTO>> depositList = adminDepositService.findDepositList(pageable, "branch", id);
 
@@ -37,10 +37,10 @@ public class AdminDepositController {
         }
     }
 
-    @GetMapping("/shop/{id}")
-    public ResponseEntity<Page<AdminDepositDTO>> showShopDepositList(@PathVariable(name = "id") Long id) {
+    @GetMapping("/shop/{id}/{page}")
+    public ResponseEntity<Page<AdminDepositDTO>> showShopDepositList(@PathVariable(name = "id") Long id,  @PathVariable(name = "page") int page) {
 
-        Pageable pageable = PageRequest.of(0, 10);
+        Pageable pageable = PageRequest.of(page-1, 10);
 
         Optional<Page<AdminDepositDTO>> depositList = adminDepositService.findDepositList(pageable, "shop", id);
 

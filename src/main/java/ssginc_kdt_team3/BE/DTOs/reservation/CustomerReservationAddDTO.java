@@ -36,20 +36,4 @@ public class CustomerReservationAddDTO {
 
     private long shopId;
 
-    public void setReservationInfo(Reservation reservation, Shop shop, Customer customer) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-        LocalDateTime reservationTime = LocalDateTime.parse(reservationDate, formatter);
-        reservation.setReservationDate(reservationTime);
-        reservation.setPeople(this.people);
-        reservation.setChild(this.child);
-        reservation.setMemo(this.memo);
-        reservation.setStatus(ReservationStatus.RESERVATION);
-
-        LocalDateTime parse = LocalDateTime.parse(LocalDateTime.now().format(formatter), formatter);
-        reservation.setApplyTime(parse);
-        reservation.setChangeTime(parse);
-        reservation.setShop(shop);
-        reservation.setCustomer(customer);
-    }
 }

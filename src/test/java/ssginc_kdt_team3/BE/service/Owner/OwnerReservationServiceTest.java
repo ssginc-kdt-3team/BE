@@ -19,12 +19,10 @@ class OwnerReservationServiceTest {
     @Test
     void customerCome() {
         boolean b = reservationService.customerCome(14L);
-
     }
 
     @Test
     void customerNoShow() {
         boolean b = reservationService.customerNoShow(10L);
-
     }
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import ssginc_kdt_team3.BE.DTOs.deposit.AdminDepositDTO;
 import ssginc_kdt_team3.BE.DTOs.reservation.CustomerReservationAddDTO;
 import ssginc_kdt_team3.BE.DTOs.reservation.CustomerReservationListDTO;
+import ssginc_kdt_team3.BE.DTOs.reservation.CustomerReservationUpdateDTO;
 import ssginc_kdt_team3.BE.repository.deposit.CustomerDepositRepository;
 import ssginc_kdt_team3.BE.service.customer.CustomerReservationService;
 
@@ -27,7 +28,7 @@ public class CustomerReservationController {
     private final CustomerReservationService reservationService;
 
     @PostMapping("/add")
-    public ResponseEntity showDepositList(@Validated @RequestBody CustomerReservationAddDTO dto, BindingResult bindingResult) {
+    public ResponseEntity createReservation(@Validated @RequestBody CustomerReservationAddDTO dto, BindingResult bindingResult) {
 
         if (dto.getPeople() <= dto.getChild()) {
             log.info("too many baby");
@@ -38,28 +39,61 @@ public class CustomerReservationController {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         }
 
-        boolean b = reservationService.makeReservation(dto);
+        Long aLong = reservationService.makeReservation(dto);
 
-        if (b) {
-            return ResponseEntity.ok().build();
+        if (aLong != null) {
+            return ResponseEntity.ok().body(aLong + "번 ");
         }
 
-        return ResponseEntity.badRequest().body("hello");
+        return ResponseEntity.badRequest().build();
     }
 
-    @GetMapping("listAll/{id}")
-    public ResponseEntity<Page<CustomerReservationListDTO>> showAllCustomerReservation(@PathVariable(name = "id") Long id) {
-        Pageable pageable = PageRequest.of(0, 10);
+    @GetMapping("listAll/{id}/{page}")
+    public ResponseEntity<Page<CustomerReservationListDTO>> showAllCustomerReservation(@PathVariable(name = "id") Long id, @PathVariable(name = "page") int page) {
+        Pageable pageable = PageRequest.of(page-1, 2);
         Page<CustomerReservationListDTO> list = reservationService.showMyAllReservation(pageable, id);
 
         return ResponseEntity.ok(list);
     }
 
-    @GetMapping("listActive/{id}")
-    public ResponseEntity<Page<CustomerReservationListDTO>> showActiveCustomerReservation(@PathVariable(name = "id") Long id) {
-        Pageable pageable = PageRequest.of(0, 10);
+    @GetMapping("listActive/{id}/{page}")
+    public ResponseEntity<Page<CustomerReservationListDTO>> showActiveCustomerReservation(@PathVariable(name = "id") Long id, @PathVariable(name = "page") int page) {
+        Pageable pageable = PageRequest.of(page-1, 10);
         Page<CustomerReservationListDTO> list = reservationService.showMyActiveReservation(pageable, id);
 
         return ResponseEntity.ok(list);
+    }
+
+    @GetMapping("/update/{id}")
+    public ResponseEntity updateReservationRead(@PathVariable(name = "id") Long id) {
+        try {
+            CustomerReservationUpdateDTO reservationUpdateDTO = reservationService.showUpdateReservation(id);
+            return ResponseEntity.ok(reservationUpdateDTO);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
+
+    @PostMapping("/update/{id}")
+    public ResponseEntity updateReservation(@Validated @RequestBody CustomerReservationUpdateDTO dto, BindingResult bindingResult, @PathVariable(name = "id") Long id) {
+
+        boolean b = reservationService.updateReservation(id, dto);
+
+        if (dto.getPeople() <= dto.getChild()) {
+            log.info("too many baby");
+            bindingResult.reject("too many baby");
+        }
+
+        if (bindingResult.hasErrors()) {
+            bindingResult.reject("too many baby");
+            return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
+        }
+
+        if (b) {
+            return ResponseEntity.ok().build();
+        }
+
+        return ResponseEntity.badRequest().build();
     }
 }
