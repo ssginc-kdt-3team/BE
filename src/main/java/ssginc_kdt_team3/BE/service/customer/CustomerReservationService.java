@@ -7,9 +7,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import ssginc_kdt_team3.BE.DTOs.deposit.AdminDepositDTO;
 import ssginc_kdt_team3.BE.DTOs.reservation.CustomerReservationAddDTO;
 import ssginc_kdt_team3.BE.DTOs.reservation.CustomerReservationListDTO;
 import ssginc_kdt_team3.BE.DTOs.reservation.CustomerReservationUpdateDTO;
@@ -20,11 +18,13 @@ import ssginc_kdt_team3.BE.domain.Shop;
 import ssginc_kdt_team3.BE.enums.DepositStatus;
 import ssginc_kdt_team3.BE.enums.ReservationStatus;
 import ssginc_kdt_team3.BE.repository.customer.JpaCustomerRepository;
-import ssginc_kdt_team3.BE.repository.deposit.CustomerDepositRepository;
+import ssginc_kdt_team3.BE.repository.deposit.DepositRepository;
 import ssginc_kdt_team3.BE.repository.owner.shop.JpaDateShopRepository;
 import ssginc_kdt_team3.BE.repository.reservation.JpaDataReservationRepository;
+import ssginc_kdt_team3.BE.util.TimeUtils;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +39,7 @@ public class CustomerReservationService {
     private final JpaDataReservationRepository reservationRepository;
     private final JpaDateShopRepository shopRepository;
     private final JpaCustomerRepository customerRepository;
-    private final CustomerDepositRepository depositRepository;
+    private final DepositRepository depositRepository;
 
     @Transactional(readOnly = false)
     public Long makeReservation(CustomerReservationAddDTO dto) {
@@ -124,10 +124,8 @@ public class CustomerReservationService {
 
     //예약 정보를 dto로 받아온 새로운 정보로 변경
     private void update(Reservation before, CustomerReservationUpdateDTO after) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
-        LocalDateTime updateTime = LocalDateTime.parse(LocalDateTime.now().format(formatter), formatter);
-        LocalDateTime reservationTime = LocalDateTime.parse(after.getReservationDateTIme(), formatter);
+        LocalDateTime updateTime = TimeUtils.findNow();
+        LocalDateTime reservationTime = TimeUtils.stringParseLocalDataTime(after.getReservationDateTIme());
         String memo = after.getMemo();
         int people = after.getPeople();
         int child = after.getChild();
@@ -155,26 +153,78 @@ public class CustomerReservationService {
     }
 
     private void setReservationInfo(Reservation reservation, CustomerReservationAddDTO dto, Shop shop, Customer customer) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-        LocalDateTime reservationTime = LocalDateTime.parse(dto.getReservationDate(), formatter);
+        LocalDateTime reservationTime = TimeUtils.stringParseLocalDataTime(dto.getReservationDate());
         reservation.setReservationDate(reservationTime);
         reservation.setPeople(dto.getPeople());
         reservation.setChild(dto.getChild());
         reservation.setMemo(dto.getMemo());
         reservation.setStatus(ReservationStatus.RESERVATION);
 
-        LocalDateTime parse = LocalDateTime.parse(LocalDateTime.now().format(formatter), formatter);
+        LocalDateTime parse = TimeUtils.findNow();
         reservation.setApplyTime(parse);
         reservation.setChangeTime(parse);
         reservation.setShop(shop);
         reservation.setCustomer(customer);
     }
 
-    private void customerCancel(Long id) {
+    public boolean customerCancel(Long id) {
+        Optional<Reservation> byId = reservationRepository.findById(id);
 
+        if (byId.isPresent()) {
+            Reservation reservation = byId.get();
+            LocalDateTime expectedTime = reservation.getReservationDate();
+
+            if (reservation.getStatus() == ReservationStatus.RESERVATION) {
+
+                if (TimeUtils.findNow().isBefore(expectedTime.minusHours(24))) {
+                    //방문 에정일자보다 24시간 이상 여유 있는 경우
+                    reservation.setStatus(ReservationStatus.CANCEL);
+                    reservation.setChangeTime(TimeUtils.findNow());
+                    reservationRepository.save(reservation);
+
+                    //전액 환불 구현하기
+                    Deposit reservationDeposit = depositRepository.findReservationDeposit(reservation.getId());
+                    reservationDeposit.setStatus(DepositStatus.RETURN);
+                    depositRepository.save(reservationDeposit);
+
+                    //쿠폰, 포인트 환불 구현하기
+
+                } else if (TimeUtils.findNow().isBefore(expectedTime.minusHours(8))) {
+                    //방문 예정일자보다 8시간 ~ 24시간 여유 있는 경우
+                    reservation.setStatus(ReservationStatus.IMMINENT);
+                    reservation.setChangeTime(TimeUtils.findNow());
+                    reservationRepository.save(reservation);
+
+                    //위약금 50% 환불 50% 구현하기
+                    Deposit reservationDeposit = depositRepository.findReservationDeposit(reservation.getId());
+                    reservationDeposit.setStatus(DepositStatus.HALF_PENALTY);
+                    int originValue = reservationDeposit.getOrigin_value();
+                    reservationDeposit.setPenaltyValue(originValue/2);
+                    depositRepository.save(reservationDeposit);
+
+                    //쿠폰, 포인트 환불 구현하기
+
+                } else {
+                    //방문 예정일자보다 8시간 미만으로 여유있는 경우
+                    reservation.setStatus(ReservationStatus.IMMINENT);
+                    reservation.setChangeTime(TimeUtils.findNow());
+                    reservationRepository.save(reservation);
+
+                    //위약금 100%
+                    Deposit reservationDeposit = depositRepository.findReservationDeposit(reservation.getId());
+                    reservationDeposit.setStatus(DepositStatus.ALL_PENALTY);
+                    int originValue = reservationDeposit.getOrigin_value();
+                    reservationDeposit.setPenaltyValue(originValue);
+                    depositRepository.save(reservationDeposit);
+
+                    //쿠폰, 포인트 환불 X
+
+                }
+                return true;
+            }
+            return true;
+        }
+        return false;
     }
-
-
-
 }

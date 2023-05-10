@@ -1,6 +1,5 @@
 package ssginc_kdt_team3.BE.controller.customer;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -10,14 +9,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ssginc_kdt_team3.BE.DTOs.deposit.AdminDepositDTO;
 import ssginc_kdt_team3.BE.DTOs.reservation.CustomerReservationAddDTO;
 import ssginc_kdt_team3.BE.DTOs.reservation.CustomerReservationListDTO;
 import ssginc_kdt_team3.BE.DTOs.reservation.CustomerReservationUpdateDTO;
-import ssginc_kdt_team3.BE.repository.deposit.CustomerDepositRepository;
 import ssginc_kdt_team3.BE.service.customer.CustomerReservationService;
-
-import java.util.Map;
 
 @Slf4j
 @RestController
@@ -94,6 +89,16 @@ public class CustomerReservationController {
             return ResponseEntity.ok().build();
         }
 
+        return ResponseEntity.badRequest().build();
+    }
+
+    @PostMapping("/cancel/{id}")
+    public ResponseEntity cancelReservation(@PathVariable(name = "id") Long id) {
+        boolean b = reservationService.customerCancel(id);
+
+        if (b) {
+            return ResponseEntity.ok().build();
+        }
         return ResponseEntity.badRequest().build();
     }
 }

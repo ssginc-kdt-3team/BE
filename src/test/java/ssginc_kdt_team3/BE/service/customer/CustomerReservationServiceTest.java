@@ -9,8 +9,11 @@ import org.springframework.validation.annotation.Validated;
 import ssginc_kdt_team3.BE.DTOs.reservation.CustomerReservationAddDTO;
 import ssginc_kdt_team3.BE.DTOs.reservation.CustomerReservationUpdateDTO;
 import ssginc_kdt_team3.BE.domain.Reservation;
+import ssginc_kdt_team3.BE.enums.ReservationStatus;
+import ssginc_kdt_team3.BE.repository.deposit.DepositRepository;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
@@ -156,6 +159,89 @@ class CustomerReservationServiceTest {
 
         //T
         assertThat(afterFindReservation.getPeople()).isEqualTo(10);
+    }
+
+    @Test
+    public void allRefundTest() {
+        //G
+        CustomerReservationAddDTO customerReservationAddDTO = new CustomerReservationAddDTO();
+
+        customerReservationAddDTO.setUserId(2L);
+        customerReservationAddDTO.setShopId(1L);
+        customerReservationAddDTO.setPeople(10);
+        customerReservationAddDTO.setChild(4);
+        customerReservationAddDTO.setMemo("반반 무많이");
+        LocalDateTime time = LocalDateTime.now().plusHours(48);
+        String s = timeToString(time);
+        System.out.println("after ========================================================================================= " + s);
+        customerReservationAddDTO.setReservationDate(s);
+
+        Long aLong = service.makeReservation(customerReservationAddDTO);
+
+        //W
+        boolean b = service.customerCancel(aLong);
+
+        //T
+        Optional<Reservation> afterUpdateOptional = service.showOneReservation(aLong);
+        Reservation afterUpdate = afterUpdateOptional.get();
+
+        assertThat(afterUpdate.getStatus()).isEqualTo(ReservationStatus.CANCEL);
+    }
+
+    @Test
+    public void halfRefundTest() {
+        //G
+        CustomerReservationAddDTO customerReservationAddDTO = new CustomerReservationAddDTO();
+
+        customerReservationAddDTO.setUserId(2L);
+        customerReservationAddDTO.setShopId(1L);
+        customerReservationAddDTO.setPeople(10);
+        customerReservationAddDTO.setChild(4);
+        customerReservationAddDTO.setMemo("반반 무많이");
+        LocalDateTime time = LocalDateTime.now().plusHours(12);
+        customerReservationAddDTO.setReservationDate(timeToString(time).toString());
+
+        Long aLong = service.makeReservation(customerReservationAddDTO);
+
+        //W
+        boolean b = service.customerCancel(aLong);
+
+        //T
+        Optional<Reservation> afterUpdateOptional = service.showOneReservation(aLong);
+        Reservation afterUpdate = afterUpdateOptional.get();
+
+        assertThat(afterUpdate.getStatus()).isEqualTo(ReservationStatus.IMMINENT);
+    }
+
+    @Test
+    public void noRefundTest() {
+        //G
+        CustomerReservationAddDTO customerReservationAddDTO = new CustomerReservationAddDTO();
+
+        customerReservationAddDTO.setUserId(2L);
+        customerReservationAddDTO.setShopId(1L);
+        customerReservationAddDTO.setPeople(10);
+        customerReservationAddDTO.setChild(4);
+        customerReservationAddDTO.setMemo("반반 무많이");
+        LocalDateTime time = LocalDateTime.now().plusHours(4);
+        customerReservationAddDTO.setReservationDate(timeToString(time).toString());
+
+        Long aLong = service.makeReservation(customerReservationAddDTO);
+
+        //W
+        boolean b = service.customerCancel(aLong);
+
+        //T
+        Optional<Reservation> afterUpdateOptional = service.showOneReservation(aLong);
+        Reservation afterUpdate = afterUpdateOptional.get();
+
+        assertThat(afterUpdate.getStatus()).isEqualTo(ReservationStatus.IMMINENT);
+    }
+
+    private static String timeToString(LocalDateTime time) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        System.out.println("======================================================================================================" + time.format(formatter));
+        return time.format(formatter);
     }
 
 
