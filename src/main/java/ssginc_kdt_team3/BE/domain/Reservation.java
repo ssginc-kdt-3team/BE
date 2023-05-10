@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @ToString
-public class Reservation { // 이현: NotNull 체크가 없어요.
+public class Reservation {
 
     @Id
     @Column(name = "reservation_id")
