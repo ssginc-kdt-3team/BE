@@ -13,7 +13,7 @@ import java.util.List;
 public class AdminDepositRepositoryTest {
 
     @Autowired
-    AdminDepositRepository repository;
+    DepositRepository repository;
 
     @Test
     public void DepositList() {

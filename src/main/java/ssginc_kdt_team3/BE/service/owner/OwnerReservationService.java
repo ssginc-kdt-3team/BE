@@ -8,8 +8,9 @@ import ssginc_kdt_team3.BE.domain.Deposit;
 import ssginc_kdt_team3.BE.domain.Reservation;
 import ssginc_kdt_team3.BE.enums.DepositStatus;
 import ssginc_kdt_team3.BE.enums.ReservationStatus;
-import ssginc_kdt_team3.BE.repository.deposit.OwnerDepositRepository;
+import ssginc_kdt_team3.BE.repository.deposit.DepositRepository;
 import ssginc_kdt_team3.BE.repository.reservation.JpaDataReservationRepository;
+import ssginc_kdt_team3.BE.util.TimeUtils;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -22,7 +23,7 @@ import java.util.Optional;
 public class OwnerReservationService {
 
     private final JpaDataReservationRepository reservationRepository;
-    private final OwnerDepositRepository ownerDepositRepository;
+    private final DepositRepository depositRepository;
 
     public boolean customerCome(Long id) {
         Optional<Reservation> byId = reservationRepository.findById(id);
@@ -34,7 +35,7 @@ public class OwnerReservationService {
 
             if (status == ReservationStatus.RESERVATION) {
                 reservation.setStatus(ReservationStatus.DONE);
-                reservation.setChangeTime(findNow());
+                reservation.setChangeTime(TimeUtils.findNow());
                 reservationRepository.save(reservation);
 
                 return true;
@@ -42,11 +43,6 @@ public class OwnerReservationService {
             return false;
         }
         return false;
-    }
-
-    private static LocalDateTime findNow() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        return LocalDateTime.parse(LocalDateTime.now().toString(), formatter);
     }
 
     public boolean customerNoShow(Long id) {
@@ -59,10 +55,10 @@ public class OwnerReservationService {
 
             if (status == ReservationStatus.RESERVATION) {
                 reservation.setStatus(ReservationStatus.NOSHOW);
-                reservation.setChangeTime(findNow());
+                reservation.setChangeTime(TimeUtils.findNow());
                 reservationRepository.save(reservation);
 
-                Deposit reservationDeposit = ownerDepositRepository.findReservationDeposit(id);
+                Deposit reservationDeposit = depositRepository.findReservationDeposit(id);
                 int originValue = reservationDeposit.getOrigin_value();
                 reservationDeposit.setPenaltyValue(originValue);
                 reservationDeposit.setStatus(DepositStatus.ALL_PENALTY);
@@ -70,7 +66,7 @@ public class OwnerReservationService {
                 log.info("reservationDeposit.setStatus========= {}", reservationDeposit.getStatus());
                 log.info("reservationDeposit.setPenaltyValue=== {}", reservationDeposit.getPenaltyValue());
 
-                ownerDepositRepository.save(reservationDeposit);
+                depositRepository.save(reservationDeposit);
 
                 return true;
             }
@@ -89,16 +85,16 @@ public class OwnerReservationService {
 
             if (status == ReservationStatus.RESERVATION) {
                 reservation.setStatus(ReservationStatus.CANCEL);
-                reservation.setChangeTime(findNow());
+                reservation.setChangeTime(TimeUtils.findNow());
                 reservationRepository.save(reservation);
 
-                Deposit reservationDeposit = ownerDepositRepository.findReservationDeposit(id);
+                Deposit reservationDeposit = depositRepository.findReservationDeposit(id);
                 reservationDeposit.setStatus(DepositStatus.RETURN);
 
                 log.info("reservationDeposit.setStatus========= {}", reservationDeposit.getStatus());
                 log.info("reservationDeposit.setPenaltyValue=== {}", reservationDeposit.getPenaltyValue());
 
-                ownerDepositRepository.save(reservationDeposit);
+                depositRepository.save(reservationDeposit);
 
                 return true;
             }

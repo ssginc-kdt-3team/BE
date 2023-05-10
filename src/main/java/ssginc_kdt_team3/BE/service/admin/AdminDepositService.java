@@ -7,11 +7,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ssginc_kdt_team3.BE.DTOs.customer.CustomerListDTO;
 import ssginc_kdt_team3.BE.DTOs.deposit.AdminDepositDTO;
 import ssginc_kdt_team3.BE.domain.Deposit;
-import ssginc_kdt_team3.BE.repository.customer.JpaDateCustomerRepository;
-import ssginc_kdt_team3.BE.repository.deposit.AdminDepositRepository;
+import ssginc_kdt_team3.BE.repository.deposit.DepositRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +21,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AdminDepositService {
 
-    private final AdminDepositRepository depositRepository;
+    private final DepositRepository depositRepository;
 
     public Optional<Page<AdminDepositDTO>> findDepositList(Pageable pageable, String type, Long id) {
 

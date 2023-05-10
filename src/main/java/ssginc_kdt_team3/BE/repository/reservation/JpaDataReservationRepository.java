@@ -11,6 +11,7 @@ import ssginc_kdt_team3.BE.domain.Customer;
 import ssginc_kdt_team3.BE.domain.Reservation;
 import ssginc_kdt_team3.BE.enums.ReservationStatus;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface JpaDataReservationRepository extends JpaRepository<Reservation, Long> {
@@ -20,6 +21,9 @@ public interface JpaDataReservationRepository extends JpaRepository<Reservation,
 
     @Query("select r from Reservation r where r.customer.id = :customerId")
     List<Reservation> findAllMy(@Param("customerId") Long customerId);
+
+    @Query("select r from Reservation r where r.reservationDate <= :limit and r.status = :condition")
+    List<Reservation> findNoShow(@Param("limit") LocalDateTime limit, @Param("condition") ReservationStatus condition);
 
 
 }
