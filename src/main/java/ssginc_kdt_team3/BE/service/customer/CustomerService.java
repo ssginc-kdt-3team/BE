@@ -2,13 +2,10 @@ package ssginc_kdt_team3.BE.service.customer;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import ssginc_kdt_team3.BE.DTOs.customer.*;
 import ssginc_kdt_team3.BE.domain.Customer;
-
 import ssginc_kdt_team3.BE.enums.UserRole;
 import ssginc_kdt_team3.BE.enums.UserStatus;
 import ssginc_kdt_team3.BE.repository.customer.JpaCustomerRepository;

@@ -1,7 +1,8 @@
-package ssginc_kdt_team3.BE.repository.owner;
+package ssginc_kdt_team3.BE.repository.owner.reservation;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import ssginc_kdt_team3.BE.DTOs.reservation.OwnerReserveDTO;
 import ssginc_kdt_team3.BE.domain.Customer;
 import ssginc_kdt_team3.BE.domain.Reservation;
 
@@ -40,11 +41,13 @@ public class OwnerRepository {
   }
 
   // 당일 예약 시간별 조회
-  public Optional<Reservation> findReserveTime(LocalDateTime reservationDate){
-    return em.createQuery("SELECT r FROM Reservation r WHERE r.reservationDate = :reservationDate", Reservation.class)
-        .setParameter("reservationDate", reservationDate)
-        .getResultList()
-        .stream()
-        .findAny();
-  }
+//  public Optional<Reservation> findReserveTime(LocalDateTime reservationDate){
+//    return em.createQuery("SELECT r FROM Reservation r WHERE r.reservationDate = :reservationDate", Reservation.class)
+//        .setParameter("reservationDate", reservationDate)
+//        .getResultList()
+//        .stream()
+//        .findAny();
+//  }
+
+
 }

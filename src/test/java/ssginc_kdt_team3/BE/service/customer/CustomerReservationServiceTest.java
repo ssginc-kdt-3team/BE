@@ -26,7 +26,7 @@ class CustomerReservationServiceTest {
         customerReservationAddDTO.setPeople(4);
         customerReservationAddDTO.setChild(1);
         customerReservationAddDTO.setMemo("반반 무많이");
-        customerReservationAddDTO.setReservationDate(LocalDateTime.now());
+
 
         //W
         boolean b = service.makeReservation(customerReservationAddDTO);

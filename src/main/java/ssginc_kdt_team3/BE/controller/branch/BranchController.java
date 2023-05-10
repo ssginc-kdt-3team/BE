@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 import ssginc_kdt_team3.BE.DTOs.branch.BranchDTO;
 import ssginc_kdt_team3.BE.domain.Branch;
 import ssginc_kdt_team3.BE.service.branch.BranchService;
-import ssginc_kdt_team3.BE.service.customer.CustomerService;
-
 import java.util.List;
 
 @RestController
