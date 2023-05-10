@@ -17,5 +17,4 @@ public interface AdminDepositRepository extends JpaRepository<Deposit, Long> {
 
     @Query("select d from Deposit d where d.reservation.shop.branch.id = :branchId")
     List<Deposit> findBranchDepositList(@Param("branchId") Long branchId);
-
 }

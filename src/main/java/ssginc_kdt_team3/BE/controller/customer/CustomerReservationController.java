@@ -49,7 +49,7 @@ public class CustomerReservationController {
 
     @GetMapping("listAll/{id}")
     public ResponseEntity<Page<CustomerReservationListDTO>> showAllCustomerReservation(@PathVariable(name = "id") Long id) {
-        Pageable pageable = PageRequest.of(0, 5);
+        Pageable pageable = PageRequest.of(0, 10);
         Page<CustomerReservationListDTO> list = reservationService.showMyAllReservation(pageable, id);
 
         return ResponseEntity.ok(list);
@@ -57,7 +57,7 @@ public class CustomerReservationController {
 
     @GetMapping("listActive/{id}")
     public ResponseEntity<Page<CustomerReservationListDTO>> showActiveCustomerReservation(@PathVariable(name = "id") Long id) {
-        Pageable pageable = PageRequest.of(0, 5);
+        Pageable pageable = PageRequest.of(0, 10);
         Page<CustomerReservationListDTO> list = reservationService.showMyActiveReservation(pageable, id);
 
         return ResponseEntity.ok(list);

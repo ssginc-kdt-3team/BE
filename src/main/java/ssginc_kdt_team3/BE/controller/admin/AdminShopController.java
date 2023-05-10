@@ -23,15 +23,15 @@ public class AdminShopController {
 
     private final AdminShopService shopService;
 
-//    @GetMapping("/findAll/{id}")
-//    public ResponseEntity<Page<Shop>> findAllCustomer(@PathVariable(name = "id") Long storeId) {
-//        Pageable pageable = PageRequest.of(0, 5);
-//        ResponseEntity<Page<Shop>> response = ResponseEntity.ok()
-//                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-//                .body(shopService.findAllShop(storeId, pageable));
-//
-//        return response;
-//    }
+    @GetMapping("/findAll/{id}")
+    public ResponseEntity<Page<Shop>> findAllCustomer(@PathVariable(name = "id") Long storeId) {
+        Pageable pageable = PageRequest.of(0, 5);
+        ResponseEntity<Page<Shop>> response = ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .body(shopService.findAllShop(storeId, pageable));
+
+        return response;
+    }
 
     @GetMapping("/findOne/{id}")
     public ResponseEntity<Shop> findOne(@PathVariable(name = "id") Long shopId) {
