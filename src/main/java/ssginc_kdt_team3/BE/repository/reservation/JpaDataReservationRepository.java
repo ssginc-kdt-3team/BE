@@ -20,4 +20,6 @@ public interface JpaDataReservationRepository extends JpaRepository<Reservation,
 
     @Query("select r from Reservation r where r.customer.id = :customerId")
     List<Reservation> findAllMy(@Param("customerId") Long customerId);
+
+
 }

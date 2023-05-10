@@ -12,6 +12,7 @@ import ssginc_kdt_team3.BE.DTOs.owner.OwnerJoinDTO;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerUpdateDTO;
 import ssginc_kdt_team3.BE.domain.Owner;
 import ssginc_kdt_team3.BE.service.admin.AdminOwnerService;
+import ssginc_kdt_team3.BE.service.owner.OwnerJoinService;
 //import ssginc_kdt_team3.BE.service.owner.OwnerJoinService;
 //import ssginc_kdt_team3.BE.service.owner.OwnerJoinService;
 
@@ -23,13 +24,13 @@ import java.util.Optional;
 @RequestMapping("/admin/owner")
 public class AdminOwnerController {
 
-//    private final OwnerJoinService joinService;
+    private final OwnerJoinService joinService;
     private final AdminOwnerService ownerService;
 
     @PostMapping("/join")
     public ResponseEntity<String> ownerJoin(@RequestBody OwnerJoinDTO ownerJoinDTO) {
         try {
-//            joinService.join(ownerJoinDTO);
+            joinService.join(ownerJoinDTO);
             return ResponseEntity.ok("회원가입이 완료되었습니다!");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
