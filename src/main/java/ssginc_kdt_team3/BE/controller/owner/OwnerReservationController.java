@@ -31,9 +31,20 @@ public class OwnerReservationController {
         return ResponseEntity.badRequest().build();
     }
 
-    @PostMapping("done/{id}")
+    @PostMapping("enter/{id}")
     public ResponseEntity updateDone(@PathVariable(name = "id") Long reservationId) {
         boolean b = ownerReservationService.customerCome(reservationId);
+
+        if (b) {
+            return ResponseEntity.ok().build();
+        }
+
+        return ResponseEntity.badRequest().build();
+    }
+
+    @PostMapping("reject/{id}")
+    public ResponseEntity updateCancel(@PathVariable(name = "id") Long reservationId) {
+        boolean b = ownerReservationService.customerCancel(reservationId);
 
         if (b) {
             return ResponseEntity.ok().build();
