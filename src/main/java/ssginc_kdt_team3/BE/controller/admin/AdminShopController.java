@@ -22,7 +22,7 @@ import java.util.Optional;
 public class AdminShopController {
 
     private final AdminShopService shopService;
-
+    //
     @GetMapping("/findAll/{id}/{page}")
     public ResponseEntity<Page<Shop>> findAllCustomer(@PathVariable(name = "id") Long storeId,  @PathVariable(name = "page") int page) {
         Pageable pageable = PageRequest.of(page-1, 5);

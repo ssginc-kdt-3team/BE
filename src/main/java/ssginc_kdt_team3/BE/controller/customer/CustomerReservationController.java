@@ -6,13 +6,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ssginc_kdt_team3.BE.DTOs.reservation.CustomerReservationAddDTO;
+import ssginc_kdt_team3.BE.DTOs.reservation.CustomerReservationDetailDTO;
 import ssginc_kdt_team3.BE.DTOs.reservation.CustomerReservationListDTO;
 import ssginc_kdt_team3.BE.DTOs.reservation.CustomerReservationUpdateDTO;
 import ssginc_kdt_team3.BE.service.customer.CustomerReservationService;
+
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -98,6 +102,16 @@ public class CustomerReservationController {
 
         if (b) {
             return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity findOne(@PathVariable(name = "id") Long id) {
+        Optional<CustomerReservationDetailDTO> one = reservationService.findOne(id);
+
+        if (one.isPresent()) {
+            return ResponseEntity.ok(one.get());
         }
         return ResponseEntity.badRequest().build();
     }
