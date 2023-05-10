@@ -1,11 +1,14 @@
 package ssginc_kdt_team3.BE.DTOs.reservation;
 
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 import ssginc_kdt_team3.BE.domain.Customer;
 import ssginc_kdt_team3.BE.domain.Reservation;
 import ssginc_kdt_team3.BE.domain.Shop;
 import ssginc_kdt_team3.BE.enums.ReservationStatus;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -20,19 +23,18 @@ public class CustomerReservationAddDTO {
     @NotEmpty(message = "예약일은 필수값 입니다.")
     private String reservationDate;
 
-    @NotEmpty(message = "인원 수는 필수값 입니다.")
+    @Min(1)
     private int people;
 
-    @NotEmpty
+    @Min(0)
     private int child;
 
+    @Length(max = 100)
     private String memo;
 
-    @NotEmpty
-    private Long userId;
+    private long userId;
 
-    @NotEmpty
-    private Long shopId;
+    private long shopId;
 
     public void setReservationInfo(Reservation reservation, Shop shop, Customer customer) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
