@@ -15,9 +15,8 @@ import ssginc_kdt_team3.BE.service.owner.OwnerUpdateService;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/owner")
+public class OwnerUpdateInfoController {
 
-
-public class OwnerUpdateInfoContoller {
     @Autowired
     private final OwnerUpdateService update;
 
