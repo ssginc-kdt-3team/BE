@@ -10,12 +10,11 @@ import org.springframework.security.core.parameters.P;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ssginc_kdt_team3.BE.DTOs.reservation.CustomerReservationAddDTO;
-import ssginc_kdt_team3.BE.DTOs.reservation.CustomerReservationDetailDTO;
-import ssginc_kdt_team3.BE.DTOs.reservation.CustomerReservationListDTO;
-import ssginc_kdt_team3.BE.DTOs.reservation.CustomerReservationUpdateDTO;
+import ssginc_kdt_team3.BE.DTOs.reservation.*;
 import ssginc_kdt_team3.BE.service.customer.CustomerReservationService;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
@@ -112,6 +111,21 @@ public class CustomerReservationController {
 
         if (one.isPresent()) {
             return ResponseEntity.ok(one.get());
+        }
+        return ResponseEntity.badRequest().build();
+    }
+
+    @PostMapping("/possible")
+    public ResponseEntity isPossible(@RequestBody Map map) {
+        String id = map.get("shopId").toString();
+        long shopId = Long.parseLong(id);
+        String date = map.get("date").toString();
+
+        log.info("============================================================================date = {} , shopId = {}", date, shopId);
+
+        List<reservationPossibleDTO> reservationPossibleDTOS = reservationService.canReservation(shopId, date);
+        if (reservationPossibleDTOS.size() >= 1) {
+            return ResponseEntity.ok(reservationPossibleDTOS);
         }
         return ResponseEntity.badRequest().build();
     }

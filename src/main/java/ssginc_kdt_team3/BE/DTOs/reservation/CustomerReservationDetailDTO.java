@@ -15,7 +15,7 @@ import java.time.LocalTime;
 
 @Data
 public class CustomerReservationDetailDTO {
-
+    private Long reservationId;
     private String shopName;
     private String shopLocation;
     private String shopImgUrl;
@@ -34,6 +34,7 @@ public class CustomerReservationDetailDTO {
     private String cancelReason;
 
     public CustomerReservationDetailDTO(Reservation reservation, Deposit deposit) {
+        this.reservationId = reservation.getId();
         this.shopName = reservation.getShop().getName();
         this.shopLocation = reservation.getShop().getLocation();
         this.shopImgUrl = reservation.getShop().getShopImg();

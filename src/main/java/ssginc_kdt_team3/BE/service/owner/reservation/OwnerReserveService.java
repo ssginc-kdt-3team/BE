@@ -30,7 +30,6 @@ public class OwnerReserveService {
       ownerReserveDTOList.add(ownerReserveDTO);
     }
     return ownerReserveDTOList;
-
   }
 
   // 당일 예약 시간별 조회

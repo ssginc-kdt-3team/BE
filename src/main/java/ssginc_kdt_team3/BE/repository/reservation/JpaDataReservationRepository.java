@@ -25,5 +25,6 @@ public interface JpaDataReservationRepository extends JpaRepository<Reservation,
     @Query("select r from Reservation r where r.reservationDate <= :limit and r.status = :condition")
     List<Reservation> findNoShow(@Param("limit") LocalDateTime limit, @Param("condition") ReservationStatus condition);
 
+    int countByReservationDateAndShop_Id(LocalDateTime time, Long shopId);
 
 }

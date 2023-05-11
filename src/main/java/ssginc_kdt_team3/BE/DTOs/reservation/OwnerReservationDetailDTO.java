@@ -6,11 +6,10 @@ import ssginc_kdt_team3.BE.domain.Reservation;
 import ssginc_kdt_team3.BE.enums.ReservationStatus;
 import ssginc_kdt_team3.BE.util.TimeUtils;
 
-import java.time.LocalDateTime;
-
 @Data
-public class OwnerReservationDTO {
+public class OwnerReservationDetailDTO {
   //회원가입 한 회원 기준 -> 회원정보를 DTO로 받아 올 필요x
+  private Long reservationId;
 
   // 예약회원 정보
   private String name;
@@ -27,7 +26,8 @@ public class OwnerReservationDTO {
 
   private int deposit;
 
-  public OwnerReservationDTO(Reservation reservation, Deposit deposit) {
+  public OwnerReservationDetailDTO(Reservation reservation, Deposit deposit) {
+    this.reservationId = reservation.getId();
     this.name = reservation.getCustomer().getName();
     this.phoneNumber = reservation.getCustomer().getPhoneNumber();
     this.email = reservation.getCustomer().getEmail();

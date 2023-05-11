@@ -4,9 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ssginc_kdt_team3.BE.DTOs.reservation.OwnerReservationDTO;
+import ssginc_kdt_team3.BE.DTOs.reservation.OwnerReservationDetailDTO;
 import ssginc_kdt_team3.BE.domain.Deposit;
-import ssginc_kdt_team3.BE.domain.Owner;
 import ssginc_kdt_team3.BE.domain.Reservation;
 import ssginc_kdt_team3.BE.enums.DepositStatus;
 import ssginc_kdt_team3.BE.enums.ReservationStatus;
@@ -14,8 +13,6 @@ import ssginc_kdt_team3.BE.repository.deposit.DepositRepository;
 import ssginc_kdt_team3.BE.repository.reservation.JpaDataReservationRepository;
 import ssginc_kdt_team3.BE.util.TimeUtils;
 
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Optional;
 
 @Slf4j
@@ -105,7 +102,7 @@ public class OwnerReservationService {
         return false;
     }
 
-    public Optional<OwnerReservationDTO> showReservationDetail(Long id) {
+    public Optional<OwnerReservationDetailDTO> showReservationDetail(Long id) {
 
         Optional<Reservation> byId = reservationRepository.findById(id);
 
@@ -113,7 +110,7 @@ public class OwnerReservationService {
             Reservation reservation = byId.get();
             Deposit reservationDeposit = depositRepository.findReservationDeposit(reservation.getId());
 
-            OwnerReservationDTO dto = new OwnerReservationDTO(reservation,reservationDeposit);
+            OwnerReservationDetailDTO dto = new OwnerReservationDetailDTO(reservation,reservationDeposit);
 
             return Optional.ofNullable(dto);
         }
