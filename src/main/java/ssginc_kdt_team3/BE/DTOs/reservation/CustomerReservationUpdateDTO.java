@@ -7,8 +7,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Data
-public class
-CustomerReservationUpdateDTO {
+public class CustomerReservationUpdateDTO {
 
     private Long reservationId;
     private String branchName;
