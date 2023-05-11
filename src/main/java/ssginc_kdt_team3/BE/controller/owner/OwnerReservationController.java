@@ -2,12 +2,9 @@ package ssginc_kdt_team3.BE.controller.owner;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ssginc_kdt_team3.BE.DTOs.deposit.AdminDepositDTO;
-import ssginc_kdt_team3.BE.DTOs.reservation.OwnerReservationDTO;
-import ssginc_kdt_team3.BE.service.owner.OwnerJoinService;
+import ssginc_kdt_team3.BE.DTOs.reservation.OwnerReservationDetailDTO;
 import ssginc_kdt_team3.BE.service.owner.OwnerReservationService;
 
 import java.util.Optional;
@@ -55,7 +52,7 @@ public class OwnerReservationController {
 
     @GetMapping("/{id}")
     public ResponseEntity findOne(@PathVariable(name = "id") Long reservationId) {
-        Optional<OwnerReservationDTO> ownerReservationDTO = ownerReservationService.showReservationDetail(reservationId);
+        Optional<OwnerReservationDetailDTO> ownerReservationDTO = ownerReservationService.showReservationDetail(reservationId);
 
         if (ownerReservationDTO.isPresent()) {
             return ResponseEntity.ok(ownerReservationDTO.get());

@@ -8,12 +8,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import ssginc_kdt_team3.BE.DTOs.reservation.CustomerReservationAddDTO;
 import ssginc_kdt_team3.BE.DTOs.reservation.CustomerReservationUpdateDTO;
+import ssginc_kdt_team3.BE.DTOs.reservation.reservationPossibleDTO;
 import ssginc_kdt_team3.BE.domain.Reservation;
 import ssginc_kdt_team3.BE.enums.ReservationStatus;
 import ssginc_kdt_team3.BE.repository.deposit.DepositRepository;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
@@ -242,6 +244,14 @@ class CustomerReservationServiceTest {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         System.out.println("======================================================================================================" + time.format(formatter));
         return time.format(formatter);
+    }
+
+    @Test
+    public void canReservationTest() {
+        List<reservationPossibleDTO> reservationPossibleDTOS = service.canReservation(1L, "2000-01-04");
+        for (reservationPossibleDTO r :reservationPossibleDTOS) {
+            System.out.println(r.toString());
+        }
     }
 
 
