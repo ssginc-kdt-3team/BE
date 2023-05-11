@@ -9,6 +9,7 @@ import java.time.LocalTime;
 
 @Data
 public class CustomerReservationListDTO {
+    private long reservationId;
     private String shopName;
     private LocalDate expectedDate;
     private LocalTime expectedTime;
@@ -17,6 +18,7 @@ public class CustomerReservationListDTO {
     private ReservationStatus reservationStatus;
 
     public CustomerReservationListDTO(Reservation reservation) {
+        this.reservationId = reservation.getId();
         this.shopName = reservation.getShop().getName();
         this.expectedDate = reservation.getReservationDate().toLocalDate();
         this.expectedTime = reservation.getReservationDate().toLocalTime();
