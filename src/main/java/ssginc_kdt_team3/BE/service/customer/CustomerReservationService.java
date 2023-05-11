@@ -2,7 +2,6 @@ package ssginc_kdt_team3.BE.service.customer;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import net.bytebuddy.asm.Advice;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -18,14 +17,13 @@ import ssginc_kdt_team3.BE.enums.DepositStatus;
 import ssginc_kdt_team3.BE.enums.ReservationStatus;
 import ssginc_kdt_team3.BE.repository.customer.JpaCustomerRepository;
 import ssginc_kdt_team3.BE.repository.deposit.DepositRepository;
-import ssginc_kdt_team3.BE.repository.owner.shop.JpaDateShopRepository;
+import ssginc_kdt_team3.BE.repository.shop.JpaDataShopRepository;
 import ssginc_kdt_team3.BE.repository.reservation.JpaDataReservationRepository;
 import ssginc_kdt_team3.BE.util.TimeUtils;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -37,7 +35,7 @@ import java.util.Optional;
 public class CustomerReservationService {
 
     private final JpaDataReservationRepository reservationRepository;
-    private final JpaDateShopRepository shopRepository;
+    private final JpaDataShopRepository shopRepository;
     private final JpaCustomerRepository customerRepository;
     private final DepositRepository depositRepository;
 

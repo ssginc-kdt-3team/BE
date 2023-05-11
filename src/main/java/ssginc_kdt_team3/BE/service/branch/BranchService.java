@@ -8,7 +8,7 @@ import ssginc_kdt_team3.BE.DTOs.shop.CustomerShopListDTO;
 import ssginc_kdt_team3.BE.domain.Branch;
 import ssginc_kdt_team3.BE.domain.Shop;
 import ssginc_kdt_team3.BE.repository.branch.BranchRepository;
-import ssginc_kdt_team3.BE.repository.shop.JpaShopRepository;
+import ssginc_kdt_team3.BE.repository.shop.JpaDataShopRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class BranchService {
   private final BranchRepository branchRepository;
-  private final JpaShopRepository shopRepository;
+  private final JpaDataShopRepository shopRepository;
 
   // 지점 조회
   public Branch getBranch(Long id) {
