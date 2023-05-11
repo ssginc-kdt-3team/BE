@@ -247,8 +247,24 @@ public class CustomerReservationService {
         Optional<Shop> byId = shopRepository.findById(shopId);
         List<reservationPossibleDTO> result = new ArrayList<>();
 
-        if (byId.isPresent()) {
+        LocalDateTime today = TimeUtils.findNow();
+        LocalDate getDate = LocalDate.parse(date);
 
+
+        LocalDate dayLimit = null;
+        if (today.getDayOfMonth() <= 15) {
+            dayLimit = LocalDate.of(today.getYear(), today.getMonth().plus(1), 15);
+
+        } else {
+            dayLimit = LocalDate.of(today.getYear(), today.getMonth().plus(1), today.getMonth().plus(1).maxLength());
+        }
+
+        if (getDate.isAfter(dayLimit) || getDate.isBefore(today.toLocalDate())) {
+            return result;
+        }
+
+
+        if (byId.isPresent()) {
             Shop shop = byId.get();
             int limit = shop.getOperationInfo().getSeats();
             LocalTime openTime = shop.getOperationInfo().getOpenTime();
@@ -257,8 +273,7 @@ public class CustomerReservationService {
             long temp = 1L;
             for (LocalTime time = openTime; time.isBefore(orderCloseTime); time = time.plusMinutes(30)) {
 
-
-                LocalDateTime when = LocalDateTime.of(LocalDate.parse(date), time);
+                LocalDateTime when = LocalDateTime.of(getDate, time);
 
                 int cnt = reservationRepository.countByReservationDateAndShop_Id(when, shopId);
 

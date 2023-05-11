@@ -26,7 +26,6 @@ public class ReserveController {
   public List<ReserveTimeDTO> reserveTimeList() {
     List<ReserveTimeDTO> reserveTime = reserveService.getReserveTime();
     return reserveTime;
-
   }
 
 
