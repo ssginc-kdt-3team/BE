@@ -245,9 +245,9 @@ public class CustomerReservationService {
 
     public List<reservationPossibleDTO> canReservation(Long shopId, String date) {
         Optional<Shop> byId = shopRepository.findById(shopId);
+        List<reservationPossibleDTO> result = new ArrayList<>();
 
         if (byId.isPresent()) {
-            List<reservationPossibleDTO> result = new ArrayList<>();
 
             Shop shop = byId.get();
             int limit = shop.getOperationInfo().getSeats();
@@ -272,7 +272,7 @@ public class CustomerReservationService {
             return result;
         }
 
-        return null;
+        return result;
     }
 
 
