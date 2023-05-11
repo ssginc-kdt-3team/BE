@@ -4,8 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssginc_kdt_team3.BE.DTOs.branch.BranchDTO;
+import ssginc_kdt_team3.BE.DTOs.shop.CustomerShopListDTO;
 import ssginc_kdt_team3.BE.domain.Branch;
+import ssginc_kdt_team3.BE.domain.Shop;
 import ssginc_kdt_team3.BE.repository.branch.BranchRepository;
+import ssginc_kdt_team3.BE.repository.shop.JpaShopRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +18,8 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class BranchService {
   private final BranchRepository branchRepository;
+  private final JpaShopRepository shopRepository;
+
   // 지점 조회
   public Branch getBranch(Long id) {
     return branchRepository.findBranch(id);
@@ -38,6 +43,17 @@ public class BranchService {
     }
 
     return branchDTOList;
+  }
+
+  public List<CustomerShopListDTO> showShopOfBranch(Long id) {
+    List<Shop> branchShop = shopRepository.findBranchShop(id);
+    List<CustomerShopListDTO> shops = new ArrayList<>();
+    for (Shop shop : branchShop) {
+      CustomerShopListDTO dto = new CustomerShopListDTO(shop);
+      shops.add(dto);
+    }
+
+    return shops;
   }
 
 }
