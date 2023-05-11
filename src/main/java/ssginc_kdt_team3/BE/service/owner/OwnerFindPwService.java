@@ -5,8 +5,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerFindPwDTO;
+import ssginc_kdt_team3.BE.DTOs.owner.OwnerNewPwDTO;
 import ssginc_kdt_team3.BE.domain.Owner;
-import ssginc_kdt_team3.BE.repository.owner.JpaDataOwnerRepository;
+import ssginc_kdt_team3.BE.repository.owner.DataOwnerRepository;
 
 
 import java.util.Optional;
@@ -17,16 +18,18 @@ import java.util.Optional;
 
 
 public class OwnerFindPwService{
-    @Autowired
-    private final JpaDataOwnerRepository repo;
+
+    private final DataOwnerRepository repo;
+
+    private String email;
 
     public void findPw(OwnerFindPwDTO ownerFindPwDTO) throws Exception{
 
-        String email = ownerFindPwDTO.getEmail();
+        this.email = ownerFindPwDTO.getEmail();
         String name = ownerFindPwDTO.getName();
         String phone = ownerFindPwDTO.getPhone();
 
-        boolean emailCheck = repo.existsByEmail(email);
+        boolean emailCheck = repo.existsEmail(this.email);
 
         if(!emailCheck){
             throw new Exception("존재하지 않는 회원입니다.");
@@ -49,4 +52,16 @@ public class OwnerFindPwService{
             throw new Exception("전화번호가 다릅니다.");
         }
     }
+    public void NewPw(OwnerNewPwDTO newPwDTO) throws Exception {
+        String pw1 = newPwDTO.getNewPassword1();
+        String pw2 = newPwDTO.getNewPassword2();
+
+        if (!pw1.equals(pw2)) {
+            throw new Exception("비밀번호가 서로 다릅니다!");
+        }else {
+            repo.updatePassword(this.email,pw1);
+        }
+    }
+
+
 }
