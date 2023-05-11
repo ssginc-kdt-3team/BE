@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter;
 @Data
 public class CustomerReservationUpdateDTO {
 
+    private Long shopId;
     private Long reservationId;
     private String branchName;
     private String shopName;
@@ -23,7 +24,7 @@ public class CustomerReservationUpdateDTO {
     public CustomerReservationUpdateDTO(Reservation reservation) {
         String time = reservation.getReservationDate().toString().replace("T", " ").concat(":00");
 //        System.out.println("time ==================================================================" + s);
-
+        this.shopId = reservation.getShop().getId();
         this.reservationId = reservation.getId();
         this.branchName = reservation.getShop().getBranch().getName();
         this.shopName = reservation.getShop().getName();
