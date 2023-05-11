@@ -5,8 +5,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ssginc_kdt_team3.BE.DTOs.reservation.OwnerReservationDetailDTO;
+import ssginc_kdt_team3.BE.DTOs.reservation.OwnerReservationFilterListDTO;
 import ssginc_kdt_team3.BE.service.owner.OwnerReservationService;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -61,4 +64,16 @@ public class OwnerReservationController {
         return ResponseEntity.badRequest().build();
     }
 
+    @GetMapping("/filter")
+    public ResponseEntity checkNoShow(@RequestBody Map request) {
+        Long ownerId = Long.parseLong(request.get("ownerId").toString());
+        String status = request.get("status").toString();
+        List<OwnerReservationFilterListDTO> ownerReservationNoShowListDTOS = ownerReservationService.showShopFilterList(ownerId, status);
+
+        if (ownerReservationNoShowListDTOS.size() >= 1) {
+            return ResponseEntity.ok(ownerReservationNoShowListDTOS);
+        }
+
+        return ResponseEntity.badRequest().build();
+    }
 }

@@ -27,4 +27,6 @@ public interface JpaDataReservationRepository extends JpaRepository<Reservation,
 
     int countByReservationDateAndShop_Id(LocalDateTime time, Long shopId);
 
+    List<Reservation> findAllByStatusAndShop_Id(ReservationStatus status, Long shopId);
+
 }
