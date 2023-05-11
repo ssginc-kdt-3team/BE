@@ -13,7 +13,6 @@ import ssginc_kdt_team3.BE.enums.UserStatus;
 
 import java.util.Optional;
 
-@Repository
 public interface JpaDataOwnerRepository extends JpaRepository<Owner, Long> {
 
     boolean existsByEmail(String email);
@@ -22,8 +21,10 @@ public interface JpaDataOwnerRepository extends JpaRepository<Owner, Long> {
 //    String PasswordMatchEmail(@Param("email")String email);
 
     Optional<Owner> findByEmail(String email);
-//
+
     Page<Owner> findAllBy(Pageable pageable);
+
+
 
 
 //    @Query("UPDATE Owner o SET o.password = :password")
