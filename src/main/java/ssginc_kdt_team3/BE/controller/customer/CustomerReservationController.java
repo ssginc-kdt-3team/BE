@@ -119,7 +119,6 @@ public class CustomerReservationController {
     public ResponseEntity isPossible(@RequestBody Map map) {
         String id = map.get("shopId").toString();
         long shopId = Long.parseLong(id);
-
         String date = map.get("date").toString();
 
         log.info("============================================================================date = {} , shopId = {}", date, shopId);
