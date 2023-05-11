@@ -254,8 +254,9 @@ public class CustomerReservationService {
             LocalTime openTime = shop.getOperationInfo().getOpenTime();
             LocalTime orderCloseTime = shop.getOperationInfo().getOrderCloseTime();
 
+            long temp = 1L;
             for (LocalTime time = openTime; time.isBefore(orderCloseTime); time = time.plusMinutes(30)) {
-                Long temp = 1L;
+
 
                 LocalDateTime when = LocalDateTime.of(LocalDate.parse(date), time);
 
@@ -267,7 +268,7 @@ public class CustomerReservationService {
                     result.add(new reservationPossibleDTO(temp, time, false));
                 }
 
-                temp += 1L;
+                temp += 1;
             }
             return result;
         }
