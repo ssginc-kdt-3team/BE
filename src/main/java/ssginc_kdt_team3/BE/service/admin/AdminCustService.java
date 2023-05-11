@@ -26,7 +26,7 @@ import java.util.Optional;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class AdminCustomerService {
+public class AdminCustService {
 
     private final JpaDateCustomerRepository customerRepository;
 //    private final EntityManager em;
