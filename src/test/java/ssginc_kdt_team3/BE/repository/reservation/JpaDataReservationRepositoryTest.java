@@ -40,4 +40,28 @@ class JpaDataReservationRepositoryTest {
         System.out.println(i);
 
     }
+
+    @Test
+    void findReservationByStatusAndBranchId() {
+        List<Reservation> allByStatusAndShopBranchId = reservationRepository.findAllByStatusAndShop_BranchId(ReservationStatus.RESERVATION, 2L);
+        for (Reservation reservation : allByStatusAndShopBranchId) {
+            System.out.println(reservation.toString());
+        }
+    }
+
+    @Test
+    void findReservationByBranchId() {
+        List<Reservation> allByStatusAndShopBranchId = reservationRepository.findAllByShop_BranchId(2L);
+        for (Reservation reservation : allByStatusAndShopBranchId) {
+            System.out.println(reservation.toString());
+        }
+    }
+
+    @Test
+    void findReservationByShopId() {
+        List<Reservation> allByStatusAndShopBranchId = reservationRepository.findAllByShop_Id(2L);
+        for (Reservation reservation : allByStatusAndShopBranchId) {
+            System.out.println(reservation.toString());
+        }
+    }
 }

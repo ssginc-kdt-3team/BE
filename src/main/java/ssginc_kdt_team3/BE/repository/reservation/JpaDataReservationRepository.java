@@ -29,4 +29,9 @@ public interface JpaDataReservationRepository extends JpaRepository<Reservation,
 
     List<Reservation> findAllByStatusAndShop_Id(ReservationStatus status, Long shopId);
 
+    List<Reservation> findAllByStatusAndShop_BranchId(ReservationStatus status, Long branchId);
+
+    List<Reservation> findAllByShop_Id(Long shopId);
+
+    List<Reservation> findAllByShop_BranchId(Long branchId);
 }
