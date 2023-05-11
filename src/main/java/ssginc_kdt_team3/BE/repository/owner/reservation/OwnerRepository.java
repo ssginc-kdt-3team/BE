@@ -50,3 +50,14 @@ public class OwnerRepository {
     return em.createQuery("SELECT r FROM Reservation r", Reservation.class)
         .getResultList();
   }
+
+  // 당일예약 시간별 조회: 점심, 저녁시간 -> 파라미터 바인딩으로 특정시간의 모든 값을 다 가져와야 되지 않나?
+  // 레포지토리를 이렇게 둘로 쪼갤필요가 없다. 왜냐면 starTime이 now, endTime이 1시간 뒤로 설정하면 되잖아.
+  public List<Reservation> findDateBetween(LocalDateTime startTime, LocalDateTime endTime){
+    return em.createQuery("SELECT r FROM Reservation r WHERE r.reservationDate BETWEEN :startTime AND :endTime", Reservation.class)
+        .setParameter("startTime", startTime)
+        .setParameter("endTime", endTime)
+        .getResultList();
+  }
+
+}

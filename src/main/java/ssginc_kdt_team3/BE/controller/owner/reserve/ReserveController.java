@@ -1,4 +1,4 @@
-package ssginc_kdt_team3.BE.controller.owner.reservation;
+package ssginc_kdt_team3.BE.controller.owner.reserve;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
