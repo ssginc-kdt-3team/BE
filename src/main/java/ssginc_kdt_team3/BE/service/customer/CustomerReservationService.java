@@ -8,10 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
-import ssginc_kdt_team3.BE.DTOs.reservation.CustomerReservationAddDTO;
-import ssginc_kdt_team3.BE.DTOs.reservation.CustomerReservationDetailDTO;
-import ssginc_kdt_team3.BE.DTOs.reservation.CustomerReservationListDTO;
-import ssginc_kdt_team3.BE.DTOs.reservation.CustomerReservationUpdateDTO;
+import ssginc_kdt_team3.BE.DTOs.reservation.*;
 import ssginc_kdt_team3.BE.domain.Customer;
 import ssginc_kdt_team3.BE.domain.Deposit;
 import ssginc_kdt_team3.BE.domain.Reservation;
@@ -20,13 +17,13 @@ import ssginc_kdt_team3.BE.enums.DepositStatus;
 import ssginc_kdt_team3.BE.enums.ReservationStatus;
 import ssginc_kdt_team3.BE.repository.customer.JpaCustomerRepository;
 import ssginc_kdt_team3.BE.repository.deposit.DepositRepository;
-import ssginc_kdt_team3.BE.repository.owner.shop.JpaDateShopRepository;
+import ssginc_kdt_team3.BE.repository.shop.JpaDataShopRepository;
 import ssginc_kdt_team3.BE.repository.reservation.JpaDataReservationRepository;
 import ssginc_kdt_team3.BE.util.TimeUtils;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -38,7 +35,7 @@ import java.util.Optional;
 public class CustomerReservationService {
 
     private final JpaDataReservationRepository reservationRepository;
-    private final JpaDateShopRepository shopRepository;
+    private final JpaDataShopRepository shopRepository;
     private final JpaCustomerRepository customerRepository;
     private final DepositRepository depositRepository;
 
@@ -50,7 +47,7 @@ public class CustomerReservationService {
         Customer customer = customerRepository.findCustomer(dto.getUserId()).get();
 
         //DTO 검증
-        setReservationInfo(reservation,dto, shop, customer);
+        setReservationInfo(reservation, dto, shop, customer);
         try {
             Reservation saveReservation = reservationRepository.save(reservation);
             log.info("================================================================can");
@@ -59,7 +56,7 @@ public class CustomerReservationService {
 
             deposit.setReservation(saveReservation);
             deposit.setStatus(DepositStatus.RECEIVE);
-            deposit.setOrigin_value(3000*(dto.getPeople()-dto.getChild()));
+            deposit.setOrigin_value(3000 * (dto.getPeople() - dto.getChild()));
 
             Deposit saveDeposit = depositRepository.save(deposit);
 
@@ -141,7 +138,7 @@ public class CustomerReservationService {
     private Page<CustomerReservationListDTO> listToDTOList(Pageable pageable, List<Reservation> allBy) {
         List<CustomerReservationListDTO> customerReservationList = new ArrayList<>();
 
-        for ( Reservation r : allBy) {
+        for (Reservation r : allBy) {
             CustomerReservationListDTO dto = new CustomerReservationListDTO(r);
             customerReservationList.add(dto);
         }
@@ -201,7 +198,7 @@ public class CustomerReservationService {
                     Deposit reservationDeposit = depositRepository.findReservationDeposit(reservation.getId());
                     reservationDeposit.setStatus(DepositStatus.HALF_PENALTY);
                     int originValue = reservationDeposit.getOrigin_value();
-                    reservationDeposit.setPenaltyValue(originValue/2);
+                    reservationDeposit.setPenaltyValue(originValue / 2);
                     depositRepository.save(reservationDeposit);
 
                     //쿠폰, 포인트 환불 구현하기
@@ -243,4 +240,54 @@ public class CustomerReservationService {
 
         return Optional.ofNullable(null);
     }
+
+    public List<reservationPossibleDTO> canReservation(Long shopId, String date) {
+        Optional<Shop> byId = shopRepository.findById(shopId);
+        List<reservationPossibleDTO> result = new ArrayList<>();
+
+        LocalDateTime today = TimeUtils.findNow();
+        LocalDate getDate = LocalDate.parse(date);
+
+
+        LocalDate dayLimit = null;
+        if (today.getDayOfMonth() <= 15) {
+            dayLimit = LocalDate.of(today.getYear(), today.getMonth().plus(1), 15);
+
+        } else {
+            dayLimit = LocalDate.of(today.getYear(), today.getMonth().plus(1), today.getMonth().plus(1).maxLength());
+        }
+
+        if (getDate.isAfter(dayLimit) || getDate.isBefore(today.toLocalDate())) {
+            return result;
+        }
+
+
+        if (byId.isPresent()) {
+            Shop shop = byId.get();
+            int limit = shop.getOperationInfo().getSeats();
+            LocalTime openTime = shop.getOperationInfo().getOpenTime();
+            LocalTime orderCloseTime = shop.getOperationInfo().getOrderCloseTime();
+
+            long temp = 1L;
+            for (LocalTime time = openTime; time.isBefore(orderCloseTime); time = time.plusMinutes(30)) {
+
+                LocalDateTime when = LocalDateTime.of(getDate, time);
+
+                int cnt = reservationRepository.countByReservationDateAndShop_Id(when, shopId);
+
+                if (cnt < limit) {
+                    result.add(new reservationPossibleDTO(temp, time, true));
+                } else {
+                    result.add(new reservationPossibleDTO(temp, time, false));
+                }
+
+                temp += 1;
+            }
+            return result;
+        }
+
+        return result;
+    }
+
+
 }

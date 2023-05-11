@@ -2,14 +2,14 @@ package ssginc_kdt_team3.BE.controller.owner;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ssginc_kdt_team3.BE.DTOs.deposit.AdminDepositDTO;
-import ssginc_kdt_team3.BE.DTOs.reservation.OwnerReservationDTO;
-import ssginc_kdt_team3.BE.service.owner.OwnerJoinService;
+import ssginc_kdt_team3.BE.DTOs.reservation.OwnerReservationDetailDTO;
+import ssginc_kdt_team3.BE.DTOs.reservation.OwnerReservationFilterListDTO;
 import ssginc_kdt_team3.BE.service.owner.OwnerReservationService;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -55,7 +55,7 @@ public class OwnerReservationController {
 
     @GetMapping("/{id}")
     public ResponseEntity findOne(@PathVariable(name = "id") Long reservationId) {
-        Optional<OwnerReservationDTO> ownerReservationDTO = ownerReservationService.showReservationDetail(reservationId);
+        Optional<OwnerReservationDetailDTO> ownerReservationDTO = ownerReservationService.showReservationDetail(reservationId);
 
         if (ownerReservationDTO.isPresent()) {
             return ResponseEntity.ok(ownerReservationDTO.get());
@@ -64,4 +64,16 @@ public class OwnerReservationController {
         return ResponseEntity.badRequest().build();
     }
 
+    @GetMapping("/filter")
+    public ResponseEntity checkNoShow(@RequestBody Map request) {
+        Long ownerId = Long.parseLong(request.get("ownerId").toString());
+        String status = request.get("status").toString();
+        List<OwnerReservationFilterListDTO> ownerReservationNoShowListDTOS = ownerReservationService.showShopFilterList(ownerId, status);
+
+        if (ownerReservationNoShowListDTOS.size() >= 1) {
+            return ResponseEntity.ok(ownerReservationNoShowListDTOS);
+        }
+
+        return ResponseEntity.badRequest().build();
+    }
 }

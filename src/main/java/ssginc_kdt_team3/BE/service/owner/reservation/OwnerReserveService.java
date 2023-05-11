@@ -69,6 +69,7 @@ public class OwnerReserveService {
     return reserveList;
     }
 
+
   // 당일 예약 시간별 조회 : 서비스도 여러개로 나누지 말고 if else로 열거하기
   // 리턴 결과는 같으니까 ~~~
   public List<ReserveDTO> getReserveTime(){
