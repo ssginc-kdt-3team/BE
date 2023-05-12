@@ -38,8 +38,9 @@ public class OwnerChangePwController {
         }catch (Exception e){
             return new ResponseEntity<>("비밀번호가 서로 다릅니다.",HttpStatus.BAD_REQUEST);
         }
-
     }
+
 }
+
 
 

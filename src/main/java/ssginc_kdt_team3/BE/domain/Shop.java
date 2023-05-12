@@ -3,8 +3,7 @@ package ssginc_kdt_team3.BE.domain;
 import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
-import ssginc_kdt_team3.BE.enums.UserStatus;
+import ssginc_kdt_team3.BE.enums.ShopStatus;
 
 import javax.persistence.*;
 
@@ -12,12 +11,10 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-@Table(name = "shop")
 public class Shop {
     @Id
-    @NotNull
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "shpo_id")
+    @Column(name = "shop_id")
     private long id;
 
     @NotNull
@@ -31,38 +28,38 @@ public class Shop {
     @NotNull
     @Column(name = "shop_status")
     @Enumerated(EnumType.STRING)
-    private UserStatus status;
+    private ShopStatus status;
 
     //int -> String으로 수정 (0502 임태경)
     @NotNull
     @Column(name = "shop_location", length = 20)
     private String location;
 
-    @NotNull
-    @Column(name = "shop_img", length = 100)
+    @Column(name = "shop_imgurl")
     private String shopImg;
 
-    @NotNull
-    @Column(name = "business_img", length = 100)
+    @Column(name = "business_img")
     private String businessImg;
 
-    @NotNull
     @Column(name = "business_num", length = 100)
     private String businessNum;
 
-    @NotNull
-    @Column(name = "business_name", length = 10)
+    @Column(name = "business_ceo", length = 10)
     private String businessName;
-
 
     // 변수 명 storeId를 store로 변경해야한다.
     @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "store_id")
-    private Store store;
+    @JoinColumn(name = "branch_id")
+    private Branch branch;
 
     @NotNull
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "shop_operation_info_id")
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private Owner owner;
+
+    @NotNull
+    @OneToOne
+    @JoinColumn(name = "shop_operation_id")
     private ShopOperationInfo operationInfo;
 }

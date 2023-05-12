@@ -3,7 +3,7 @@ package ssginc_kdt_team3.BE.DTOs.shop;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ssginc_kdt_team3.BE.enums.UserStatus;
+import ssginc_kdt_team3.BE.enums.ShopStatus;
 
 import java.time.LocalTime;
 
@@ -13,7 +13,7 @@ import java.time.LocalTime;
 public class ShopUpdateDTO {
     private String shopName;
     private String shopInfo;
-    private UserStatus shopStatus;
+    private ShopStatus shopStatus;
     private String shopLocation;
     private String shopImg;
     private String businessName;

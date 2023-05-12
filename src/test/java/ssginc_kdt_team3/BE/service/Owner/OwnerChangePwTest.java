@@ -9,9 +9,13 @@ import ssginc_kdt_team3.BE.DTOs.owner.OwnerChangePwDTO;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerJoinDTO;
 import ssginc_kdt_team3.BE.domain.Owner;
 import ssginc_kdt_team3.BE.enums.UserStatus;
+import ssginc_kdt_team3.BE.repository.owner.DataOwnerRepository;
 import ssginc_kdt_team3.BE.repository.owner.JpaDataOwnerRepository;
 import ssginc_kdt_team3.BE.service.owner.OwnerChangePwService;
-import ssginc_kdt_team3.BE.DTOs.cust.Address;
+import ssginc_kdt_team3.BE.DTOs.customer.Address;
+import ssginc_kdt_team3.BE.service.owner.OwnerJoinService;
+
+import java.time.LocalDate;
 
 @SpringBootTest
 public class OwnerChangePwTest {
@@ -19,48 +23,32 @@ public class OwnerChangePwTest {
     private JpaDataOwnerRepository repo;
     @Autowired
     private OwnerChangePwService ser;
+    @Autowired
+    private OwnerJoinService JoinService;
+    @Autowired
+    private DataOwnerRepository repo2;
 
     OwnerChangePwDTO pwDTO;
 
     CheckPwDTO check;
 
-    Owner owner;
-
-    OwnerJoinDTO owners;
+    OwnerJoinDTO ownerJoin;
 
     @BeforeEach
-    public void Clean(){
-
+    public void 회원세팅 () throws Exception{
         repo.deleteAll();
 
-        owner = new Owner();
-
-        Address address = new Address("부산시","해운대구","센텀 리더스마크","123-123");
-
-        owner.setEmail("?????@gmail.com");
-        owner.setName("가나다");
-        owner.setPassword("123456789");
-        owner.setPhone("010-1234-9998");
-        owner.setAddress(address);
-        owner.setGender(false);
-        owner.setStatus(UserStatus.ACTIVE);
-
-        repo.save(owner);
+        Address address = new Address("서울","어딘가","어떤 건물의 5층","123-123");
+        this.ownerJoin = new OwnerJoinDTO("zxcvbnm@gmail.com","go","Zxc@987!!",
+                "01012349998", LocalDate.parse("1999-11-28"),
+                true,address);
+        JoinService.join(ownerJoin);
+        System.out.println("완료");
     }
     @Test
     public void test1() throws Exception{
 
-        check = new CheckPwDTO("vvvvvvvv@naver.com","가나다","123456789");
-
-        try{
-            ser.CheckPw(check);
-            System.out.println("인증완료");
-        }catch (Exception e){
-            System.out.println("존재하지 않는 회원입니다!");
-        }
-
-        check.setEmail("?????@gmail.com");
-        check.setPassword("987654321");
+        check = new CheckPwDTO("vvvvvvvv@naver.com","go","Zxc@987!!");
 
         try{
             ser.CheckPw(check);
@@ -68,8 +56,9 @@ public class OwnerChangePwTest {
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
-        check.setName("?????");
-        check.setPassword("123456789");
+        //↑이메일만 다른 경우
+        check.setEmail("zxcvbnm@gmail.com");
+        check.setPassword("!!!");
 
         try{
             ser.CheckPw(check);
@@ -77,7 +66,9 @@ public class OwnerChangePwTest {
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
-        check.setName("가나다");
+        //↑비밀번호만 다른 경우
+        check.setName("shin0");
+        check.setPassword("Zxc@987!!");
 
         try{
             ser.CheckPw(check);
@@ -85,12 +76,25 @@ public class OwnerChangePwTest {
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
+        //이름만 다른 경우
+        check.setName("go");
+
+        try{
+            ser.CheckPw(check);
+            System.out.println("인증완료");
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+        //인증완료
 
     }
     @Test
     public void 비밀번호체크(){
 
         pwDTO = new OwnerChangePwDTO("qwertyqwerty","11111111111111");
+        System.out.println(pwDTO.getNewPassword1());
+        System.out.println(pwDTO.getNewPassword2());
+
         try{
             ser.ChangePw(pwDTO);
         }catch (Exception e){
@@ -98,13 +102,18 @@ public class OwnerChangePwTest {
         }
 
         pwDTO.setNewPassword1("11111111111111");
+
+        System.out.println(pwDTO.getNewPassword1());
+        System.out.println(pwDTO.getNewPassword2());
+
         try{
             ser.ChangePw(pwDTO);
         }catch (Exception e){
             System.out.println(e.getMessage());
         }
-        String ChangePw = repo.PasswordMatchEmail("?????@gmail.com");
-        System.out.println("변경후 비밀번호 : " + ChangePw);
+
+        String AfterPw = repo2.PasswordMatchEmail("zxcvbnm@gmail.com");
+        System.out.println("변경후 비밀번호 : " + AfterPw);
     }
 
 }

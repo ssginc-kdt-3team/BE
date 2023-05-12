@@ -4,32 +4,28 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ssginc_kdt_team3.BE.DTOs.cust.Address;
+import ssginc_kdt_team3.BE.DTOs.customer.Address;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerUpdateDTO;
+import ssginc_kdt_team3.BE.domain.Owner;
 import ssginc_kdt_team3.BE.enums.UserStatus;
-import ssginc_kdt_team3.BE.repository.owner.JpaDataOwnerRepository;
+import ssginc_kdt_team3.BE.repository.owner.DataOwnerRepository;
 
 @RequiredArgsConstructor
 @Service
 @Transactional
 public class OwnerUpdateService {
-    @Autowired
-    private final JpaDataOwnerRepository repo;
 
-    public void OwnerUpdate(OwnerUpdateDTO ownerUpdateDTO){
+    private final DataOwnerRepository repo;
 
-//        Owner owner = new Owner();
+    public void OwnerUpdate(long id,OwnerUpdateDTO ownerUpdateDTO){
 
-//        owner.setPhone(ownerUpdateDTO.getPhone());
-//        owner.setAddress(ownerUpdateDTO.getAdddress());
-//        owner.setStatus(ownerUpdateDTO.getUserStatus());
+        Owner owner = new Owner();
 
-        String bePhone = ownerUpdateDTO.getPhone();
-        Address beAddress = ownerUpdateDTO.getAdddress();
-        UserStatus beStatus = ownerUpdateDTO.getUserStatus();
+        owner.setPhoneNumber(ownerUpdateDTO.getPhone());
+        owner.setAddress(ownerUpdateDTO.getAdddress());
+        owner.setStatus(ownerUpdateDTO.getUserStatus());
 
-        repo.updateOwnerInfo(bePhone,beAddress,beStatus);
-//        repo.updateOwnerInfo(owner);
+        repo.updateOwnerInfo(owner,id);
 
 
     }

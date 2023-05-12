@@ -20,12 +20,12 @@ public class AdminService {
 
     public Long adminLogin(AdminLoginDTO loginDTO) {
 
-        String adminEmail = loginDTO.getEmail();
+        String loginId = loginDTO.getLoginId();
         String adminPassword = loginDTO.getPassword();
-        Optional<Admin> tryAdmin = repository.findByEmail(adminEmail);
+        Optional<Admin> tryAdmin = repository.findByLoginId(loginId);
 
         if (tryAdmin.isPresent() && tryAdmin.get().getPassword().equals(adminPassword)) {
-            log.info("suceess");
+            log.info("success");
             return tryAdmin.get().getId();
         } else {
             log.info("fail");
