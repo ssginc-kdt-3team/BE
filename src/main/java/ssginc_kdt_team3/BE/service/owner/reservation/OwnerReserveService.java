@@ -3,19 +3,17 @@ package ssginc_kdt_team3.BE.service.owner.reservation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ssginc_kdt_team3.BE.DTOs.reservation.ReserveDTO;
+import ssginc_kdt_team3.BE.DTOs.reservation.OwnerReservationDTO;
 import ssginc_kdt_team3.BE.domain.Reservation;
 import ssginc_kdt_team3.BE.enums.ReservationStatus;
-import ssginc_kdt_team3.BE.repository.owner.reservation.OwnerRepository;
+import ssginc_kdt_team3.BE.repository.reservation.OwnerRepository;
 import ssginc_kdt_team3.BE.repository.reservation.JpaDataReservationRepository;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +26,7 @@ public class OwnerReserveService {
   private final JpaDataReservationRepository reservationRepository;
 
   // 매장 모든 예약내역 조회: 페이징처리
-  public Page<ReserveDTO> getAllReserve(Pageable pageable) {
+  public Page<OwnerReservationDTO> getAllReserve(Pageable pageable) {
 //    List<Reservation> allReserve = ownerRepository.findAllReserve();
 
     Page<Reservation> all = reservationRepository.findAll(pageable);
@@ -36,9 +34,9 @@ public class OwnerReserveService {
     return toDtoPage(all);
   }
 
-  private Page<ReserveDTO> toDtoPage(Page<Reservation> reservationList) {
-    Page<ReserveDTO> reserveDtoList = reservationList.map( //빌더패턴
-        m -> ReserveDTO.builder()
+  private Page<OwnerReservationDTO> toDtoPage(Page<Reservation> reservationList) {
+    Page<OwnerReservationDTO> reserveDtoList = reservationList.map( //빌더패턴
+        m -> OwnerReservationDTO.builder()
             .id(m.getId())
             .name(m.getCustomer().getName())
             .phoneNumber(m.getCustomer().getPhoneNumber())
@@ -47,19 +45,19 @@ public class OwnerReserveService {
   }
 
   // 활성화된 예약 조회: ReservationStatus가 RESERVATION인 경우
-  public List<ReserveDTO> getActiveReserve() {
+  public List<OwnerReservationDTO> getActiveReserve() {
     List<Reservation> byStatus = ownerRepository.findByStatus(ReservationStatus.RESERVATION);
 
-    List<ReserveDTO> reserveList = new ArrayList<>();
+    List<OwnerReservationDTO> reserveList = new ArrayList<>();
     for (Reservation list : byStatus) {
-      ReserveDTO dto = new ReserveDTO(list);
+      OwnerReservationDTO dto = new OwnerReservationDTO(list);
       reserveList.add(dto);
     }
     return reserveList;
   }
 
   // 당일 예약 시간별 조회
-  public List<ReserveDTO> getReserveTime(String type) {
+  public List<OwnerReservationDTO> getReserveTime(String type) {
 
     log.info("service");
     LocalDateTime now = LocalDateTime.now();
@@ -95,11 +93,11 @@ public class OwnerReserveService {
     return null;
   }
 
-  private static List<ReserveDTO> listToDto(List<Reservation> b) { // 반복문 처리: Ctrl+Alt+M
-    List<ReserveDTO> reserveList = new ArrayList<>();
+  private static List<OwnerReservationDTO> listToDto(List<Reservation> b) { // 반복문 처리: Ctrl+Alt+M
+    List<OwnerReservationDTO> reserveList = new ArrayList<>();
 
     for (Reservation res : b) {
-      ReserveDTO dto = new ReserveDTO(res);
+      OwnerReservationDTO dto = new OwnerReservationDTO(res);
       reserveList.add(dto);
     }
     return reserveList;
