@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @Builder
-public class ReserveDTO { //점주(Owner)의 예약내역 확인용 DTO
+public class OwnerReservationDTO { //점주(Owner)의 예약내역 확인용 DTO
 
   // 예약회원 정보: 로그인 한 회원 기준 -> Customer에서 가져오기
   private String name;
@@ -28,7 +28,7 @@ public class ReserveDTO { //점주(Owner)의 예약내역 확인용 DTO
 
 
   // 생성자 -> Service 코드에서 사용
-  public ReserveDTO(Reservation reserve) {
+  public OwnerReservationDTO(Reservation reserve) {
     this.id = reserve.getId();
     this.name = reserve.getCustomer().getName();
     this.phoneNumber = reserve.getCustomer().getPhoneNumber();

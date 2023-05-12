@@ -1,4 +1,4 @@
-package ssginc_kdt_team3.BE.repository.owner.reservation;
+package ssginc_kdt_team3.BE.repository.reservation;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;

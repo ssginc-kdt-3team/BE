@@ -3,10 +3,9 @@ package ssginc_kdt_team3.BE.repository.owner.reservation;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import ssginc_kdt_team3.BE.repository.reservation.OwnerRepository;
 
 import java.time.LocalDateTime;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class OwnerRepositoryTest {
