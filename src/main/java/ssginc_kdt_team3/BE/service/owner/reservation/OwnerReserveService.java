@@ -1,6 +1,7 @@
 package ssginc_kdt_team3.BE.service.owner.reservation;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -13,10 +14,12 @@ import ssginc_kdt_team3.BE.repository.owner.reservation.OwnerRepository;
 import ssginc_kdt_team3.BE.repository.reservation.JpaDataReservationRepository;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -24,22 +27,8 @@ public class OwnerReserveService {
   private final OwnerRepository ownerRepository;
   private final JpaDataReservationRepository reservationRepository;
 
-  // 매장 모든 예약내역 조회
-//  public List<ReserveDTO> getAllReserve(){
-//    List<Reservation> allReserve = ownerRepository.findAllReserve();
-//
-//    reservationRepository.findAll();
-//
-//    List<ReserveDTO> ownerReserveDTOList = new ArrayList<>();
-//    for (Reservation list : allReserve) {
-//      ReserveDTO ownerReserveDTO = new ReserveDTO(list);
-//      ownerReserveDTOList.add(ownerReserveDTO);
-//    }
-//    return ownerReserveDTOList;
-//  }
-
-  // 페이징처리: Controller 선언 -> Reservation 리스트 가져와서 -> DTO 리스트로 바꾸고 -> 다시 페이지로 바꾼다.
-  public Page<ReserveDTO> getAllReserve(Pageable pageable){
+  // 매장 모든 예약내역 조회: 페이징처리
+  public Page<ReserveDTO> getAllReserve(Pageable pageable) {
 //    List<Reservation> allReserve = ownerRepository.findAllReserve();
 
     Page<Reservation> all = reservationRepository.findAll(pageable);
@@ -58,50 +47,62 @@ public class OwnerReserveService {
   }
 
   // 활성화된 예약 조회: ReservationStatus가 RESERVATION인 경우
-  public List<ReserveDTO> getActiveReserve(){
+  public List<ReserveDTO> getActiveReserve() {
     List<Reservation> byStatus = ownerRepository.findByStatus(ReservationStatus.RESERVATION);
 
     List<ReserveDTO> reserveList = new ArrayList<>();
-    for(Reservation list : byStatus) {
+    for (Reservation list : byStatus) {
       ReserveDTO dto = new ReserveDTO(list);
       reserveList.add(dto);
     }
     return reserveList;
   }
 
-  // 당일 예약 시간별 조회 : 서비스도 여러개로 나누지 말고 if else로 열거하기
-  // 리턴 결과는 같으니까 ~~~
-  public List<ReserveDTO> getReserveTime(){
+  // 당일 예약 시간별 조회
+  public List<ReserveDTO> getReserveTime(String type) {
+
+    log.info("service");
     LocalDateTime now = LocalDateTime.now();
-    LocalDateTime nowPlus1 = now.plusHours(1); //1시간 뒤
-    LocalDateTime nowPlus3 = now.plusHours(3); //3시간 뒤
 
-    // 형식 지정
-    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-    // 문자열로 변환
-    nowPlus1.format(formatter);
-    nowPlus3.format(formatter);
+
+    // == 이건 같은 변수가 저장되는 메모리를 비교, 둘이 저장된 곳이 다르면 안 돼
+    // equals는 주소는 상관없고 실제값만 비교하기 때문
+
+    if (type.equals("A")) {
+      List<Reservation> after1h = ownerRepository.findDateBetween(LocalDateTime.now(), LocalDateTime.now().plusHours(1));
+
+      return listToDto(after1h);
+
+    } else if (type.equals("B")) {
+      log.info("service B");
+      List<Reservation> after3h = ownerRepository.findDateBetween(LocalDateTime.now(), LocalDateTime.now().plusHours(3));
+
+      return listToDto(after3h);
+
+    } else if (type.equals("C")) {
+      LocalDateTime startLunch = now.with(LocalTime.of(11, 0));
+      List<Reservation> betweenLunch = ownerRepository.findDateBetween(startLunch, startLunch.plusHours(2));
+
+      return listToDto(betweenLunch);
+
+    } else if (type.equals("D")) {
+      LocalDateTime startDinner = now.with(LocalTime.of(17, 0));
+      List<Reservation> betweenDinner = ownerRepository.findDateBetween(startDinner, startDinner.plusHours(2));
+
+      return listToDto(betweenDinner);
+    }
     return null;
   }
 
-  public List<ReserveDTO> getTimeAfterOne(){
+  private static List<ReserveDTO> listToDto(List<Reservation> b) { // 반복문 처리: Ctrl+Alt+M
+    List<ReserveDTO> reserveList = new ArrayList<>();
 
-    //예약정보 다 들고와서, if로 조건 걸어줘야..?
-
-    List<Reservation> allReserve = ownerRepository.findAllReserve();
-
-    List<Reservation> nowPlus1 = ownerRepository.findDateBetween(LocalDateTime.now(), LocalDateTime.now().plusHours(1));
-    List<Reservation> nowPlus3 = ownerRepository.findDateBetween(LocalDateTime.now(), LocalDateTime.now().plusHours(3));
-
-    return null;
-
+    for (Reservation res : b) {
+      ReserveDTO dto = new ReserveDTO(res);
+      reserveList.add(dto);
+    }
+    return reserveList;
   }
-//  public List<ReserveDTO> getTimeAfterThree(){
-//
-//  }
-
-
-
 
 }
