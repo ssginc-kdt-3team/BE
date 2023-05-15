@@ -17,8 +17,12 @@ public class AdminReservationController {
 
     private final AdminReservationService reservationService;
 
+    /*
+    * RequestBody -> RequestParam
+    * */
+
     @GetMapping("")
-    public ResponseEntity<List<AdminReservationListDTO>> ownerJoin(@RequestBody Map request ) {
+    public ResponseEntity<List<AdminReservationListDTO>> ownerJoin(@RequestParam Map<String, String> request) {
 
         /*
         *  request
