@@ -60,6 +60,9 @@ dependencies {
 
 	//My sql
 	runtimeOnly 'com.mysql:mysql-connector-j'
+
+	//jwt
+	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 }
 
 
