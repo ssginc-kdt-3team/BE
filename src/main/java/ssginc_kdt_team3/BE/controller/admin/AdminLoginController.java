@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ssginc_kdt_team3.BE.DTOs.admin.AdminLoginDTO;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerLoginDTO;
+import ssginc_kdt_team3.BE.DTOs.reservation.Token;
 import ssginc_kdt_team3.BE.JwtAuthenticationFilter;
 import ssginc_kdt_team3.BE.service.admin.AdminService;
 
@@ -28,7 +29,7 @@ public class AdminLoginController {
     @PostMapping("/login")
     public ResponseEntity<Map> loginCheck(@RequestBody AdminLoginDTO loginDTO, HttpServletResponse response)  {
 
-        String token = adminService.adminLogin(loginDTO);
+        Token token = adminService.adminLogin(loginDTO);
 
         if (token != null) {
             HttpHeaders httpHeaders = new HttpHeaders();
@@ -36,7 +37,8 @@ public class AdminLoginController {
             httpHeaders.add(JwtAuthenticationFilter.AUTHORIZATION_HEADER, "Bearer " + token);
 
             Map<String, String> map = new HashMap();
-            map.put("token", token);
+                    map.put("accessToken", token.getAccessToken());
+                    map.put("refreshToken", token.getRefreshToken());
 
             return new ResponseEntity<>(map, httpHeaders, HttpStatus.OK);
         }
@@ -45,4 +47,10 @@ public class AdminLoginController {
 
     }
 
+    @PostMapping("/test")
+    public String test(){
+
+        return "<h1>test 통과</h1>";
+    }
 }
+

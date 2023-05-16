@@ -25,7 +25,6 @@ public class AdminDetail implements UserDetails {
     }
 
 
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 

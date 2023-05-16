@@ -36,12 +36,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .and()
         //URL 관리
         .authorizeRequests()
-        .antMatchers("/**").permitAll()
+        .antMatchers("/admin/login").permitAll()
         .anyRequest().authenticated()
         .and()
         // JwtAuthenticationFilter를 먼저 적용
         .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
 
         // super.configure(http); // 지워줌!
+        // + 토큰에 저장된 유저정보를 활용하여야 하기 때문에 CustomUserDetailService 클래스를 생성합니다.
     }
 }
