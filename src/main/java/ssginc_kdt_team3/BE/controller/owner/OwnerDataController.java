@@ -19,7 +19,6 @@ import ssginc_kdt_team3.BE.service.owner.OwnerUpdateService;
 public class OwnerDataController {
     @Autowired
     private final OwnerChangePwService changePwSer;
-
     @Autowired
     private final OwnerUpdateService update;
     @Autowired
@@ -35,7 +34,7 @@ public class OwnerDataController {
 
     }
 
-    @PostMapping("/password")
+    @PostMapping("/findPassword")
     public ResponseEntity<String> OwnerFindPw(@RequestBody OwnerFindPwDTO ownerFindPwDTO) throws Exception{
 
         try {
@@ -57,7 +56,7 @@ public class OwnerDataController {
         //비밀번호 찾기 & 비밀번호 변경에서 인증성공시 -> 새로운 비밀번호변경 창 표시
 
     }
-    @PostMapping("/checksucess")
+    @PostMapping("/passwordCheck")
     public ResponseEntity<String> pwCheckController (@RequestBody CheckPwDTO check) {
         try {
             changePwSer.CheckPw(check);
