@@ -2,6 +2,7 @@ package ssginc_kdt_team3.BE.controller.owner;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -32,6 +33,10 @@ public class OwnerReservationController {
     private final OwnerReservationService ownerReservationService;
     private final OwnerReserveService reserveService;
     private final JpaDataReservationRepository reservationRepository;
+
+    @Value("${owner.pageSize}")
+    private int pageSize;
+
 
     @PostMapping("noshow/{id}")
     public ResponseEntity updateNoShow(@PathVariable(name = "id") Long reservationId) {
@@ -94,19 +99,12 @@ public class OwnerReservationController {
     /*
     * 이현: OwnerReserveService, JpaDataReservationRepository 추가
     * */
-    @GetMapping("/getall/{page}") // 모든 예약내역 조회
-    public ResponseEntity<Page<OwnerReservationDTO>> reserveList(@PageableDefault(value = 10) @PathVariable(name = "page") int page, Pageable pageable) {
-//        Page<Reservation> reservationPage = reservationRepository.findAll(pageable);
-//        for (Reservation reservation : reservationPage) {
-//            System.out.println("reservation ===> " + reservation);
-//        }
-//        List<OwnerReservationDTO> allReserve = reservationPage.map(r -> new OwnerReservationDTO(r)).getContent(); //getContent = 리스트 타입으로 변환
-// 왜 주석처리한 코드가 없어도 돌아가는거져......
-
+    @GetMapping("/getall/{id}/{page}") // 모든 예약내역 조회
+    public ResponseEntity<Page<OwnerReservationDTO>> reserveList(@PathVariable(name = "page") int page, @PathVariable(name = "id") Long ownerId) {
+        Pageable pageable = PageRequest.of(page-1,pageSize);
         ResponseEntity<Page<OwnerReservationDTO>> response = ResponseEntity.ok()
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-            .body(reserveService.getAllReserve(pageable));
-
+            .body(reserveService.getAllReserve(pageable,ownerId));
         return response;
     }
 
