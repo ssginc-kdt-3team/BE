@@ -38,8 +38,6 @@ public class OwnerReservationService {
     private final DepositRepository depositRepository;
     private final JpaDataShopRepository shopRepository;
 
-    private final OwnerReserveService reserveService;
-
     public boolean customerCome(Long id) {
         Optional<Reservation> byId = reservationRepository.findById(id);
 
@@ -169,30 +167,6 @@ public class OwnerReservationService {
         return result;
     }
 
-    /**
-     * 0512 전이현
-     * */
-    @GetMapping() // 모든 예약내역 조회, 페이지값 어떻게 받아올지, 페이지 정보 Request, pageable, start end 도 필요한지 찾아봐
-    public ResponseEntity<List<OwnerReservationDTO>> reserveList(Pageable pageable) {
-        Page<Reservation> reservationPage = reservationRepository.findAll(pageable);
-        for (Reservation reservation : reservationPage) {
-            System.out.println("reservation = " + reservation);
-        }
-        List<OwnerReservationDTO> allReserve = reservationPage.map(r -> new OwnerReservationDTO(r)).getContent();
 
-        return ResponseEntity.ok(allReserve); //List로 변환시켜주는 애, json 형태로 뿌리려면 List형태 되야하니까
-    }
-
-    @GetMapping("/active") // 활성화된 예약 조회
-    public List<OwnerReservationDTO> activeReserveList() {
-        List<OwnerReservationDTO> activeReserve = reserveService.getActiveReserve();
-        return activeReserve;
-    }
-
-    @RequestMapping("/activetime/{type}") // 당일 예약시간별 조회
-    public List<OwnerReservationDTO> resTimeList(@PathVariable("type") String type) {
-        List<OwnerReservationDTO> reserveTime = reserveService.getReserveTime(type);
-        return reserveTime;
-    }
 
 }

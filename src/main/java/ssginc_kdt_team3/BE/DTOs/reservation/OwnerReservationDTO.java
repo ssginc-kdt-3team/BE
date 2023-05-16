@@ -13,13 +13,14 @@ import java.time.LocalDateTime;
 @Builder
 public class OwnerReservationDTO { //점주(Owner)의 예약내역 확인용 DTO
 
+  private Long id;
+
   // 예약회원 정보: 로그인 한 회원 기준 -> Customer에서 가져오기
   private String name;
   private String phoneNumber;
   private String email;
 
   // 예약정보
-  private Long id;
   private int people;
   private int child;
   private LocalDateTime reservationDate;
@@ -39,10 +40,5 @@ public class OwnerReservationDTO { //점주(Owner)의 예약내역 확인용 DTO
     this.status = reserve.getStatus();
     this.memo = reserve.getMemo();
   }
-
-  // 필드 추가나 삭제시 생성자를 건들이는데, DTO는 변경이 많은데
-  // 엔티티 필드값이랑 일치하는 값 가져오기 위해 모델매퍼 사용해(라이브러리)
-  // 빌더: 생성자 만들필요 없어 -> 그럼 dto 안 걸들여도 되잖아
-  // 모델매퍼, 빌더 사용법 알고
 
 }
