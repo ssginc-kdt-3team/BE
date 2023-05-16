@@ -23,13 +23,13 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class OwnerReserveService {
   private final OwnerRepository ownerRepository;
-  private final JpaDataReservationRepository reservationRepository;
+  private final JpaDataReservationRepository jpaDataReservationRepository;
 
   // 매장 모든 예약내역 조회: 페이징처리
   public Page<OwnerReservationDTO> getAllReserve(Pageable pageable) {
 //    List<Reservation> allReserve = ownerRepository.findAllReserve();
 
-    Page<Reservation> all = reservationRepository.findAll(pageable);
+    Page<Reservation> all = jpaDataReservationRepository.findAll(pageable);
     System.out.println("all = " + all);
     return toDtoPage(all);
   }
@@ -39,7 +39,12 @@ public class OwnerReserveService {
         m -> OwnerReservationDTO.builder()
             .id(m.getId())
             .name(m.getCustomer().getName())
+            .email(m.getCustomer().getEmail())
             .phoneNumber(m.getCustomer().getPhoneNumber())
+            .people(m.getPeople())
+            .child(m.getChild())
+            .status(m.getStatus())
+            .reservationDate(m.getReservationDate())
             .build());
     return reserveDtoList;
   }
@@ -62,29 +67,24 @@ public class OwnerReserveService {
     log.info("service");
     LocalDateTime now = LocalDateTime.now();
 
-
-
-    // == 이건 같은 변수가 저장되는 메모리를 비교, 둘이 저장된 곳이 다르면 안 돼
-    // equals는 주소는 상관없고 실제값만 비교하기 때문
-
-    if (type.equals("A")) {
+    if (type.equals("A")) { // 1시간 후
       List<Reservation> after1h = ownerRepository.findDateBetween(LocalDateTime.now(), LocalDateTime.now().plusHours(1));
 
       return listToDto(after1h);
 
-    } else if (type.equals("B")) {
+    } else if (type.equals("B")) { // 3시간 후
       log.info("service B");
       List<Reservation> after3h = ownerRepository.findDateBetween(LocalDateTime.now(), LocalDateTime.now().plusHours(3));
 
       return listToDto(after3h);
 
-    } else if (type.equals("C")) {
+    } else if (type.equals("C")) { // 점심시간(11~1)
       LocalDateTime startLunch = now.with(LocalTime.of(11, 0));
       List<Reservation> betweenLunch = ownerRepository.findDateBetween(startLunch, startLunch.plusHours(2));
 
       return listToDto(betweenLunch);
 
-    } else if (type.equals("D")) {
+    } else if (type.equals("D")) { // 저녁시간(17~19)
       LocalDateTime startDinner = now.with(LocalTime.of(17, 0));
       List<Reservation> betweenDinner = ownerRepository.findDateBetween(startDinner, startDinner.plusHours(2));
 
@@ -93,7 +93,8 @@ public class OwnerReserveService {
     return null;
   }
 
-  private static List<OwnerReservationDTO> listToDto(List<Reservation> b) { // 반복문 처리: Ctrl+Alt+M
+  // Reservation -> DTO 변경 반복문처리
+  private static List<OwnerReservationDTO> listToDto(List<Reservation> b) {
     List<OwnerReservationDTO> reserveList = new ArrayList<>();
 
     for (Reservation res : b) {

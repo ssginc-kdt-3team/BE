@@ -28,9 +28,9 @@ public class KakaoService {
       BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(urlConnection.getOutputStream()));
       StringBuilder sb = new StringBuilder();
       sb.append("grant_type=authorization_code");
-      sb.append("&client_id=e7293e102967c3d3a4289b15815c5154");
-      sb.append("&redirect_uri=http://127.0.0.1:8080/Customer/kakao");
-      sb.append("&code=" + code); // 인가코드를 전달해서 토큰을 받아야해
+      sb.append("&client_id="); //client_id 입력
+      sb.append("&redirect_uri="); //redirect_uri 입력
+      sb.append("&code=" + code); // 인가코드 전달해서 토큰을 받아야해
 
       bw.write(sb.toString());
       bw.flush();
@@ -96,11 +96,11 @@ public class KakaoService {
       JSONParser parser = new JSONParser();
       JSONObject obj = (JSONObject) parser.parse(res);
       JSONObject kakao_account = (JSONObject) obj.get("kakao_account");
-      JSONObject properties = (JSONObject) obj.get("properties");
+      JSONObject profile = (JSONObject) obj.get("profile");
 
 
       String id = obj.get("id").toString();
-      String nickname = properties.get("nickname").toString();
+      String nickname = profile.get("nickname").toString();
       String age_range = kakao_account.get("age_range").toString();
       String birthday = kakao_account.get("birthday").toString();
       String gender = kakao_account.get("gender").toString();
@@ -154,6 +154,5 @@ public class KakaoService {
     }
     return result;
   }
-
 
 }
