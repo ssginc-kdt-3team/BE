@@ -15,8 +15,6 @@ import ssginc_kdt_team3.BE.service.owner.OwnerLoginService;
 @RequestMapping("/owner")
 @RestController
 @RequiredArgsConstructor
-@Controller
-
 public class OwnerController {
 
     private final OwnerJoinService ownerJoinService;
