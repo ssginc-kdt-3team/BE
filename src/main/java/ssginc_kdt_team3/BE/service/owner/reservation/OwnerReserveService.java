@@ -3,19 +3,26 @@ package ssginc_kdt_team3.BE.service.owner.reservation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ssginc_kdt_team3.BE.DTOs.deposit.AdminDepositDTO;
 import ssginc_kdt_team3.BE.DTOs.reservation.OwnerReservationDTO;
+import ssginc_kdt_team3.BE.domain.Deposit;
 import ssginc_kdt_team3.BE.domain.Reservation;
+import ssginc_kdt_team3.BE.domain.Shop;
 import ssginc_kdt_team3.BE.enums.ReservationStatus;
+import ssginc_kdt_team3.BE.repository.deposit.DepositRepository;
 import ssginc_kdt_team3.BE.repository.reservation.OwnerRepository;
 import ssginc_kdt_team3.BE.repository.reservation.JpaDataReservationRepository;
+import ssginc_kdt_team3.BE.repository.shop.JpaDataShopRepository;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -24,29 +31,34 @@ import java.util.List;
 public class OwnerReserveService {
   private final OwnerRepository ownerRepository;
   private final JpaDataReservationRepository jpaDataReservationRepository;
+  private final DepositRepository depositRepository;
+  private final JpaDataShopRepository shopRepository;
 
   // 매장 모든 예약내역 조회: 페이징처리
-  public Page<OwnerReservationDTO> getAllReserve(Pageable pageable) {
-//    List<Reservation> allReserve = ownerRepository.findAllReserve();
-
-    Page<Reservation> all = jpaDataReservationRepository.findAll(pageable);
-    System.out.println("all = " + all);
-    return toDtoPage(all);
+  public Page<OwnerReservationDTO> getAllReserve(Pageable pageable, Long ownerId) {
+    Shop shop = shopRepository.findShopByOwner_id(ownerId).get();
+    List<Reservation> allByShopId = jpaDataReservationRepository.findAllByShop_Id(shop.getId());
+    System.out.println("all = " + allByShopId);
+    return toDtoPage(allByShopId, pageable);
   }
 
-  private Page<OwnerReservationDTO> toDtoPage(Page<Reservation> reservationList) {
-    Page<OwnerReservationDTO> reserveDtoList = reservationList.map( //빌더패턴
-        m -> OwnerReservationDTO.builder()
-            .id(m.getId())
-            .name(m.getCustomer().getName())
-            .email(m.getCustomer().getEmail())
-            .phoneNumber(m.getCustomer().getPhoneNumber())
-            .people(m.getPeople())
-            .child(m.getChild())
-            .status(m.getStatus())
-            .reservationDate(m.getReservationDate())
-            .build());
-    return reserveDtoList;
+  // list Res 받아와서 -> dto -> 페이지로
+  private Page<OwnerReservationDTO> toDtoPage(List<Reservation> reservationList, Pageable pageable) {
+    List<OwnerReservationDTO> dtoList = new ArrayList<>();
+
+    for (Reservation res : reservationList) {
+      Deposit reservationDeposit = depositRepository.findReservationDeposit(res.getId());
+      OwnerReservationDTO dto = new OwnerReservationDTO(res, reservationDeposit);
+      dtoList.add(dto);
+    }
+
+    // dto -> Page로
+    final int start = (int) pageable.getOffset();
+    final int end = Math.min((start + pageable.getPageSize()), dtoList.size());
+
+        Page<OwnerReservationDTO> ownerPage = new PageImpl<>(dtoList.subList(start, end), pageable, dtoList.size());
+
+    return ownerPage;
   }
 
   // 활성화된 예약 조회: ReservationStatus가 RESERVATION인 경우
@@ -55,11 +67,14 @@ public class OwnerReserveService {
 
     List<OwnerReservationDTO> reserveList = new ArrayList<>();
     for (Reservation list : byStatus) {
-      OwnerReservationDTO dto = new OwnerReservationDTO(list);
+      Deposit reservationDeposit = depositRepository.findReservationDeposit(list.getId());
+      OwnerReservationDTO dto = new OwnerReservationDTO(list, reservationDeposit);
       reserveList.add(dto);
     }
     return reserveList;
   }
+
+
 
   // 당일 예약 시간별 조회
   public List<OwnerReservationDTO> getReserveTime(String type) {
@@ -94,14 +109,18 @@ public class OwnerReserveService {
   }
 
   // Reservation -> DTO 변경 반복문처리
-  private static List<OwnerReservationDTO> listToDto(List<Reservation> b) {
+  private List<OwnerReservationDTO> listToDto(List<Reservation> b) {
     List<OwnerReservationDTO> reserveList = new ArrayList<>();
 
     for (Reservation res : b) {
-      OwnerReservationDTO dto = new OwnerReservationDTO(res);
+      // 생성자 아래에서 하면 안 되지, 먼저해야 하는 걸 위로
+      Deposit reservationDeposit = depositRepository.findReservationDeposit(res.getId());
+      OwnerReservationDTO dto = new OwnerReservationDTO(res, reservationDeposit);
       reserveList.add(dto);
     }
     return reserveList;
   }
+  // 생성자에 deposit 추가했는데 여긴  없으니까 에러나지
+  // 디포지토리에서 가져와야 함.
 
 }
