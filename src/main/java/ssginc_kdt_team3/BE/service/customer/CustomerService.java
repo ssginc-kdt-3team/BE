@@ -9,6 +9,10 @@ import ssginc_kdt_team3.BE.domain.Customer;
 import ssginc_kdt_team3.BE.enums.UserRole;
 import ssginc_kdt_team3.BE.enums.UserStatus;
 import ssginc_kdt_team3.BE.repository.customer.JpaCustomerRepository;
+import ssginc_kdt_team3.BE.repository.customer.JpaDataCustomerRepository;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -48,7 +52,7 @@ public class CustomerService {
   }
 
   //로그인
-  public boolean login (CustomerLoginDTO customerLoginDTO) {
+  public Map login (CustomerLoginDTO customerLoginDTO) {
     String email = customerLoginDTO.getEmail();
     String password = customerLoginDTO.getPassword();
     Optional<Customer> customerInfo = customerRepository.findByEmail(email);
@@ -57,15 +61,18 @@ public class CustomerService {
     if(customerInfo.isPresent()) { //null이 아니면(이메일 존재하면)
       log.info("이메일 일치");
 
-      if(customerInfo.get().getPassword().equals(password)) { // .get으로 옵셔널 벗겨서 비교
+      if (customerInfo.get().getPassword().equals(password)) { // .get으로 옵셔널 벗겨서 비교
         log.info("로그인 성공");
-        return true;
+        Map map = new HashMap();
+        map.put("id", customerInfo.get().getId());
+        return map;
+      } else {
+        log.info("비밀번호 불일치 실패");
       }
-
     } else {
-      log.info("로그인 실패");
+      log.info("아이디 X 실패");
     }
-    return false;
+    return null;
   }
 
   // Email 찾기 : phone 으로 찾기
