@@ -140,10 +140,14 @@ public class OwnerReservationService {
         if (shopByOwnerId.isPresent()) {
             Shop shop = shopByOwnerId.get();
 
-            String start = request.get("start");
-            String end = request.get("end");
+            String start = request.get("start")+" 00:00:00";
+            String end = request.get("end")+" 23:59:59";
 
-            List<Reservation> reservationList = reservationRepository.findAllByShop_Id(shop.getId());
+            LocalDateTime startTime = TimeUtils.stringParseLocalDataTime(start);
+            LocalDateTime endTime = TimeUtils.stringParseLocalDataTime(end);
+
+            List<Reservation> reservationList =
+                    reservationRepository.findAllByShop_IdAndReservationDateBetweenOrderByReservationDate(shop.getId(), startTime, endTime);
             return toDtoPage(reservationList, pageable);
         }
 
@@ -156,8 +160,8 @@ public class OwnerReservationService {
         if (shopByOwnerId.isPresent()) {
             Shop shop = shopByOwnerId.get();
 
-            String start = request.get("start");
-            String end = request.get("end");
+            String start = request.get("start")+" 00:00:00";
+            String end = request.get("end")+" 23:59:59";
 
             LocalDateTime startTime = TimeUtils.stringParseLocalDataTime(start);
             LocalDateTime endTime = TimeUtils.stringParseLocalDataTime(end);
@@ -177,8 +181,8 @@ public class OwnerReservationService {
         if (shopByOwnerId.isPresent()) {
             Shop shop = shopByOwnerId.get();
 
-            String start = request.get("start");
-            String end = request.get("end");
+            String start = request.get("start")+" 00:00:00";
+            String end = request.get("end")+" 23:59:59";
 
             LocalDateTime startTime = TimeUtils.stringParseLocalDataTime(start);
             LocalDateTime endTime = TimeUtils.stringParseLocalDataTime(end);
@@ -198,8 +202,8 @@ public class OwnerReservationService {
         if (shopByOwnerId.isPresent()) {
             Shop shop = shopByOwnerId.get();
 
-            String start = request.get("start");
-            String end = request.get("end");
+            String start = request.get("start")+" 00:00:00";
+            String end = request.get("end")+" 23:59:59";
 
             LocalDateTime startTime = TimeUtils.stringParseLocalDataTime(start);
             LocalDateTime endTime = TimeUtils.stringParseLocalDataTime(end);
@@ -219,8 +223,8 @@ public class OwnerReservationService {
         if (shopByOwnerId.isPresent()) {
             Shop shop = shopByOwnerId.get();
 
-            String start = request.get("start");
-            String end = request.get("end");
+            String start = request.get("start")+" 00:00:00";
+            String end = request.get("end")+" 23:59:59";
 
             LocalDateTime startTime = TimeUtils.stringParseLocalDataTime(start);
             LocalDateTime endTime = TimeUtils.stringParseLocalDataTime(end);
