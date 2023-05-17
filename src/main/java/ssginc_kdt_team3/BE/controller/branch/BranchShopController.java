@@ -1,22 +1,19 @@
 package ssginc_kdt_team3.BE.controller.branch;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import ssginc_kdt_team3.BE.DTOs.branch.BranchShopDTO;
-import ssginc_kdt_team3.BE.service.branch.BranchShopListService;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
+import ssginc_kdt_team3.BE.service.Shop.ShopDetailService;
+import ssginc_kdt_team3.BE.service.admin.branch.BranchShopListService;
 
 @RestController
 @RequestMapping("/shop")
 public class BranchShopController {
 
     BranchShopListService branchshop;
+
+    ShopDetailService detailService;
 
     @GetMapping("/list")
     public ResponseEntity<String> branchShopList(@RequestParam("id")long id) throws Exception{
@@ -30,5 +27,14 @@ public class BranchShopController {
     }
     public BranchShopController(BranchShopListService branchShop){
         this.branchshop = branchShop;
+    }
+    @GetMapping("detail/{id}")
+    public ResponseEntity<String> ShopDetail(@PathVariable long id) throws Exception{
+        try{
+            String shopDetail = detailService.ShopDetailList(id);
+            return new ResponseEntity<>(shopDetail,HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity<>("잘못된 요청입니다.",HttpStatus.BAD_REQUEST);
+        }
     }
 }

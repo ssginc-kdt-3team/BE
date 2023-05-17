@@ -2,10 +2,9 @@ package ssginc_kdt_team3.BE.service.cust;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.boot.test.context.SpringBootTest;
 import ssginc_kdt_team3.BE.repository.branch.BranchRepository;
-import ssginc_kdt_team3.BE.service.branch.BranchShopListService;
+import ssginc_kdt_team3.BE.service.admin.branch.BranchShopListService;
 
 @SpringBootTest
 public class BranchShopTest {

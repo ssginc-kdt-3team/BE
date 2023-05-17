@@ -5,7 +5,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import ssginc_kdt_team3.BE.DTOs.shop.ShopDetailDTO;
+import ssginc_kdt_team3.BE.domain.Review;
 import ssginc_kdt_team3.BE.domain.Shop;
+import ssginc_kdt_team3.BE.domain.ShopMenu;
+import ssginc_kdt_team3.BE.domain.ShopOperationInfo;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,5 +25,11 @@ public interface JpaDataShopRepository extends JpaRepository<Shop, Long> {
     List<Shop> findBranchShop(@Param("id") Long id);
 
     Optional<Shop> findShopByOwner_id(Long ownerId);
+
+    List<ShopDetailDTO> shopDetailList(@Param("id") long id);
+
+
+
+
 
 }
