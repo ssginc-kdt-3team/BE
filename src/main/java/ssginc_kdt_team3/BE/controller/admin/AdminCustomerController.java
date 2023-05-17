@@ -46,9 +46,9 @@ public class AdminCustomerController {
 
     @GetMapping("/findById/{id}")
     public Customer findOneCustomer(@PathVariable(name = "id") Long CustomerId) throws JsonProcessingException {
-        CustomerDetailDTO CustomerDetailDTO = customerService.findCustomerById(CustomerId);
+//        CustomerDetailDTO CustomerDetailDTO = customerService.findCustomerById(CustomerId);
 
-        Optional<Customer> customerById = customerService.temp(CustomerId);
+        Optional<Customer> customerById = customerService.findRawCustomerById(CustomerId);
 
         if (customerById.isPresent()) {
             Customer Customer = customerById.get();
@@ -80,7 +80,7 @@ public class AdminCustomerController {
 //        }
     }
 
-    @GetMapping("/findByEmail")
+    @PostMapping("/findByEmail")
     public CustomerDetailDTO findOneCustomerByName(@RequestBody HashMap map) {
         String email = map.get("email").toString();
         log.info("email = {}", email);

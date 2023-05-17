@@ -2,6 +2,7 @@ package ssginc_kdt_team3.BE.controller.admin;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,30 +23,35 @@ public class AdminDepositController {
 
     private final AdminDepositService adminDepositService;
 
-    @GetMapping("/branch/{id}/{page}")
-    public ResponseEntity<Page<AdminDepositDTO>> showBranchDepositList(@PathVariable(name = "id") Long id,  @PathVariable(name = "page") int page) {
+    @Value("${admin.pageSize}")
+    private int pageSize;
 
-        Pageable pageable = PageRequest.of(page-1, 10);
+    /*
+    * branch Deposit List랑 shop Deposit List 하나로 합침
+    * */
 
-        Optional<Page<AdminDepositDTO>> depositList = adminDepositService.findDepositList(pageable, "branch", id);
+    @GetMapping("/{type}/{id}/{page}")
+    public ResponseEntity<Page<AdminDepositDTO>> showDepositList(@PathVariable(name = "type") String type, @PathVariable(name = "id") Long id,  @PathVariable(name = "page") int page) {
 
-        if (depositList.isPresent()) {
-            Page<AdminDepositDTO> adminDepositDTOPage = depositList.get();
-            return ResponseEntity.ok(adminDepositDTOPage);
-        } else {
-            return ResponseEntity.badRequest().build();
+        Pageable pageable = PageRequest.of(page-1, pageSize);
+
+        if (type.equals("branch")) {
+            Optional<Page<AdminDepositDTO>> depositPage = adminDepositService.findBranchDepositList(pageable, type, id);
+
+            return getPageResponseEntity(depositPage);
+        } else if (type.equals("shop") ) {
+
+            Optional<Page<AdminDepositDTO>> depositPage = adminDepositService.findShopDepositList(pageable, type, id);
+
+            return getPageResponseEntity(depositPage);
         }
+
+        return ResponseEntity.badRequest().build();
     }
 
-    @GetMapping("/shop/{id}/{page}")
-    public ResponseEntity<Page<AdminDepositDTO>> showShopDepositList(@PathVariable(name = "id") Long id,  @PathVariable(name = "page") int page) {
-
-        Pageable pageable = PageRequest.of(page-1, 10);
-
-        Optional<Page<AdminDepositDTO>> depositList = adminDepositService.findDepositList(pageable, "shop", id);
-
-        if (depositList.isPresent()) {
-            Page<AdminDepositDTO> adminDepositDTOPage = depositList.get();
+    private ResponseEntity<Page<AdminDepositDTO>> getPageResponseEntity(Optional<Page<AdminDepositDTO>> depositPage) {
+        if (depositPage.isPresent()) {
+            Page<AdminDepositDTO> adminDepositDTOPage = depositPage.get();
             return ResponseEntity.ok(adminDepositDTOPage);
         } else {
             return ResponseEntity.badRequest().build();

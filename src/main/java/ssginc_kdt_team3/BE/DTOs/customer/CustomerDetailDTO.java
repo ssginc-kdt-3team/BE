@@ -1,6 +1,7 @@
 package ssginc_kdt_team3.BE.DTOs.customer;
 
 import lombok.Data;
+import ssginc_kdt_team3.BE.domain.Customer;
 import ssginc_kdt_team3.BE.enums.UserRole;
 import ssginc_kdt_team3.BE.enums.UserStatus;
 
@@ -36,18 +37,18 @@ public class CustomerDetailDTO {
 
     private String grade = null;
 
-    public CustomerDetailDTO(Long id, String email, String password, String name, String phone, Boolean gender, LocalDate birthday, Address address, UserRole role, UserStatus status, String grade) {
-        this.id = id;
-        this.email = email;
-        this.password = password;
-        this.name = name;
-        this.phone = phone;
-        this.gender = gender;
-        this.birthday = birthday;
-        this.address = address;
-        this.role = role;
-        this.status = status;
-        this.grade = grade;
+    public CustomerDetailDTO(Customer customer) {
+        this.id = customer.getId();
+        this.email = customer.getEmail();
+        this.password = customer.getPassword();
+        this.name = customer.getName();
+        this.phone = customer.getPhoneNumber();
+        this.gender = customer.getGender();
+        this.birthday = customer.getBirthday();
+        this.address = customer.getAddress();
+        this.role = customer.getRole();
+        this.status = customer.getStatus();
+        this.grade = customer.getGrade().getName().toString();
     }
 
     public CustomerDetailDTO() {

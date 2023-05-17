@@ -35,7 +35,7 @@ public class AdminCustomerService {
         return customerRepository.findAllBy(pageable);
     }
 
-    public Optional<Customer> temp(Long customerId) {
+    public Optional<Customer> findRawCustomerById(Long customerId) {
         return customerRepository.findById(customerId);
     }
 
@@ -45,10 +45,9 @@ public class AdminCustomerService {
 
         if (byId.isPresent()) {
             Customer customer = byId.get();
-            CustomerDetailDTO customerDetailDTO = new CustomerDetailDTO(customer.getId(), customer.getEmail(), customer.getPassword(),
-                customer.getName(), customer.getPhoneNumber(), customer.getGender(), customer.getBirthday(), customer.getAddress(),
-                customer.getRole(), customer.getStatus(), customer.getGrade().toString());
+            CustomerDetailDTO customerDetailDTO = new CustomerDetailDTO(customer);
             // 0506 이현: Grade name부분 enum 추가로 기존 Customer.getGrade().getName() 에러 -> Customer.getGrade().toString() 으로 수정
+            // 0517 태경 : detailDTO생성 시 customer 넘겨주도록 수정
 
 
             return customerDetailDTO;
@@ -62,10 +61,8 @@ public class AdminCustomerService {
 
         if (byEmail.isPresent()) {
             Customer customer = byEmail.get();
-            CustomerDetailDTO customerDetailDTO = new CustomerDetailDTO(customer.getId(), customer.getEmail(), customer.getPassword(),
-                customer.getName(), customer.getPhoneNumber(), customer.getGender(), customer.getBirthday(), customer.getAddress(),
-                customer.getRole(), customer.getStatus(), customer.getGrade().toString());
-
+            CustomerDetailDTO customerDetailDTO = new CustomerDetailDTO(customer);
+            // 0517 태경 : detailDTO생성 시 customer 넘겨주도록 수정
 
             return customerDetailDTO;
         }

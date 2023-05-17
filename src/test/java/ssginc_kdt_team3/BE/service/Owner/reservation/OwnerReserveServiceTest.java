@@ -5,14 +5,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import ssginc_kdt_team3.BE.repository.customer.JpaCustomerRepository;
 import ssginc_kdt_team3.BE.service.customer.CustomerService;
-import ssginc_kdt_team3.BE.service.owner.reservation.OwnerReserveService;
+import ssginc_kdt_team3.BE.service.owner.OwnerReservationService;
 
 @SpringBootTest
 @Transactional
 class OwnerReserveServiceTest {
 
   @Autowired
-  OwnerReserveService ownerReserveService;
+  OwnerReservationService ownerReserveService;
   @Autowired
   JpaCustomerRepository customerRepository;
 
