@@ -37,8 +37,6 @@ public class OwnerJoinService {
         owner.setStatus(UserStatus.ACTIVE);
         System.out.println(owner.toString());
 
-        repo.save(owner);
-
         if(!repo2.existsEmail(owner.getEmail())){
             System.out.println("owner.getEmail()>>>>>>>>>>>>>"+owner.getEmail());
             throw new Exception("중복된 이메일 입니다.");
