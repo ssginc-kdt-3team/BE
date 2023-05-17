@@ -17,6 +17,8 @@ public interface JpaDateCustomerRepository extends JpaRepository<Customer, Long>
 
 //    Page<Customer> findAllBy(Pageable pageable);
 
-    Optional<Customer> findCustomerByEmail(String Email);
+    Optional<Customer> findCustomerByEmail(String email);
+
+    Optional<Customer> findByEmail(String email);
 
 }

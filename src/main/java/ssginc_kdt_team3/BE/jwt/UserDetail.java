@@ -1,51 +1,42 @@
-package ssginc_kdt_team3.BE;
+package ssginc_kdt_team3.BE.jwt;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import ssginc_kdt_team3.BE.domain.Admin;
 import ssginc_kdt_team3.BE.domain.Customer;
+import ssginc_kdt_team3.BE.domain.User;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
 
-public class AdminDetail implements UserDetails {
+public class UserDetail implements UserDetails {
 
-    private final Admin admin;
+    private final User user;
 
-    public AdminDetail(Admin admin) {
-        this.admin = admin;
+    public UserDetail(User user) {
+        this.user = user;
     }
 
-    public final Admin getAdmin() {
-        return admin;
+    public final User getUser() {
+        return user;
     }
-
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
-        String role = admin.getRoles().toString();
+        String role = user.getRole().toString();
         GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(role);
         return Collections.singleton(grantedAuthority);
-
-//
-//        return admin.getRoles().stream()
-//                .map(SimpleGrantedAuthority::new)
-//                .collect(Collectors.toList());
     }
 
     @Override
     public String getPassword() {
-        return admin.getPassword();
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return admin.getLoginId();
+        return user.getEmail();
     }
 
     @Override

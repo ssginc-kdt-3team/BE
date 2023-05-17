@@ -33,7 +33,7 @@ public class OwnerJoinService {
         owner.setBirthday(ownerJoinDTO.getBirthday());
         owner.setGender(ownerJoinDTO.isGender());
         owner.setAddress(ownerJoinDTO.getAdddress());
-        owner.setRole(UserRole.OWNER);
+        owner.setRole(UserRole.ROLE_OWNER);
         owner.setStatus(UserStatus.ACTIVE);
         System.out.println(owner.toString());
 
