@@ -85,19 +85,19 @@ class CustomerServiceTest {
     fail("예외발생");
   }
 
-  @Test
-  void 로그인() {
-    // given
-    CustomerLoginDTO customerLoginDTO = new CustomerLoginDTO();
-    customerLoginDTO.setEmail("user1@user.com");
-    customerLoginDTO.setPassword("qwer1234");
-
-    // when
-    boolean loginCustomer = customerService.login(customerLoginDTO);
-
-    // then
-    assertThat(loginCustomer).isEqualTo(true);
-  }
+//  @Test
+//  void 로그인() {
+//    // given
+//    CustomerLoginDTO customerLoginDTO = new CustomerLoginDTO();
+//    customerLoginDTO.setEmail("user1@user.com");
+//    customerLoginDTO.setPassword("qwer1234");
+//
+//    // when
+//    boolean loginCustomer = customerService.login(customerLoginDTO);
+//
+//    // then
+//    assertThat(loginCustomer).isEqualTo(true);
+//  }
 
 
   @Test

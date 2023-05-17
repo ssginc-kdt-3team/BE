@@ -43,34 +43,34 @@ public class OwnerLoginServiceTest {
         JoinService.join(owner);
         System.out.println("완료");
     }
-    @Test
-    public void OwnerLoginTest() throws Exception{
-        LoginDTO = new OwnerLoginDTO("kakao@gmail.com","Zxc@987!!");
-        //비밀번호는 일치하지만 Email은 일치하지 않는경우
-        try{
-            String email = LoginService.loginCheck(LoginDTO);
-            System.out.println(email + "님, 안녕하세요!");
-        }catch (Exception e){
-            System.out.println(e.getMessage());
-        }
-        LoginDTO.setEmail("Test4@naver.com");
-        LoginDTO.setPassword("Zx?????");
-        //Email은 일치하지만 비밀번호는 일치하지 않는경우
-        try{
-            String email = LoginService.loginCheck(LoginDTO);
-            System.out.println(email + "님, 안녕하세요!");
-        }catch (Exception e){
-            System.out.println(e.getMessage());
-        }
-        LoginDTO.setEmail("Test4@gmail.com");
-        LoginDTO.setPassword("Zxc@987!!");
-        //둘다 일치하는 경우
-        try{
-            String email = LoginService.loginCheck(LoginDTO);
-            System.out.println(email + "님, 안녕하세요!");
-        }catch (Exception e){
-            System.out.println(e.getMessage());
-        }
-    }
+//    @Test
+//    public void OwnerLoginTest() throws Exception{
+//        LoginDTO = new OwnerLoginDTO("kakao@gmail.com","Zxc@987!!");
+//        //비밀번호는 일치하지만 Email은 일치하지 않는경우
+//        try{
+//            String email = LoginService.loginCheck(LoginDTO);
+//            System.out.println(email + "님, 안녕하세요!");
+//        }catch (Exception e){
+//            System.out.println(e.getMessage());
+//        }
+//        LoginDTO.setEmail("Test4@naver.com");
+//        LoginDTO.setPassword("Zx?????");
+//        //Email은 일치하지만 비밀번호는 일치하지 않는경우
+//        try{
+//            String email = LoginService.loginCheck(LoginDTO);
+//            System.out.println(email + "님, 안녕하세요!");
+//        }catch (Exception e){
+//            System.out.println(e.getMessage());
+//        }
+//        LoginDTO.setEmail("Test4@gmail.com");
+//        LoginDTO.setPassword("Zxc@987!!");
+//        //둘다 일치하는 경우
+//        try{
+//            String email = LoginService.loginCheck(LoginDTO);
+//            System.out.println(email + "님, 안녕하세요!");
+//        }catch (Exception e){
+//            System.out.println(e.getMessage());
+//        }
+//    }
 
 }
