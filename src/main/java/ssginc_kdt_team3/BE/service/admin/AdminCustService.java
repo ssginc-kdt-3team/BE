@@ -1,6 +1,5 @@
 package ssginc_kdt_team3.BE.service.admin;
 
-import com.querydsl.jpa.JPQLQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import ssginc_kdt_team3.BE.DTOs.customer.*;
 import ssginc_kdt_team3.BE.enums.UserStatus;
-import ssginc_kdt_team3.BE.repository.customer.JpaDateCustomerRepository;
+import ssginc_kdt_team3.BE.repository.customer.JpaDataCustomerRepository;
 
 
 import java.util.Optional;
@@ -27,7 +26,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AdminCustService {
 
-    private final JpaDateCustomerRepository customerRepository;
+    private final JpaDataCustomerRepository customerRepository;
 //    private final EntityManager em;
 
 //    JPQLQueryFactory queryFactory;

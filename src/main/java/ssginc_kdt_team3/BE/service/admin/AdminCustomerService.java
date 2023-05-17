@@ -15,7 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import ssginc_kdt_team3.BE.DTOs.customer.*;
 import ssginc_kdt_team3.BE.enums.UserStatus;
-import ssginc_kdt_team3.BE.repository.customer.JpaDateCustomerRepository;
+import ssginc_kdt_team3.BE.repository.customer.JpaDataCustomerRepository;
 
 
 import java.util.Optional;
@@ -26,7 +26,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AdminCustomerService {
 
-    private final JpaDateCustomerRepository customerRepository;
+    private final JpaDataCustomerRepository customerRepository;
 //    private final EntityManager em;
 //
 //    JPQLQueryFactory queryFactory;
