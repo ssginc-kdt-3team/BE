@@ -48,7 +48,7 @@ public class CustomerReservationController {
 
     @GetMapping("listAll/{id}/{page}")
     public ResponseEntity<Page<CustomerReservationListDTO>> showAllCustomerReservation(@PathVariable(name = "id") Long id, @PathVariable(name = "page") int page) {
-        Pageable pageable = PageRequest.of(page-1, 2);
+        Pageable pageable = PageRequest.of(page-1, 6);
         Page<CustomerReservationListDTO> list = reservationService.showMyAllReservation(pageable, id);
 
         return ResponseEntity.ok(list);
