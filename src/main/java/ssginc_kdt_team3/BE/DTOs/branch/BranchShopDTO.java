@@ -1,10 +1,9 @@
 package ssginc_kdt_team3.BE.DTOs.branch;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import ssginc_kdt_team3.BE.enums.ShopStatus;
 
+@NoArgsConstructor
 @Data
 @Getter
 @Setter

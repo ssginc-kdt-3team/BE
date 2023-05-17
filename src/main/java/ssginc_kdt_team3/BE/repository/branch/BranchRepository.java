@@ -4,12 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import ssginc_kdt_team3.BE.DTOs.branch.BranchShopDTO;
 import ssginc_kdt_team3.BE.domain.Branch;
-import ssginc_kdt_team3.BE.domain.Shop;
-
-
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -29,19 +27,19 @@ public class BranchRepository {
   }
 
   //지점별 매장 조회
-//  public List<BranchShopDTO> BranchShopList(long id) {
+  public List<BranchShopDTO> BranchShopList(long id) {
 
 
-//    String BranchShopQuery = "SELECT new ssginc_kdt_team3.BE.DTOs.branch.BranchShopDTO(s.id, s.name, s.location, s.shopImg, s.status) FROM Shop s WHERE s.branch.id = :id";
+    String BranchShopQuery = "SELECT new ssginc_kdt_team3.BE.DTOs.branch.BranchShopDTO(s.id, s.name, s.location, s.shopImg, s.status) FROM Shop s WHERE s.branch.id = :id";
 
 
 
-//    TypedQuery<BranchShopDTO> Shops = em.createQuery(BranchShopQuery, BranchShopDTO.class)
-//            .setParameter("id", id);
-//
-//    List<BranchShopDTO> resultList = Shops.getResultList();
-//
-//    return resultList;
-//  }
+    TypedQuery<BranchShopDTO> Shops = em.createQuery(BranchShopQuery, BranchShopDTO.class)
+            .setParameter("id", id);
+
+    List<BranchShopDTO> resultList = Shops.getResultList();
+
+    return resultList;
+  }
 
 }
