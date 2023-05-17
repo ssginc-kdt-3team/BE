@@ -20,4 +20,5 @@ public interface DepositRepository extends JpaRepository<Deposit, Long> {
     //=============================================== 예약Id에 해당하는 예약금 조회 ===============================================
     @Query("select d from Deposit d where d.reservation.id = :reservationId")
     public Deposit findReservationDeposit(@Param("reservationId") Long reservationId);
+
 }
