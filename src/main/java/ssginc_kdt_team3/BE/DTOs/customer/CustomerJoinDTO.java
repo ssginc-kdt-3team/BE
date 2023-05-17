@@ -21,6 +21,7 @@ public class CustomerJoinDTO {
     @NotEmpty(message = "연락처는 필수 입력 값입니다.")
     private String phone;
     private LocalDate birthday;
+
     @Embedded
     private Address address;
     private Boolean gender;
