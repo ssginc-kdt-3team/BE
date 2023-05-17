@@ -110,7 +110,7 @@ public class OwnerReserveService {
       return listToDto(betweenDinner, pageable);
 
     } else if (type.equals("E")) { // 전체 시간
-      List<Reservation> allTime = ownerRepository.findDateBetween(now.with(LocalTime.of(12, 0)), now.with(LocalTime.of(24, 0)), shop.getId());
+      List<Reservation> allTime = ownerRepository.findDateBetween(now.with(LocalTime.of(9, 0)), now.with(LocalTime.of(22, 0)), shop.getId());
       return listToDto(allTime, pageable);
     }
     return null;

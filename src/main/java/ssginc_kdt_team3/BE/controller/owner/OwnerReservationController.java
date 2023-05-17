@@ -99,7 +99,7 @@ public class OwnerReservationController {
 
 
     /*
-    * 이현: OwnerReserveService, JpaDataReservationRepository 추가
+    * 이현: OwnerReserveService 추가
     * */
     @GetMapping("/getall/{id}/{page}") // 모든 예약내역 조회
     public ResponseEntity<Page<OwnerReservationDTO>> reserveList(@PathVariable(name = "id") Long ownerId,
