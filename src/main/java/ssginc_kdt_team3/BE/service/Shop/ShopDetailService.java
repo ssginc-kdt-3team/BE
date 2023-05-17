@@ -9,12 +9,9 @@ import ssginc_kdt_team3.BE.DTOs.shop.ShopDetailDTO;
 import ssginc_kdt_team3.BE.domain.Shop;
 import ssginc_kdt_team3.BE.domain.ShopMenu;
 import ssginc_kdt_team3.BE.domain.ShopOperationInfo;
-import ssginc_kdt_team3.BE.repository.owner.DataOwnerRepository;
-import ssginc_kdt_team3.BE.repository.reservation.OwnerRepository;
 import ssginc_kdt_team3.BE.repository.shop.JpaDataShopRepository;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -32,7 +29,7 @@ public class ShopDetailService {
         log.info("log info = {}",DetailList);
 
         if (DetailList.isEmpty()){
-            System.out.println("값 없음");
+            throw new NullPointerException("잘못된 요청입니다.");
         }
         log.info("log.info= {}",123123);
 
@@ -61,7 +58,7 @@ public class ShopDetailService {
                 ShopOperationInfo infoObj = (ShopOperationInfo) shop;
                 dd.setShopOpenTime(infoObj.getOpenTime());
                 dd.setShopCloseTime(infoObj.getCloseTime());
-            }//아직 null 관련 예외 처리는 못했습니다 ㅜㅜㅜ추후 추가예정
+            }
 //            dd.setReviewId(shop.getReviewId());
 //            dd.setReviewTitle(shop.getReviewTitle());
 //            dd.setReviewContents(shop.getReviewContents());

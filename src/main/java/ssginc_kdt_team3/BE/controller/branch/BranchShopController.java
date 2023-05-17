@@ -1,8 +1,6 @@
 package ssginc_kdt_team3.BE.controller.branch;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,13 +29,13 @@ public class BranchShopController {
 
     @GetMapping("/detail/{id}")
     public ResponseEntity<String> ShopDetail(@PathVariable("id") Long id) throws Exception {
-//        try {
+        try {
         String shopDetail = detailService.ShopDetailList(id);
         return new ResponseEntity<>(shopDetail, HttpStatus.OK);
-//        } catch (Exception e) {
-//            return new ResponseEntity<>("잘못된 요청입니다.", HttpStatus.BAD_REQUEST);
-//        }
-//    }
-
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
+
 }
+
