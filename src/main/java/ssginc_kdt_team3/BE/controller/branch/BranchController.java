@@ -1,20 +1,15 @@
 package ssginc_kdt_team3.BE.controller.branch;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ssginc_kdt_team3.BE.DTOs.branch.BranchDTO;
-import ssginc_kdt_team3.BE.DTOs.customer.CustomerListDTO;
-import ssginc_kdt_team3.BE.DTOs.deposit.AdminDepositDTO;
 import ssginc_kdt_team3.BE.DTOs.shop.CustomerShopListDTO;
 import ssginc_kdt_team3.BE.domain.Branch;
-import ssginc_kdt_team3.BE.service.branch.BranchService;
+import ssginc_kdt_team3.BE.service.admin.branch.BranchService;
 import java.util.List;
 
 @RestController

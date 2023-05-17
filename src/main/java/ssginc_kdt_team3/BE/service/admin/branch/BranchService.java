@@ -1,4 +1,4 @@
-package ssginc_kdt_team3.BE.service.branch;
+package ssginc_kdt_team3.BE.service.admin.branch;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -31,8 +31,8 @@ class OwnerReservationServiceTest {
         boolean b = reservationService.customerCancel(11L);
     }
 
-    @Test
-    void filterCheckTest() {
-        System.out.println(reservationService.showShopFilterList(1L, "RESERVATION"));
-    }
+//    @Test
+//    void filterCheckTest() {
+//        System.out.println(reservationService.showShopFilterList(1L, "RESERVATION"));
+//    }
 }

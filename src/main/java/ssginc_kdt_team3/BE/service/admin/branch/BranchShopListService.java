@@ -1,4 +1,4 @@
-package ssginc_kdt_team3.BE.service.branch;
+package ssginc_kdt_team3.BE.service.admin.branch;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
