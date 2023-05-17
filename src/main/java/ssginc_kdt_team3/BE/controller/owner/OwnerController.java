@@ -11,6 +11,9 @@ import ssginc_kdt_team3.BE.DTOs.owner.OwnerLoginDTO;
 import ssginc_kdt_team3.BE.service.owner.OwnerJoinService;
 import ssginc_kdt_team3.BE.service.owner.OwnerLoginService;
 
+import java.util.HashMap;
+import java.util.Map;
+
 
 @RequestMapping("/owner")
 @RestController
@@ -33,13 +36,16 @@ public class OwnerController {
 
     }
     @PostMapping("/login")
-    public ResponseEntity<String> loginCheck(@RequestBody OwnerLoginDTO ownerLogin) {
+    public ResponseEntity<Map> loginCheck(@RequestBody OwnerLoginDTO ownerLogin) {
 
         try {
-            String OwnerEmail = Service.loginCheck(ownerLogin);
-            return new ResponseEntity<>(OwnerEmail+"님, 환영합니다!", HttpStatus.OK);
+            Map map = new HashMap();
+            Long ownerId = Service.loginCheck(ownerLogin);
+            map.put("id", ownerId);
+            return new ResponseEntity<>(map, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return null;
+//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 }
