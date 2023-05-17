@@ -7,12 +7,10 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ssginc_kdt_team3.BE.DTOs.deposit.AdminDepositDTO;
 import ssginc_kdt_team3.BE.DTOs.reservation.OwnerReservationDTO;
 import ssginc_kdt_team3.BE.domain.Deposit;
 import ssginc_kdt_team3.BE.domain.Reservation;
 import ssginc_kdt_team3.BE.domain.Shop;
-import ssginc_kdt_team3.BE.enums.ReservationStatus;
 import ssginc_kdt_team3.BE.repository.deposit.DepositRepository;
 import ssginc_kdt_team3.BE.repository.reservation.OwnerRepository;
 import ssginc_kdt_team3.BE.repository.reservation.JpaDataReservationRepository;
@@ -22,7 +20,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
@@ -42,7 +39,7 @@ public class OwnerReserveService {
     return toDtoPage(allByShopId, pageable);
   }
 
-  // list Res 받아와서 -> dto -> 페이지로
+  // List로 Reservation 받아와서 -> dto -> 페이지로
   private Page<OwnerReservationDTO> toDtoPage(List<Reservation> reservationList, Pageable pageable) {
     List<OwnerReservationDTO> dtoList = new ArrayList<>();
 
@@ -62,65 +59,78 @@ public class OwnerReserveService {
   }
 
   // 활성화된 예약 조회: ReservationStatus가 RESERVATION인 경우
-  public List<OwnerReservationDTO> getActiveReserve() {
-    List<Reservation> byStatus = ownerRepository.findByStatus(ReservationStatus.RESERVATION);
+  // List로 Reservation 받아와서 -> dto -> 페이지로
+  public Page<OwnerReservationDTO> getActiveReserve(Pageable pageable, Long ownerId) {
+    Shop shop = shopRepository.findShopByOwner_id(ownerId).get();
+//    List<Reservation> allByShopId = jpaDataReservationRepository.findAllByShop_Id(shop.getId()); 이건 shopId가 같은 예약정보 리스트야
 
-    List<OwnerReservationDTO> reserveList = new ArrayList<>();
+    List<Reservation> byStatus = ownerRepository.findByStatus(shop.getId());
+
+    List<OwnerReservationDTO> dtoList = new ArrayList<>();
     for (Reservation list : byStatus) {
+      log.info("없는 아이디는 몇번일까 ============ {}", list.getId());
       Deposit reservationDeposit = depositRepository.findReservationDeposit(list.getId());
       OwnerReservationDTO dto = new OwnerReservationDTO(list, reservationDeposit);
-      reserveList.add(dto);
+      dtoList.add(dto);
     }
-    return reserveList;
+    // dto -> Page로
+    final int start = (int) pageable.getOffset();
+    final int end = Math.min((start + pageable.getPageSize()), dtoList.size());
+
+    Page<OwnerReservationDTO> activePage = new PageImpl<>(dtoList.subList(start, end), pageable, dtoList.size());
+    return activePage;
   }
 
 
 
   // 당일 예약 시간별 조회
-  public List<OwnerReservationDTO> getReserveTime(String type) {
+  public Page<OwnerReservationDTO> getReserveTime(String type, Long ownerId, Pageable pageable) {
+    // shopId 찾아와서 내 매장의 예약시간만 가져오고 싶어 -> shop.getId();
+    Shop shop = shopRepository.findShopByOwner_id(ownerId).get();
 
-    log.info("service");
     LocalDateTime now = LocalDateTime.now();
 
     if (type.equals("A")) { // 1시간 후
-      List<Reservation> after1h = ownerRepository.findDateBetween(LocalDateTime.now(), LocalDateTime.now().plusHours(1));
-
-      return listToDto(after1h);
+      List<Reservation> after1h = ownerRepository.findDateBetween(now, now.plusHours(1), shop.getId());
+      return listToDto(after1h, pageable);
 
     } else if (type.equals("B")) { // 3시간 후
       log.info("service B");
-      List<Reservation> after3h = ownerRepository.findDateBetween(LocalDateTime.now(), LocalDateTime.now().plusHours(3));
-
-      return listToDto(after3h);
+      List<Reservation> after3h = ownerRepository.findDateBetween(now, now.plusHours(3), shop.getId());
+      return listToDto(after3h, pageable);
 
     } else if (type.equals("C")) { // 점심시간(11~1)
       LocalDateTime startLunch = now.with(LocalTime.of(11, 0));
-      List<Reservation> betweenLunch = ownerRepository.findDateBetween(startLunch, startLunch.plusHours(2));
-
-      return listToDto(betweenLunch);
+      List<Reservation> betweenLunch = ownerRepository.findDateBetween(startLunch, startLunch.plusHours(2), shop.getId());
+      return listToDto(betweenLunch, pageable);
 
     } else if (type.equals("D")) { // 저녁시간(17~19)
       LocalDateTime startDinner = now.with(LocalTime.of(17, 0));
-      List<Reservation> betweenDinner = ownerRepository.findDateBetween(startDinner, startDinner.plusHours(2));
+      List<Reservation> betweenDinner = ownerRepository.findDateBetween(startDinner, startDinner.plusHours(2), shop.getId());
+      return listToDto(betweenDinner, pageable);
 
-      return listToDto(betweenDinner);
+    } else if (type.equals("E")) { // 전체 시간
+      List<Reservation> allTime = ownerRepository.findDateBetween(now.with(LocalTime.of(12, 0)), now.with(LocalTime.of(24, 0)), shop.getId());
+      return listToDto(allTime, pageable);
     }
     return null;
   }
 
   // Reservation -> DTO 변경 반복문처리
-  private List<OwnerReservationDTO> listToDto(List<Reservation> b) {
+  private Page<OwnerReservationDTO> listToDto(List<Reservation> b, Pageable pageable) {
     List<OwnerReservationDTO> reserveList = new ArrayList<>();
 
     for (Reservation res : b) {
-      // 생성자 아래에서 하면 안 되지, 먼저해야 하는 걸 위로
       Deposit reservationDeposit = depositRepository.findReservationDeposit(res.getId());
       OwnerReservationDTO dto = new OwnerReservationDTO(res, reservationDeposit);
       reserveList.add(dto);
     }
-    return reserveList;
+    // dto -> Page로
+    final int start = (int) pageable.getOffset();
+    final int end = Math.min((start + pageable.getPageSize()), reserveList.size());
+
+    Page<OwnerReservationDTO> activePage = new PageImpl<>(reserveList.subList(start, end), pageable, reserveList.size());
+    return activePage;
   }
-  // 생성자에 deposit 추가했는데 여긴  없으니까 에러나지
-  // 디포지토리에서 가져와야 함.
 
 }

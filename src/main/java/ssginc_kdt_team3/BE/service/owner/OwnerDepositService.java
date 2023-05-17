@@ -50,6 +50,5 @@ public class OwnerDepositService {
       dtoList.add(dto);
     }
     return dtoList;
-  }
-
+  }//레포지토리 정보를 가져오기만하면 된다고 ?
 }

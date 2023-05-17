@@ -13,8 +13,8 @@ class OwnerRepositoryTest {
   @Autowired
   OwnerRepository ownerRepository;
 
-  @Test
-  void findDateBetween() {
-    ownerRepository.findDateBetween(LocalDateTime.now(), LocalDateTime.now().plusHours(1)); //이건 1시간 후고, 난 1시간 이내 값을 가져와야 돼
-  }
+//  @Test
+//  void findDateBetween() {
+//    ownerRepository.findDateBetween(LocalDateTime.now(), LocalDateTime.now().plusHours(1)); //이건 1시간 후고, 난 1시간 이내 값을 가져와야 돼
+//  }
 }

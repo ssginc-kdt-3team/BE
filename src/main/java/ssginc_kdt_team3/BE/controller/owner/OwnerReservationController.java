@@ -1,6 +1,7 @@
 package ssginc_kdt_team3.BE.controller.owner;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,7 @@ import ssginc_kdt_team3.BE.DTOs.reservation.OwnerReservationDetailDTO;
 import ssginc_kdt_team3.BE.DTOs.reservation.OwnerReservationFilterListDTO;
 import ssginc_kdt_team3.BE.domain.Owner;
 import ssginc_kdt_team3.BE.domain.Reservation;
+import ssginc_kdt_team3.BE.enums.ReservationStatus;
 import ssginc_kdt_team3.BE.repository.reservation.JpaDataReservationRepository;
 import ssginc_kdt_team3.BE.service.owner.OwnerReservationService;
 import ssginc_kdt_team3.BE.service.owner.reservation.OwnerReserveService;
@@ -24,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+@Slf4j
 @RestController
 @RequestMapping("/owner/reservation")
 @RequiredArgsConstructor
@@ -32,7 +35,6 @@ public class OwnerReservationController {
     @Autowired
     private final OwnerReservationService ownerReservationService;
     private final OwnerReserveService reserveService;
-    private final JpaDataReservationRepository reservationRepository;
 
     @Value("${owner.pageSize}")
     private int pageSize;
@@ -100,28 +102,36 @@ public class OwnerReservationController {
     * 이현: OwnerReserveService, JpaDataReservationRepository 추가
     * */
     @GetMapping("/getall/{id}/{page}") // 모든 예약내역 조회
-    public ResponseEntity<Page<OwnerReservationDTO>> reserveList(@PathVariable(name = "page") int page, @PathVariable(name = "id") Long ownerId) {
-        Pageable pageable = PageRequest.of(page-1,pageSize);
+    public ResponseEntity<Page<OwnerReservationDTO>> reserveList(@PathVariable(name = "id") Long ownerId,
+                                                                 @PathVariable(name = "page") int page) {
+        Pageable pageable = PageRequest.of(page-1, pageSize);
         ResponseEntity<Page<OwnerReservationDTO>> response = ResponseEntity.ok()
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
             .body(reserveService.getAllReserve(pageable,ownerId));
         return response;
     }
 
-    @GetMapping("/active") // 활성화된 예약 조회
-    public List<OwnerReservationDTO> activeReserveList() {
-        List<OwnerReservationDTO> activeReserve = reserveService.getActiveReserve();
-        return activeReserve;
+    @GetMapping("/active/{id}/{page}") // 활성화된 예약 조회
+    public ResponseEntity<Page<OwnerReservationDTO>> activeReserveList(@PathVariable(name = "id") Long ownerId,
+                                                                       @PathVariable(name = "page") int page) {
+        Pageable pageable = PageRequest.of(page-1, pageSize);
+        ResponseEntity<Page<OwnerReservationDTO>> response = ResponseEntity.ok()
+            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+            .body(reserveService.getActiveReserve(pageable, ownerId));
+        return response;
     }
 
-    @GetMapping("/activetime/{type}") // 당일 예약시간별 조회
-    public List<OwnerReservationDTO> resTimeList(@PathVariable("type") String type) {
-        List<OwnerReservationDTO> reserveTime = reserveService.getReserveTime(type);
-
-        if(reserveTime == null){
-            throw new IllegalStateException("다음 예약 정보가 존재하지 않습니다.");
-        }
-        return reserveTime;
+    // 당일 예약시간별 조회
+    @GetMapping("/activetime/{type}/{id}/{page}")
+    public ResponseEntity<Page<OwnerReservationDTO>> resTimeList(@PathVariable(name = "type") String type,
+                                                                 @PathVariable(name = "id") Long ownerId,
+                                                                 @PathVariable(name = "page") int page)
+                                                                  {
+        Pageable pageable = PageRequest.of(page-1, pageSize);
+        ResponseEntity<Page<OwnerReservationDTO>> response = ResponseEntity.ok()
+            .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+            .body(reserveService.getReserveTime(type, ownerId, pageable));
+        return response;
     }
 
 
