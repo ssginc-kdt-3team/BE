@@ -40,7 +40,7 @@ public class CustomerController {
       return ResponseEntity.ok(loginUser);
     }
 
-    return ResponseEntity.badRequest().build();
+    return null;
   }
 
   @GetMapping("/kakao")
