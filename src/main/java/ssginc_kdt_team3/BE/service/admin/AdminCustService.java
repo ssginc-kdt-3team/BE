@@ -45,9 +45,7 @@ public class AdminCustService {
 
         if (byId.isPresent()) {
             Customer customer = byId.get();
-            CustomerDetailDTO customerDetailDTO = new CustomerDetailDTO(customer.getId(), customer.getEmail(), customer.getPassword(),
-                customer.getName(), customer.getPhoneNumber(), customer.getGender(), customer.getBirthday(), customer.getAddress(),
-                customer.getRole(), customer.getStatus(), customer.getGrade().toString());
+            CustomerDetailDTO customerDetailDTO = new CustomerDetailDTO(customer);
             // 0506 이현: Grade name부분 enum 추가로 기존 Customer.getGrade().getName() 에러 -> Customer.getGrade().toString() 으로 수정
 
 
@@ -62,9 +60,7 @@ public class AdminCustService {
 
         if (byEmail.isPresent()) {
             Customer customer = byEmail.get();
-            CustomerDetailDTO customerDetailDTO = new CustomerDetailDTO(customer.getId(), customer.getEmail(), customer.getPassword(),
-                customer.getName(), customer.getPhoneNumber(), customer.getGender(), customer.getBirthday(), customer.getAddress(),
-                customer.getRole(), customer.getStatus(), customer.getGrade().toString());
+            CustomerDetailDTO customerDetailDTO = new CustomerDetailDTO(customer);
 
 
             return customerDetailDTO;

@@ -34,10 +34,12 @@ public class CustomerService {
     customer.setPassword(customerJoinDTO.getPassword());
     customer.setName(customerJoinDTO.getName());
     customer.setPhoneNumber(customerJoinDTO.getPhone());
+    customer.setAddress(customerJoinDTO.getAddress());
+    customer.setGender(customerJoinDTO.getGender());
 
     //  검증됐으니까 역할, 상태 부여
     customer.setStatus(UserStatus.valueOf("ACTIVE"));
-    customer.setRole(UserRole.valueOf("Customer"));
+    customer.setRole(UserRole.CUSTOMER);
 
     customerRepository.save(customer);
     return customerJoinDTO;
