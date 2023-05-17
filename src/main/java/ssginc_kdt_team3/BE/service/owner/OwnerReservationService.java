@@ -313,7 +313,11 @@ public class OwnerReservationService {
             return toDtoPage(betweenDinner, pageable);
 
         } else if (type.equals("E")) { // 전체 시간
-            List<Reservation> allTime = ownerRepository.findDateBetween(now.with(LocalTime.of(12, 0)), now.with(LocalTime.of(24, 0)), shop.getId());
+            LocalDateTime start = now.with(LocalTime.of(0, 1));
+            log.info("기준 시작 시간 = {}", start);
+            LocalDateTime end = now.with(LocalTime.of(23, 59));
+            log.info("기준 종료 시간 = {}", end);
+            List<Reservation> allTime = ownerRepository.findDateBetweenAll(now.with(LocalTime.of(1, 1)), now.with(LocalTime.of(23, 59)), shop.getId());
             return toDtoPage(allTime, pageable);
         }
         return null;
