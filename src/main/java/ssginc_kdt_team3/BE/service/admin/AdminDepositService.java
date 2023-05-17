@@ -23,12 +23,19 @@ public class AdminDepositService {
 
     private final DepositRepository depositRepository;
 
-    public Optional<Page<AdminDepositDTO>> findDepositList(Pageable pageable, String type, Long id) {
+    public Optional<Page<AdminDepositDTO>> findBranchDepositList(Pageable pageable, String type, Long id) {
 
         if (type.equals("branch")) {
             List<Deposit> branchDepositList = depositRepository.findBranchDepositList(id);
             return Optional.ofNullable(listToDTOPage(pageable, branchDepositList));
-        } else if (type.equals("shop")) {
+        }
+
+        return Optional.ofNullable(null);
+    }
+
+    public Optional<Page<AdminDepositDTO>> findShopDepositList(Pageable pageable, String type, Long id) {
+
+        if (type.equals("shop")) {
             List<Deposit> shopDepositList = depositRepository.findShopDepositList(id);
             return Optional.ofNullable(listToDTOPage(pageable, shopDepositList));
         }

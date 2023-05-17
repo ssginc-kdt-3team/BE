@@ -10,13 +10,13 @@ import ssginc_kdt_team3.BE.domain.Customer;
 
 import java.util.Optional;
 
-public interface JpaDateCustomerRepository extends JpaRepository<Customer, Long> {
+public interface JpaDataCustomerRepository extends JpaRepository<Customer, Long> {
 
     @Query("select new ssginc_kdt_team3.BE.DTOs.customer.CustomerListDTO(c.id, c.name, c.email, c.status, c.grade.name) from Customer c")
     Page<CustomerListDTO> findAllBy(Pageable pageable);
 
 //    Page<Customer> findAllBy(Pageable pageable);
-
-    Optional<Customer> findCustomerByEmail(String Email);
+//    @Query("select c from Customer c inner join User u on c.id = u.id where u.email = :Email")
+    Optional<Customer> findCustomerByEmail(String email);
 
 }

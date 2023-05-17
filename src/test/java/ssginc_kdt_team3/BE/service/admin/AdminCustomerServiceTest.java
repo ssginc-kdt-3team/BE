@@ -7,7 +7,7 @@ import ssginc_kdt_team3.BE.DTOs.customer.CustomerUpdateDTO;
 import ssginc_kdt_team3.BE.domain.Customer;
 import ssginc_kdt_team3.BE.enums.UserRole;
 import ssginc_kdt_team3.BE.enums.UserStatus;
-import ssginc_kdt_team3.BE.repository.customer.JpaDateCustomerRepository;
+import ssginc_kdt_team3.BE.repository.customer.JpaDataCustomerRepository;
 
 
 import java.time.LocalDate;
@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.*;
 class AdminCustomerServiceTest {
 
     @Autowired
-    JpaDateCustomerRepository repository;
+    JpaDataCustomerRepository repository;
 
     @Autowired
     AdminCustomerService CustomerService = new AdminCustomerService(repository);
