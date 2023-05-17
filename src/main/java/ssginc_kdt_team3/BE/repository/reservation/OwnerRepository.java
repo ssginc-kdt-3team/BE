@@ -52,4 +52,12 @@ public class OwnerRepository {
         .getResultList();
   }
 
+  public List<Reservation> findDateBetweenAll(LocalDateTime startTime, LocalDateTime endTime, Long shopId){
+    return em.createQuery("SELECT r FROM Reservation r WHERE r.reservationDate BETWEEN :startTime AND :endTime AND r.shop.id = :shopId", Reservation.class)
+            .setParameter("startTime", startTime)
+            .setParameter("endTime", endTime)
+            .setParameter("shopId", shopId)
+            .getResultList();
+  }
+
 }
