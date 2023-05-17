@@ -1,18 +1,13 @@
 package ssginc_kdt_team3.BE.DTOs.shop;
 
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import ssginc_kdt_team3.BE.enums.ShopStatus;
-
 import javax.persistence.Entity;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @NoArgsConstructor
 @Data
-@Entity
 public class ShopDetailDTO {
     //Shop테이블
     private long shopId;

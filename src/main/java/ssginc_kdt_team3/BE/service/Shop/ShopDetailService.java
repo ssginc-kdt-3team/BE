@@ -3,59 +3,81 @@ package ssginc_kdt_team3.BE.service.Shop;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ssginc_kdt_team3.BE.DTOs.shop.ShopDetailDTO;
-
+import ssginc_kdt_team3.BE.domain.Shop;
+import ssginc_kdt_team3.BE.domain.ShopMenu;
+import ssginc_kdt_team3.BE.domain.ShopOperationInfo;
+import ssginc_kdt_team3.BE.repository.owner.DataOwnerRepository;
+import ssginc_kdt_team3.BE.repository.reservation.OwnerRepository;
 import ssginc_kdt_team3.BE.repository.shop.JpaDataShopRepository;
-import ssginc_kdt_team3.BE.repository.shop.ShopRepository;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ShopDetailService {
 
-    private final ShopRepository repo;
+    private final JpaDataShopRepository repo;
+//    private final DataOwnerRepository repo;
 
-    public String ShopDetailList(long id) throws JsonProcessingException {
+    public String ShopDetailList(Long id) throws JsonProcessingException {
 
-        List<ShopDetailDTO> DetailDTO = repo.ShopDetailJoin();
+        List<Object> DetailList = repo.DetailList(id);
+
+        log.info("log info = {}",id);
+        log.info("log info = {}",DetailList);
+
+        if (DetailList.isEmpty()){
+            System.out.println("값 없음");
+        }
+        log.info("log.info= {}",123123);
 
         List<ShopDetailDTO> ResultDTO = new ArrayList<>();
 
-        for (ShopDetailDTO shop: DetailDTO) {
-            if (shop.getShopId() != id){
-                continue;
-            }
-            ShopDetailDTO dd = new ShopDetailDTO();
+        ShopDetailDTO dd = new ShopDetailDTO();
 
-            dd.setShopId(shop.getShopId());
-            dd.setShopName(shop.getShopName());
-            dd.setShopLocation(shop.getShopLocation());
-            dd.setShopImg(shop.getShopImg());
-            dd.setShopStatus(shop.getShopStatus());
-            dd.setShopInfo(shop.getShopInfo());
-            //
-            dd.setShopOpenTime(shop.getShopOpenTime());
-            dd.setShopCloseTime(shop.getShopCloseTime());
-            //
-            dd.setMenuId(shop.getMenuId());
-            dd.setMenuImg(shop.getMenuImg());
-            dd.setMenuName(shop.getMenuName());
-            dd.setMenuPrice(shop.getMenuPrice());
+        for (Object shop : DetailList) {
+
+
+            if (shop instanceof Shop){
+                Shop shopObj = (Shop) shop;
+                dd.setShopId(shopObj.getId());
+                dd.setShopName(shopObj.getName());
+                dd.setShopLocation(shopObj.getLocation());
+                dd.setShopImg(shopObj.getShopImg());
+                dd.setShopStatus(shopObj.getStatus());
+                dd.setShopInfo(shopObj.getInfo());
+            } else if (shop instanceof ShopMenu){
+                ShopMenu MenuObj = (ShopMenu) shop;
+                dd.setMenuId(MenuObj.getId());
+                dd.setMenuImg(MenuObj.getMenu_img());
+                dd.setMenuName(MenuObj.getName());
+                dd.setMenuPrice(MenuObj.getPrice());
+            } else if (shop instanceof ShopOperationInfo) {
+                ShopOperationInfo infoObj = (ShopOperationInfo) shop;
+                dd.setShopOpenTime(infoObj.getOpenTime());
+                dd.setShopCloseTime(infoObj.getCloseTime());
+            }//아직 null 관련 예외 처리는 못했습니다 ㅜㅜㅜ추후 추가예정
 //            dd.setReviewId(shop.getReviewId());
 //            dd.setReviewTitle(shop.getReviewTitle());
 //            dd.setReviewContents(shop.getReviewContents());
 //            dd.setReviewTime(shop.getReviewTime());
-
             ResultDTO.add(dd);
         }
-        String JsonList = DTOJson(ResultDTO);
-        return JsonList;
+
+        return DTOJson(ResultDTO);
+
     }
     public String DTOJson(List<ShopDetailDTO> dto) throws JsonProcessingException {
+
         ObjectMapper mapper = new ObjectMapper();
+        log.info("log.info = {}","=====JSON으로 변환완료=====");
         return mapper.writeValueAsString(dto);
+
+
     }
 }

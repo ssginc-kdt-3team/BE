@@ -5,15 +5,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 import ssginc_kdt_team3.BE.DTOs.shop.ShopDetailDTO;
-import ssginc_kdt_team3.BE.domain.Review;
 import ssginc_kdt_team3.BE.domain.Shop;
-import ssginc_kdt_team3.BE.domain.ShopMenu;
-import ssginc_kdt_team3.BE.domain.ShopOperationInfo;
+
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public interface JpaDataShopRepository extends JpaRepository<Shop, Long> {
 
     @Query("select s from Shop s " +
@@ -26,10 +26,11 @@ public interface JpaDataShopRepository extends JpaRepository<Shop, Long> {
 
     Optional<Shop> findShopByOwner_id(Long ownerId);
 
-    List<ShopDetailDTO> shopDetailList(@Param("id") long id);
-
-
-
+@Query("SELECT o FROM Shop o " +
+        "JOIN ShopMenu m ON o.id = m.shop.id " +
+        "JOIN ShopOperationInfo i ON o.operationInfo.id = i.id " +
+        "WHERE o.id = :id")
+List<Object> DetailList(@Param("id") Long id);
 
 
 }
