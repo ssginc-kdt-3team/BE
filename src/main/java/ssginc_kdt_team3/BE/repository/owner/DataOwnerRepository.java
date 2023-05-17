@@ -1,18 +1,13 @@
 package ssginc_kdt_team3.BE.repository.owner;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ssginc_kdt_team3.BE.domain.Owner;
 import javax.persistence.EntityManager;
 import java.util.Optional;
 
-
-
 @Repository
 @RequiredArgsConstructor
-@Transactional
 public class DataOwnerRepository{
 
     private final EntityManager em;
@@ -21,7 +16,6 @@ public class DataOwnerRepository{
         Long count = em.createQuery("SELECT COUNT(o) FROM Owner o WHERE o.email = :email", Long.class)
                 .setParameter("email", email)
                 .getSingleResult();
-
 
         boolean emailCheck = count > 0;
         //이메일이 존재하면 1
@@ -90,14 +84,12 @@ public class DataOwnerRepository{
     }
 
     public void updateOwnerInfo(Owner owner,long id){
-//    em.getTransaction().begin();
         em.createQuery("UPDATE Owner o SET o.phone = :phone, o.address = :address , o.status = :status " +
                         "WHERE o.id = :id")
                 .setParameter("phone",owner.getPhoneNumber())
                 .setParameter("address",owner.getAddress())
                 .setParameter("status",owner.getStatus())
                 .setParameter("id",owner.getId());
-//    em.getTransaction().commit();
     }
 
 }

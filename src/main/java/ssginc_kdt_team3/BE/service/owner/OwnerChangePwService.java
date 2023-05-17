@@ -17,7 +17,7 @@ import java.util.Optional;
 @Transactional
 
 public class OwnerChangePwService{
-
+    @Autowired
     private final DataOwnerRepository repo;
 
     private String email;
@@ -44,14 +44,14 @@ public class OwnerChangePwService{
             throw new Exception("이름이 일치하지 않습니다!");
         }
     }
-    public void ChangePw(OwnerChangePwDTO changePwDTO) throws Exception{
-        String pw1 = changePwDTO.getNewPassword1();
-        String pw2 = changePwDTO.getNewPassword2();
-
-        if (!pw1.equals(pw2)){
-            throw new Exception("비밀번호가 서로 일치하지 않습니다!");
-        }
-        repo.updatePassword(this.email,pw1);
-    }
+//    public void ChangePw(OwnerChangePwDTO changePwDTO) throws Exception{
+//        String pw1 = changePwDTO.getNewPassword1();
+//        String pw2 = changePwDTO.getNewPassword2();
+//
+//        if (!pw1.equals(pw2)){
+//            throw new Exception("비밀번호가 서로 일치하지 않습니다!");
+//        }
+//        repo.updatePassword(this.email,pw1);
+//    }
 
 }

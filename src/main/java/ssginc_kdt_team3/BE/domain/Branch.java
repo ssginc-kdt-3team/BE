@@ -1,6 +1,7 @@
 package ssginc_kdt_team3.BE.domain;
 
 import lombok.Getter;
+import lombok.Setter;
 import ssginc_kdt_team3.BE.DTOs.customer.Address;
 import ssginc_kdt_team3.BE.enums.BranchStatus;
 

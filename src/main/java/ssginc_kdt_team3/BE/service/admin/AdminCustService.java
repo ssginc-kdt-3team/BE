@@ -15,7 +15,6 @@ import ssginc_kdt_team3.BE.domain.Grade;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import ssginc_kdt_team3.BE.DTOs.customer.*;
-import ssginc_kdt_team3.BE.domain.QCustomer;
 import ssginc_kdt_team3.BE.enums.UserStatus;
 import ssginc_kdt_team3.BE.repository.customer.JpaDateCustomerRepository;
 
