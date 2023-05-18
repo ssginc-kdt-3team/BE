@@ -20,10 +20,14 @@ public class OwnerJoinService {
 
     private final JpaDataOwnerRepository repo;
 
-    private final DataOwnerRepository repo2;
-
     public void join(OwnerJoinDTO ownerJoinDTO) throws Exception {
 
+        boolean emailCheck = repo.existsByEmail(ownerJoinDTO.getEmail());
+
+        if (emailCheck){
+            throw new Exception("중복된 이메일 입니다.");
+        }
+        log.info("log info = {}",emailCheck);
         Owner owner = new Owner();
 
         owner.setEmail(ownerJoinDTO.getEmail());
@@ -35,15 +39,16 @@ public class OwnerJoinService {
         owner.setAddress(ownerJoinDTO.getAdddress());
         owner.setRole(UserRole.OWNER);
         owner.setStatus(UserStatus.ACTIVE);
-        System.out.println(owner.toString());
 
-        if(!repo2.existsEmail(owner.getEmail())){
-            System.out.println("owner.getEmail()>>>>>>>>>>>>>"+owner.getEmail());
-            throw new Exception("중복된 이메일 입니다.");
-        }else{
-            System.out.println("owner.toString(2)>>>>>>>>>>>>>"+owner.toString());
-            repo.save(owner);
-        }
+        log.info("log info = {}",owner);
+        log.info("log info = {}",emailCheck);
+
+        repo.save(owner);
+
+        log.info("log info = {}",owner.getEmail());
+        log.info("log info = {}",owner.getName());
+        log.info("log info = {}",owner.getBirthday());
+        log.info("log info = {}",owner.getRole());
     }
 
 }

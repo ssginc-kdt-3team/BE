@@ -138,6 +138,7 @@ public class OwnerReservationService {
         Optional<Shop> shopByOwnerId = shopRepository.findShopByOwner_id(ownerId);
 
         if (shopByOwnerId.isPresent()) {
+
             Shop shop = shopByOwnerId.get();
 
             String start = request.get("start")+" 00:00:00";
