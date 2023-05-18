@@ -25,7 +25,7 @@ public class BranchController {
   private final BranchService branchService;
 
   @RequestMapping("/all") //지점 전체 목록이랑 아이디랑 이름
-  public List<BranchDTO> getAllBranch(BranchDTO branchDTO) {
+  public List<BranchDTO> getAllBranch() {
     return branchService.getAllBranch();
   }
 
