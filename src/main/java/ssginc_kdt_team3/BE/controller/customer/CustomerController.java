@@ -3,6 +3,7 @@ package ssginc_kdt_team3.BE.controller.customer;
 import lombok.RequiredArgsConstructor;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ssginc_kdt_team3.BE.DTOs.customer.CustomerJoinDTO;
@@ -22,13 +23,16 @@ public class CustomerController {
   private final KakaoService kakaoService;
 
   //회원가입
-  @PostMapping("/join")
-  public CustomerJoinDTO join(@RequestBody CustomerJoinDTO customerJoinDTO){
-    return customerService.join(customerJoinDTO);
-  }
+//  @PostMapping("/join")
+//  public ResponseEntity<CustomerJoinDTO> join(@RequestBody CustomerJoinDTO customerJoinDTO){
+//
+//    CustomerJoinDTO joinDto = customerService.join(customerJoinDTO);
+//    return ResponseEntity.ok()
+//  }
 
   /**
   5.4 회원가입 -> 중복이메일 체크 서비스에서 가져와 추가하기
+   고객이, 그때 호출되는 API, 이게 없으면 회원가입 누르고 중복이메일이란 걸 알게 됨
   */
 
   @PostMapping("/login")

@@ -18,6 +18,8 @@ public class OwnerDepositDTO {
     private Long customerId;
     private String customerName;
     private String phoneNumber;
+    private int people;
+    private int child;
     private int originDeposit; //할인 전 예약금
     private int penaltyValue; // 위약금
     private LocalDateTime reservationDate; // 방문일(예약일)
@@ -29,6 +31,8 @@ public class OwnerDepositDTO {
         this.customerId = deposit.getReservation().getCustomer().getId();
         this.customerName = deposit.getReservation().getCustomer().getName();
         this.phoneNumber = deposit.getReservation().getCustomer().getPhoneNumber();
+        this.people = deposit.getReservation().getPeople();
+        this.child = deposit.getReservation().getChild();
         this.originDeposit = deposit.getOrigin_value();
         this.penaltyValue = deposit.getPenaltyValue();
         this.reservationDate = deposit.getReservation().getReservationDate();
