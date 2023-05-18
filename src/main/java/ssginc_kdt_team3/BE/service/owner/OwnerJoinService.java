@@ -7,7 +7,6 @@ import ssginc_kdt_team3.BE.DTOs.owner.OwnerJoinDTO;
 import ssginc_kdt_team3.BE.domain.Owner;
 import ssginc_kdt_team3.BE.enums.UserRole;
 import ssginc_kdt_team3.BE.enums.UserStatus;
-import ssginc_kdt_team3.BE.repository.owner.DataOwnerRepository;
 import ssginc_kdt_team3.BE.repository.owner.JpaDataOwnerRepository;
 
 import javax.transaction.Transactional;
