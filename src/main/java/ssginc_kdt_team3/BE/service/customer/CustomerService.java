@@ -45,8 +45,8 @@ public class CustomerService {
     return customerJoinDTO;
   }
 
-  public void validateDuplicateCustomer(CustomerJoinDTO CustomerJoinDTO) {
-    Optional<Customer> findCustomer = customerRepository.findByEmail(CustomerJoinDTO.getEmail());
+  public void validateDuplicateCustomer(CustomerJoinDTO customerJoinDTO) {
+    Optional<Customer> findCustomer = customerRepository.findByEmail(customerJoinDTO.getEmail());
 
     if(findCustomer.isPresent()) {
       throw new IllegalStateException("이미 가입된 이메일입니다.");
