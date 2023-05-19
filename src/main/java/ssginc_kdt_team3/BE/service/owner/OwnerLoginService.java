@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerLoginDTO;
 import ssginc_kdt_team3.BE.domain.Owner;
 import ssginc_kdt_team3.BE.repository.owner.DataOwnerRepository;
+import ssginc_kdt_team3.BE.repository.owner.JpaDataOwnerRepository;
 
 import javax.transaction.Transactional;
 import java.util.Optional;
@@ -17,6 +18,7 @@ import java.util.Optional;
 public class OwnerLoginService {
 
     private final DataOwnerRepository Repo;
+
 
     public Long loginCheck(OwnerLoginDTO login) throws Exception {
 

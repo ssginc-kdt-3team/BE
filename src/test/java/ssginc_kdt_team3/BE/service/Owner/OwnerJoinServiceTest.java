@@ -37,6 +37,7 @@
 //        Address address = new Address("부산시","해운대구","센텀 리더스마크","123-123");
 //        owners = new OwnerJoinDTO("User223334@naver.com","User22","Zxc@987!!","01099998888",LocalDate.parse("1999-05-05"),true,address);
 //        System.out.println(owners.toString());
+
 //        service.join(owners);
 //
 //        String email = owners.getEmail();

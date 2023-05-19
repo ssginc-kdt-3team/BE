@@ -1,6 +1,7 @@
 package ssginc_kdt_team3.BE.controller.owner;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,7 @@ import ssginc_kdt_team3.BE.service.owner.OwnerLoginService;
 import java.util.HashMap;
 import java.util.Map;
 
-
+@Slf4j
 @RequestMapping("/owner")
 @RestController
 @RequiredArgsConstructor
@@ -26,7 +27,7 @@ public class OwnerController {
 
     @PostMapping("/join")
     public ResponseEntity<String> joinControl(@RequestBody OwnerJoinDTO ownerJoinDTO) {
-
+        log.info("log info = {}",ownerJoinDTO);
         try{
             ownerJoinService.join(ownerJoinDTO);
             return new ResponseEntity<>("회원가입이 완료되었습니다!",HttpStatus.OK);

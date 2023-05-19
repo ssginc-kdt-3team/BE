@@ -21,7 +21,7 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/owner/reservation")
 @RequiredArgsConstructor
-public class OwnerReservationController {
+public class  OwnerReservationController {
 
     @Autowired
     private final OwnerReservationService ownerReservationService;
