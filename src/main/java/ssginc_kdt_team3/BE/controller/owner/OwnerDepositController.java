@@ -18,14 +18,14 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/owner")
+@RequestMapping("/owner/deposit")
 @Slf4j
 public class OwnerDepositController {
   private final OwnerDepositService depositService;
   @Value("${owner.pageSize}")
   private int pageSize;
 
-  @PostMapping("/deposit/{id}/{page}")
+  @PostMapping("/{id}/{page}")
   public ResponseEntity<Page<OwnerDepositDTO>> getDepositList(@PathVariable(name = "page") int page,
                                                               @PathVariable(name = "id") Long ownerId,
                                                               @RequestBody Map<String, String> request) {

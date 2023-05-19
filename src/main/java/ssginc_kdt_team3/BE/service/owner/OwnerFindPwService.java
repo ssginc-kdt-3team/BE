@@ -52,6 +52,7 @@ public class OwnerFindPwService{
             throw new Exception("전화번호가 다릅니다.");
         }
     }
+
     public void NewPw(OwnerNewPwDTO newPwDTO) throws Exception {
         String pw1 = newPwDTO.getNewPassword1();
         String pw2 = newPwDTO.getNewPassword2();
