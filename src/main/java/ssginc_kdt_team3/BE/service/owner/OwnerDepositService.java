@@ -8,21 +8,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssginc_kdt_team3.BE.DTOs.deposit.OwnerDepositDTO;
-import ssginc_kdt_team3.BE.DTOs.reservation.OwnerReservationDTO;
 import ssginc_kdt_team3.BE.domain.Deposit;
 import ssginc_kdt_team3.BE.domain.Shop;
 import ssginc_kdt_team3.BE.enums.DepositStatus;
-import ssginc_kdt_team3.BE.enums.ReservationStatus;
 import ssginc_kdt_team3.BE.repository.deposit.DepositRepository;
 import ssginc_kdt_team3.BE.repository.shop.JpaDataShopRepository;
-import ssginc_kdt_team3.BE.service.customer.CustomerReservationService;
 
 import java.time.*;
-import java.time.temporal.TemporalAdjuster;
-import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @Transactional

@@ -40,11 +40,6 @@ public class OwnerJoinService {
 
         owner.setRole(UserRole.OWNER);
         owner.setStatus(UserStatus.ACTIVE);
-<<<<<<< HEAD
-
-        System.out.println(owner.toString());
-=======
->>>>>>> bb8edfb202609cf88ee042f82db3388f6f700e03
 
         log.info("log info = {}",owner);
         log.info("log info = {}",emailCheck);

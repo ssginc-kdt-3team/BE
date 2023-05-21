@@ -1,6 +1,7 @@
 package ssginc_kdt_team3.BE.controller.admin;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerJoinDTO;
@@ -46,4 +47,15 @@ public class AdminReservationController {
         return ResponseEntity.badRequest().build();
 
     }
+
+    // 상세 예약내역 조회
+    @GetMapping("/detail/{id}") // 지점정보는 바디에서 찍으니까 디테일에 예약아이디로 넘어가야지
+    public ResponseEntity<List<AdminReservationListDTO>> AdminDetail(@PathVariable("id") Long reserveId){
+
+        List<AdminReservationListDTO> reservationDetail = reservationService.getReservationDetail(reserveId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(reservationDetail);
+    }
+
+
 }

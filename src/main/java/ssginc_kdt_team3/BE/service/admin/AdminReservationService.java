@@ -76,4 +76,16 @@ public class AdminReservationService {
 
         return result;
     }
+
+    // 관리자: 지점별, 매장별 상세 예약내역 조회
+    public List<AdminReservationListDTO> getReservationDetail(Long reserveId) {
+
+        // 지점(branch) 선택 -> 해당 지점의 전체 매장(shop) 예약 리스트까지 구현 됨
+        // 나는 지점의 전체 shop 예약 리스트 중 택1 -> 예약 디테일 페이지 보여줘야
+        Reservation reservation = reservationRepository.findById(reserveId).get();
+
+        List<AdminReservationListDTO> result = new ArrayList<>();
+        result.add(new AdminReservationListDTO(reservation));
+        return result;
+    }
 }
