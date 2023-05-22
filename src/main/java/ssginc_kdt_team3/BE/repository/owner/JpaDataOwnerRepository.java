@@ -3,15 +3,13 @@ package ssginc_kdt_team3.BE.repository.owner;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
-import ssginc_kdt_team3.BE.domain.Owner;
-import ssginc_kdt_team3.BE.DTOs.customer.Address;
-import ssginc_kdt_team3.BE.domain.Shop;
-import ssginc_kdt_team3.BE.enums.UserStatus;
 
+import ssginc_kdt_team3.BE.domain.Owner;
+
+
+import java.util.List;
 import java.util.Optional;
 
 public interface JpaDataOwnerRepository extends JpaRepository<Owner, Long> {
@@ -25,15 +23,17 @@ public interface JpaDataOwnerRepository extends JpaRepository<Owner, Long> {
 
     Page<Owner> findAllBy(Pageable pageable);
 
-    //@Query("UPDATE Owner o SET o.password = :password")
-//    @Modifying
-//    void updatePassword(@Param("password") String password);
+    @Query("SELECT s, o, b FROM Shop s " +
+            "JOIN Owner o ON s.owner.id = o.id " +
+            "JOIN Branch b ON s.branch.id = b.id " +
+            "WHERE s.branch.id = :id")
+    List<Object[]> BranchIdFindShopWithOwner(@Param("id") Long id);
 
+//    @Query("SELECT s FROM Owner Shop s " +
+//            "JOIN Owner o ON s.user_id = o.user_id" +
+//            "JOIN Branch b ON b.branch_id = s.branch_id " +
+//            "WHERE s.branch_id = :id")
+//   Optional<Page<Object>> BranchIdFindShopWithOwner(@Param("id") Long id , Pageable pageable);
 
-    //실행 X
-//    @Query("UPDATE Owner o SET o.phoneNumber = :phoneNumber,o.address = :address,o.status = :status")
-//    @Modifying
-//    void updateOwnerInfo(@Param("phoneNumber")String phone,@Param("address") Address address,@Param("status") UserStatus status);
-//        void updateOwnerInfo(Owner owner);
 }
 

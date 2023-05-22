@@ -2,16 +2,19 @@ package ssginc_kdt_team3.BE.controller.admin;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ssginc_kdt_team3.BE.DTOs.admin.AdminBranchOwnerDTO;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerJoinDTO;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerUpdateDTO;
 import ssginc_kdt_team3.BE.domain.Owner;
 import ssginc_kdt_team3.BE.service.admin.AdminOwnerService;
+import ssginc_kdt_team3.BE.service.admin.branch.BranchOwnerService;
 import ssginc_kdt_team3.BE.service.owner.OwnerJoinService;
 //import ssginc_kdt_team3.BE.service.owner.OwnerJoinService;
 //import ssginc_kdt_team3.BE.service.owner.OwnerJoinService;
@@ -26,6 +29,7 @@ public class AdminOwnerController {
 
     private final OwnerJoinService joinService;
     private final AdminOwnerService ownerService;
+    private final BranchOwnerService branchOwnerService;
 
     @PostMapping("/join")
     public ResponseEntity<String> ownerJoin(@RequestBody OwnerJoinDTO ownerJoinDTO) {
@@ -45,6 +49,21 @@ public class AdminOwnerController {
                 .body(ownerService.findAllOwner(pageable));
 
         return response;
+    }
+    @GetMapping("/findAll/{id}/{page}")
+    public ResponseEntity<Page<AdminBranchOwnerDTO>> AdminBranchOwnerList
+            (@PathVariable(name = "id")Long id
+            , @PathVariable(name = "page") int page) {
+
+        Pageable pageable = PageRequest.of(page-1, 10);
+        log.info("log info = {}",id);
+        log.info("log info = {} ",page);
+        ResponseEntity<Page<AdminBranchOwnerDTO>> response = ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .body(branchOwnerService.branchMatchOwner(id, pageable));
+
+        return response;
+
     }
 
     @GetMapping("/findOne/{id}")
