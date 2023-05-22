@@ -86,7 +86,7 @@ public class DataOwnerRepository{
     }
 
     public void updateOwnerInfo(Owner owner,long id){
-        em.createQuery("UPDATE Owner o SET o.phone = :phone, o.address = :address , o.status = :status " +
+        em.createQuery("UPDATE Owner o SET o.phoneNumber = :phone, o.address = :address , o.status = :status " +
                         "WHERE o.id = :id")
                 .setParameter("phone",owner.getPhoneNumber())
                 .setParameter("address",owner.getAddress())

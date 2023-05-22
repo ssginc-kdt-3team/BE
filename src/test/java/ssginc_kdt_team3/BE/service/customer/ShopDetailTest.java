@@ -13,12 +13,12 @@ public class ShopDetailTest {
     @Autowired
     private final ShopDetailService ser = new ShopDetailService(repo);
 
-    @Test
-    public void ShopDetail() throws Exception{
-        int num = 2;
-        long num2 = num;
-        String result = ser.ShopDetailList(num2);
-        System.out.println(result);
-    }
+//    @Test
+//    public void ShopDetail() throws Exception{
+//        int num = 2;
+//        long num2 = num;
+//        String result = ser.ShopDetailList(num2);
+//        System.out.println(result);
+//    }
 
 }

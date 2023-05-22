@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssginc_kdt_team3.BE.DTOs.customer.*;
 import ssginc_kdt_team3.BE.domain.Customer;
+import ssginc_kdt_team3.BE.domain.Grade;
+import ssginc_kdt_team3.BE.enums.GradeType;
 import ssginc_kdt_team3.BE.enums.UserRole;
 import ssginc_kdt_team3.BE.enums.UserStatus;
 import ssginc_kdt_team3.BE.repository.customer.JpaCustomerRepository;
@@ -23,11 +25,12 @@ import java.util.Optional;
 public class CustomerService {
 
   private final JpaCustomerRepository customerRepository;
+  private final JpaDataCustomerRepository jpaDataCustomerRepository;
 
   // 회원가입
   @Transactional
   public CustomerJoinDTO join (CustomerJoinDTO customerJoinDTO) {
-    validateDuplicateCustomer(customerJoinDTO); //중복회원 검증
+    validateDuplicateCustomer(customerJoinDTO.getEmail()); //중복회원 검증
 
     Customer customer = new Customer();
     customer.setEmail(customerJoinDTO.getEmail());
@@ -38,19 +41,20 @@ public class CustomerService {
     customer.setGender(customerJoinDTO.getGender());
 
     //  검증됐으니까 역할, 상태 부여
-    customer.setStatus(UserStatus.valueOf("ACTIVE"));
+    customer.setStatus(UserStatus.ACTIVE);
     customer.setRole(UserRole.CUSTOMER);
+
 
     customerRepository.save(customer);
     return customerJoinDTO;
   }
 
-  public void validateDuplicateCustomer(CustomerJoinDTO CustomerJoinDTO) {
-    Optional<Customer> findCustomer = customerRepository.findByEmail(CustomerJoinDTO.getEmail());
-
-    if(findCustomer.isPresent()) {
-      throw new IllegalStateException("이미 가입된 이메일입니다.");
+  public boolean validateDuplicateCustomer(String email) {
+    Optional<Customer> byEmail = customerRepository.findByEmail(email);
+    if(byEmail.isPresent()){
+      return false;
     }
+    return true;
   }
 
   //로그인
@@ -102,12 +106,12 @@ public class CustomerService {
 
   // 개인정보 변경
   @Transactional
-  public void updateInfo(CustomerUpdateDTO customerUpdateDTO, Long id) { //이게 Customer의 id인지 어떻게 알아 ? 내가 repository findCustomer에 Long id 싸놔서 ...?
+  public void updateInfo(CustomerUpdateDTO customerUpdateDTO, Long id) {
     // 로그인 후 -> Customer의 id 정보 필요
     Customer findCustomerId = customerRepository.findCustomer(id).get();
     findCustomerId.setPhoneNumber(customerUpdateDTO.getPhone());
-    findCustomerId.setAddress(customerUpdateDTO.getAddress()); // 알아서 update 쿼리가 날아간다고 ..?
-  }
+    findCustomerId.setAddress(customerUpdateDTO.getAddress());
+  } // 알아서 update 쿼리가 날아간다..
 
   // PW 변경
   @Transactional
@@ -135,5 +139,12 @@ public class CustomerService {
 
 
   // 등급조회
+  public Grade gradeInfo(Long customerId){
+    // 로그인 한 회원 기준
+    Customer customer = customerRepository.findCustomer(customerId).get();
+    Grade grade = customer.getGrade();
+    log.info("grade=================>" + grade);
+    return grade;
+  }
 
 }

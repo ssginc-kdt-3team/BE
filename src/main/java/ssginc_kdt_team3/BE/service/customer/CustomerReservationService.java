@@ -100,6 +100,12 @@ public class CustomerReservationService {
 
 
     public boolean updateReservation(Long id, @Validated CustomerReservationUpdateDTO dto) {
+
+        if (dto.getPeople() <= dto.getChild()) {
+            return false;
+        }
+
+
         Optional<Reservation> byId = reservationRepository.findById(id);
 
         if (byId.isPresent()) {

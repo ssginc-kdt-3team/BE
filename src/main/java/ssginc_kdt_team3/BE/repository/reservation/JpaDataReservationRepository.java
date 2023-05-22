@@ -38,4 +38,5 @@ public interface JpaDataReservationRepository extends JpaRepository<Reservation,
     List<Reservation> findAllByShop_IdAndReservationDateBetweenOrderByReservationDateDesc(Long shopId, LocalDateTime startTime, LocalDateTime endTime);
 
     List<Reservation> findAllByShop_BranchId(Long branchId);
+
 }

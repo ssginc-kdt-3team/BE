@@ -1,6 +1,7 @@
 package ssginc_kdt_team3.BE.service.owner;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerLoginDTO;
 import ssginc_kdt_team3.BE.domain.Owner;
@@ -11,6 +12,7 @@ import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Transactional
+@Slf4j
 @RequiredArgsConstructor
 @Service
 public class OwnerLoginService {
@@ -27,6 +29,8 @@ public class OwnerLoginService {
 
         boolean checkEmail = Repo.existsEmail(email);
         String CheckPassword = Repo.PasswordMatchEmail(email);
+
+        log.info(CheckPassword);
 
         if (!checkEmail) {
             throw new Exception("이메일이 일치하지 않습니다!");

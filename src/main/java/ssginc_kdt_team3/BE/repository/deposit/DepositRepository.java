@@ -32,5 +32,4 @@ public interface DepositRepository extends JpaRepository<Deposit, Long> {
     @Query("select d from Deposit d inner join Reservation r on d.reservation.id = r.id inner join Shop s on r.shop.id = s.id where s.id = :shopId And (d.reservation.reservationDate BETWEEN :startDate AND :endDate) AND d.status = :status ORDER BY d.reservation.reservationDate DESC ")
     List<Deposit> findDepositByStatusBetween(@Param("shopId") Long shopId, @Param("status") DepositStatus status, @Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate);
 
-
 }
