@@ -9,14 +9,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
 import ssginc_kdt_team3.BE.DTOs.reservation.*;
-import ssginc_kdt_team3.BE.domain.Customer;
-import ssginc_kdt_team3.BE.domain.Deposit;
-import ssginc_kdt_team3.BE.domain.Reservation;
-import ssginc_kdt_team3.BE.domain.Shop;
+import ssginc_kdt_team3.BE.domain.*;
 import ssginc_kdt_team3.BE.enums.DepositStatus;
 import ssginc_kdt_team3.BE.enums.ReservationStatus;
 import ssginc_kdt_team3.BE.repository.customer.JpaCustomerRepository;
 import ssginc_kdt_team3.BE.repository.deposit.DepositRepository;
+import ssginc_kdt_team3.BE.repository.review.JpaDataReviewRepository;
 import ssginc_kdt_team3.BE.repository.shop.JpaDataShopRepository;
 import ssginc_kdt_team3.BE.repository.reservation.JpaDataReservationRepository;
 import ssginc_kdt_team3.BE.util.TimeUtils;
@@ -38,6 +36,7 @@ public class CustomerReservationService {
     private final JpaDataShopRepository shopRepository;
     private final JpaCustomerRepository customerRepository;
     private final DepositRepository depositRepository;
+    private final JpaDataReviewRepository reviewRepository;
 
     @Transactional(readOnly = false)
     public Long makeReservation(CustomerReservationAddDTO dto) {
@@ -239,7 +238,19 @@ public class CustomerReservationService {
             Reservation reservation = byId.get();
             Deposit reservationDeposit = depositRepository.findReservationDeposit(reservation.getId());
 
-            CustomerReservationDetailDTO dto = new CustomerReservationDetailDTO(reservation, reservationDeposit);
+            Optional<Review> byReservationId = reviewRepository.findByReservationId(reservation.getId());
+
+            boolean canReview = false;
+
+            log.info("예약 가능 일자 {}",LocalDateTime.now().isBefore(reservation.getReservationDate().plusDays(7)) );
+            log.info("예약 여부 {}", reservation.getStatus().equals(ReservationStatus.DONE));
+            if (!byReservationId.isPresent() && reservation.getStatus().equals(ReservationStatus.DONE) && LocalDateTime.now().isBefore(reservation.getReservationDate().plusDays(7))) {
+                log.info("예약 가능 일자 {}",LocalDateTime.now().isBefore(reservation.getReservationDate().plusDays(7)) );
+                canReview = true;
+            }
+
+            //리뷰가 존재하면 작성 불가 false, 존재하지 않으면 작성가능 ture
+            CustomerReservationDetailDTO dto = new CustomerReservationDetailDTO(reservation, reservationDeposit, canReview);
 
             return Optional.ofNullable(dto);
         }

@@ -33,7 +33,9 @@ public class CustomerReservationDetailDTO {
     private int deposit;
     private String cancelReason;
 
-    public CustomerReservationDetailDTO(Reservation reservation, Deposit deposit) {
+    private boolean canReview;
+
+    public CustomerReservationDetailDTO(Reservation reservation, Deposit deposit, boolean canReview) {
         this.reservationId = reservation.getId();
         this.shopName = reservation.getShop().getName();
         this.shopLocation = reservation.getShop().getLocation();
@@ -48,6 +50,7 @@ public class CustomerReservationDetailDTO {
         this.reservationStatus = reservation.getStatus();
         this.deposit = deposit.getOrigin_value();
         this.cancelReason = reservation.getCancelReason();
+        this.canReview = canReview;
     }
 
     public CustomerReservationDetailDTO() {
