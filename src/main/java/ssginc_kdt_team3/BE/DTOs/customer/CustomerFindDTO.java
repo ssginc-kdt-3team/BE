@@ -5,7 +5,6 @@ import lombok.Data;
 public class CustomerFindDTO {
     private String email;
     private String password;
-    private String name;
     private String phone;
 
 }
