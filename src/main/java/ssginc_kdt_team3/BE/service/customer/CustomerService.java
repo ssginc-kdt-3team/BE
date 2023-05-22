@@ -25,7 +25,6 @@ import java.util.Optional;
 public class CustomerService {
 
   private final JpaCustomerRepository customerRepository;
-  private final JpaDataCustomerRepository jpaDataCustomerRepository;
 
   // 회원가입
   @Transactional
