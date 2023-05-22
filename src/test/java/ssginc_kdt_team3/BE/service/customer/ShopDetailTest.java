@@ -8,10 +8,10 @@ import ssginc_kdt_team3.BE.service.Shop.ShopDetailService;
 
 @SpringBootTest
 public class ShopDetailTest {
-    @Autowired
-    JpaDataShopRepository repo;
-    @Autowired
-    private final ShopDetailService ser = new ShopDetailService(repo);
+//    @Autowired
+//    JpaDataShopRepository repo;
+//    @Autowired
+//    private final ShopDetailService ser = new ShopDetailService(repo);
 
 //    @Test
 //    public void ShopDetail() throws Exception{
