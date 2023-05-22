@@ -1,14 +1,13 @@
 package ssginc_kdt_team3.BE.controller.branch;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ssginc_kdt_team3.BE.DTOs.shop.ShopDetailWithReviewResponseDTO;
 import ssginc_kdt_team3.BE.domain.Review;
 import ssginc_kdt_team3.BE.service.Shop.ShopDetailService;
-import ssginc_kdt_team3.BE.service.admin.branch.BranchShopListService;
+import ssginc_kdt_team3.BE.service.branch.BranchShopListService;
 
 @RequiredArgsConstructor
 @RestController
