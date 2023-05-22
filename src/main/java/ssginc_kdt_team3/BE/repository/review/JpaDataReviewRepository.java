@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import ssginc_kdt_team3.BE.domain.Reservation;
 import ssginc_kdt_team3.BE.domain.Review;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface JpaDataReviewRepository extends JpaRepository<Review, Long> {

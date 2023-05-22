@@ -18,6 +18,15 @@ public class TimeUtils {
         return LocalDateTime.parse(time, formatter);
     }
 
+    public static LocalTime stringParseLocalTime(String time) {
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return LocalTime.parse(time);
+    }
+
+    public static LocalDate stringParseLocalDate(String time) {
+        return LocalDate.parse(time);
+    }
+
     public static String localDataTimeParseString(LocalDateTime time) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         String format = time.format(formatter);
