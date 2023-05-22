@@ -25,8 +25,7 @@ public interface JpaDataOwnerRepository extends JpaRepository<Owner, Long> {
 
     Page<Owner> findAllBy(Pageable pageable);
 
-
-    //    @Query("UPDATE Owner o SET o.password = :password")
+    //@Query("UPDATE Owner o SET o.password = :password")
 //    @Modifying
 //    void updatePassword(@Param("password") String password);
 
@@ -36,17 +35,5 @@ public interface JpaDataOwnerRepository extends JpaRepository<Owner, Long> {
 //    @Modifying
 //    void updateOwnerInfo(@Param("phoneNumber")String phone,@Param("address") Address address,@Param("status") UserStatus status);
 //        void updateOwnerInfo(Owner owner);
-    //실행 X
-//    boolean checkPassword(String password);
-    //실행 X
-//    boolean CheckPassword(String password);
-    //실행 X
-//    Optional<Owner> findByPassword(String password);
-
-//    String findNameByEmail(String email);
-    //실행 X
-//    Optional<Owner> findByPw(String name, String email,String phone);
-    //실행 X
-//    boolean OwnerInfoCheck(String name, String email, String phone);
 }
 
