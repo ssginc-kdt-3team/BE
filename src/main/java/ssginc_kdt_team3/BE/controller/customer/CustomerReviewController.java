@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ssginc_kdt_team3.BE.DTOs.customer.ReviewDTO;
+import ssginc_kdt_team3.BE.DTOs.customer.ReviewAddRequestDTO;
 import ssginc_kdt_team3.BE.service.customer.CustomerReviewService;
 
 @RestController
@@ -19,7 +19,7 @@ public class CustomerReviewController {
 
   // 후기 등록
   @PostMapping("/add")
-  public ResponseEntity addMyReview(@RequestBody ReviewDTO reviewDTO){
+  public ResponseEntity addMyReview(@RequestBody ReviewAddRequestDTO reviewDTO){
     try {
       boolean result = reviewService.addMyReview(reviewDTO);
       return ResponseEntity.status(HttpStatus.OK).body(result);

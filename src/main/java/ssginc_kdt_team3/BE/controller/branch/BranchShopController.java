@@ -5,7 +5,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ssginc_kdt_team3.BE.DTOs.shop.ShopDetailDTO;
+import ssginc_kdt_team3.BE.DTOs.shop.ShopDetailWithReviewResponseDTO;
 import ssginc_kdt_team3.BE.domain.Review;
 import ssginc_kdt_team3.BE.service.Shop.ShopDetailService;
 import ssginc_kdt_team3.BE.service.admin.branch.BranchShopListService;
@@ -31,11 +31,11 @@ public class BranchShopController {
     }
 
     @GetMapping("/detail/{id}")
-    public ResponseEntity<ShopDetailDTO> ShopDetail(@PathVariable("id") Long id) throws Exception {
-        ShopDetailDTO shopDetailDTO = detailService.ShopDetailList(id);
+    public ResponseEntity ShopDetail(@PathVariable("id") Long id) throws Exception {
+        ShopDetailWithReviewResponseDTO retDTO = detailService.ShopDetailList(id);
 
-        if (shopDetailDTO != null) {
-            return ResponseEntity.ok(shopDetailDTO);
+        if (retDTO != null) {
+            return ResponseEntity.ok(retDTO);
         }
         return ResponseEntity.badRequest().build();
 

@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ssginc_kdt_team3.BE.DTOs.customer.ReviewDTO;
+import ssginc_kdt_team3.BE.DTOs.customer.ReviewAddRequestDTO;
 import ssginc_kdt_team3.BE.domain.Customer;
 import ssginc_kdt_team3.BE.domain.Reservation;
 import ssginc_kdt_team3.BE.domain.Review;
@@ -28,7 +28,7 @@ public class CustomerReviewService {
   private final JpaDataReviewRepository reviewRepository;
 
 
-  public boolean addMyReview(ReviewDTO reviewDTO) {
+  public boolean addMyReview(ReviewAddRequestDTO reviewDTO) {
     // 로그인한 고객만 가능: 존재하는 고객인지 검증
     Customer customer = customerRepository.findById(reviewDTO.getUserId()).orElse(null);
 

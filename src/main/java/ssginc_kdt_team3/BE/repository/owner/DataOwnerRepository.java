@@ -2,7 +2,6 @@ package ssginc_kdt_team3.BE.repository.owner;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-import ssginc_kdt_team3.BE.DTOs.shop.ShopDetailDTO;
 import ssginc_kdt_team3.BE.domain.Owner;
 import javax.persistence.EntityManager;
 import java.util.List;

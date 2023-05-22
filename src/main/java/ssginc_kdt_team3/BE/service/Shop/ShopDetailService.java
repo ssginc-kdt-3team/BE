@@ -1,17 +1,18 @@
 package ssginc_kdt_team3.BE.service.Shop;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Service;
-import ssginc_kdt_team3.BE.DTOs.shop.ShopDetailDTO;
-import ssginc_kdt_team3.BE.DTOs.shop.ShopListDTO;
-import ssginc_kdt_team3.BE.DTOs.shop.ShopMenuDto;
+import ssginc_kdt_team3.BE.DTOs.customer.ReviewResponseDTO;
+import ssginc_kdt_team3.BE.DTOs.shop.ShopDetailWithReviewResponseDTO;
+import ssginc_kdt_team3.BE.domain.Review;
 import ssginc_kdt_team3.BE.domain.Shop;
-import ssginc_kdt_team3.BE.domain.ShopMenu;
-import ssginc_kdt_team3.BE.domain.ShopOperationInfo;
+import ssginc_kdt_team3.BE.repository.review.JpaDataReviewRepository;
 import ssginc_kdt_team3.BE.repository.shop.JpaDataShopRepository;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -21,81 +22,45 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ShopDetailService {
 
-    private final JpaDataShopRepository repo;
-//    private final DataOwnerRepository repo;
+    private final JpaDataShopRepository shopRepository;
 
-    public ShopDetailDTO ShopDetailList(Long id) throws JsonProcessingException {
+    private final JpaDataReviewRepository reviewRepository;
 
-        Optional<Shop> byId = repo.findById(id);
+    public ShopDetailWithReviewResponseDTO ShopDetailList(Long shopId) throws JsonProcessingException {
 
-        if (byId.isPresent()) {
-            Shop shop = byId.get();
+        Optional<Shop> optShop = shopRepository.findById(shopId);
 
-            ShopDetailDTO shopDetailDTO = new ShopDetailDTO(shop);
-            return shopDetailDTO;
+        if (optShop.isPresent()) {
+            Shop shop = optShop.get();
+            // 매개변수는 외부에서 넘어오는, 호출할 때 넘겨주는 값이야
+            // 리뷰페이지 만들어서 담자: 리뷰의 예약의 샵.id = shop.getID ->
+            // 리스트 -> dtoList -> Page
+            // 해당 shop 의 모든 review
 
+//            List<Review> findReviewList = reviewRepository.findReviewByShopId(shopId);
+            List<Review> allByReservationShopId = reviewRepository.findAllByReservation_ShopId(shopId);
+            List<ReviewResponseDTO> reviewResponseDTOList = new ArrayList<>();
+            for (Review review : allByReservationShopId){
+                System.out.println("review reviewreviewreviewreviewreviewreview = " + review.getTitle());
+                reviewResponseDTOList.add(new ReviewResponseDTO(review));
+            }
+
+
+
+//            for (Review review : findReviewList) {
+//                System.out.println("review = " + review);
+//
+//            }
+
+            Page<ReviewResponseDTO> reviewResponseDTOPage = new PageImpl<>(reviewResponseDTOList);
+
+            ShopDetailWithReviewResponseDTO retDTO = new ShopDetailWithReviewResponseDTO(shop, reviewResponseDTOPage);
+
+            System.out.println("retDTO = " + retDTO);
+
+            return retDTO;
         }
 
         return null;
-//
-//        List<Object> DetailList = repo.DetailList(id);
-//
-//        log.info("log info = {}",id);
-//        log.info("log info = {}",DetailList);
-//
-//        if (DetailList.isEmpty()){
-//            throw new NullPointerException("잘못된 요청입니다.");
-//        }
-//        log.info("log.info= {}",123123);
-//
-//        List<ShopDetailDTO> ResultDTO = new ArrayList<>();
-//
-//        ShopDetailDTO dd = new ShopDetailDTO();
-//
-//        for (Object shop : DetailList) {
-//
-//            log.info(shop.toString());
-//
-//            if (shop instanceof Shop){
-//                Shop shopObj = (Shop) shop;
-//                dd.setShopId(shopObj.getId());
-//                dd.setShopName(shopObj.getName());
-//                dd.setShopLocation(shopObj.getLocation());
-//                dd.setShopImg(shopObj.getShopImg());
-//                dd.setShopStatus(shopObj.getStatus());
-//                dd.setShopInfo(shopObj.getInfo());
-//            } else if (shop instanceof ShopMenu){
-//                ShopMenu MenuObj = (ShopMenu) shop;
-//
-//                log.info("img manu" + MenuObj.getMenu_img());
-//
-//                dd.setMenuId(MenuObj.getId());
-//                dd.setMenuImg(MenuObj.getMenu_img());
-//                dd.setMenuName(MenuObj.getName());
-//                dd.setMenuPrice(MenuObj.getPrice());
-//            } else if (shop instanceof ShopOperationInfo) {
-//                ShopOperationInfo infoObj = (ShopOperationInfo) shop;
-//                dd.setShopOpenTime(infoObj.getOpenTime());
-//                dd.setShopCloseTime(infoObj.getCloseTime());
-//
-//                log.info("{}", infoObj.getOpenTime());
-//            }
-////            dd.setReviewId(shop.getReviewId());
-////            dd.setReviewTitle(shop.getReviewTitle());
-////            dd.setReviewContents(shop.getReviewContents());
-////            dd.setReviewTime(shop.getReviewTime());
-//            ResultDTO.add(dd);
-//        }
-//
-//        return DTOJson(ResultDTO);
-//
-//    }
-//    public String DTOJson(List<ShopDetailDTO> dto) throws JsonProcessingException {
-//
-//        ObjectMapper mapper = new ObjectMapper();
-//        log.info("log.info = {}","=====JSON으로 변환완료=====");
-//        return mapper.writeValueAsString(dto);
-//
-//
     }
 }

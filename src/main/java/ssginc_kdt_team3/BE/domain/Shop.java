@@ -5,6 +5,7 @@ import lombok.*;
 import ssginc_kdt_team3.BE.enums.ShopStatus;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
@@ -65,7 +66,10 @@ public class Shop {
     private ShopOperationInfo operationInfo;
 
     @OneToMany(mappedBy = "shop")
-    private List<ShopMenu> shopMenuList;
+    private List<ShopMenu> shopMenuList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "shop")
+    private List<Reservation> reservationList = new ArrayList<>();
 
     public Shop(long id, String name, String info, ShopStatus status, String location, String shopImg, String businessImg, String businessNum, String businessName, Branch branch, Owner owner, ShopOperationInfo operationInfo) {
         this.id = id;
