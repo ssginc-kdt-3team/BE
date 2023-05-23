@@ -1,10 +1,6 @@
 package ssginc_kdt_team3.BE.service.customer;
 
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import ssginc_kdt_team3.BE.repository.shop.JpaDataShopRepository;
-import ssginc_kdt_team3.BE.service.Shop.ShopDetailService;
 
 @SpringBootTest
 public class ShopDetailTest {

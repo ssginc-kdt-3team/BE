@@ -29,20 +29,19 @@ public class CustomerReviewService {
 
 
   public boolean addMyReview(ReviewAddRequestDTO reviewDTO) {
-    // 로그인한 고객만 가능: 존재하는 고객인지 검증
+    // 존재하는 고객인지 검증
     Customer customer = customerRepository.findById(reviewDTO.getUserId()).orElse(null);
 
-    // 난 필드값 중 id가 필요한데 customer 자체랑 예약 id를 비교하고 있어, equal 스트링 비교, 값만 비교하면 되니까 ==
     // 리뷰의 고객id와 예약의 고객id 일치 && ReserveStatus.DONE
     Reservation reservation = reservationRepository.findById(reviewDTO.getReservationId()).orElse(null);
     if(customer.getId() == reservation.getCustomer().getId() && reservation.getStatus().equals(DONE)){
       LocalDateTime writeTime = LocalDateTime.now();
-      LocalDateTime localDateTime = reservation.getReservationDate().plusDays(7);// DTO에서 주지 않는 값은 레포지토리에서 가져와서 검증
+      LocalDateTime localDateTime = reservation.getReservationDate().plusDays(7);
 
       // reservationDate + 7일 >= writeTime
       if(writeTime.isBefore(localDateTime)){
 
-        // reviewRepository에 넣으려면 Review 상태야야 돼. 레포에는 엔티티로 선언한 것만 넣을 수 있으니까 DTO -> Review로 변경
+        // DTO -> Review 변경
         Review review = new Review();
         review.setTitle(reviewDTO.getTitle());
         review.setContents(reviewDTO.getContents());
@@ -55,6 +54,23 @@ public class CustomerReviewService {
       }
     }
     return false;
+  }
+
+  public boolean deleteMyReview(Long reviewId) {
+
+    // 2) 본인이 작성한 후기가 맞는지 검증
+    Review review = reviewRepository.findById(reviewId).orElse(null);
+
+    // 프론트에서 reviewId만 보내주는데 customer 검증을 어떻게 해
+    if(review.getStatus().equals(ReviewStatus.SHOW)){
+      review.setStatus(ReviewStatus.DELETE); // 3) status.SHOW -> DELETE 변경
+
+      // 4) 저장
+      reviewRepository.save(review);
+      return true;
+    }
+    return false;
+
   }
 
 
