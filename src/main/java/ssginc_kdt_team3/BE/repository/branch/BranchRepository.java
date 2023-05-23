@@ -1,17 +1,33 @@
 package ssginc_kdt_team3.BE.repository.branch;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.hibernate.query.internal.QueryImpl;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+import ssginc_kdt_team3.BE.DTOs.admin.AdminBranchOwnerDTO;
 import ssginc_kdt_team3.BE.DTOs.branch.BranchShopDTO;
 import ssginc_kdt_team3.BE.domain.Branch;
+import ssginc_kdt_team3.BE.domain.Owner;
+import ssginc_kdt_team3.BE.domain.Shop;
+import ssginc_kdt_team3.BE.repository.owner.JpaDataOwnerRepository;
+
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
+@Slf4j
 @Repository
 @RequiredArgsConstructor
 public class BranchRepository {
+
   private final EntityManager em;
 
   // 조회

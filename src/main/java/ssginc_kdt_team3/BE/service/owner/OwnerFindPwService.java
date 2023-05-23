@@ -8,6 +8,7 @@ import ssginc_kdt_team3.BE.DTOs.owner.OwnerFindPwDTO;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerNewPwDTO;
 import ssginc_kdt_team3.BE.domain.Owner;
 import ssginc_kdt_team3.BE.repository.owner.DataOwnerRepository;
+import ssginc_kdt_team3.BE.repository.owner.JpaDataOwnerRepository;
 
 
 import java.util.Optional;
@@ -19,7 +20,8 @@ import java.util.Optional;
 
 public class OwnerFindPwService{
 
-    private final DataOwnerRepository repo;
+    private final DataOwnerRepository repo2;
+    private final JpaDataOwnerRepository repo;
 
     private String email;
 
@@ -29,7 +31,7 @@ public class OwnerFindPwService{
         String name = ownerFindPwDTO.getName();
         String phone = ownerFindPwDTO.getPhone();
 
-        boolean emailCheck = repo.existsEmail(this.email);
+        boolean emailCheck = repo.existsByEmail(this.email);
 
         if(!emailCheck){
             throw new Exception("존재하지 않는 회원입니다.");
@@ -60,7 +62,7 @@ public class OwnerFindPwService{
         if (!pw1.equals(pw2)) {
             throw new Exception("비밀번호가 서로 다릅니다!");
         }else {
-            repo.updatePassword(this.email,pw1);
+            repo2.updatePassword(this.email,pw1);
         }
     }
 

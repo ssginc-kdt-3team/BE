@@ -19,9 +19,8 @@ import java.util.Optional;
 
 public class OwnerChangePwService{
 
-    private final DataOwnerRepository repo;
-
-//    private final JpaDataOwnerRepository repo2;
+//    private final DataOwnerRepository repo;
+    private final JpaDataOwnerRepository repo;
 
     private String email;
 
