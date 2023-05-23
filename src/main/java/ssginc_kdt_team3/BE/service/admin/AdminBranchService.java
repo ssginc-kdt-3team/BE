@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ssginc_kdt_team3.BE.DTOs.branch.BranchAddDTO;
+import ssginc_kdt_team3.BE.DTOs.branch.BranchAdminListDTO;
 import ssginc_kdt_team3.BE.DTOs.branch.BranchDetailDTO;
 import ssginc_kdt_team3.BE.DTOs.branch.BranchUpdateDTO;
 import ssginc_kdt_team3.BE.DTOs.customer.Address;
@@ -24,6 +25,8 @@ import ssginc_kdt_team3.BE.util.TimeUtils;
 import java.io.File;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -122,6 +125,16 @@ public class AdminBranchService {
             return branch.update(branchId, updateDTO);
         }
         return false;
+    }
+
+    public List<BranchAdminListDTO> showAllBranchForAdmin() {
+        List<Branch> all = branchRepository.findAll();
+        List<BranchAdminListDTO> result = new ArrayList<>();
+        for (Branch branch : all) {
+            result.add( new BranchAdminListDTO(branch));
+        }
+
+        return result;
     }
 
 

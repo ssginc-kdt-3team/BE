@@ -8,10 +8,12 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ssginc_kdt_team3.BE.DTOs.branch.BranchAddDTO;
+import ssginc_kdt_team3.BE.DTOs.branch.BranchAdminListDTO;
 import ssginc_kdt_team3.BE.DTOs.branch.BranchDetailDTO;
 import ssginc_kdt_team3.BE.DTOs.branch.BranchUpdateDTO;
 import ssginc_kdt_team3.BE.service.admin.AdminBranchService;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -71,6 +73,11 @@ public class AdminBranchController {
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.badRequest().build();
+    }
+
+    @GetMapping("/list")
+    public List<BranchAdminListDTO> showAllBranchForAdmin() {
+        return adminBranchService.showAllBranchForAdmin();
     }
 
 
