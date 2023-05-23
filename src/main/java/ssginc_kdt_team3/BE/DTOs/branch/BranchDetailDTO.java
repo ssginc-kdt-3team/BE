@@ -29,7 +29,7 @@ public class BranchDetailDTO {
     private String openDay;
     private String outDay;
 
-    public BranchDetailDTO(Branch branch, BranchOperationInfo info) {
+    public BranchDetailDTO(Branch branch) {
         this.id = branch.getId();
         this.branchImgUrl = branch.getImgUrl();
         this.address = branch.getAddress();
@@ -38,10 +38,20 @@ public class BranchDetailDTO {
         this.status = branch.getStatus();
 
 //        TimeUtils.
+        String openTime = branch.getBranchOperationInfo().getOpenTime().toString();
+        String closeTime = branch.getBranchOperationInfo().getCloseTime().toString();
+        String openDay = branch.getBranchOperationInfo().getOpenDay().toString();
+
+        if (branch.getBranchOperationInfo().getOutDay() == null) {
+            this.outDay = null;
+        } else {
+            String outDay = branch.getBranchOperationInfo().getOutDay().toString();
+            this.outDay = outDay;
+        }
 
         this.openTime = openTime;
         this.closeTime = closeTime;
         this.openDay = openDay;
-        this.outDay = outDay;
+
     }
 }
