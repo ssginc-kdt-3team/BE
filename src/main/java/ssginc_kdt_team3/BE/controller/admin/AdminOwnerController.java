@@ -10,6 +10,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ssginc_kdt_team3.BE.DTOs.admin.AdminBranchOwnerDTO;
+import ssginc_kdt_team3.BE.DTOs.admin.AdminOwnerDetailDTO;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerJoinDTO;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerUpdateDTO;
 import ssginc_kdt_team3.BE.domain.Owner;
@@ -56,8 +57,6 @@ public class AdminOwnerController {
             , @PathVariable(name = "page") int page) {
 
         Pageable pageable = PageRequest.of(page-1, 10);
-        log.info("log info = {}",id);
-        log.info("log info = {} ",page);
         ResponseEntity<Page<AdminBranchOwnerDTO>> response = ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .body(branchOwnerService.branchMatchOwner(id, pageable));
@@ -65,18 +64,23 @@ public class AdminOwnerController {
         return response;
 
     }
-
     @GetMapping("/findOne/{id}")
-    public ResponseEntity<Owner> findOne(@PathVariable(name = "id") Long ownerId) {
+    public ResponseEntity<AdminOwnerDetailDTO> AdminOwnerDetailController(@PathVariable("id")Long id){
 
-        Optional<Owner> one = ownerService.findOne(ownerId);
 
-        if (one.isPresent()) {
-            return ResponseEntity.ok(one.get());
-        } else {
-            return null;
-        }
+
     }
+//    @GetMapping("/findOne/{id}")
+//    public ResponseEntity<Owner> findOne(@PathVariable(name = "id") Long ownerId) {
+//
+//        Optional<Owner> one = ownerService.findOne(ownerId);
+//
+//        if (one.isPresent()) {
+//            return ResponseEntity.ok(one.get());
+//        } else {
+//            return null;
+//        }
+//    }
 
     @PostMapping("/update/{id}")
     public boolean updateOwner(@PathVariable(name = "id") Long ownerId,
