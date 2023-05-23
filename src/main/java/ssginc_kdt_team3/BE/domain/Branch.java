@@ -4,10 +4,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ssginc_kdt_team3.BE.DTOs.branch.BranchUpdateDTO;
 import ssginc_kdt_team3.BE.DTOs.customer.Address;
 import ssginc_kdt_team3.BE.enums.BranchStatus;
+import ssginc_kdt_team3.BE.util.TimeUtils;
 
 import javax.persistence.*;
+import java.time.LocalTime;
 
 @Entity
 @Getter
@@ -43,15 +46,37 @@ public class Branch {
 
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "branch_operation_id")
-    private BranchOperationInfo branchOperationInfoId;
+    private BranchOperationInfo branchOperationInfo;
 
     @Builder
-    public Branch(String name, String imgUrl, Address address, String phone, BranchStatus status, BranchOperationInfo branchOperationInfoId) {
+    public Branch(String name, String imgUrl, Address address, String phone, BranchStatus status, BranchOperationInfo branchOperationInfo) {
         this.name = name;
         this.imgUrl = imgUrl;
         this.address = address;
         this.phone = phone;
         this.status = status;
-        this.branchOperationInfoId = branchOperationInfoId;
+        this.branchOperationInfo = branchOperationInfo;
+    }
+
+    public boolean delete(Long branchId) {
+        if (branchId.equals(this.id)) {
+            this.status = BranchStatus.OUT;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean update(Long branchId, BranchUpdateDTO updateDTO) {
+        if (branchId.equals(this.id)) {
+            this.phone = updateDTO.getPhone();
+
+            LocalTime openTime = TimeUtils.stringParseLocalTime(updateDTO.getOpenTime());
+            LocalTime closeTime = TimeUtils.stringParseLocalTime(updateDTO.getCloseTime());
+            this.branchOperationInfo.update(openTime, closeTime);
+
+            return true;
+        }
+
+        return false;
     }
 }

@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ssginc_kdt_team3.BE.DTOs.branch.BranchAddDTO;
+import ssginc_kdt_team3.BE.DTOs.branch.BranchDetailDTO;
+import ssginc_kdt_team3.BE.DTOs.branch.BranchUpdateDTO;
 import ssginc_kdt_team3.BE.DTOs.customer.Address;
 import ssginc_kdt_team3.BE.domain.Branch;
 import ssginc_kdt_team3.BE.domain.BranchOperationInfo;
@@ -73,7 +75,7 @@ public class AdminBranchService {
                     .address(dto.getAddress())
                     .phone(dto.getPhone())
                     .imgUrl(uploadImageUrl)
-                    .branchOperationInfoId(operationInfo)
+                    .branchOperationInfo(operationInfo)
                     .status(BranchStatus.OPEN)
                     .build();
 
@@ -86,7 +88,45 @@ public class AdminBranchService {
         }
     }
 
-//    public Optional<BranchDetailDTO>
+    public Optional<BranchDetailDTO> findOneBranch(Long branchId) {
+        Optional<Branch> byId = branchRepository.findById(branchId);
+
+        if (byId.isPresent()) {
+            Branch branch = byId.get();
+
+            BranchDetailDTO branchDetailDTO = new BranchDetailDTO(branch);
+            System.out.println(branchDetailDTO.getOpenDay());
+            return Optional.ofNullable(branchDetailDTO);
+        }
+
+        return Optional.ofNullable(null);
+    }
+
+    public boolean deleteBranch(Long branchId) {
+        Optional<Branch> byId = branchRepository.findById(branchId);
+
+        if (byId.isPresent()) {
+            Branch branch = byId.get();
+
+            return branch.delete(branchId);
+        }
+        return false;
+    }
+
+    public boolean updateBranch(Long branchId, BranchUpdateDTO updateDTO) {
+        Optional<Branch> byId = branchRepository.findById(branchId);
+
+        if (byId.isPresent()) {
+            Branch branch = byId.get();
+
+            return branch.update(branchId, updateDTO);
+        }
+        return false;
+    }
+
+
+
+
 
     private void removeNewFile(File targetFile) {
         if (targetFile.delete()) {
