@@ -13,17 +13,14 @@ import java.time.LocalDate;
 @Data
 public class OwnerUpdateDTO {
 
-    String name;
-
-    String password;
-
-    LocalDate birthday;
+    private String name;
 
     private String phone;
 
-    @Embedded
-    private Address adddress;
+    private String city;
+    private String district;
+    private String detail;
+    private String zipCode;
 
-    private UserStatus userStatus;
 
 }
