@@ -64,12 +64,12 @@ public class AdminOwnerController {
         return response;
 
     }
-    @GetMapping("/findOne/{id}")
-    public ResponseEntity<AdminOwnerDetailDTO> AdminOwnerDetailController(@PathVariable("id")Long id){
-
-
-
-    }
+//    @GetMapping("/findOne/{id}")
+//    public ResponseEntity<AdminOwnerDetailDTO> AdminOwnerDetailController(@PathVariable("id")Long id){
+//
+//
+//
+//    }
 //    @GetMapping("/findOne/{id}")
 //    public ResponseEntity<Owner> findOne(@PathVariable(name = "id") Long ownerId) {
 //
