@@ -2,7 +2,6 @@ package ssginc_kdt_team3.BE.controller.admin;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
@@ -80,12 +79,7 @@ public class AdminOwnerController {
 
     }
 
-//    @GetMapping("/findOne/{id}")
-//    public ResponseEntity<AdminOwnerDetailDTO> AdminOwnerDetailController(@PathVariable("id")Long id){
-//
-//
-//
-//    }
+
 
 //    @GetMapping("/findOne/{id}")
 //    public ResponseEntity<Owner> findOne(@PathVariable(name = "id") Long ownerId) {
@@ -100,9 +94,14 @@ public class AdminOwnerController {
 //    }
 
     @PostMapping("/update/{id}")
-    public boolean updateOwner(@PathVariable(name = "id") Long ownerId,
+    public ResponseEntity<String> updateOwner(@PathVariable(name = "id") Long ownerId,
                                 @RequestBody OwnerUpdateDTO ownerUpdateDTO) {
+        try {
+            ownerService.updateOwnerInfo(ownerId,ownerUpdateDTO);
+            return new ResponseEntity<>("업데이트가 성공적으로 처리되었습니다!",HttpStatus.OK);
+        }catch (Exception e){
 
-        return ownerService.updateOwnerInfo(ownerId, ownerUpdateDTO);
+            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+        }
     }
 }

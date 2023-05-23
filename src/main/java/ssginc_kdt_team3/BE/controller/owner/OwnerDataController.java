@@ -6,9 +6,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ssginc_kdt_team3.BE.DTOs.owner.*;
+import ssginc_kdt_team3.BE.service.admin.AdminOwnerService;
 import ssginc_kdt_team3.BE.service.owner.OwnerChangePwService;
 import ssginc_kdt_team3.BE.service.owner.OwnerFindPwService;
-import ssginc_kdt_team3.BE.service.owner.OwnerUpdateService;
+
 
 
 @RequiredArgsConstructor
@@ -20,14 +21,14 @@ public class OwnerDataController {
     @Autowired
     private final OwnerChangePwService changePwSer;
     @Autowired
-    private final OwnerUpdateService update;
+    private final AdminOwnerService update;
     @Autowired
     private final OwnerFindPwService ser;
 
     @PostMapping("/privacy")
     public ResponseEntity<String> updateInfo(@RequestParam("id")long id,@RequestBody OwnerUpdateDTO ownerUpdateDTO) {
 
-        update.OwnerUpdate(id,ownerUpdateDTO);
+        update.updateOwnerInfo(id,ownerUpdateDTO);
 
         return new ResponseEntity<>("정보 수정이 완료되었습니다!", HttpStatus.OK);
         //점주 정보 수정

@@ -1,6 +1,7 @@
 package ssginc_kdt_team3.BE.service.admin;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import ssginc_kdt_team3.BE.enums.UserStatus;
 import ssginc_kdt_team3.BE.repository.owner.JpaDataOwnerRepository;
 //import ssginc_kdt_team3.BE.repository.owner.JpaDataOwnerRepository;
 
+import javax.persistence.NoResultException;
 import java.time.LocalDate;
 import java.util.Optional;
 
@@ -28,38 +30,34 @@ public class AdminOwnerService {
     }
 
     public Optional<Owner> findOne(Long id) {
+
         return ownerRepository.findById(id);
     }
 
-    public boolean updateOwnerInfo(Long id, OwnerUpdateDTO updateDTO) {
-        Optional<Owner> byId = ownerRepository.findById(id);
+    public void updateOwnerInfo(Long id, OwnerUpdateDTO updateDTO) {
 
-        if (byId.isPresent()) {
-            Owner owner = byId.get();
+        boolean existence = ownerRepository.existsByid(id);
 
+            if (!existence){
+                throw new NoResultException("ID를 다시 입력해주세요!");
+            }
             String name = updateDTO.getName();
             String phone = updateDTO.getPhone();
-            String password = updateDTO.getPassword();
-            LocalDate birthday = updateDTO.getBirthday();
-            Address adddress = updateDTO.getAdddress();
-            UserStatus userStatus = updateDTO.getUserStatus();
+            String city = updateDTO.getCity();
+            String district = updateDTO.getDistrict();
+            String detail = updateDTO.getDetail();
+            String zipCode = updateDTO.getZipCode();
 
-            owner.setName(name);
-            owner.setPhoneNumber(phone);
-            owner.setPassword(password);
-            owner.setBirthday(birthday);
-            owner.setAddress(adddress);
-            owner.setStatus(userStatus);
 
-            try {
-                ownerRepository.save(owner);
-                return true;
-            } catch (Exception e) {
-                return false;
+            try{
+
+                ownerRepository.updateByOwner(id,name,phone,city,district,detail,zipCode);
+
+            }catch (Exception e){
+                throw new DataIntegrityViolationException("업데이트 하려는 값이 잘못되었습니다!");
+
             }
-        } else {
-            return false;
-        }
+
     }
 
 
