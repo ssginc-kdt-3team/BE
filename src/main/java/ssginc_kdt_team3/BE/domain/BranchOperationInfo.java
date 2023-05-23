@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ssginc_kdt_team3.BE.DTOs.branch.BranchUpdateDTO;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -38,5 +39,10 @@ public class BranchOperationInfo {
         this.openTime = openTime;
         this.closeTime = closeTime;
         this.openDay = openDay;
+    }
+
+    public void update(LocalTime openTime, LocalTime closeTime) {
+        this.openTime = openTime;
+        this.closeTime = closeTime;
     }
 }

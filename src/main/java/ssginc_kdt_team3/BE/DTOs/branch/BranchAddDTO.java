@@ -4,16 +4,18 @@ import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 import ssginc_kdt_team3.BE.DTOs.customer.Address;
 
+import javax.persistence.Embedded;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 @Data
 public class BranchAddDTO {
 
-    @NotNull
-    private MultipartFile branchImg;
+//    @NotNull
+//    private MultipartFile branchImg;
 
     @NotNull
+    @Embedded
     private Address address;
 
     @NotNull
