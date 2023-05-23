@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import ssginc_kdt_team3.BE.DTOs.branch.BranchAddDTO;
 import ssginc_kdt_team3.BE.DTOs.customer.Address;
 import ssginc_kdt_team3.BE.domain.Branch;
@@ -22,6 +23,7 @@ import java.io.File;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Optional;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -39,22 +41,23 @@ public class AdminBranchService {
     private final JpaDataBranchInfoRepository branchInfoRepository;
     private final AmazonS3Client amazonS3Client;
 
-    public Optional<Long> addNewBranch(BranchAddDTO dto) {
+    public Optional<Long> addNewBranch(BranchAddDTO dto, MultipartFile multipartFile) {
 
         try {
 
-            String imgname = dto.getBranchImg().getOriginalFilename();
+//            String imgname = dto.getBranchImg().getOriginalFilename();
+            String imgname = multipartFile.getOriginalFilename();
+            UUID uuid = UUID.randomUUID();
+            log.info("imgname = {}", imgname);
 
-            File file = FileUploadUtil.saveFile(dto.getBranchImg())
+            File file = FileUploadUtil.saveFile(multipartFile)
                     .orElseThrow(() -> new IllegalArgumentException("MultipartFile -> File로 전환이 실패했습니다."));
 
-            String fileName = custdir + imgname;
+            String fileName = custdir + uuid;
             String uploadImageUrl = putS3(file, fileName);
             removeNewFile(file);
 
             log.info(uploadImageUrl);
-
-            Address address = dto.getAddress();
 
             LocalTime open = TimeUtils.stringParseLocalTime(dto.getOpenTime());
             LocalTime close = TimeUtils.stringParseLocalTime(dto.getCloseTime());
@@ -67,7 +70,7 @@ public class AdminBranchService {
 
             Branch branch = Branch.builder()
                     .name(dto.getName())
-                    .address(address)
+                    .address(dto.getAddress())
                     .phone(dto.getPhone())
                     .imgUrl(uploadImageUrl)
                     .branchOperationInfoId(operationInfo)
@@ -82,6 +85,8 @@ public class AdminBranchService {
             return Optional.empty();
         }
     }
+
+//    public Optional<BranchDetailDTO>
 
     private void removeNewFile(File targetFile) {
         if (targetFile.delete()) {
