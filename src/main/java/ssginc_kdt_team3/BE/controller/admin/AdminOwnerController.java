@@ -79,6 +79,14 @@ public class AdminOwnerController {
             }
 
     }
+
+//    @GetMapping("/findOne/{id}")
+//    public ResponseEntity<AdminOwnerDetailDTO> AdminOwnerDetailController(@PathVariable("id")Long id){
+//
+//
+//
+//    }
+
 //    @GetMapping("/findOne/{id}")
 //    public ResponseEntity<Owner> findOne(@PathVariable(name = "id") Long ownerId) {
 //
@@ -93,7 +101,7 @@ public class AdminOwnerController {
 
     @PostMapping("/update/{id}")
     public boolean updateOwner(@PathVariable(name = "id") Long ownerId,
-                               @RequestBody OwnerUpdateDTO ownerUpdateDTO) {
+                                @RequestBody OwnerUpdateDTO ownerUpdateDTO) {
 
         return ownerService.updateOwnerInfo(ownerId, ownerUpdateDTO);
     }

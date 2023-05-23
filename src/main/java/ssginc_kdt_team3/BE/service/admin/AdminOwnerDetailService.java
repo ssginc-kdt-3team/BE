@@ -4,17 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ssginc_kdt_team3.BE.DTOs.admin.AdminOwnerDetailDTO;
-import ssginc_kdt_team3.BE.domain.Branch;
-import ssginc_kdt_team3.BE.domain.Owner;
-import ssginc_kdt_team3.BE.domain.Shop;
 import ssginc_kdt_team3.BE.repository.owner.JpaDataOwnerRepository;
-
-import javax.persistence.Id;
 import javax.persistence.NoResultException;
-import javax.xml.stream.events.DTD;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Optional;
 
 @Slf4j

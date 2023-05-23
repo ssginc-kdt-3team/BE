@@ -23,7 +23,7 @@ public class User {
     @Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected long id;
+    protected Long id;
 
     @Column(name = "user_email", unique = true, nullable = false, length = 20)
     @NotBlank
