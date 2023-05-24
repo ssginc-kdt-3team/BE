@@ -20,7 +20,7 @@ public class ShopOperationInfo {
     @Id
     @Column(name = "shop_operation_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     //LocalDateTime -> LocalTime으로 수정 (0502 임태경)
     @Column(name = "shop_open_time")

@@ -3,9 +3,8 @@ package ssginc_kdt_team3.BE.domain;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import ssginc_kdt_team3.BE.DTOs.branch.BranchUpdateDTO;
-import ssginc_kdt_team3.BE.DTOs.customer.Address;
+import ssginc_kdt_team3.BE.DTOs.Address;
 import ssginc_kdt_team3.BE.enums.BranchStatus;
 import ssginc_kdt_team3.BE.util.TimeUtils;
 
@@ -30,8 +29,8 @@ public class Branch {
 
     //String -> Address 수정 (0502 임태경)
     //Column명 각각 지정하는 방식으로 변경 (0502 임태경)
-    @AttributeOverride(name = "city", column = @Column(name = "branch_city"))
-    @AttributeOverride(name = "district", column = @Column(name = "branch_district"))
+    @AttributeOverride(name = "address", column = @Column(name = "branch_address"))
+    @AttributeOverride(name = "extraAddress", column = @Column(name = "branch_extra_address"))
     @AttributeOverride(name = "detail", column = @Column(name = "branch_detail"))
     @AttributeOverride(name = "zipCode", column = @Column(name = "branch_zipCode"))
     private Address address;

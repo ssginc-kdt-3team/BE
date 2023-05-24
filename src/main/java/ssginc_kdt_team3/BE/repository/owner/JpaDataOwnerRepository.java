@@ -24,8 +24,8 @@ public interface JpaDataOwnerRepository extends JpaRepository<Owner, Long> {
     @Query("UPDATE Owner o SET " +
             "o.name = CASE WHEN :name IS NOT NULL THEN :name ELSE o.name END, " +
             "o.phoneNumber = CASE WHEN :phone IS NOT NULL THEN :phone ELSE o.phoneNumber END, " +
-            "o.address.city = CASE WHEN :city IS NOT NULL THEN :city ELSE o.address.city END, " +
-            "o.address.district = CASE WHEN :district IS NOT NULL THEN :district ELSE o.address.district END, " +
+            "o.address.address = CASE WHEN :city IS NOT NULL THEN :city ELSE o.address.address END, " +
+            "o.address.extraAddress = CASE WHEN :district IS NOT NULL THEN :district ELSE o.address.extraAddress END, " +
             "o.address.detail = CASE WHEN :detail IS NOT NULL THEN :detail ELSE o.address.detail END, " +
             "o.address.zipCode = CASE WHEN :zipCode IS NOT NULL THEN :zipCode ELSE o.address.zipCode END "+
             "WHERE o.id = :id")

@@ -17,7 +17,7 @@ public class ShopMenu {
     @Id
     @Column(name = "menu_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @NotNull
     @Column(name = "menu_name", length = 20)

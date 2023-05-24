@@ -13,7 +13,7 @@ public class Alarm {
     @Id
     @Column(name = "alarm_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name = "alarm_contents")
     private String contents;

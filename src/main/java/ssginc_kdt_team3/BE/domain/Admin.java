@@ -16,7 +16,7 @@ public class Admin {
     @Id
     @Column(name = "admin_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @Column(name ="admin_login_id")
     @NotNull
