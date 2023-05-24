@@ -51,4 +51,11 @@ public class ShopOperationInfo {
         this.openDate = TimeUtils.stringParseLocalDate(openDate);
         this.seats = seats;
     }
+
+    public void update(LocalTime openTime, LocalTime orderCloseTime, LocalTime closeTime, int seats) {
+        this.openTime = openTime;
+        this.orderCloseTime = closeTime;
+        this.orderCloseTime = orderCloseTime;
+        this.seats = seats;
+    }
 }

@@ -10,12 +10,12 @@ import java.time.LocalTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ShopUpdateDTO {
+public class AdminShopUpdateDTO {
     private String shopName;
     private String shopInfo;
     private ShopStatus shopStatus;
     private String shopLocation;
-    private String shopImg;
+    private String shopImgUrl;
     private String businessName;
     private LocalTime openTime;
     private LocalTime closeTime;

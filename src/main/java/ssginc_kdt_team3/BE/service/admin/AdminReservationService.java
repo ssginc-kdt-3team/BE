@@ -24,7 +24,6 @@ public class AdminReservationService {
 
         List<AdminReservationListDTO> result = new ArrayList<>();
 
-
         if (type.equals("branch")) {
             if (status.equals("ALL")) {
                 //타입이 branch에 필터링 없이 모두 조회하는 경우
