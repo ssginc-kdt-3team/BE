@@ -45,7 +45,7 @@ public class BranchRepository {
   //지점별 매장 조회
   public List<BranchShopDTO> BranchShopList(Long id) {
 
-    String BranchShopQuery = "SELECT new ssginc_kdt_team3.BE.DTOs.branch.BranchShopDTO(s.id, s.name, s.location, s.shopImg, s.status) FROM Shop s WHERE s.branch.id = :id";
+    String BranchShopQuery = "SELECT new ssginc_kdt_team3.BE.DTOs.branch.BranchShopDTO(s.id, s.name, s.location, s.shopImgUrl, s.status) FROM Shop s WHERE s.branch.id = :id";
 
     TypedQuery<BranchShopDTO> Shops = em.createQuery(BranchShopQuery, BranchShopDTO.class)
             .setParameter("id", id);

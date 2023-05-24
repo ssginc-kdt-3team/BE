@@ -37,7 +37,7 @@ public class BranchDetailDTO {
         this.phone = branch.getPhone();
         this.status = branch.getStatus();
 
-//        TimeUtils.
+
         String openTime = branch.getBranchOperationInfo().getOpenTime().toString();
         String closeTime = branch.getBranchOperationInfo().getCloseTime().toString();
         String openDay = branch.getBranchOperationInfo().getOpenDay().toString();

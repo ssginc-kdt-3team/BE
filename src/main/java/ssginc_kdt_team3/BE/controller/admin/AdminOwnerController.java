@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import ssginc_kdt_team3.BE.DTOs.admin.AdminBranchOwnerDTO;
 import ssginc_kdt_team3.BE.DTOs.admin.AdminOwnerDetailDTO;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerJoinDTO;
-import ssginc_kdt_team3.BE.DTOs.owner.OwnerUpdateDTO;
 import ssginc_kdt_team3.BE.domain.Owner;
 import ssginc_kdt_team3.BE.service.admin.AdminOwnerDetailService;
 import ssginc_kdt_team3.BE.service.admin.AdminOwnerService;
@@ -52,9 +51,10 @@ public class AdminOwnerController {
     @GetMapping("/findAll/{id}/{page}")
     public ResponseEntity<Page<AdminBranchOwnerDTO>> AdminBranchOwnerList
             (@PathVariable(name = "id")Long id
-            , @PathVariable(name = "page") int page) {
+            , @PathVariable(name = "page") int page) throws Exception{
 
         Pageable pageable = PageRequest.of(page-1, 10);
+
         ResponseEntity<Page<AdminBranchOwnerDTO>> response = ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .body(branchOwnerService.branchMatchOwner(id, pageable));
