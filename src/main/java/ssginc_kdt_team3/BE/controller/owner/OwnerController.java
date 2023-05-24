@@ -2,16 +2,17 @@ package ssginc_kdt_team3.BE.controller.owner;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import ssginc_kdt_team3.BE.DTOs.admin.AdminOwnerDetailDTO;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerJoinDTO;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerLoginDTO;
 import ssginc_kdt_team3.BE.service.owner.OwnerJoinService;
 import ssginc_kdt_team3.BE.service.owner.OwnerLoginService;
-
+import ssginc_kdt_team3.BE.service.owner.OwnerViewSelfPrivacyService;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,6 +21,8 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 public class OwnerController {
+
+    private final OwnerViewSelfPrivacyService ownerViewSelfPrivacyService;
 
     private final OwnerJoinService ownerJoinService;
 
@@ -48,5 +51,13 @@ public class OwnerController {
             return null;
 //            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
+    }
+    @GetMapping("/detail/{id}")
+    public ResponseEntity<AdminOwnerDetailDTO> ownerViewSelfDetailPrivacyController(@PathVariable("id")Long id) throws Exception {
+            ResponseEntity<AdminOwnerDetailDTO> successResponse = ResponseEntity.status(HttpStatus.OK)
+                    .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                    .body(ownerViewSelfPrivacyService.ownerViewSelfDetail(id));
+
+            return successResponse;
     }
 }
