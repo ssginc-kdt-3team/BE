@@ -66,8 +66,9 @@ public class AdminBranchController {
     }
 
     @PostMapping("/update/{id}")
-    public ResponseEntity updateBranch(@PathVariable(name = "id") Long branchId, @RequestBody BranchUpdateDTO updateDTO) {
-        boolean b = adminBranchService.updateBranch(branchId, updateDTO);
+    public ResponseEntity updateBranch(@PathVariable(name = "id") Long branchId,
+                                       @RequestPart(value = "updateDTO") BranchUpdateDTO updateDTO, @RequestPart(value = "branchImg") MultipartFile multipartFile ) {
+        boolean b = adminBranchService.updateBranch(branchId, updateDTO, multipartFile);
 
         if (b) {
             return ResponseEntity.ok().build();

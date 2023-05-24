@@ -23,6 +23,7 @@ import ssginc_kdt_team3.BE.util.FileUploadUtil;
 import ssginc_kdt_team3.BE.util.TimeUtils;
 
 import java.io.File;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -40,7 +41,7 @@ public class AdminBranchService {
     private String bucket;
 
     @Value("${imglocation}")
-    String custdir;
+    String branchLocation;
 
     private final JpaDataBranchRepository branchRepository;
     private final JpaDataBranchInfoRepository branchInfoRepository;
@@ -50,20 +51,9 @@ public class AdminBranchService {
 
         try {
 
-            int i = multipartFile.getOriginalFilename().indexOf('.');
-            String extension = multipartFile.getOriginalFilename().substring(i);
-            log.info(extension);
+            String branchImgUrl = uploadS3(branchLocation, multipartFile);
 
-            String uuid = UUID.randomUUID().toString();
-
-            File file = FileUploadUtil.saveFile(multipartFile)
-                    .orElseThrow(() -> new IllegalArgumentException("MultipartFile -> File로 전환이 실패했습니다."));
-
-            String fileName = custdir + uuid + extension;
-            String uploadImageUrl = putS3(file, fileName);
-            removeNewFile(file);
-
-            log.info("============================================================ 업로드 주소 : {}", uploadImageUrl);
+            log.info("============================================================ 업로드 주소 : {}", branchImgUrl);
 
             LocalTime open = TimeUtils.stringParseLocalTime(dto.getOpenTime());
             LocalTime close = TimeUtils.stringParseLocalTime(dto.getCloseTime());
@@ -78,7 +68,7 @@ public class AdminBranchService {
                     .name(dto.getName())
                     .address(dto.getAddress())
                     .phone(dto.getPhone())
-                    .imgUrl(uploadImageUrl)
+                    .imgUrl(branchImgUrl)
                     .branchOperationInfo(operationInfo)
                     .status(BranchStatus.OPEN)
                     .build();
@@ -117,13 +107,23 @@ public class AdminBranchService {
         return false;
     }
 
-    public boolean updateBranch(Long branchId, BranchUpdateDTO updateDTO) {
+    public boolean updateBranch(Long branchId, BranchUpdateDTO updateDTO, MultipartFile multipartFile){
         Optional<Branch> byId = branchRepository.findById(branchId);
 
         if (byId.isPresent()) {
             Branch branch = byId.get();
 
-            return branch.update(branchId, updateDTO);
+            String branchImgUrl = "";
+
+            try {
+                if (!multipartFile.isEmpty()) {
+                    branchImgUrl = uploadS3(branchLocation, multipartFile);
+                }
+            } catch (IOException e) {
+                return false;
+            }
+
+            return branch.update(branchId, updateDTO, branchImgUrl);
         }
         return false;
     }
@@ -136,6 +136,20 @@ public class AdminBranchService {
         }
 
         return result;
+    }
+
+    private String uploadS3(String dir, MultipartFile mf) throws IOException {
+
+        String uuid = UUID.randomUUID().toString();
+
+        File file = FileUploadUtil.saveFile(mf)
+                .orElseThrow(() -> new IllegalArgumentException("MultipartFile -> File로 전환이 실패했습니다."));
+
+        String fileName = dir + uuid;
+        String uploadImageUrl = putS3(file, fileName);
+        removeNewFile(file);
+
+        return uploadImageUrl;
     }
 
     private void removeNewFile(File targetFile) {

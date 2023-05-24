@@ -8,7 +8,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ssginc_kdt_team3.BE.DTOs.branch.BranchAddDTO;
 import ssginc_kdt_team3.BE.DTOs.shop.OwnerShopDetailDTO;
 import ssginc_kdt_team3.BE.DTOs.shop.ShopAddDTO;
 import ssginc_kdt_team3.BE.service.owner.OwnerShopService;
@@ -26,7 +25,7 @@ public class OwnerShopController {
 
     @PostMapping("/add")
     public ResponseEntity createNewBranch(@Validated @RequestPart(value = "shopData") ShopAddDTO dto, BindingResult bindingResult,
-                                          @RequestPart(value = "shopImgUrl") MultipartFile shopImg, @RequestPart(value = "businessImg") MultipartFile businessImg) {
+                                          @RequestPart(value = "shopImg") MultipartFile shopImg, @RequestPart(value = "businessImg") MultipartFile businessImg) {
 
         if (bindingResult.hasErrors()) {
             log.info("error");
