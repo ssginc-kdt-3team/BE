@@ -50,19 +50,20 @@ public class AdminBranchService {
 
         try {
 
-//            String imgname = dto.getBranchImg().getOriginalFilename();
-            String imgname = multipartFile.getOriginalFilename();
-            UUID uuid = UUID.randomUUID();
-            log.info("imgname = {}", imgname);
+            int i = multipartFile.getOriginalFilename().indexOf('.');
+            String extension = multipartFile.getOriginalFilename().substring(i);
+            log.info(extension);
+
+            String uuid = UUID.randomUUID().toString();
 
             File file = FileUploadUtil.saveFile(multipartFile)
                     .orElseThrow(() -> new IllegalArgumentException("MultipartFile -> File로 전환이 실패했습니다."));
 
-            String fileName = custdir + uuid;
+            String fileName = custdir + uuid + extension;
             String uploadImageUrl = putS3(file, fileName);
             removeNewFile(file);
 
-            log.info(uploadImageUrl);
+            log.info("============================================================ 업로드 주소 : {}", uploadImageUrl);
 
             LocalTime open = TimeUtils.stringParseLocalTime(dto.getOpenTime());
             LocalTime close = TimeUtils.stringParseLocalTime(dto.getCloseTime());
@@ -137,10 +138,6 @@ public class AdminBranchService {
         return result;
     }
 
-
-
-
-
     private void removeNewFile(File targetFile) {
         if (targetFile.delete()) {
             log.info("파일이 삭제되었습니다.");
@@ -148,7 +145,6 @@ public class AdminBranchService {
             log.info("파일이 삭제되지 못했습니다.");
         }
     }
-
 
     private String putS3(File uploadFile, String fileName) {
         amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));

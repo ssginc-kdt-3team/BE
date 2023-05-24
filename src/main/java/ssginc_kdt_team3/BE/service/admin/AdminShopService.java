@@ -55,7 +55,7 @@ public class AdminShopService {
             shop.setInfo(shopInfo);
             shop.setLocation(shopLocation);
             shop.setStatus(shopStatus);
-            shop.setShopImg(shopImg);
+            shop.setShopImgUrl(shopImg);
 
             operationInfo.setOpenTime(openTime);
             operationInfo.setCloseTime(closeTime);

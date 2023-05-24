@@ -23,9 +23,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class  OwnerReservationController {
 
-    @Autowired
     private final OwnerReservationService ownerReservationService;
-    private final OwnerReservationService reserveService;
 
     @Value("${owner.pageSize}")
     private int pageSize;
@@ -190,7 +188,7 @@ public class  OwnerReservationController {
         Pageable pageable = PageRequest.of(page-1, pageSize);
         ResponseEntity<Page<OwnerReservationDTO>> response = ResponseEntity.ok()
             .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-            .body(reserveService.getReserveTime("A", ownerId, pageable));
+            .body(ownerReservationService.getReserveTime("A", ownerId, pageable));
         return response;
     }
 
@@ -202,7 +200,7 @@ public class  OwnerReservationController {
         Pageable pageable = PageRequest.of(page-1, pageSize);
         ResponseEntity<Page<OwnerReservationDTO>> response = ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .body(reserveService.getReserveTime("B", ownerId, pageable));
+                .body(ownerReservationService.getReserveTime("B", ownerId, pageable));
         return response;
     }
 
@@ -214,7 +212,7 @@ public class  OwnerReservationController {
         Pageable pageable = PageRequest.of(page-1, pageSize);
         ResponseEntity<Page<OwnerReservationDTO>> response = ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .body(reserveService.getReserveTime("C", ownerId, pageable));
+                .body(ownerReservationService.getReserveTime("C", ownerId, pageable));
         return response;
     }
 
@@ -226,7 +224,7 @@ public class  OwnerReservationController {
         Pageable pageable = PageRequest.of(page-1, pageSize);
         ResponseEntity<Page<OwnerReservationDTO>> response = ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .body(reserveService.getReserveTime("D", ownerId, pageable));
+                .body(ownerReservationService.getReserveTime("D", ownerId, pageable));
         return response;
     }
 
@@ -238,7 +236,7 @@ public class  OwnerReservationController {
         Pageable pageable = PageRequest.of(page-1, pageSize);
         ResponseEntity<Page<OwnerReservationDTO>> response = ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .body(reserveService.getReserveTime("E", ownerId, pageable));
+                .body(ownerReservationService.getReserveTime("E", ownerId, pageable));
         return response;
     }
 

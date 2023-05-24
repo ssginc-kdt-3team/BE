@@ -38,7 +38,7 @@ public class Shop {
     private String location;
 
     @Column(name = "shop_imgurl")
-    private String shopImg;
+    private String shopImgUrl;
 
     @Column(name = "business_img")
     private String businessImg;
@@ -71,13 +71,14 @@ public class Shop {
     @OneToMany(mappedBy = "shop")
     private List<Reservation> reservationList = new ArrayList<>();
 
+    @Builder
     public Shop(long id, String name, String info, ShopStatus status, String location, String shopImg, String businessImg, String businessNum, String businessName, Branch branch, Owner owner, ShopOperationInfo operationInfo) {
         this.id = id;
         this.name = name;
         this.info = info;
         this.status = status;
         this.location = location;
-        this.shopImg = shopImg;
+        this.shopImgUrl = shopImg;
         this.businessImg = businessImg;
         this.businessNum = businessNum;
         this.businessName = businessName;
