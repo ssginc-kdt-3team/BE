@@ -6,7 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ssginc_kdt_team3.BE.DTOs.shop.ShopUpdateDTO;
+import ssginc_kdt_team3.BE.DTOs.shop.AdminShopUpdateDTO;
 import ssginc_kdt_team3.BE.domain.Shop;
 import ssginc_kdt_team3.BE.domain.ShopOperationInfo;
 import ssginc_kdt_team3.BE.enums.ShopStatus;
@@ -34,28 +34,28 @@ public class AdminShopService {
         return shopRepository.findById(shopId);
     }
 
-    public boolean updateShop(Long shopId, ShopUpdateDTO shopUpdateDTO) {
+    public boolean updateShop(Long shopId, AdminShopUpdateDTO adminShopUpdateDTO) {
         Optional<Shop> byId = shopRepository.findById(shopId);
 
         if (byId.isPresent()) {
             Shop shop = byId.get();
             ShopOperationInfo operationInfo = shopOperationInfoRepository.findById(shop.getOperationInfo().getId()).get();
-            String shopName = shopUpdateDTO.getShopName();
-            String businessName = shopUpdateDTO.getBusinessName();
-            String shopInfo = shopUpdateDTO.getShopInfo();
-            String shopLocation = shopUpdateDTO.getShopLocation();
-            ShopStatus shopStatus = shopUpdateDTO.getShopStatus();
-            String shopImg = shopUpdateDTO.getShopImg();
-            LocalTime openTime = shopUpdateDTO.getOpenTime();
-            LocalTime closeTime = shopUpdateDTO.getCloseTime();
-            LocalTime orderClose = shopUpdateDTO.getOrderClose();
+            String shopName = adminShopUpdateDTO.getShopName();
+            String businessName = adminShopUpdateDTO.getBusinessName();
+            String shopInfo = adminShopUpdateDTO.getShopInfo();
+            String shopLocation = adminShopUpdateDTO.getShopLocation();
+            ShopStatus shopStatus = adminShopUpdateDTO.getShopStatus();
+            String shopImgUrl = adminShopUpdateDTO.getShopImgUrl();
+            LocalTime openTime = adminShopUpdateDTO.getOpenTime();
+            LocalTime closeTime = adminShopUpdateDTO.getCloseTime();
+            LocalTime orderClose = adminShopUpdateDTO.getOrderClose();
 
             shop.setName(shopName);
             shop.setBusinessName(businessName);
             shop.setInfo(shopInfo);
             shop.setLocation(shopLocation);
             shop.setStatus(shopStatus);
-            shop.setShopImgUrl(shopImg);
+            shop.setShopImgUrl(shopImgUrl);
 
             operationInfo.setOpenTime(openTime);
             operationInfo.setCloseTime(closeTime);

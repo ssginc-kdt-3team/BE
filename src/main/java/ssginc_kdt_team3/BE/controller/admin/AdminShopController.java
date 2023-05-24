@@ -9,7 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ssginc_kdt_team3.BE.DTOs.shop.ShopUpdateDTO;
+import ssginc_kdt_team3.BE.DTOs.shop.AdminShopUpdateDTO;
 import ssginc_kdt_team3.BE.domain.Shop;
 import ssginc_kdt_team3.BE.service.admin.AdminShopService;
 
@@ -51,7 +51,7 @@ public class AdminShopController {
     }
 
     @PostMapping("/updateOne/{id}")
-    public boolean updateOne(@PathVariable(name = "id") Long shopId, @RequestBody ShopUpdateDTO updateDTO) {
+    public boolean updateOne(@PathVariable(name = "id") Long shopId, @RequestBody AdminShopUpdateDTO updateDTO) {
 
         return shopService.updateShop(shopId, updateDTO);
     }

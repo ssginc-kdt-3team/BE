@@ -2,9 +2,12 @@ package ssginc_kdt_team3.BE.domain;
 
 import com.sun.istack.NotNull;
 import lombok.*;
+import ssginc_kdt_team3.BE.DTOs.shop.OwnerShopUpdateDTO;
 import ssginc_kdt_team3.BE.enums.ShopStatus;
+import ssginc_kdt_team3.BE.util.TimeUtils;
 
 import javax.persistence.*;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -85,5 +88,24 @@ public class Shop {
         this.branch = branch;
         this.owner = owner;
         this.operationInfo = operationInfo;
+    }
+
+    public boolean update(Long shopId, OwnerShopUpdateDTO updateDTO) {
+
+        if (shopId.equals(this.id)) {
+            this.name = updateDTO.getShopName(); // 매장 이름         v
+            this.info = updateDTO.getShopInfo(); // 매장 설명         v
+
+            LocalTime openTime = TimeUtils.stringParseLocalTime(updateDTO.getOpenTime());
+            LocalTime closeTime = TimeUtils.stringParseLocalTime(updateDTO.getCloseTime());
+            LocalTime orderCloseTime = TimeUtils.stringParseLocalTime(updateDTO.getOrderCloseTime());
+
+            this.operationInfo.update(openTime, orderCloseTime, closeTime, updateDTO.getSeat() );  // 오픈 시간        v
+
+            this.shopImgUrl = updateDTO.getShopImgUrl();
+
+            return true;
+        }
+        return false;
     }
 }

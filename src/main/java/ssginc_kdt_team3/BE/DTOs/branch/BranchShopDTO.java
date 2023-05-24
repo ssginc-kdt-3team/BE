@@ -11,14 +11,14 @@ public class BranchShopDTO {
     private long id;
     private String name;
     private String location;
-    private String shopImg;
+    private String shopImgUrl;
     private ShopStatus shopStatus;
 
     public BranchShopDTO(long id, String name, String location, String shopImg, ShopStatus shopStatus) {
         this.id = id;
         this.name = name;
         this.location = location;
-        this.shopImg = shopImg;
+        this.shopImgUrl = shopImg;
         this.shopStatus = shopStatus;
     }
 }

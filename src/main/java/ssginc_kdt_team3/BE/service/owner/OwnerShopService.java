@@ -6,14 +6,12 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 import ssginc_kdt_team3.BE.DTOs.menu.MenuDTO;
-import ssginc_kdt_team3.BE.DTOs.reservation.OwnerReservationDTO;
 import ssginc_kdt_team3.BE.DTOs.shop.OwnerShopDetailDTO;
+import ssginc_kdt_team3.BE.DTOs.shop.OwnerShopUpdateDTO;
 import ssginc_kdt_team3.BE.DTOs.shop.ShopAddDTO;
 import ssginc_kdt_team3.BE.domain.*;
 import ssginc_kdt_team3.BE.enums.ShopStatus;
@@ -115,6 +113,25 @@ public class OwnerShopService {
             return Optional.ofNullable(ownerShopDetailDTO);
         }
         return Optional.ofNullable(null);
+    }
+
+    public boolean updateShop(Long shopId, OwnerShopUpdateDTO updateDTO, MultipartFile multipartFile){
+        Optional<Shop> byId = shopRepository.findById(shopId);
+
+        if (byId.isPresent()) {
+            Shop shop = byId.get();
+
+            try {
+                if (!multipartFile.isEmpty()) {
+                    updateDTO.setShopImgUrl(uploadS3(shopDir, multipartFile));
+                }
+            } catch (IOException e) {
+                return false;
+            }
+
+            return shop.update(shopId, updateDTO);
+        }
+        return false;
     }
 
     private String uploadS3(String dir, MultipartFile mf) throws IOException {
