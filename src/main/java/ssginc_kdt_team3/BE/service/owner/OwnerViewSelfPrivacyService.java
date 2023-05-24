@@ -22,7 +22,6 @@ public class OwnerViewSelfPrivacyService {
             if (ownerViewList.isPresent()) {
 
                 AdminOwnerDetailDTO ownerSelfDetailList = ownerViewList.get();
-
                 return ownerSelfDetailList;
             } else {
                 throw new Exception();
@@ -30,7 +29,7 @@ public class OwnerViewSelfPrivacyService {
         }
             catch(Exception e){
 
-                throw new ResponseStatusException(HttpStatus.NOT_FOUND,"해당 ID와 일치하는 리소스를 찾을수 없습니다!");
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND,"해당 ID와 일치하는 점주를 찾을수 없습니다!");
             }
 
 

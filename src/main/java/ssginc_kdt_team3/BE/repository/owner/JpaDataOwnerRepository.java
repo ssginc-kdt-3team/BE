@@ -55,7 +55,7 @@ public interface JpaDataOwnerRepository extends JpaRepository<Owner, Long> {
             "LEFT JOIN Branch b ON s.branch.id = b.id " +
             "WHERE o.id = :id")
     Optional<AdminOwnerDetailDTO> OwnerIdFindByOwnerDetail(@Param("id") Long id);
-    //관리자 : 점주 상세 정보조회 수정함 - 고신영 0524
+    //관리자&점주 : 점주 상세 정보조회 수정함 - 고신영 0524
 
     @Query("SELECT new ssginc_kdt_team3.BE.DTOs.branch.BranchShopDTO(b.id, s.name, s.location, s.shopImg,s.status) " +
             "FROM Branch b " +
