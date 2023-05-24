@@ -66,13 +66,17 @@ public class Branch {
         return false;
     }
 
-    public boolean update(Long branchId, BranchUpdateDTO updateDTO) {
+    public boolean update(Long branchId, BranchUpdateDTO updateDTO, String imgUrl) {
         if (branchId.equals(this.id)) {
             this.phone = updateDTO.getPhone();
 
             LocalTime openTime = TimeUtils.stringParseLocalTime(updateDTO.getOpenTime());
             LocalTime closeTime = TimeUtils.stringParseLocalTime(updateDTO.getCloseTime());
             this.branchOperationInfo.update(openTime, closeTime);
+
+            if (!imgUrl.isEmpty()) {
+                this.imgUrl = imgUrl;
+            }
 
             return true;
         }
