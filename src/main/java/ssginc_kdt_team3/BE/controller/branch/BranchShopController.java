@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ssginc_kdt_team3.BE.DTOs.branch.BranchShopDTO;
 import ssginc_kdt_team3.BE.DTOs.customer.ReviewResponseDTO;
 import ssginc_kdt_team3.BE.DTOs.reservation.OwnerReservationDTO;
 import ssginc_kdt_team3.BE.DTOs.shop.ShopDetailDTO;
@@ -16,23 +17,24 @@ import ssginc_kdt_team3.BE.service.shop.ShopDetailReviewService;
 import ssginc_kdt_team3.BE.service.shop.ShopDetailService;
 import ssginc_kdt_team3.BE.service.branch.BranchShopListService;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/shop")
 public class BranchShopController {
 
-    private final BranchShopListService branchshop;
+    private final BranchShopListService branchShopListService;
     private final ShopDetailService detailService;
     private final ShopDetailReviewService reviewService;
 
-    @GetMapping("/list/")
-    public ResponseEntity<String> branchShopList(@RequestParam("id") long id) throws Exception {
-        try {
-            String branchShopJSON = branchshop.BranchShop(id);
-            return new ResponseEntity<>(branchShopJSON, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
+    @GetMapping("/list/{id}")
+    public ResponseEntity<List<BranchShopDTO>> branchShopList(@PathVariable("id")Long id) throws Exception {
+
+            return ResponseEntity.status(HttpStatus.OK)
+                    .header(HttpHeaders.CONTENT_TYPE,MediaType.APPLICATION_JSON_VALUE)
+                    .body(branchShopListService.BranchShop(id));
+
     }
 
     @GetMapping("/detail/{id}")

@@ -26,7 +26,7 @@ public class AdminBranchController {
 
     @PostMapping("/add")
     public ResponseEntity createNewBranch(@Validated @RequestPart(value = "branchData") BranchAddDTO dto, BindingResult bindingResult,
-                                          @RequestPart(value = "branchImg") MultipartFile multipartFile) {
+                                            @RequestPart(value = "branchImg") MultipartFile multipartFile) {
 
         if (bindingResult.hasErrors()) {
             log.info("error");

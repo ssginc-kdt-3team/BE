@@ -1,10 +1,9 @@
 package ssginc_kdt_team3.BE.service.branch;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 import ssginc_kdt_team3.BE.DTOs.branch.BranchShopDTO;
 import ssginc_kdt_team3.BE.repository.branch.BranchRepository;
 import java.util.List;
@@ -15,22 +14,20 @@ public class BranchShopListService {
 
     private final BranchRepository repo;
 
-    public String BranchShop(long id) throws Exception {
+    public List<BranchShopDTO> BranchShop(Long id) throws Exception {
 
-        List<BranchShopDTO> BranchShopAll = repo.BranchShopList(id);
+        try {
+            List<BranchShopDTO> BranchShopAll = repo.BranchShopList(id);
 
-        if (BranchShopAll.isEmpty()) {
-            throw new Exception("Not Found Branch ID!!");
+            if (!BranchShopAll.isEmpty()) {
+                return BranchShopAll;
+            }
+            else{
+                throw new Exception();
+            }
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "해당 ID와 일치하는 지점이 존재하지 않습니다!");
         }
-     String resultJson = ConvertJson(BranchShopAll);
-        return resultJson;
+
     }
-
-    public String ConvertJson(List<BranchShopDTO> list) throws JsonProcessingException {
-
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        return objectMapper.writeValueAsString(list);
-    }
-
 }
