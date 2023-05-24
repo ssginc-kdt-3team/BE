@@ -4,17 +4,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ssginc_kdt_team3.BE.DTOs.customer.Address;
+import org.springframework.web.server.ResponseStatusException;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerUpdateDTO;
 import ssginc_kdt_team3.BE.domain.Owner;
 import ssginc_kdt_team3.BE.enums.UserStatus;
 import ssginc_kdt_team3.BE.repository.owner.JpaDataOwnerRepository;
 //import ssginc_kdt_team3.BE.repository.owner.JpaDataOwnerRepository;
-
 import javax.persistence.NoResultException;
-import java.time.LocalDate;
 import java.util.Optional;
 
 @Slf4j
@@ -58,6 +57,20 @@ public class AdminOwnerService {
 
             }
 
+    }
+    public void ownerViewsDelete(Long id){
+
+        UserStatus status = UserStatus.QUIT;
+        try {
+
+            int updateRows = ownerRepository.ownerStatusDelete(id, status);
+
+            if (updateRows < 1){
+                throw new Exception("탈퇴에 실패하였습니다.");
+            }
+        }catch(Exception e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,e.getMessage());
+        }
     }
 
 

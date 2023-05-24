@@ -78,7 +78,13 @@ public class AdminOwnerController {
             }
 
     }
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> ownerViewDelete(@PathVariable("id")Long id){
+        ownerService.ownerViewsDelete(id);
 
+        return ResponseEntity.status(HttpStatus.OK).body("회원 탈퇴에 성공하셨습니다.");
+
+    }
 
 
 //    @GetMapping("/findOne/{id}")

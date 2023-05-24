@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import ssginc_kdt_team3.BE.DTOs.branch.BranchShopDTO;
 import ssginc_kdt_team3.BE.repository.branch.BranchRepository;
+import ssginc_kdt_team3.BE.repository.customer.JpaDataCustomerRepository;
 import ssginc_kdt_team3.BE.repository.owner.JpaDataOwnerRepository;
 
 import java.util.List;
@@ -15,7 +16,8 @@ import java.util.List;
 public class BranchShopListService {
 
 //    private final BranchRepository repo;
-    private final JpaDataOwnerRepository repo;
+//    private final JpaDataOwnerRepository repo;
+    private final JpaDataCustomerRepository repo;
 
     public List<BranchShopDTO> BranchShop(Long BranchId) throws Exception {
 
