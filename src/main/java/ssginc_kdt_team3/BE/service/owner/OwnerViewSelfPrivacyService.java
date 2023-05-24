@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import ssginc_kdt_team3.BE.DTOs.admin.AdminOwnerDetailDTO;
-import ssginc_kdt_team3.BE.domain.Admin;
 import ssginc_kdt_team3.BE.repository.owner.JpaDataOwnerRepository;
 
 import java.util.Optional;
@@ -23,13 +22,14 @@ public class OwnerViewSelfPrivacyService {
             if (ownerViewList.isPresent()) {
 
                 AdminOwnerDetailDTO ownerSelfDetailList = ownerViewList.get();
-                return ownerSelfDetailList;
 
+                return ownerSelfDetailList;
             } else {
                 throw new Exception();
             }
         }
             catch(Exception e){
+
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND,"해당 ID와 일치하는 리소스를 찾을수 없습니다!");
             }
 

@@ -6,18 +6,21 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import ssginc_kdt_team3.BE.DTOs.branch.BranchShopDTO;
 import ssginc_kdt_team3.BE.repository.branch.BranchRepository;
+import ssginc_kdt_team3.BE.repository.owner.JpaDataOwnerRepository;
+
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class BranchShopListService {
 
-    private final BranchRepository repo;
+//    private final BranchRepository repo;
+    private final JpaDataOwnerRepository repo;
 
-    public List<BranchShopDTO> BranchShop(Long id) throws Exception {
+    public List<BranchShopDTO> BranchShop(Long BranchId) throws Exception {
 
         try {
-            List<BranchShopDTO> BranchShopAll = repo.BranchShopList(id);
+            List<BranchShopDTO> BranchShopAll = repo.BranchIdByShop(BranchId);
 
             if (!BranchShopAll.isEmpty()) {
                 return BranchShopAll;
