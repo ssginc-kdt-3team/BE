@@ -25,12 +25,14 @@ public class OwnerDataController {
     @Autowired
     private final OwnerFindPwService ser;
 
-    @PostMapping("/privacy")
-    public ResponseEntity<String> updateInfo(@RequestParam("id")long id,@RequestBody OwnerUpdateDTO ownerUpdateDTO) {
-
-        update.updateOwnerInfo(id,ownerUpdateDTO);
-
-        return new ResponseEntity<>("정보 수정이 완료되었습니다!", HttpStatus.OK);
+    @PostMapping("/info/{id}")
+    public ResponseEntity<String> updateInfo(@PathVariable("id")Long id,@RequestBody OwnerUpdateDTO ownerUpdateDTO) {
+        try {
+            update.updateOwnerInfo(id, ownerUpdateDTO);
+            return new ResponseEntity<>("업데이트가 성공적으로 처리되었습니다.",HttpStatus.OK);
+        }catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
         //점주 정보 수정
 
     }

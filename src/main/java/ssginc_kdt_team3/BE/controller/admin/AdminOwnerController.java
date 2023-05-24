@@ -93,15 +93,14 @@ public class AdminOwnerController {
 //        }
 //    }
 
-    @PostMapping("/update/{id}")
-    public ResponseEntity<String> updateOwner(@PathVariable(name = "id") Long ownerId,
-                                @RequestBody OwnerUpdateDTO ownerUpdateDTO) {
-        try {
-            ownerService.updateOwnerInfo(ownerId,ownerUpdateDTO);
-            return new ResponseEntity<>("업데이트가 성공적으로 처리되었습니다!",HttpStatus.OK);
-        }catch (Exception e){
-
-            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
-        }
+//    @PostMapping("/update/{id}")
+//    public ResponseEntity<String> updateOwner(@PathVariable(name = "id") Long ownerId,
+//                                @RequestBody OwnerUpdateDTO ownerUpdateDTO) {
+//        try {
+//            ownerService.updateOwnerInfo(ownerId,ownerUpdateDTO);
+//            return new ResponseEntity<>("업데이트가 성공적으로 처리되었습니다!",HttpStatus.OK);
+//        }catch (Exception e){
+//
+//            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+//        }
     }
-}
