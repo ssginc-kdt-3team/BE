@@ -54,7 +54,6 @@ public class OwnerShopService {
     //신규 매장 등록
     public Optional<Long> addNewShop(ShopAddDTO addDTO, MultipartFile businessImg, MultipartFile shopImg) throws IOException {
 
-
         String businessImgUrl = uploadS3(businessLocation, businessImg);
         String shopImgUrl = uploadS3(shopDir, shopImg);
 
