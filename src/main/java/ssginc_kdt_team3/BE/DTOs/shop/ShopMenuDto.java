@@ -9,13 +9,13 @@ public class ShopMenuDto {
     private long menuId;
     private String menuName;
     private int menuPrice;
-    private String menuImg;
+    private String menuImgUrl;
 
     public ShopMenuDto(ShopMenu shopMenu) {
         this.menuId = shopMenu.getId();
         this.menuName = shopMenu.getName();
         this.menuPrice = shopMenu.getPrice();
-        this.menuImg = shopMenu.getMenu_img();
+        this.menuImgUrl = shopMenu.getMenuImgUrl();
     }
 
     public ShopMenuDto() {

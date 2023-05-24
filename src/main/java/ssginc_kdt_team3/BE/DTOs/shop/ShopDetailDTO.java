@@ -2,8 +2,6 @@ package ssginc_kdt_team3.BE.DTOs.shop;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.domain.Page;
-import ssginc_kdt_team3.BE.DTOs.customer.ReviewResponseDTO;
 import ssginc_kdt_team3.BE.domain.Shop;
 import ssginc_kdt_team3.BE.domain.ShopMenu;
 import ssginc_kdt_team3.BE.enums.ShopStatus;
@@ -35,7 +33,7 @@ public class ShopDetailDTO {
     this.shopInfo = shop.getInfo();
     this.shopStatus = shop.getStatus();
     this.shopLocation = shop.getLocation();
-    ShopImg = shop.getShopImg();
+    ShopImg = shop.getShopImgUrl();
     this.shopOpenTime = shop.getOperationInfo().getOpenTime();
     this.shopCloseTime = shop.getOperationInfo().getCloseTime();
     this.menus = new ArrayList<>();
