@@ -35,9 +35,12 @@ public class BranchService {
     for (Branch b : allBranch) {
       Long id = b.getId();
       String name = b.getName();
+      String url = b.getImgUrl();
+
       BranchDTO branchDTO = new BranchDTO();
       branchDTO.setId(id);
       branchDTO.setName(name);
+      branchDTO.setBranchImgUrl(url);
 
       branchDTOList.add(branchDTO);
     }

@@ -7,21 +7,17 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ssginc_kdt_team3.BE.DTOs.customer.ReviewResponseDTO;
-import ssginc_kdt_team3.BE.DTOs.reservation.OwnerReservationDTO;
-import ssginc_kdt_team3.BE.DTOs.shop.ShopDetailReviewDTO;
 import ssginc_kdt_team3.BE.domain.Review;
-import ssginc_kdt_team3.BE.domain.Shop;
 import ssginc_kdt_team3.BE.repository.review.JpaDataReviewRepository;
-import ssginc_kdt_team3.BE.repository.shop.JpaDataShopRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class ShopDetailReviewService {
+
     private final JpaDataReviewRepository reviewRepository;
 
     public Page<ReviewResponseDTO> ShopDetailAndReviews(Long shopId, Pageable pageable) {

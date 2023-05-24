@@ -2,9 +2,12 @@ package ssginc_kdt_team3.BE.domain;
 
 import com.sun.istack.NotNull;
 import lombok.*;
+import ssginc_kdt_team3.BE.DTOs.shop.OwnerShopUpdateDTO;
 import ssginc_kdt_team3.BE.enums.ShopStatus;
+import ssginc_kdt_team3.BE.util.TimeUtils;
 
 import javax.persistence.*;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +41,7 @@ public class Shop {
     private String location;
 
     @Column(name = "shop_imgurl")
-    private String shopImg;
+    private String shopImgUrl;
 
     @Column(name = "business_img")
     private String businessImg;
@@ -71,18 +74,38 @@ public class Shop {
     @OneToMany(mappedBy = "shop")
     private List<Reservation> reservationList = new ArrayList<>();
 
+    @Builder
     public Shop(long id, String name, String info, ShopStatus status, String location, String shopImg, String businessImg, String businessNum, String businessName, Branch branch, Owner owner, ShopOperationInfo operationInfo) {
         this.id = id;
         this.name = name;
         this.info = info;
         this.status = status;
         this.location = location;
-        this.shopImg = shopImg;
+        this.shopImgUrl = shopImg;
         this.businessImg = businessImg;
         this.businessNum = businessNum;
         this.businessName = businessName;
         this.branch = branch;
         this.owner = owner;
         this.operationInfo = operationInfo;
+    }
+
+    public boolean update(Long shopId, OwnerShopUpdateDTO updateDTO) {
+
+        if (shopId.equals(this.id)) {
+            this.name = updateDTO.getShopName(); // 매장 이름         v
+            this.info = updateDTO.getShopInfo(); // 매장 설명         v
+
+            LocalTime openTime = TimeUtils.stringParseLocalTime(updateDTO.getOpenTime());
+            LocalTime closeTime = TimeUtils.stringParseLocalTime(updateDTO.getCloseTime());
+            LocalTime orderCloseTime = TimeUtils.stringParseLocalTime(updateDTO.getOrderCloseTime());
+
+            this.operationInfo.update(openTime, orderCloseTime, closeTime, updateDTO.getSeat() );  // 오픈 시간        v
+
+            this.shopImgUrl = updateDTO.getShopImgUrl();
+
+            return true;
+        }
+        return false;
     }
 }

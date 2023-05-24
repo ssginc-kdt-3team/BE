@@ -26,7 +26,7 @@ public class ShopMenu {
 
     @NotNull
     @Column(name = "menu_imgurl")
-    private String menu_img;
+    private String menuImgUrl;
 
     @ManyToOne
     @JoinColumn(name = "shop_id")
