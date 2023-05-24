@@ -20,7 +20,7 @@ public class Shop {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "shop_id")
-    private long id;
+    private Long id;
 
     @NotNull
     @Column(name = "shop_name",length = 20)

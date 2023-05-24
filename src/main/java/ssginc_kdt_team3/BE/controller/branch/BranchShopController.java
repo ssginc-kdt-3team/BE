@@ -29,12 +29,12 @@ public class BranchShopController {
     private final ShopDetailReviewService reviewService;
 
     @GetMapping("/list/{id}")
-    public ResponseEntity<List<BranchShopDTO>> branchShopList(@PathVariable("id")Long id) throws Exception {
+    public ResponseEntity<List<BranchShopDTO>> branchShopList(@PathVariable("id")Long BranchId) throws Exception {
 
             return ResponseEntity.status(HttpStatus.OK)
                     .header(HttpHeaders.CONTENT_TYPE,MediaType.APPLICATION_JSON_VALUE)
-                    .body(branchShopListService.BranchShop(id));
-
+                    .body(branchShopListService.BranchShop(BranchId));
+    //고객이 지점내 매장조회
     }
 
     @GetMapping("/detail/{id}")
