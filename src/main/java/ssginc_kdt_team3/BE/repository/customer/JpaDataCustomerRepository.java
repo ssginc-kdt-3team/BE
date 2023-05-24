@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import ssginc_kdt_team3.BE.DTOs.branch.BranchShopDTO;
 import ssginc_kdt_team3.BE.DTOs.customer.CustomerListDTO;
 
 import ssginc_kdt_team3.BE.domain.Customer;
@@ -20,5 +21,11 @@ public interface JpaDataCustomerRepository extends JpaRepository<Customer, Long>
 //    Page<Customer> findAllBy(Pageable pageable);
 //    @Query("select c from Customer c inner join User u on c.id = u.id where u.email = :Email")
     Optional<Customer> findCustomerByEmail(String email);
+
+    @Query("SELECT new ssginc_kdt_team3.BE.DTOs.branch.BranchShopDTO(b.id, s.name, s.location, s.shopImgUrl,s.status) " +
+            "FROM Branch b " +
+            "LEFT JOIN Shop s ON b.id = s.branch.id " +
+            "WHERE b.id = :id")
+    List<BranchShopDTO> BranchIdByShop(@Param("id")Long id);
 
 }
