@@ -9,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ssginc_kdt_team3.BE.DTOs.shop.AdminShopDetailDTO;
 import ssginc_kdt_team3.BE.DTOs.shop.AdminShopUpdateDTO;
 import ssginc_kdt_team3.BE.domain.Shop;
 import ssginc_kdt_team3.BE.service.admin.AdminShopService;
@@ -48,6 +49,18 @@ public class AdminShopController {
             return response;
         }
         return null;
+    }
+
+    @GetMapping("/detail/{id}")
+    public ResponseEntity<AdminShopDetailDTO> showShopDetail(@PathVariable(name = "id") Long shopId) {
+        Optional<AdminShopDetailDTO> oneShop = shopService.findOneShop(shopId);
+
+        if (oneShop.isPresent()) {
+            AdminShopDetailDTO shopDetailDTO = oneShop.get();
+            return ResponseEntity.ok(shopDetailDTO);
+        }
+
+        return ResponseEntity.badRequest().build();
     }
 
     @PostMapping("/updateOne/{id}")

@@ -4,44 +4,28 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ssginc_kdt_team3.BE.DTOs.menu.MenuDTO;
 import ssginc_kdt_team3.BE.domain.Shop;
+import ssginc_kdt_team3.BE.enums.ShopStatus;
 
 import java.util.List;
 
 @Data
 @NoArgsConstructor
-public class OwnerShopDetailDTO {
+public class AdminShopDetailDTO extends OwnerShopDetailDTO {
 
-    Long ownerId; // 점주 id
-    Long shopId; // 가게 id
+    private String businessImgUrl;
+    private ShopStatus shopStatus;
 
-    String businessCeo; // 사업장 등록주
-    String businessNumber; // 사업장 등록번호
-
-    String shopImgUrl; // 매장 이미지
-    String shopName; // 매장 이름
-    String location; //지점 내 위치
-    String shopInfo; // 매장 설명
-
-    String branchName; // 브랜치 name
-    String ownerName; // 점장 이름
-
-    String openTime;  // 오픈 시간
-    String orderCloseTime; // 마감 시간
-    String closeTime; // 문닫는 시간
-
-    int seat; // 매장 최대 예약 가능 수
-
-    List<MenuDTO> menus;
-
-    public OwnerShopDetailDTO(Shop shop, List<MenuDTO> menus) {
+    public AdminShopDetailDTO(Shop shop, List<MenuDTO> menus) {
         this.ownerId = shop.getOwner().getId();
         this.shopId = shop.getId();
+        this.businessImgUrl = shop.getShopImgUrl();
         this.businessCeo = shop.getBusinessName();
-        this.businessNumber = shop.getBusinessName();
+        this.businessNumber = shop.getBusinessNum();
         this.shopImgUrl = shop.getShopImgUrl();
         this.shopName = shop.getName();
         this.location = shop.getLocation();
         this.shopInfo = shop.getInfo();
+        this.shopStatus = shop.getStatus();
         this.branchName = shop.getBranch().getName();
         this.ownerName = shop.getOwner().getName();
 
@@ -51,4 +35,5 @@ public class OwnerShopDetailDTO {
         this.seat = shop.getOperationInfo().getSeats();
         this.menus = menus;
     }
+
 }
