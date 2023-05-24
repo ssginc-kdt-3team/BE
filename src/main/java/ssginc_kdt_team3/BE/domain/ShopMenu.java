@@ -1,14 +1,17 @@
 package ssginc_kdt_team3.BE.domain;
 
 import com.sun.istack.NotNull;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ssginc_kdt_team3.BE.DTOs.menu.MenuAddDTO;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
-@Setter
+@NoArgsConstructor
 public class ShopMenu {
 
     @Id
@@ -31,4 +34,12 @@ public class ShopMenu {
     @ManyToOne
     @JoinColumn(name = "shop_id")
     private Shop shop;
+
+    @Builder
+    public ShopMenu(MenuAddDTO dto, String imgUrl, Shop shop) {
+        this.name = dto.getName();
+        this.price = dto.getPrice();
+        this.menuImgUrl = imgUrl;
+        this.shop = shop;
+    }
 }

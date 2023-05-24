@@ -1,7 +1,6 @@
 package ssginc_kdt_team3.BE.controller.owner;
 
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -11,7 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ssginc_kdt_team3.BE.DTOs.shop.OwnerShopDetailDTO;
 import ssginc_kdt_team3.BE.DTOs.shop.OwnerShopUpdateDTO;
 import ssginc_kdt_team3.BE.DTOs.shop.ShopAddDTO;
-import ssginc_kdt_team3.BE.service.owner.OwnerShopService;
+import ssginc_kdt_team3.BE.service.shop.OwnerShopService;
 
 import java.io.IOException;
 import java.util.Optional;

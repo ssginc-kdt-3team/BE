@@ -1,4 +1,4 @@
-package ssginc_kdt_team3.BE.service.owner;
+package ssginc_kdt_team3.BE.service.shop;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
