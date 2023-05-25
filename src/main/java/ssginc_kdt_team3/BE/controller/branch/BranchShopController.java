@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ssginc_kdt_team3.BE.DTOs.branch.BranchShopDTO;
 import ssginc_kdt_team3.BE.DTOs.customer.ReviewResponseDTO;
-import ssginc_kdt_team3.BE.DTOs.reservation.OwnerReservationDTO;
 import ssginc_kdt_team3.BE.DTOs.shop.ShopDetailDTO;
 import ssginc_kdt_team3.BE.service.shop.ShopDetailReviewService;
 import ssginc_kdt_team3.BE.service.shop.ShopDetailService;
