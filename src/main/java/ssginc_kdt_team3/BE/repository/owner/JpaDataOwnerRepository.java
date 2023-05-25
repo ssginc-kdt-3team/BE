@@ -53,5 +53,6 @@ public interface JpaDataOwnerRepository extends JpaRepository<Owner, Long> {
             "WHERE o.id = :id")
     Optional<AdminOwnerDetailDTO> OwnerIdFindByOwnerDetail(@Param("id") Long id);
 
+
 }
 

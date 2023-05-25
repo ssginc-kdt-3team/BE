@@ -24,16 +24,18 @@ public interface JpaDataReviewRepository extends JpaRepository<Review, Long> {
     List<Review> findAllByReservation_ShopId(@Param(value = "shopId") Long shopId);
 
 
-    /**
-     * 0524 이현: 관리자 후기목록 조회기능에 사용, AdminReviewService
+    /*
+     * 0524 이현: 후기목록 조회기능에 사용
      * */
 
-    // 1. 지점, 매장 상관 없이 전체 조회
+    // 1. 지점선택: 해당 지점의 모든 매장들 후기 조회, AdminReviewService
     Page<Review> findAllByReservation_Shop_Branch_Id(Long branchId, Pageable pageable);
 
-    // 2. 지점선택: 해당 지점의 모든 매장들 후기
+    // 2. 매장선택: 해당 매장의 후기 조회
     Page<Review> findAllByReservation_Shop_Id(Long shopId, Pageable pageable);
 
-    // 3. 매장선택: 해당 매장의 후기목록 조회
+    // OwnerReviewService 사용
+    Page<Review> findAllByReservation_Shop_Owner_Id(Long ownerId, Pageable pageable);
 
+    Page<Review> findAllByReservation_Customer_Id(Long userId, Pageable pageable);
 }

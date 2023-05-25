@@ -2,9 +2,14 @@ package ssginc_kdt_team3.BE.service.customer;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssginc_kdt_team3.BE.DTOs.customer.ReviewAddRequestDTO;
+import ssginc_kdt_team3.BE.DTOs.customer.ReviewResponseDTO;
+import ssginc_kdt_team3.BE.DTOs.owner.OwnerReviewListDTO;
 import ssginc_kdt_team3.BE.domain.Customer;
 import ssginc_kdt_team3.BE.domain.Reservation;
 import ssginc_kdt_team3.BE.domain.Review;
@@ -14,6 +19,8 @@ import ssginc_kdt_team3.BE.repository.reservation.JpaDataReservationRepository;
 import ssginc_kdt_team3.BE.repository.review.JpaDataReviewRepository;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 
 import static ssginc_kdt_team3.BE.enums.ReservationStatus.DONE;
@@ -70,8 +77,25 @@ public class CustomerReviewService {
       return true;
     }
     return false;
-
   }
+
+  // 마이페이지: 본인이 작성한 모든 후기 조회
+  public Page<ReviewResponseDTO> getReviewList(Long userId, Pageable pageRequest) {
+    Page<Review> allReviews = reviewRepository.findAllByReservation_Customer_Id(userId, pageRequest);
+    return convertDto(allReviews);
+  }
+
+  // Page로 받은 Review 엔티티를 DTO로 변환
+  private Page<ReviewResponseDTO> convertDto(Page<Review> reviews) {
+    List<ReviewResponseDTO> reviewDTOList = new ArrayList<>();
+
+    for(Review r : reviews){
+      ReviewResponseDTO reviewDTO = new ReviewResponseDTO(r);
+      reviewDTOList.add(reviewDTO);
+    }
+    return new PageImpl<>(reviewDTOList, reviews.getPageable(), reviews.getTotalElements());
+  }
+
 
 
 }
