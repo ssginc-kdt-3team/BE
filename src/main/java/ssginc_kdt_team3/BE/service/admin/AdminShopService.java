@@ -34,7 +34,7 @@ public class AdminShopService {
 
     public Page<Shop> findAllShop(Long storeId, Pageable pageable) {
         log.info("service id = {}", storeId);
-        return shopRepository.findAllByStoreId(storeId, pageable);
+        return shopRepository.findAllByBranchId(storeId, pageable);
     }
 
     public Optional<Shop> findShopById(Long shopId) {

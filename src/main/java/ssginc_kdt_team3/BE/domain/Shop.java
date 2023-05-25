@@ -68,11 +68,11 @@ public class Shop {
     @JoinColumn(name = "shop_operation_id")
     private ShopOperationInfo operationInfo;
 
-    @OneToMany(mappedBy = "shop")
-    private List<ShopMenu> shopMenuList = new ArrayList<>();
-
-    @OneToMany(mappedBy = "shop")
-    private List<Reservation> reservationList = new ArrayList<>();
+//    @OneToMany(mappedBy = "shop")
+//    private List<ShopMenu> shopMenuList = new ArrayList<>();
+//
+//    @OneToMany(mappedBy = "shop")
+//    private List<Reservation> reservationList = new ArrayList<>();
 
     @Builder
     public Shop(long id, String name, String info, ShopStatus status, String location, String shopImg, String businessImg, String businessNum, String businessName, Branch branch, Owner owner, ShopOperationInfo operationInfo) {
