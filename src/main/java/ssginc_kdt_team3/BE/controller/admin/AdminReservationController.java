@@ -1,6 +1,10 @@
 package ssginc_kdt_team3.BE.controller.admin;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,27 +22,28 @@ public class AdminReservationController {
 
     private final AdminReservationService reservationService;
 
-    /*
-    * RequestBody -> RequestParam
-    * */
+    @Value("${admin.pageSize}")
+    private int pageSize;
 
-    @GetMapping("")
-    public ResponseEntity<List<AdminReservationListDTO>> ownerJoin(@RequestParam Map<String, String> request) {
+    /*
+     * RequestBody -> RequestParam
+     * */
+    @GetMapping("/{type}/{id}/{status}/{page}")
+    public ResponseEntity<Page<AdminReservationListDTO>> showAdminReservationList(@PathVariable(name = "type") String type, @PathVariable(name = "id") Long id,
+                                                                                  @PathVariable(name = "status") String status, @PathVariable(name = "page") int page) {
 
         /*
-        *  request
-        * {
-        *   type : "branch" "shop"
-        *   id : 1
-        *   status : ALL, RESERVATION, DONE, CANCEL, IMMINENT, NOSHOW 중 1
-        * }
-        * */
+         *  request
+         * {
+         *   type : "branch" "shop"
+         *   id : 1
+         *   status : ALL, RESERVATION, DONE, CANCEL, IMMINENT, NOSHOW 중 1
+         * }
+         * */
 
-        String type = request.get("type").toString();
-        String status = request.get("status").toString();
-        long id = Long.parseLong(request.get("id").toString());
+        Pageable pageable = PageRequest.of(page-1,pageSize);
 
-        List<AdminReservationListDTO> reservationListDTOS = reservationService.showBranchReservation(type, id, status);
+        Page<AdminReservationListDTO> reservationListDTOS = reservationService.showBranchReservation(type, id, status, pageable);
 
         if (reservationListDTOS != null) {
             return ResponseEntity.ok(reservationListDTOS);
