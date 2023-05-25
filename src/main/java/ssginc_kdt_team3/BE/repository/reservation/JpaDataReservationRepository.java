@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.security.core.parameters.P;
+import ssginc_kdt_team3.BE.DTOs.reservation.ReservationAlarmDTO;
 import ssginc_kdt_team3.BE.domain.Customer;
 import ssginc_kdt_team3.BE.domain.Reservation;
 import ssginc_kdt_team3.BE.enums.ReservationStatus;
@@ -39,4 +40,9 @@ public interface JpaDataReservationRepository extends JpaRepository<Reservation,
 
     List<Reservation> findAllByShop_BranchId(Long branchId);
 
+    @Query("SELECT new ssginc_kdt_team3.BE.DTOs.reservation.ReservationAlarmDTO FROM" +
+            "(r.id, r.status, r.reservationDate, r.applyTime, r.changeTime, c.id, c.name, c.phoneNumber) " +
+            "FROM Reservation r " +
+            "LEFT JOIN Customer c ON c.id = r.customer.id ")
+    List<ReservationAlarmDTO> findAllReservation();
 }
