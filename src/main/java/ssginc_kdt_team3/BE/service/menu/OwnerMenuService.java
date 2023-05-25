@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import ssginc_kdt_team3.BE.DTOs.branch.BranchDetailDTO;
 import ssginc_kdt_team3.BE.DTOs.menu.MenuAddDTO;
+import ssginc_kdt_team3.BE.DTOs.menu.MenuUpdateDTO;
 import ssginc_kdt_team3.BE.domain.Branch;
 import ssginc_kdt_team3.BE.domain.Shop;
 import ssginc_kdt_team3.BE.domain.ShopMenu;
@@ -60,6 +61,33 @@ public class OwnerMenuService {
             }
         }
         return false;
+    }
+
+    public boolean updateMenu(Long menuId, MenuUpdateDTO updateDTO, MultipartFile multipartFile) {
+        Optional<ShopMenu> byId = menuRepository.findById(menuId);
+
+        if (byId.isPresent()) {
+            ShopMenu menu = byId.get();
+
+            try {
+                if (!multipartFile.isEmpty()) {
+                    updateDTO.setMenuImgUrl(uploadS3(menuDir, multipartFile));
+                }
+            } catch (IOException e) {
+                return false;
+            }
+            return menu.update(menuId, updateDTO);
+        }
+        return false;
+    }
+
+    public boolean delete(Long menuId) {
+        Optional<ShopMenu> byId = menuRepository.findById(menuId);
+        if (byId.isPresent()) {
+            menuRepository.deleteById(menuId);
+            return true;
+        }
+            return false;
     }
 
     private String uploadS3(String dir, MultipartFile mf) throws IOException {
