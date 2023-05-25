@@ -20,6 +20,8 @@ public interface JpaDataShopRepository extends JpaRepository<Shop, Long> {
             " where br.id = :storeId")
     Page<Shop> findAllByStoreId (@Param("storeId") Long storeId, Pageable pageable);
 
+    Page<Shop> findAllByBranchId(@Param("storeId") Long storeId, Pageable pageable);
+
     @Query("select s from Shop s where s.branch.id = :id")
     List<Shop> findBranchShop(@Param("id") Long id);
 

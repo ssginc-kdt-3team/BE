@@ -27,7 +27,7 @@ public class ShopDetailDTO {
   //ShopMenu테이블
   List<ShopMenuDto> menus;
 
-  public ShopDetailDTO(Shop shop) {
+  public ShopDetailDTO(Shop shop, List<ShopMenu> shopMenuList) {
     this.shopId = shop.getId();
     this.shopName = shop.getName();
     this.shopInfo = shop.getInfo();
@@ -38,7 +38,7 @@ public class ShopDetailDTO {
     this.shopCloseTime = shop.getOperationInfo().getCloseTime();
     this.menus = new ArrayList<>();
 
-    for (ShopMenu shopMenu: shop.getShopMenuList()) {
+    for (ShopMenu shopMenu: shopMenuList) {
       ShopMenuDto dto = new ShopMenuDto(shopMenu);
       menus.add(dto);
     }
