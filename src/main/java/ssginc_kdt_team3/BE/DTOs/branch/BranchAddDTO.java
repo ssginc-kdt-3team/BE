@@ -1,8 +1,7 @@
 package ssginc_kdt_team3.BE.DTOs.branch;
 
 import lombok.Data;
-import org.springframework.web.multipart.MultipartFile;
-import ssginc_kdt_team3.BE.DTOs.customer.Address;
+import ssginc_kdt_team3.BE.DTOs.Address;
 
 import javax.persistence.Embedded;
 import javax.validation.constraints.NotNull;

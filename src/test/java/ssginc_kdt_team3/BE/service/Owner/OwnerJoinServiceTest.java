@@ -11,7 +11,7 @@
 //import ssginc_kdt_team3.BE.repository.owner.DataOwnerRepository;
 //import ssginc_kdt_team3.BE.repository.owner.JpaDataOwnerRepository;
 //import ssginc_kdt_team3.BE.service.owner.OwnerJoinService;
-//import ssginc_kdt_team3.BE.DTOs.customer.Address;
+//import ssginc_kdt_team3.BE.DTOs.Address;
 //import java.time.LocalDate;
 //import java.util.Optional;
 //

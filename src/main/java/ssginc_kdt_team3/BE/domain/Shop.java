@@ -52,6 +52,9 @@ public class Shop {
     @Column(name = "business_ceo", length = 10)
     private String businessName;
 
+    @Column(name = "shop_phone")
+    private String phone;
+
     // 변수 명 storeId를 store로 변경해야한다.
     @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
@@ -75,7 +78,7 @@ public class Shop {
 //    private List<Reservation> reservationList = new ArrayList<>();
 
     @Builder
-    public Shop(long id, String name, String info, ShopStatus status, String location, String shopImg, String businessImg, String businessNum, String businessName, Branch branch, Owner owner, ShopOperationInfo operationInfo) {
+    public Shop(long id, String name, String info, ShopStatus status, String location, String shopImg, String businessImg, String businessNum, String businessName, Branch branch, Owner owner, ShopOperationInfo operationInfo, String phone) {
         this.id = id;
         this.name = name;
         this.info = info;
@@ -88,6 +91,7 @@ public class Shop {
         this.branch = branch;
         this.owner = owner;
         this.operationInfo = operationInfo;
+        this.phone = phone;
     }
 
     public boolean update(Long shopId, OwnerShopUpdateDTO updateDTO) {

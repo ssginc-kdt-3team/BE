@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ssginc_kdt_team3.BE.DTOs.customer.*;
 import ssginc_kdt_team3.BE.domain.Customer;
 import ssginc_kdt_team3.BE.domain.Grade;
+import ssginc_kdt_team3.BE.enums.CustomerType;
 import ssginc_kdt_team3.BE.enums.GradeType;
 import ssginc_kdt_team3.BE.enums.UserRole;
 import ssginc_kdt_team3.BE.enums.UserStatus;
@@ -38,6 +39,7 @@ public class CustomerService {
     customer.setPhoneNumber(customerJoinDTO.getPhone());
     customer.setAddress(customerJoinDTO.getAddress());
     customer.setGender(customerJoinDTO.getGender());
+    customer.setType(CustomerType.NORMAL);
 
     //  검증됐으니까 역할, 상태 부여
     customer.setStatus(UserStatus.ACTIVE);

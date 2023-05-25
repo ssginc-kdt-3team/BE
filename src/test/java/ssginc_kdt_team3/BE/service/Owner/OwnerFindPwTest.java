@@ -5,7 +5,7 @@
 //import org.junit.jupiter.api.Test;
 //import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.boot.test.context.SpringBootTest;
-//import ssginc_kdt_team3.BE.DTOs.customer.Address;
+//import ssginc_kdt_team3.BE.DTOs.Address;
 //import ssginc_kdt_team3.BE.DTOs.owner.OwnerFindPwDTO;
 //import ssginc_kdt_team3.BE.DTOs.owner.OwnerJoinDTO;
 //import ssginc_kdt_team3.BE.DTOs.owner.OwnerNewPwDTO;

@@ -2,6 +2,8 @@ package ssginc_kdt_team3.BE.DTOs.customer;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
+import ssginc_kdt_team3.BE.DTOs.Address;
+
 import javax.persistence.Embedded;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;

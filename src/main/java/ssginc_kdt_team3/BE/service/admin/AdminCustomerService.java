@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ssginc_kdt_team3.BE.DTOs.customer.Address;
+import ssginc_kdt_team3.BE.DTOs.Address;
 import ssginc_kdt_team3.BE.DTOs.customer.CustomerListDTO;
 import ssginc_kdt_team3.BE.DTOs.customer.CustomerUpdateDTO;
 
