@@ -22,7 +22,7 @@ public interface JpaDataCustomerRepository extends JpaRepository<Customer, Long>
 //    @Query("select c from Customer c inner join User u on c.id = u.id where u.email = :Email")
     Optional<Customer> findCustomerByEmail(String email);
 
-    @Query("SELECT new ssginc_kdt_team3.BE.DTOs.branch.BranchShopDTO(b.id, s.name, s.location, s.shopImgUrl,s.status) " +
+    @Query("SELECT new ssginc_kdt_team3.BE.DTOs.branch.BranchShopDTO(s.id, s.name, s.location, s.shopImgUrl,s.status) " +
             "FROM Branch b " +
             "LEFT JOIN Shop s ON b.id = s.branch.id " +
             "WHERE b.id = :id")

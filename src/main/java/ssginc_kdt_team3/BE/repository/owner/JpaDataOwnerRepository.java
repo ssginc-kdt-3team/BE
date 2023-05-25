@@ -40,7 +40,7 @@ public interface JpaDataOwnerRepository extends JpaRepository<Owner, Long> {
     Page<Owner> findAllBy(Pageable pageable);
 
     @Query("SELECT new ssginc_kdt_team3.BE.DTOs.admin.AdminBranchOwnerDTO" +
-            "(o.id, o.name, o.phoneNumber, s.name, s.location, b.name) FROM Branch b " +
+            "(o.id, o.name, o.phoneNumber, o.status, s.name, s.location, b.name) FROM Branch b " +
             "LEFT JOIN Shop s ON b.id = s.branch.id " +
             "LEFT JOIN Owner o ON s.owner.id = o.id " +
             "WHERE b.id = :id")
