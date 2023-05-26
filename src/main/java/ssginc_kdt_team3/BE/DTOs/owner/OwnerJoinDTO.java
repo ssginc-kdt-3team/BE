@@ -5,8 +5,10 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 import ssginc_kdt_team3.BE.DTOs.Address;
 
+import javax.persistence.Embedded;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @NoArgsConstructor
@@ -25,7 +27,9 @@ public class OwnerJoinDTO {
     private String phone;
     private LocalDate birthday;
     private boolean gender;
-    private Address adddress;
+    @NotNull
+    @Embedded
+    private Address address;
 
 
 }

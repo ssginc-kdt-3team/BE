@@ -37,6 +37,7 @@ public class CustomerService {
     customer.setPassword(customerJoinDTO.getPassword());
     customer.setName(customerJoinDTO.getName());
     customer.setPhoneNumber(customerJoinDTO.getPhone());
+    customer.setBirthday(customerJoinDTO.getBirthday());
     customer.setAddress(customerJoinDTO.getAddress());
     customer.setGender(customerJoinDTO.getGender());
     customer.setType(CustomerType.NORMAL);

@@ -37,7 +37,7 @@ public class OwnerShopController {
             aLong = ownerShopService.addNewShop(dto, businessImg, shopImg);
 
             if (aLong.isPresent()) {
-                return ResponseEntity.ok().build();
+                return ResponseEntity.ok().body("매장이 성공적으로 추가되었습니다.");
             }
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
 
