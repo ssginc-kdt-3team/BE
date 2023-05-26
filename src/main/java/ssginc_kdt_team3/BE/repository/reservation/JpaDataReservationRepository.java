@@ -1,6 +1,7 @@
 package ssginc_kdt_team3.BE.repository.reservation;
 
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -30,15 +31,15 @@ public interface JpaDataReservationRepository extends JpaRepository<Reservation,
 
     List<Reservation> findAllByStatusAndShop_IdAndReservationDateBetweenOrderByReservationDateDesc(ReservationStatus status, Long shopId, LocalDateTime startTime, LocalDateTime endTime);
 
-    List<Reservation> findAllByStatusAndShop_BranchId(ReservationStatus status, Long branchId);
+    Page<Reservation> findAllByStatusAndShop_BranchId(ReservationStatus status, Long branchId, Pageable pageable);
 
-    List<Reservation> findAllByStatusAndShop_Id(ReservationStatus status, Long shopId);
+    Page<Reservation> findAllByStatusAndShop_Id(ReservationStatus status, Long shopId, Pageable pageable);
 
-    List<Reservation> findAllByShop_Id(Long shopId);
+    Page<Reservation> findAllByShop_Id(Long shopId, Pageable pageable);
 
     List<Reservation> findAllByShop_IdAndReservationDateBetweenOrderByReservationDateDesc(Long shopId, LocalDateTime startTime, LocalDateTime endTime);
 
-    List<Reservation> findAllByShop_BranchId(Long branchId);
+    Page<Reservation> findAllByShop_BranchId(Long branchId, Pageable pageable);
 
     @Query("SELECT new ssginc_kdt_team3.BE.DTOs.reservation.ReservationAlarmDTO" +
             "(r.id, r.status, r.reservationDate, r.applyTime, r.changeTime, c.id, c.name, c.phoneNumber) " +

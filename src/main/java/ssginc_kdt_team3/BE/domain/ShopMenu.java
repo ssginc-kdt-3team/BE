@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ssginc_kdt_team3.BE.DTOs.menu.MenuAddDTO;
+import ssginc_kdt_team3.BE.DTOs.menu.MenuUpdateDTO;
 
 import javax.persistence.*;
 
@@ -17,7 +18,7 @@ public class ShopMenu {
     @Id
     @Column(name = "menu_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @NotNull
     @Column(name = "menu_name", length = 20)
@@ -41,5 +42,15 @@ public class ShopMenu {
         this.price = dto.getPrice();
         this.menuImgUrl = imgUrl;
         this.shop = shop;
+    }
+
+    public boolean update(Long menuid, MenuUpdateDTO menuUpdateDTO) {
+        if (menuid.equals(this.id)) {
+            this.name = menuUpdateDTO.getName();
+            this.price = menuUpdateDTO.getPrice();
+            this.menuImgUrl = menuUpdateDTO.getMenuImgUrl();
+            return true;
+        }
+        return false;
     }
 }

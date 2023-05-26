@@ -1,6 +1,7 @@
 package ssginc_kdt_team3.BE.DTOs.customer;
 
 import lombok.Data;
+import ssginc_kdt_team3.BE.DTOs.Address;
 import ssginc_kdt_team3.BE.domain.Customer;
 import ssginc_kdt_team3.BE.enums.UserRole;
 import ssginc_kdt_team3.BE.enums.UserStatus;

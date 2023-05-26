@@ -2,11 +2,9 @@ package ssginc_kdt_team3.BE.DTOs.branch;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ssginc_kdt_team3.BE.DTOs.customer.Address;
+import ssginc_kdt_team3.BE.DTOs.Address;
 import ssginc_kdt_team3.BE.domain.Branch;
-import ssginc_kdt_team3.BE.domain.BranchOperationInfo;
 import ssginc_kdt_team3.BE.enums.BranchStatus;
-import ssginc_kdt_team3.BE.util.TimeUtils;
 
 @Data
 @NoArgsConstructor

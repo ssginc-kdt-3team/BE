@@ -3,7 +3,7 @@ package ssginc_kdt_team3.BE.DTOs.admin;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ssginc_kdt_team3.BE.DTOs.customer.Address;
+import ssginc_kdt_team3.BE.DTOs.Address;
 import ssginc_kdt_team3.BE.enums.UserStatus;
 import java.time.LocalDate;
 
