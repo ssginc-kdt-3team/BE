@@ -23,29 +23,33 @@ public class AlarmScheduler {
     @Autowired
     private final NaverAlarmService naverAlarmService;
 
-    private final String API_URL = "https://sens.apigw.ntruss.com/sms/v2";
-    private final String API_KEY = "ncp:sms:kr:305677338657:project_yes_team";
+    private String API_URL = "https://console.ncloud.com/sens/sms-message/sms/v2/services/ncp:sms:kr:305677338657:project_yes_team/messages";
+
+    Long time = System.currentTimeMillis();
     //네이버 SMS 서비스 API URL&Key
 
     private final LocalDateTime nowTime = LocalDateTime.now();
     private final LocalDateTime reservationAlarmTime = nowTime.plusMinutes(30);
     //"예약 상태"일시 현재시간 - 30분 시간부터 10분 간격으로 메시지 발신
 
-    @Scheduled(cron = "0 */1 * * *")//1분마다 상태변화 감지
+    @Scheduled(cron = "0 * * * * *")//1분마다 상태변화 감지
     public void ReservationStatus() {
 
         OkHttpClient okHttpClient = new OkHttpClient();
 
             RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"),JsonMessageCreate());
             Request request = new Request.Builder()
-                    .url(API_URL + "services/{serviceId}/messages")
+                    .url(API_URL)
                     .addHeader("Content-Type", "application/json; charset=utf-8")
-                    .addHeader("x-ncp-apigw-signature-v2", API_KEY)
+                    .addHeader("x-ncp-apigw-timestamp",time.toString())
+                    .addHeader("x-ncp-apigw-signature-v2", S_API_KEY)
+                    .addHeader("x-ncp-iam-access-key",API_KEY)
                     .post(body)
                     .build();
             try {
                 Response response = okHttpClient.newCall(request).execute();
                 assert response.body() != null;//null일경우 예외 발생
+                System.out.println(response);
             } catch (IOException e) {
                 e.printStackTrace();
             }
