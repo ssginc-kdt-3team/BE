@@ -8,7 +8,6 @@ import ssginc_kdt_team3.BE.DTOs.customer.*;
 import ssginc_kdt_team3.BE.domain.Customer;
 import ssginc_kdt_team3.BE.domain.Grade;
 import ssginc_kdt_team3.BE.enums.CustomerType;
-import ssginc_kdt_team3.BE.enums.GradeType;
 import ssginc_kdt_team3.BE.enums.UserRole;
 import ssginc_kdt_team3.BE.enums.UserStatus;
 import ssginc_kdt_team3.BE.repository.customer.JpaCustomerRepository;
@@ -16,7 +15,6 @@ import ssginc_kdt_team3.BE.repository.customer.JpaDataCustomerRepository;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Slf4j
@@ -66,10 +64,7 @@ public class CustomerService {
     String password = customerLoginDTO.getPassword();
     Optional<Customer> customerInfo = customerRepository.findByEmail(email);
 
-    // CustomerInfo가 널인지 아닌지 모르니까 Optional 을 isPresent로 체크한다
-    if(customerInfo.isPresent()) { //null이 아니면(이메일 존재하면)
-      log.info("이메일 일치");
-
+    if(customerInfo.isPresent()) { //이메일 존재하면
       if (customerInfo.get().getPassword().equals(password)) { // .get으로 옵셔널 벗겨서 비교
         log.info("로그인 성공");
         Map map = new HashMap();
@@ -86,20 +81,14 @@ public class CustomerService {
 
   // Email 찾기 : name & phone 으로 찾기
   public Optional<Customer> getCustomerEmail(String name, String phone) {
-//    Customer customer = new Customer();
-//    customer.setPhoneNumber(customerFindDTO.getPhone()); 입력된 값을 받는거니까 set할 필요 없다.
-
     //이메일이 있다고 가정하고 -> DB에 일치하는 값 찾기
     Optional<Customer> findInfo = jpaCustomerRepository.findByNameAndPhoneNumber(name, phone);
     return findInfo;
   }
 
-
   // PW 찾기: email, name, phone 으로 찾기
-  public Optional<Customer> getCustomerPassword (CustomerFindDTO findDTO) {
-
+  public Optional<Customer> getCustomerPassword(PasswordFindDTO findDTO) {
     Optional<Customer> findInfo = jpaCustomerRepository.findByNameAndEmailAndPhoneNumber(findDTO.getName(), findDTO.getEmail(), findDTO.getPhone());
-
     return findInfo;
   }
 
@@ -111,6 +100,7 @@ public class CustomerService {
     findCustomerId.setPhoneNumber(customerUpdateDTO.getPhone());
     findCustomerId.setAddress(customerUpdateDTO.getAddress());
   } // 알아서 update 쿼리가 날아간다..
+
 
   // PW 변경
   @Transactional

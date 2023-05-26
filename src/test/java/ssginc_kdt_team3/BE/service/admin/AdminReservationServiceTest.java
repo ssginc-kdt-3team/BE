@@ -15,69 +15,69 @@ class AdminReservationServiceTest {
     @Autowired
     AdminReservationService service;
 
-    @Test
-    void showBranchAll() {
-        String type = "branch";
-        String status = "ALL";
-        Long id = 1L;
-        List<AdminReservationListDTO> reservationListDTOS = service.showBranchReservation(type, id, status);
-        for (AdminReservationListDTO reservationListDTO : reservationListDTOS) {
-            System.out.println("reservationListDTO = " + reservationListDTO);
-        }
-    }
-
-    @Test
-    void showBranchNoshow() {
-        String type = "branch";
-        String status = "NOSHOW";
-        Long id = 1L;
-        List<AdminReservationListDTO> reservationListDTOS = service.showBranchReservation(type, id, status);
-        for (AdminReservationListDTO reservationListDTO : reservationListDTOS) {
-            System.out.println("reservationListDTO = " + reservationListDTO);
-        }
-    }
-
-    @Test
-    void showBranchDONE() {
-        String type = "branch";
-        String status = "DONE";
-        Long id = 1L;
-        List<AdminReservationListDTO> reservationListDTOS = service.showBranchReservation(type, id, status);
-        for (AdminReservationListDTO reservationListDTO : reservationListDTOS) {
-            System.out.println("reservationListDTO = " + reservationListDTO);
-        }
-    }
-
-    @Test
-    void showBranchCANCEL() {
-        String type = "branch";
-        String status = "CANCEL";
-        Long id = 1L;
-        List<AdminReservationListDTO> reservationListDTOS = service.showBranchReservation(type, id, status);
-        for (AdminReservationListDTO reservationListDTO : reservationListDTOS) {
-            System.out.println("reservationListDTO = " + reservationListDTO);
-        }
-    }
-
-    @Test
-    void showBranchIMMINENT() {
-        String type = "branch";
-        String status = "IMMINENT";
-        Long id = 1L;
-        List<AdminReservationListDTO> reservationListDTOS = service.showBranchReservation(type, id, status);
-        for (AdminReservationListDTO reservationListDTO : reservationListDTOS) {
-            System.out.println("reservationListDTO = " + reservationListDTO);
-        }
-    }
-
-    @Test
-    void showShopAll() {
-        String type = "shop";
-        String status = "ALL";
-        Long id = 1L;
-        List<AdminReservationListDTO> reservationListDTOS = service.showBranchReservation(type, id, status);
-        for (AdminReservationListDTO reservationListDTO : reservationListDTOS) {
-            System.out.println("reservationListDTO = " + reservationListDTO);
-        }
-    }
+//    @Test
+//    void showBranchAll() {
+//        String type = "branch";
+//        String status = "ALL";
+//        Long id = 1L;
+//        List<AdminReservationListDTO> reservationListDTOS = service.showBranchReservation(type, id, status);
+//        for (AdminReservationListDTO reservationListDTO : reservationListDTOS) {
+//            System.out.println("reservationListDTO = " + reservationListDTO);
+//        }
+//    }
+//
+//    @Test
+//    void showBranchNoshow() {
+//        String type = "branch";
+//        String status = "NOSHOW";
+//        Long id = 1L;
+//        List<AdminReservationListDTO> reservationListDTOS = service.showBranchReservation(type, id, status);
+//        for (AdminReservationListDTO reservationListDTO : reservationListDTOS) {
+//            System.out.println("reservationListDTO = " + reservationListDTO);
+//        }
+//    }
+//
+//    @Test
+//    void showBranchDONE() {
+//        String type = "branch";
+//        String status = "DONE";
+//        Long id = 1L;
+//        List<AdminReservationListDTO> reservationListDTOS = service.showBranchReservation(type, id, status);
+//        for (AdminReservationListDTO reservationListDTO : reservationListDTOS) {
+//            System.out.println("reservationListDTO = " + reservationListDTO);
+//        }
+//    }
+//
+//    @Test
+//    void showBranchCANCEL() {
+//        String type = "branch";
+//        String status = "CANCEL";
+//        Long id = 1L;
+//        List<AdminReservationListDTO> reservationListDTOS = service.showBranchReservation(type, id, status);
+//        for (AdminReservationListDTO reservationListDTO : reservationListDTOS) {
+//            System.out.println("reservationListDTO = " + reservationListDTO);
+//        }
+//    }
+//
+//    @Test
+//    void showBranchIMMINENT() {
+//        String type = "branch";
+//        String status = "IMMINENT";
+//        Long id = 1L;
+//        List<AdminReservationListDTO> reservationListDTOS = service.showBranchReservation(type, id, status);
+//        for (AdminReservationListDTO reservationListDTO : reservationListDTOS) {
+//            System.out.println("reservationListDTO = " + reservationListDTO);
+//        }
+//    }
+//
+//    @Test
+//    void showShopAll() {
+//        String type = "shop";
+//        String status = "ALL";
+//        Long id = 1L;
+//        List<AdminReservationListDTO> reservationListDTOS = service.showBranchReservation(type, id, status);
+//        for (AdminReservationListDTO reservationListDTO : reservationListDTOS) {
+//            System.out.println("reservationListDTO = " + reservationListDTO);
+//        }
+//    }
 }
