@@ -24,6 +24,8 @@ public class NaverAlarmService {
         } catch (NoResultException e) {
             throw new NoResultException("예기치 못한 오류가 발생하였습니다!");
         }
+
     }
+
 
 }

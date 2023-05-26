@@ -7,9 +7,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import ssginc_kdt_team3.BE.DTOs.reservation.ReservationAlarmDTO;
+import ssginc_kdt_team3.BE.SSLConfig;
 import ssginc_kdt_team3.BE.enums.ReservationStatus;
 import ssginc_kdt_team3.BE.service.customer.NaverAlarmService;
+
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.TrustManager;
 import java.io.IOException;
+import java.security.KeyManagementException;
+import java.security.KeyStore;
+import java.security.KeyStoreException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -23,7 +32,12 @@ public class AlarmScheduler {
     @Autowired
     private final NaverAlarmService naverAlarmService;
 
+    @Autowired
+    private final SSLConfig sslConfig;
+
     private String API_URL = "https://console.ncloud.com/sens/sms-message/sms/v2/services/ncp:sms:kr:305677338657:project_yes_team/messages";
+    private String API_KEY = "cfQUNWAcGF18lTYofr1G";
+    private String Secret_API_KEY = "LQ1bHowYCdZW3LMS0TD5lAAOUJKL2D0Z6RewFbzS";
 
     Long time = System.currentTimeMillis();
     //네이버 SMS 서비스 API URL&Key
@@ -33,28 +47,22 @@ public class AlarmScheduler {
     //"예약 상태"일시 현재시간 - 30분 시간부터 10분 간격으로 메시지 발신
 
     @Scheduled(cron = "0 * * * * *")//1분마다 상태변화 감지
-    public void ReservationStatus() {
+    public void ReservationStatus() throws Exception {
 
-        OkHttpClient okHttpClient = new OkHttpClient();
+        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"),JsonMessageCreate());
 
-            RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"),JsonMessageCreate());
-            Request request = new Request.Builder()
-                    .url(API_URL)
-                    .addHeader("Content-Type", "application/json; charset=utf-8")
-                    .addHeader("x-ncp-apigw-timestamp",time.toString())
-                    .addHeader("x-ncp-apigw-signature-v2", S_API_KEY)
-                    .addHeader("x-ncp-iam-access-key",API_KEY)
-                    .post(body)
-                    .build();
-            try {
-                Response response = okHttpClient.newCall(request).execute();
-                assert response.body() != null;//null일경우 예외 발생
-                System.out.println(response);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+        Request request = new Request.Builder()
+                .url(API_URL)
+                .addHeader("Content-Type", "application/json; charset=utf-8")
+                .addHeader("x-ncp-apigw-timestamp",time.toString())
+                .addHeader("x-ncp-apigw-signature-v2", Secret_API_KEY)
+                .addHeader("x-ncp-iam-access-key",API_KEY)
+                .post(body)
+                .build();
 
-        }
+        sslConfig.createOkHttpClientBuilder(request);
+    }
+
 
     private String JsonMessageCreate(){
 
@@ -79,7 +87,7 @@ public class AlarmScheduler {
 
 
             if((DTO.getReservationStatus().equals(ReservationStatus.RESERVATION) && 0 < remainingTime) &&(
-            remainingTime == 10 || remainingTime == 20 || remainingTime == 30)){
+                    remainingTime == 10 || remainingTime == 20 || remainingTime == 30)){
                 //예약 상태 + 예약 시간 30분 전부터 SMS발신
                 requestMessage.put("subject", "예약 알림");//제목
                 requestMessage.put("to", DTO.getPhoneNumber());//수신자 번호
@@ -126,10 +134,9 @@ public class AlarmScheduler {
                 requestMap.put("message", requestMessage);
 
                 return requestMap.toString();
-                }
             }
-            return "조건문에 맞는게 없음,에러 발생";
         }
+        return "조건문에 맞는게 없음,에러 발생";
     }
-
+}
 
