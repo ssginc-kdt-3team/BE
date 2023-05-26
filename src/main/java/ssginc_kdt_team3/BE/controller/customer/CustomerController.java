@@ -18,6 +18,7 @@ import ssginc_kdt_team3.BE.service.customer.KakaoService;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -57,28 +58,37 @@ public class CustomerController {
   }
 
   // 이메일 찾기
-  @PostMapping("/findEmail")
-  public ResponseEntity<String> findEmail(@RequestBody CustomerFindDTO findDTO){
-    Customer findInfo = customerService.getCustomerEmail(findDTO);
+  @GetMapping("/findEmail")
+  public ResponseEntity<String> findEmail(@RequestParam("name") String name, @RequestParam("phone") String phone){
+    CustomerFindDTO findDTO = new CustomerFindDTO();
+    findDTO.setName(name);
+    findDTO.setPhone(phone);
 
-    if (findInfo == null) { // 이거 서비스코드에서 NoSuchElementException 했는데, 여기서도 if문 처리해야 하나?
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    // 서비스 코드에서 옵셔널로 커스토머 자체를 던지고, 컨트롤러에서 값이 있으면 성공, 없으면 에러로 분기처리
+
+    Optional<Customer> findCustomer = customerService.getCustomerEmail(name, phone);
+
+    if (findCustomer.isPresent()) {
+      return ResponseEntity.status(HttpStatus.OK).body(findCustomer.get().getEmail());
     }
-    String email = findInfo.getEmail();
-    return ResponseEntity.status(HttpStatus.OK).body(email);
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
   }
 
   // 비밀번호 찾기
-  @PostMapping("/findPwd")
-  public ResponseEntity<String> findPwd(@RequestBody CustomerFindDTO findDTO){
+  @GetMapping("/findPwd")
+  public ResponseEntity<String> findPwd(@RequestParam("name") String name, @RequestParam("email") String email, @RequestParam("phone") String phone){
 
-    Customer findInfo = customerService.getCustomerPassword(findDTO);
+    CustomerFindDTO findDTO = new CustomerFindDTO();
+    findDTO.setName(name);
+    findDTO.setEmail(email);
+    findDTO.setPhone(phone);
 
-    if (findInfo == null) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    Optional<Customer> findPassword = customerService.getCustomerPassword(findDTO);
+
+    if (findPassword.isPresent()) {
+      return ResponseEntity.status(HttpStatus.OK).body(findPassword.get().getPassword());
     }
-    String password = findInfo.getPassword();
-    return ResponseEntity.status(HttpStatus.OK).body(password);
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
   }
 
   // 개인정보 변경

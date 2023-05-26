@@ -28,4 +28,8 @@ public interface JpaDataCustomerRepository extends JpaRepository<Customer, Long>
             "WHERE b.id = :id")
     List<BranchShopDTO> BranchIdByShop(@Param("id")Long id);
 
+    // 0526 이현: 고객 개인정보찾기 기능위해 추가
+    Optional<Customer> findByNameAndPhoneNumber(String name, String phone);
+    Optional<Customer> findByNameAndEmailAndPhoneNumber(String name, String email, String phone);
+
 }
