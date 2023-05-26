@@ -26,6 +26,7 @@ import java.util.Optional;
 public class CustomerService {
 
   private final JpaCustomerRepository customerRepository;
+  private final JpaDataCustomerRepository jpaCustomerRepository;
 
   // 회원가입
   @Transactional
@@ -83,27 +84,23 @@ public class CustomerService {
     return null;
   }
 
-  // Email 찾기 : phone 으로 찾기
-  public Customer getCustomerEmail(CustomerFindDTO customerFindDTO) {
-    Customer customer = new Customer();
-    customer.setPhoneNumber(customerFindDTO.getPhone());
+  // Email 찾기 : name & phone 으로 찾기
+  public Optional<Customer> getCustomerEmail(String name, String phone) {
+//    Customer customer = new Customer();
+//    customer.setPhoneNumber(customerFindDTO.getPhone()); 입력된 값을 받는거니까 set할 필요 없다.
 
-    //이메일이 있다고 가정하고 -> phone과 일치하는 경우 (PK: 중복X)
-    Optional<Customer> emailByPhone = customerRepository.findEmailByPhone(customer.getPhoneNumber());
-    return emailByPhone.orElseThrow(() -> new NoSuchElementException("일치하는 정보가 없습니다."));
+    //이메일이 있다고 가정하고 -> DB에 일치하는 값 찾기
+    Optional<Customer> findInfo = jpaCustomerRepository.findByNameAndPhoneNumber(name, phone);
+    return findInfo;
   }
 
 
-  // PW 찾기
-  public Customer getCustomerPassword (CustomerFindDTO customerFindDTO) {
-    Customer customer = new Customer();
-    customer.setEmail(customerFindDTO.getEmail());
-    customer.setPhoneNumber(customerFindDTO.getPhone());
+  // PW 찾기: email, name, phone 으로 찾기
+  public Optional<Customer> getCustomerPassword (CustomerFindDTO findDTO) {
 
-    Optional<Customer> emailAndPhone = customerRepository.findEmailAndPhone(customerFindDTO.getEmail(), customer.getPhoneNumber());
-    System.out.println("emailAndPhone :" + emailAndPhone);
+    Optional<Customer> findInfo = jpaCustomerRepository.findByNameAndEmailAndPhoneNumber(findDTO.getName(), findDTO.getEmail(), findDTO.getPhone());
 
-    return emailAndPhone.orElseThrow(() -> new NoSuchElementException("일치하는 정보가 없습니다."));
+    return findInfo;
   }
 
   // 개인정보 변경
