@@ -24,7 +24,7 @@ public class AdminReviewService {
   // 관리자: 후기목록 조회 -필터, 페이지 처리
   public Page<AdminReviewListDTO> getReviewList(String type, Long branchId, Long shopId, Pageable pageRequest){
 
-    // 1. 지점의 전체 후기 가져온다.
+    // 1. 지점 선택: 지점의 전체 후기 가져온다.
     if(type.equals("branch")){
         Page<Review> allReviews = reviewRepository.findAllByReservation_Shop_Branch_Id(branchId, pageRequest);
         return convertDto(allReviews);
@@ -37,7 +37,7 @@ public class AdminReviewService {
     return null;
   }
 
-  // Page로 받은 Review를 DTO로 변환
+  // Page로 받은 Review 엔티티를 DTO로 변환
   private Page<AdminReviewListDTO> convertDto(Page<Review> reviews) {
     List<AdminReviewListDTO> reviewDTOList = new ArrayList<>();
 

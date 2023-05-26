@@ -61,5 +61,6 @@ public interface JpaDataOwnerRepository extends JpaRepository<Owner, Long> {
     @Modifying
     int ownerStatusDelete(@Param("id")Long id,@Param("status") UserStatus status);
 
+
 }
 
