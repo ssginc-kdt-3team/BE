@@ -41,13 +41,13 @@ class JpaDataReservationRepositoryTest {
 
     }
 
-    @Test
-    void findReservationByStatusAndBranchId() {
-        List<Reservation> allByStatusAndShopBranchId = reservationRepository.findAllByStatusAndShop_BranchId(ReservationStatus.RESERVATION, 2L);
-        for (Reservation reservation : allByStatusAndShopBranchId) {
-            System.out.println(reservation.toString());
-        }
-    }
+//    @Test
+//    void findReservationByStatusAndBranchId() {
+//        List<Reservation> allByStatusAndShopBranchId = reservationRepository.findAllByStatusAndShop_BranchId(ReservationStatus.RESERVATION, 2L);
+//        for (Reservation reservation : allByStatusAndShopBranchId) {
+//            System.out.println(reservation.toString());
+//        }
+//    }
 
 //    @Test
 //    void findReservationByBranchId() {

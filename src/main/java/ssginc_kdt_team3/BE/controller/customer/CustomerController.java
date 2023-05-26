@@ -3,14 +3,10 @@ package ssginc_kdt_team3.BE.controller.customer;
 import lombok.RequiredArgsConstructor;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ssginc_kdt_team3.BE.DTOs.customer.CustomerFindDTO;
-import ssginc_kdt_team3.BE.DTOs.customer.CustomerJoinDTO;
-import ssginc_kdt_team3.BE.DTOs.customer.CustomerLoginDTO;
-import ssginc_kdt_team3.BE.DTOs.customer.CustomerUpdateDTO;
+import ssginc_kdt_team3.BE.DTOs.customer.*;
 import ssginc_kdt_team3.BE.domain.Customer;
 import ssginc_kdt_team3.BE.domain.Grade;
 import ssginc_kdt_team3.BE.service.customer.CustomerService;
@@ -51,60 +47,59 @@ public class CustomerController {
     log.info("email = {}", customerLoginDTO.getEmail());
     Map loginUser = customerService.login(customerLoginDTO);
 
-    if (loginUser == null) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+      if (loginUser == null) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
     return ResponseEntity.status(HttpStatus.OK).body(loginUser);
   }
 
   // 이메일 찾기
-  @GetMapping("/findEmail")
-  public ResponseEntity<String> findEmail(@RequestParam("name") String name, @RequestParam("phone") String phone){
-    CustomerFindDTO findDTO = new CustomerFindDTO();
-    findDTO.setName(name);
-    findDTO.setPhone(phone);
+  @PostMapping("/findEmail")
+  public ResponseEntity<String> findEmail(@RequestBody EmailFindDTO emailFindDTO){
+    EmailFindDTO findDTO = new EmailFindDTO();
+    findDTO.setName(emailFindDTO.getName());
+    findDTO.setPhone(emailFindDTO.getPhone());
 
     // 서비스 코드에서 옵셔널로 커스토머 자체를 던지고, 컨트롤러에서 값이 있으면 성공, 없으면 에러로 분기처리
 
-    Optional<Customer> findCustomer = customerService.getCustomerEmail(name, phone);
+    Optional<Customer> findCustomer = customerService.getCustomerEmail(findDTO.getName(), findDTO.getPhone());
 
     if (findCustomer.isPresent()) {
       return ResponseEntity.status(HttpStatus.OK).body(findCustomer.get().getEmail());
     }
-    return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("일치하는 정보가 없습니다.");
   }
 
   // 비밀번호 찾기
-  @GetMapping("/findPwd")
-  public ResponseEntity<String> findPwd(@RequestParam("name") String name, @RequestParam("email") String email, @RequestParam("phone") String phone){
+  @PostMapping("/findPwd")
+  public ResponseEntity<String> findPwd(@RequestBody PasswordFindDTO passwordDTO){
 
-    CustomerFindDTO findDTO = new CustomerFindDTO();
-    findDTO.setName(name);
-    findDTO.setEmail(email);
-    findDTO.setPhone(phone);
+    PasswordFindDTO findDTO = new PasswordFindDTO();
+    findDTO.setName(passwordDTO.getName());
+    findDTO.setEmail(passwordDTO.getEmail());
+    findDTO.setPhone(passwordDTO.getPhone());
 
     Optional<Customer> findPassword = customerService.getCustomerPassword(findDTO);
 
     if (findPassword.isPresent()) {
       return ResponseEntity.status(HttpStatus.OK).body(findPassword.get().getPassword());
     }
-    return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("일치하는 정보가 없습니다.");
   }
 
   // 개인정보 변경
-//  @PostMapping("/updateInfo/{id}")
-//  public boolean CustomerUpdate(@PathVariable(name = "id") Long CustomerId,
-//                                @RequestBody CustomerUpdateDTO updateDTO) {
-//    return ;
-//  }
-//
-//
-//  // 비밀번호 변경
-//  @PostMapping("/updatePwd/{id}")
-//  public boolean CustomerUpdate(@PathVariable(name = "id") Long CustomerId,
-//                                @RequestBody CustomerUpdateDTO updateDTO) {
-//    return ;
-//  }
+  @PostMapping("/updateInfo/{id}")
+  public void updateInfo(@PathVariable(name = "id") Long customerId,
+                             @RequestBody CustomerUpdateDTO updateDTO) {
+    customerService.updateInfo(updateDTO, customerId);
+  }
+
+  // 비밀번호 변경
+  @PostMapping("/updatePwd/{id}")
+  public void updatePassword(@PathVariable(name = "id") Long customerId,
+                                @RequestBody PwdUpdateDTO updateDTO) {
+    customerService.updatePassword(updateDTO, customerId);
+  }
 
 
   // 카카오 로그인: 미완성

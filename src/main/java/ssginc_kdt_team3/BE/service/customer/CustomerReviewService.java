@@ -53,7 +53,7 @@ public class CustomerReviewService {
         review.setTitle(reviewDTO.getTitle());
         review.setContents(reviewDTO.getContents());
         review.setTime(writeTime);
-        review.setPoint(review.getPoint());
+        review.setPoint(reviewDTO.getPoint());
         review.setStatus(ReviewStatus.SHOW); // 최초상태
         review.setReservation(reservation);
         reviewRepository.save(review);
