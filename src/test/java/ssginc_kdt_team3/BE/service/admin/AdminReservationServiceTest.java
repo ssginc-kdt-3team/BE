@@ -3,6 +3,9 @@ package ssginc_kdt_team3.BE.service.admin;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import ssginc_kdt_team3.BE.DTOs.reservation.AdminReservationListDTO;
 
 import java.util.List;
@@ -19,6 +22,7 @@ class AdminReservationServiceTest {
 //    void showBranchAll() {
 //        String type = "branch";
 //        String status = "ALL";
+//        PageRequest pageRequest = new PageRequest(0, 10);
 //        Long id = 1L;
 //        List<AdminReservationListDTO> reservationListDTOS = service.showBranchReservation(type, id, status);
 //        for (AdminReservationListDTO reservationListDTO : reservationListDTOS) {

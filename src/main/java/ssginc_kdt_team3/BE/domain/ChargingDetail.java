@@ -1,12 +1,15 @@
 package ssginc_kdt_team3.BE.domain;
 
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@NoArgsConstructor
 public class ChargingDetail {
 
     @Id
@@ -29,4 +32,16 @@ public class ChargingDetail {
     @ManyToOne
     @JoinColumn(name = "charging_manage_id")
     private ChargingManagement chargingManagement;
+
+    public void setDetailUseId() {
+        this.detailUseId = id;
+    }
+
+    @Builder
+    public ChargingDetail(boolean status, int value, LocalDateTime operateDate, ChargingManagement chargingManagement) {
+        this.status = status;
+        this.value = value;
+        this.operateDate = operateDate;
+        this.chargingManagement = chargingManagement;
+    }
 }
