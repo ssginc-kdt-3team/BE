@@ -46,9 +46,9 @@ public class CustomerReviewService {
       LocalDateTime localDateTime = reservation.getReservationDate().plusDays(7);
 
       // reservationDate + 7일 >= writeTime
-      if(writeTime.isBefore(localDateTime)){
+      if(writeTime.isBefore(localDateTime) && reviewDTO.getPoint() >=1){
 
-        // DTO -> Review 변경
+        // DTO -> Review 변경: Review 생성
         Review review = new Review();
         review.setTitle(reviewDTO.getTitle());
         review.setContents(reviewDTO.getContents());
@@ -64,7 +64,6 @@ public class CustomerReviewService {
   }
 
   public boolean deleteMyReview(Long reviewId) {
-
     // 2) 본인이 작성한 후기가 맞는지 검증
     Review review = reviewRepository.findById(reviewId).orElse(null);
 
@@ -81,7 +80,7 @@ public class CustomerReviewService {
 
   // 마이페이지: 본인이 작성한 모든 후기 조회
   public Page<ReviewResponseDTO> getReviewList(Long userId, Pageable pageRequest) {
-    Page<Review> allReviews = reviewRepository.findAllByReservation_Customer_Id(userId, pageRequest);
+    Page<Review> allReviews = reviewRepository.findAllByStatusAndReservation_Customer_Id(ReviewStatus.SHOW, userId, pageRequest);
     return convertDto(allReviews);
   }
 

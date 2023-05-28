@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import ssginc_kdt_team3.BE.DTOs.admin.AdminReviewListDTO;
 import ssginc_kdt_team3.BE.domain.Reservation;
 import ssginc_kdt_team3.BE.domain.Review;
+import ssginc_kdt_team3.BE.enums.ReviewStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -38,4 +39,6 @@ public interface JpaDataReviewRepository extends JpaRepository<Review, Long> {
     Page<Review> findAllByReservation_Shop_Owner_Id(Long ownerId, Pageable pageable);
 
     Page<Review> findAllByReservation_Customer_Id(Long userId, Pageable pageable);
+
+    Page<Review> findAllByStatusAndReservation_Customer_Id(ReviewStatus status, Long userId, Pageable pageable);
 }
