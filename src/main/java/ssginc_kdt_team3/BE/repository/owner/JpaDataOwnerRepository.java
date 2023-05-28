@@ -11,6 +11,8 @@ import ssginc_kdt_team3.BE.DTOs.admin.AdminBranchOwnerDTO;
 import ssginc_kdt_team3.BE.DTOs.admin.AdminOwnerDetailDTO;
 import ssginc_kdt_team3.BE.domain.Owner;
 import ssginc_kdt_team3.BE.enums.UserStatus;
+
+import java.util.List;
 import java.util.Optional;
 @Repository
 public interface JpaDataOwnerRepository extends JpaRepository<Owner, Long> {
@@ -60,7 +62,6 @@ public interface JpaDataOwnerRepository extends JpaRepository<Owner, Long> {
             "WHERE o.id = :id")
     @Modifying
     int ownerStatusDelete(@Param("id")Long id,@Param("status") UserStatus status);
-
 
 }
 
