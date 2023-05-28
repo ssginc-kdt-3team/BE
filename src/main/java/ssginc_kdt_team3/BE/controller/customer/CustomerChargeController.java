@@ -27,12 +27,20 @@ public class CustomerChargeController {
      * 결제요청
      */
     @PostMapping("/ready")
-    public ResponseEntity<KakaoPayReadyResponseDTO> readyToKakaoPay(@RequestBody Map<String, String> item) {
+    public ResponseEntity readyToKakaoPay(@RequestBody Map<String, String> item) {
 
         String name = item.get("name");
+        String value = item.get("value");
         String price = item.get("price");
+        String customerId = item.get("customerId");
 
-        return ResponseEntity.ok(kakaoPayService.kakaoReady(name,price));
+        KakaoPayReadyResponseDTO kakaoPayReadyResponseDTO = kakaoPayService.kakaoReady(name, value, price, customerId);
+
+        if (kakaoPayReadyResponseDTO != null) {
+           return ResponseEntity.ok(kakaoPayReadyResponseDTO);
+        }
+
+        return ResponseEntity.badRequest().body("존재하지 않는 유저의 Id 입니다.");
     }
 
     /**
