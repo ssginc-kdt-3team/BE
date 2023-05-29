@@ -41,8 +41,6 @@ public interface JpaDataReviewRepository extends JpaRepository<Review, Long> {
     Page<Review> findAllByReservation_Shop_Owner_Id(Long ownerId, Pageable pageable);
     Page<Review> findAllByReservation_Shop_Owner_IdOrderByPointAsc(Long ownerId, Pageable pageable);
     Page<Review> findAllByReservation_Shop_Owner_IdOrderByPointDesc(Long ownerId, Pageable pageable);
-
-//    Page<Review> findAllByTimeBetween(@Param("start")LocalDate start, @Param("end")LocalDate end, Pageable pageable);
     Page<Review> findAllByReservation_Shop_Owner_IdAndTimeBetween(Long ownerId, LocalDateTime start, LocalDateTime end, Pageable pageable);
 
     // 고객: 본인이 작성한 모든 후기 조회
