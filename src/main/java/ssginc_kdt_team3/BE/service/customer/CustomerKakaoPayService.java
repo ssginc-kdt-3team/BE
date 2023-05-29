@@ -110,6 +110,7 @@ public class CustomerKakaoPayService {
                 requestEntity,
                 KakaoPayApproveResponseDTO.class);
 
+        approveResponse.setResult("");
         long customerId = Long.parseLong(approveResponse.getPartner_user_id());
 
         Optional<Customer> byId = customerRepository.findById(customerId);
@@ -118,7 +119,6 @@ public class CustomerKakaoPayService {
         //충전 정보 DB 저장
         PaymentManaging paymentManaging = new PaymentManaging(approveResponse);
         PaymentManaging save = payManagingRepository.save(paymentManaging);
-        log.info("결제 요청 KakaoPayApproveResponseDTO = {}", approveResponse.toString());
         log.info("충전 tid : {}", paymentManaging.getTid());
         log.info("충전 가격 : {}", paymentManaging.getAmount());
         log.info("충전 날짜 : {}", paymentManaging.getDate());
