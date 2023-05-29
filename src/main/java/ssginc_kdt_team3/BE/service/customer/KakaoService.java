@@ -1,9 +1,16 @@
 package ssginc_kdt_team3.BE.service.customer;
 
+import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
+import ssginc_kdt_team3.BE.domain.Customer;
+import ssginc_kdt_team3.BE.enums.CustomerType;
+import ssginc_kdt_team3.BE.enums.UserRole;
+import ssginc_kdt_team3.BE.enums.UserStatus;
+import ssginc_kdt_team3.BE.repository.customer.JpaDataCustomerRepository;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -12,9 +19,14 @@ import java.net.ProtocolException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class KakaoService {
+
+  private final JpaDataCustomerRepository customerRepository;
+
   public String getToken(String code) throws IOException {
     // 인가코드로 토큰받기
     String host = "https://kauth.kakao.com/oauth/token";
@@ -78,9 +90,9 @@ public class KakaoService {
       urlConnection.setRequestProperty("Authorization", "Bearer " + access_token);
       urlConnection.setRequestMethod("GET");
 
+      // 결과 200 : 성공
       int responseCode = urlConnection.getResponseCode();
       System.out.println("responseCode = " + responseCode);
-
 
       BufferedReader br = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
       String line = "";
@@ -92,24 +104,20 @@ public class KakaoService {
 
       System.out.println("res = " + res);
 
-
       JSONParser parser = new JSONParser();
       JSONObject obj = (JSONObject) parser.parse(res);
       JSONObject kakao_account = (JSONObject) obj.get("kakao_account");
-      JSONObject profile = (JSONObject) obj.get("profile");
+      JSONObject profile = (JSONObject) kakao_account.get("profile");
 
-
+      // age, birthday, gender 공백; 빈 문자열 반환처리
       String id = obj.get("id").toString();
       String nickname = profile.get("nickname").toString();
-      String age_range = kakao_account.get("age_range").toString();
-      String birthday = kakao_account.get("birthday").toString();
-      String gender = kakao_account.get("gender").toString();
-
+      String email = kakao_account.containsKey("email") ? kakao_account.get("email").toString() : "";
+      String gender = kakao_account.containsKey("gender") ? kakao_account.get("gender").toString() : "";
 
       result.put("id", id);
       result.put("nickname", nickname);
-      result.put("age_range", age_range);
-      result.put("birthday", birthday);
+      result.put("email", email);
       result.put("gender", gender);
 
       br.close();
@@ -154,5 +162,30 @@ public class KakaoService {
     }
     return result;
   }
+
+//  public Long createUser(String access_token) throws IOException {
+//
+//    Map<String, Object> userInfo = getUserInfo(access_token);
+//    String email = userInfo.get("email").toString();
+//
+//    Optional<Customer> customerByEmail = customerRepository.findCustomerByEmail(email);
+//
+//    if(customerByEmail.isPresent()){
+//      System.out.println("로그인 성공");
+//      return customerByEmail.get().getId();
+//    } else {
+//
+//      Customer customer = new Customer();
+//      customer.setEmail(userInfo.get("email").toString());
+//      customer.setName(userInfo.get("nickname").toString());
+//      customer.setType(CustomerType.KAKAO);
+//      customer.setStatus(UserStatus.ACTIVE);
+//      customer.setRole(UserRole.CUSTOMER);
+//
+//      customerRepository.save(customer);
+//      System.out.println("회원가입 성공");
+//      return customer.getId();
+//    }
+//  }
 
 }

@@ -45,7 +45,6 @@ public class CustomerService {
     customer.setStatus(UserStatus.ACTIVE);
     customer.setRole(UserRole.CUSTOMER);
 
-
     customerRepository.save(customer);
     return customerJoinDTO;
   }

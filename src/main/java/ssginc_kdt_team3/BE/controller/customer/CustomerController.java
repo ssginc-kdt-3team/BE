@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import ssginc_kdt_team3.BE.DTOs.customer.*;
 import ssginc_kdt_team3.BE.domain.Customer;
 import ssginc_kdt_team3.BE.domain.Grade;
+import ssginc_kdt_team3.BE.repository.customer.JpaDataCustomerRepository;
 import ssginc_kdt_team3.BE.service.customer.CustomerService;
 import ssginc_kdt_team3.BE.service.customer.KakaoService;
 
@@ -22,6 +23,7 @@ import java.util.Optional;
 @RequestMapping("/customer")
 public class CustomerController {
   private final CustomerService customerService;
+  private final JpaDataCustomerRepository customerRepository;
   private final KakaoService kakaoService;
 
   // 회원가입
@@ -104,7 +106,7 @@ public class CustomerController {
 
   // 카카오 로그인: 미완성
   @GetMapping("/kakao")
-  public void kakao(String code) {
+  public void kakao(@RequestParam("code") String code)  {
     System.out.println("인가코드: "+code);
     try {
       String access_token = kakaoService.getToken(code);
@@ -113,9 +115,19 @@ public class CustomerController {
       // 사용자정보 가져오기
       Map<String, Object> userInfo = kakaoService.getUserInfo(access_token);
       System.out.println("userInfo:" + userInfo);
+
+//      if(userInfo.get("email") == customerService.){
+//        System.out.println("로그인 성공");
+//      } else {
+
+//      }
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
+
+
+
+
   }
 
   // 등급조회
