@@ -94,23 +94,24 @@ public class CustomerChargeController {
         return ResponseEntity.badRequest().body("결제에 실패했습니다.");
     }
 
-    @GetMapping("/list/{id}/{type}/{page}")
-    public ResponseEntity showchargeList(@PathVariable(name = "id") Long customerId,
-                                           @PathVariable(name = "type") String type, @PathVariable(name = "page") int page) {
+    @GetMapping("/list/{id}/{type}/{date}/{page}")
+    public ResponseEntity showchargeList(@PathVariable(name = "id") Long customerId, @PathVariable(name = "type") String type,
+                                         @PathVariable(name = "date") int dateType, @PathVariable(name = "page") int page) {
         Map<String, String> result = new HashMap<>();
 
         ArrayList<String> typeList = new ArrayList<>(Arrays.asList("all", "get", "lost"));
-        if (typeList.contains(type)) {
+        ArrayList<Integer> dateList = new ArrayList<>(Arrays.asList(12, 1, 3, 6));
+        if (typeList.contains(type) && dateList.contains(dateType)) {
             Pageable pageable = PageRequest.of(page-1, pageSize);
 
             if (type.equals("get")) {
-                Page<CustomerChargingListDTO> customerChargingListDTOS = customerChargingService.showCustomerChargingList(customerId, pageable, true);
+                Page<CustomerChargingListDTO> customerChargingListDTOS = customerChargingService.showCustomerChargingList(customerId, pageable, true, dateType);
                 return getResponseEntity(result, customerChargingListDTOS);
             } else if (type.equals("lost")) {
-                Page<CustomerChargingListDTO> customerChargingListDTOS = customerChargingService.showCustomerChargingList(customerId, pageable, false);
+                Page<CustomerChargingListDTO> customerChargingListDTOS = customerChargingService.showCustomerChargingList(customerId, pageable, false, dateType);
                 return getResponseEntity(result, customerChargingListDTOS);
             } else {
-                Page<CustomerChargingListDTO> customerChargingListDTOS = customerChargingService.showCustomerChargingAndUsingList(customerId, pageable);
+                Page<CustomerChargingListDTO> customerChargingListDTOS = customerChargingService.showCustomerChargingAndUsingList(customerId, pageable, dateType);
                 return getResponseEntity(result, customerChargingListDTOS);
             }
         }
