@@ -12,6 +12,8 @@ import ssginc_kdt_team3.BE.DTOs.customer.ReviewResponseDTO;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerReviewListDTO;
 import ssginc_kdt_team3.BE.service.customer.CustomerReviewService;
 
+import java.util.Optional;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/customer/review")
@@ -45,7 +47,11 @@ public class CustomerReviewController {
                                                                 @PathVariable(name = "page") int page){
     PageRequest pageRequest = PageRequest.of(page - 1, 10, Sort.by("time").descending());
     Page<ReviewResponseDTO> reviewList = reviewService.getReviewList(userId, pageRequest);
-    return ResponseEntity.ok(reviewList);
+
+    if(reviewList.isEmpty()){
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+    return ResponseEntity.status(HttpStatus.OK).body(reviewList);
   }
 
 

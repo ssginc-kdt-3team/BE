@@ -88,18 +88,18 @@ public class CustomerController {
   }
 
   // 개인정보 변경
-  @PostMapping("/updateInfo/{id}")
-  public void updateInfo(@PathVariable(name = "id") Long customerId,
-                             @RequestBody CustomerUpdateDTO updateDTO) {
-    customerService.updateInfo(updateDTO, customerId);
-  }
+//  @PostMapping("/updateInfo/{id}")
+//  public void updateInfo(@PathVariable(name = "id") Long customerId,
+//                             @RequestBody CustomerUpdateDTO updateDTO) {
+//    customerService.updateInfo(updateDTO, customerId);
+//  }
 
   // 비밀번호 변경
-  @PostMapping("/updatePwd/{id}")
-  public void updatePassword(@PathVariable(name = "id") Long customerId,
-                                @RequestBody PwdUpdateDTO updateDTO) {
-    customerService.updatePassword(updateDTO, customerId);
-  }
+//  @PostMapping("/updatePwd/{id}")
+//  public void updatePassword(@PathVariable(name = "id") Long customerId,
+//                                @RequestBody PwdUpdateDTO updateDTO) {
+//    customerService.updatePassword(updateDTO, customerId);
+//  }
 
 
   // 카카오 로그인: 미완성
