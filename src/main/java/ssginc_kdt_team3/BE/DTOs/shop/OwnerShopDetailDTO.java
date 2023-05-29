@@ -37,7 +37,7 @@ public class OwnerShopDetailDTO {
         this.ownerId = shop.getOwner().getId();
         this.shopId = shop.getId();
         this.businessCeo = shop.getBusinessName();
-        this.businessNumber = shop.getBusinessName();
+        this.businessNumber = shop.getBusinessNum();
         this.shopImgUrl = shop.getShopImgUrl();
         this.shopName = shop.getName();
         this.location = shop.getLocation();
