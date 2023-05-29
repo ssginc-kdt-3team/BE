@@ -68,12 +68,16 @@ public class CustomerChargeController {
     /**
      * 환불
      */
-    @PostMapping("/refund")
-    public ResponseEntity refund() {
+    @PostMapping("/refund/{id}")
+    public ResponseEntity refund(@PathVariable(name = "id") Long chargeId) {
 
-        KakaoRefundResponseDTO kakaoCancelResponse = kakaoPayService.kakaoCancel();
+        KakaoRefundResponseDTO kakaoCancelResponse = kakaoPayService.kakaoCancel(chargeId);
 
-        return new ResponseEntity<>(kakaoCancelResponse, HttpStatus.OK);
+        if (kakaoCancelResponse.getFailReason() != null) {
+            return new ResponseEntity<>(kakaoCancelResponse, HttpStatus.OK);
+        }
+
+        return ResponseEntity.badRequest().body(kakaoCancelResponse.getFailReason());
     }
 
     /**
