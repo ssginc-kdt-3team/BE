@@ -64,6 +64,9 @@ dependencies {
 
 	//AWS S3
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
+	//알림 서비스 설정 라이브러리 추가 - 신영 0525
+	implementation 'com.squareup.okhttp3:okhttp:4.9.3'
 }
 
 
