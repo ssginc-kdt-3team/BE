@@ -42,7 +42,7 @@ public class ChargingManagement {
     private PaymentManaging paymentManaging;
 
     @Builder
-    public ChargingManagement(Long id, boolean status, String changeReason, int value, LocalDateTime changeDate, Customer customer, Deposit deposit, PaymentManaging paymentManaging) {
+    public ChargingManagement(boolean status, String changeReason, int value, LocalDateTime changeDate, Customer customer, Deposit deposit, PaymentManaging paymentManaging) {
         this.id = id;
         this.status = status;
         this.changeReason = changeReason;

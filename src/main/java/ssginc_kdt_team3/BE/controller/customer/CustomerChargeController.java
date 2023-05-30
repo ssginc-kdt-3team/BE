@@ -13,6 +13,7 @@ import ssginc_kdt_team3.BE.DTOs.customer.CustomerChargeDTO;
 import ssginc_kdt_team3.BE.DTOs.customer.CustomerChargingListDTO;
 import ssginc_kdt_team3.BE.DTOs.kakao.KakaoPayApproveResponseDTO;
 import ssginc_kdt_team3.BE.DTOs.kakao.KakaoPayReadyResponseDTO;
+import ssginc_kdt_team3.BE.DTOs.kakao.KakaoRefundFailResponseDTO;
 import ssginc_kdt_team3.BE.DTOs.kakao.KakaoRefundResponseDTO;
 import ssginc_kdt_team3.BE.service.customer.CustomerChargingService;
 import ssginc_kdt_team3.BE.service.customer.CustomerKakaoPayService;
@@ -71,13 +72,14 @@ public class CustomerChargeController {
     @PostMapping("/refund/{id}")
     public ResponseEntity refund(@PathVariable(name = "id") Long chargeId) {
 
-        KakaoRefundResponseDTO kakaoCancelResponse = kakaoPayService.kakaoCancel(chargeId);
+        Object kakaoCancelResponse = kakaoPayService.kakaoCancel(chargeId);
 
-        if (kakaoCancelResponse.getFailReason() != null) {
-            return new ResponseEntity<>(kakaoCancelResponse, HttpStatus.OK);
+        if (kakaoCancelResponse instanceof KakaoRefundFailResponseDTO) {
+            return ResponseEntity.badRequest().body(((KakaoRefundFailResponseDTO) kakaoCancelResponse).getFailReason());
         }
 
-        return ResponseEntity.badRequest().body(kakaoCancelResponse.getFailReason());
+
+        return new ResponseEntity<>((KakaoRefundResponseDTO)kakaoCancelResponse, HttpStatus.OK);
     }
 
     /**

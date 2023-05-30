@@ -38,6 +38,15 @@ public class ChargingDetail {
     }
 
     @Builder
+    public ChargingDetail(boolean status, int value, Long detailUseId, LocalDateTime operateDate, ChargingManagement chargingManagement) {
+        this.status = status;
+        this.value = value;
+        this.detailUseId = detailUseId;
+        this.operateDate = operateDate;
+        this.chargingManagement = chargingManagement;
+    }
+
+    @Builder
     public ChargingDetail(boolean status, int value, LocalDateTime operateDate, ChargingManagement chargingManagement) {
         this.status = status;
         this.value = value;

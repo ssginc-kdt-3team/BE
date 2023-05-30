@@ -26,7 +26,7 @@ class JpaDataChargingDetailRepositoryTest {
 
     @Test
     public void 환불_가능_여부_확인() {
-        List<ChargingDetail> allByChargingManagementIdOrderByOperateDateDesc = detailRepository.findAllByChargingManagement_IdOrderByOperateDateDesc(5L);
+        List<ChargingDetail> allByChargingManagementIdOrderByOperateDateDesc = detailRepository.findChargingManagementUsingLog(5L);
         for ( ChargingDetail c : allByChargingManagementIdOrderByOperateDateDesc) {
             System.out.println("================");
             System.out.println(c.isStatus());

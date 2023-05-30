@@ -11,6 +11,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import ssginc_kdt_team3.BE.DTOs.kakao.KakaoPayApproveResponseDTO;
 import ssginc_kdt_team3.BE.DTOs.kakao.KakaoPayReadyResponseDTO;
+import ssginc_kdt_team3.BE.DTOs.kakao.KakaoRefundFailResponseDTO;
 import ssginc_kdt_team3.BE.DTOs.kakao.KakaoRefundResponseDTO;
 import ssginc_kdt_team3.BE.domain.ChargingDetail;
 import ssginc_kdt_team3.BE.domain.ChargingManagement;
@@ -21,6 +22,7 @@ import ssginc_kdt_team3.BE.repository.charging.JpaDataChargingManagementReposito
 import ssginc_kdt_team3.BE.repository.customer.JpaCustomerRepository;
 import ssginc_kdt_team3.BE.repository.customer.JpaDataCustomerRepository;
 import ssginc_kdt_team3.BE.repository.payManaging.JpaDataPayManagingRepository;
+import ssginc_kdt_team3.BE.util.TimeUtils;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -155,6 +157,7 @@ public class CustomerKakaoPayService {
     public KakaoRefundResponseDTO kakaoCancel(Long chargeId) {
 
         KakaoRefundResponseDTO cancelResponse = new KakaoRefundResponseDTO();
+        KakaoRefundFailResponseDTO failResponseDTO = new KakaoRefundFailResponseDTO();
         Optional<ChargingManagement> byId = chargingManagementRepository.findById(chargeId);
 
         if (byId.isPresent()) {
@@ -166,9 +169,9 @@ public class CustomerKakaoPayService {
             //충전 후 14일 경과 시 환불 불가능
             if (!chargingManagement.getChangeDate().plusDays(14).isBefore(LocalDateTime.now())) {
 
-                List<ChargingDetail> chargeDetail = chargingDetailRepository.findChargingManagementUsingLog(chargeId);
+                List<ChargingDetail> chargeDetails = chargingDetailRepository.findChargingManagementUsingLog(chargeId);
 
-                if (chargeDetail.size() == 1) {
+                if (chargeDetails.size() == 1) {
                     MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
                     parameters.add("cid", cid);
                     parameters.add("tid", chargingManagement.getPaymentManaging().getTid());
@@ -187,18 +190,39 @@ public class CustomerKakaoPayService {
                             requestEntity,
                             KakaoRefundResponseDTO.class);
 
+                    ChargingManagement refundChargingManagement = ChargingManagement.builder()
+                            .changeDate(TimeUtils.stringParseLocalDataTimeT(cancelResponse.getCanceled_at()))
+                            .changeReason("환불")
+                            .status(false)
+                            .value(chargingManagement.getValue())
+                            .customer(chargingManagement.getCustomer())
+                            .paymentManaging(chargingManagement.getPaymentManaging()).build();
+
+                    ChargingManagement saveManagement = chargingManagementRepository.save(refundChargingManagement);
+
+                    ChargingDetail chargeDetail = chargeDetails.get(0);
+
+                    ChargingDetail refundChargingDetail = ChargingDetail.builder()
+                            .detailUseId(chargeDetail.getId())
+                            .operateDate(TimeUtils.stringParseLocalDataTimeT(cancelResponse.getCanceled_at()))
+                            .status(false)
+                            .value(chargeDetail.getValue())
+                            .chargingManagement(saveManagement).build();
+
+                    chargingDetailRepository.save(refundChargingDetail);
+
                     return cancelResponse;
                 }
-                cancelResponse.setFailReason("이미 사용된 충전 내역");
-                return cancelResponse;
+                failResponseDTO.setFailReason("이미 사용된 충전 내역입니다.");
+                return failResponseDTO;
             }
 
-            cancelResponse.setFailReason("충전 후 14일 경과");
-            return cancelResponse;
+            failResponseDTO.setFailReason("환불 기한이 초과되었습니다.");
+            return failResponseDTO;
         }
 
-        cancelResponse.setFailReason("존재하지 않는 충전 ID");
-        return cancelResponse;
+        failResponseDTO.setFailReason("존재하지 않는 충전 ID입니다.");
+        return failResponseDTO;
     }
 
     /**

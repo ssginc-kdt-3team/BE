@@ -28,7 +28,6 @@ public class KakaoRefundResponseDTO {
     private String approved_at; // 결제 승인 시각
     private String canceled_at; // 결제 취소 시각
     private String payload; // 취소 요청 시 전달한 값
-    private String failReason;
 
     /**
      * 이번 요청으로 취소된 금액

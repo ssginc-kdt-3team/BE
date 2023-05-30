@@ -19,8 +19,14 @@ public class TimeUtils {
         return LocalDateTime.parse(time, formatter);
     }
 
+    public static LocalDateTime stringParseLocalDataTimeT(String time) {
+        String time2 = time.replace("T", " ");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return LocalDateTime.parse(time2, formatter);
+    }
+
     public static LocalTime stringParseLocalTime(String time) {
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return LocalTime.parse(time);
     }
 
