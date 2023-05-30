@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.annotation.Validated;
+import ssginc_kdt_team3.BE.DTOs.deposit.CustomerDepositDTO;
 import ssginc_kdt_team3.BE.DTOs.reservation.*;
 import ssginc_kdt_team3.BE.DTOs.reservation.Alarm.MessageDTO;
 import ssginc_kdt_team3.BE.DTOs.reservation.Alarm.ResponseSmsDTO;
@@ -20,6 +21,7 @@ import ssginc_kdt_team3.BE.repository.deposit.DepositRepository;
 import ssginc_kdt_team3.BE.repository.review.JpaDataReviewRepository;
 import ssginc_kdt_team3.BE.repository.shop.JpaDataShopRepository;
 import ssginc_kdt_team3.BE.repository.reservation.JpaDataReservationRepository;
+import ssginc_kdt_team3.BE.service.chargingManagement.ChargingManagementService;
 import ssginc_kdt_team3.BE.util.TimeUtils;
 
 import java.io.UnsupportedEncodingException;
@@ -44,6 +46,8 @@ public class CustomerReservationService {
     private final JpaCustomerRepository customerRepository;
     private final DepositRepository depositRepository;
     private final JpaDataReviewRepository reviewRepository;
+    private final CustomerChargingService chargingService;
+    private final ChargingManagementService chargingManagementService;
     private final NaverAlarmService naverAlarmService;
 
 
@@ -57,18 +61,30 @@ public class CustomerReservationService {
         //DTO 검증
         setReservationInfo(reservation, dto, shop, customer);
         try {
-            Reservation saveReservation = reservationRepository.save(reservation);
-            log.info("================================================================can");
 
-            Deposit deposit = new Deposit();
+            int depositValue = 3000 * (dto.getPeople() - dto.getChild());
+            //충전금 충분한지 확인
+            if (isEnoughMoney(dto.getUserId(), depositValue)) {
+                Reservation saveReservation = reservationRepository.save(reservation);
+                log.info("================================================================can");
 
-            deposit.setReservation(saveReservation);
-            deposit.setStatus(DepositStatus.RECEIVE);
-            deposit.setOrigin_value(3000 * (dto.getPeople() - dto.getChild()));
+                //예약금 정보 생성
+                Deposit deposit = new Deposit();
+                deposit.setReservation(saveReservation);
+                deposit.setStatus(DepositStatus.RECEIVE);
+                deposit.setOrigin_value(depositValue);
+                deposit.setPayValue(depositValue);
+                deposit.setPointDiscount(0);
+                deposit.setCouponDiscount(0);
+                Deposit saveDeposit = depositRepository.save(deposit);
 
-            Deposit saveDeposit = depositRepository.save(deposit);
+                //예약금 결제 정보  생성
+                boolean b = chargingManagementService.saveReservationPayment(saveDeposit);
 
-            return saveReservation.getId();
+                return saveReservation.getId();
+            }
+
+            return null;
 
         } catch (Exception e) {
             log.info("================================================================bomb");
@@ -132,6 +148,10 @@ public class CustomerReservationService {
             return false;
         }
         return false;
+    }
+
+    private boolean isEnoughMoney(Long userId, int depositValue) {
+        return chargingService.showCustomerChargingValue(userId) >= depositValue;
     }
 
     //예약 정보를 dto로 받아온 새로운 정보로 변경
