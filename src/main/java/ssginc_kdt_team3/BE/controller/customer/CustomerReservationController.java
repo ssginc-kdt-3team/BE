@@ -1,5 +1,6 @@
 package ssginc_kdt_team3.BE.controller.customer;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -13,6 +14,10 @@ import org.springframework.web.bind.annotation.*;
 import ssginc_kdt_team3.BE.DTOs.reservation.*;
 import ssginc_kdt_team3.BE.service.customer.CustomerReservationService;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URISyntaxException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -96,7 +101,7 @@ public class CustomerReservationController {
     }
 
     @PostMapping("/cancel/{id}")
-    public ResponseEntity cancelReservation(@PathVariable(name = "id") Long id) {
+    public ResponseEntity cancelReservation(@PathVariable(name = "id") Long id) throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
         boolean b = reservationService.customerCancel(id);
 
         if (b) {
