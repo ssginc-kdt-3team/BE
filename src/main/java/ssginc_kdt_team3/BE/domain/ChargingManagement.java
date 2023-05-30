@@ -1,11 +1,14 @@
 package ssginc_kdt_team3.BE.domain;
 
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
+@NoArgsConstructor
 @Getter
 public class ChargingManagement {
 
@@ -27,10 +30,26 @@ public class ChargingManagement {
     private LocalDateTime changeDate;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "customer_id")
+    private Customer customer;
 
     @OneToOne
     @JoinColumn(name = "deposit_id")
     private Deposit deposit;
+
+    @ManyToOne
+    @JoinColumn(name = "payment_managing_id")
+    private PaymentManaging paymentManaging;
+
+    @Builder
+    public ChargingManagement(boolean status, String changeReason, int value, LocalDateTime changeDate, Customer customer, Deposit deposit, PaymentManaging paymentManaging) {
+        this.id = id;
+        this.status = status;
+        this.changeReason = changeReason;
+        this.value = value;
+        this.changeDate =  changeDate;
+        this.customer = customer;
+        this.deposit = deposit;
+        this.paymentManaging = paymentManaging;
+    }
 }

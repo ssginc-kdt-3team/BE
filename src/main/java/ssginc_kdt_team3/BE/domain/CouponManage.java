@@ -18,6 +18,7 @@ public class CouponManage {
     private Long id;
 
     @Column(name = "coupon_manage_type")
+    @Enumerated(EnumType.STRING)
     private CouponManageType manageType;
 
     @Column(name = "coupon_manage_create_date")

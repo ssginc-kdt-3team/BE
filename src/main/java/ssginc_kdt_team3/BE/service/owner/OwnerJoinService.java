@@ -34,7 +34,7 @@ public class OwnerJoinService {
         owner.setName(ownerJoinDTO.getName());
         owner.setPhoneNumber(ownerJoinDTO.getPhone());
         owner.setGender(ownerJoinDTO.isGender());
-        owner.setAddress(ownerJoinDTO.getAdddress());
+        owner.setAddress(ownerJoinDTO.getAddress());
 
         owner.setBirthday(ownerJoinDTO.getBirthday());
 

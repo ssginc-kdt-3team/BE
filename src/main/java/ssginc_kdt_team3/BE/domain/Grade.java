@@ -27,6 +27,14 @@ public class Grade {
   @Column(name = "grade_rate")
   private Double rate;
 
+  @NotNull
+  @Column(name = "grade_requirement")
+  private int requirement;
+
+  @NotNull
+  @Column(name = "grade_condition")
+  private boolean condition;
+
   //주석처리 처리 (0502 임태경)
   //  @NotNull
   //  @Column(name = "grade_history")

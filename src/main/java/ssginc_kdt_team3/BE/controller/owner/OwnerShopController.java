@@ -37,7 +37,7 @@ public class OwnerShopController {
             aLong = ownerShopService.addNewShop(dto, businessImg, shopImg);
 
             if (aLong.isPresent()) {
-                return ResponseEntity.ok().build();
+                return ResponseEntity.ok().body("매장이 성공적으로 추가되었습니다.");
             }
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
 
@@ -58,7 +58,7 @@ public class OwnerShopController {
         }
     }
 
-    @PutMapping("/update/{id}")
+    @PostMapping("/update/{id}")
     public ResponseEntity<String> updateOwnerShop(@PathVariable(name = "id") Long shopId, @RequestPart(value = "shopData") OwnerShopUpdateDTO dto,
                                                   @RequestPart(value = "shopImg") MultipartFile shopImg) {
         boolean b = ownerShopService.updateShop(shopId, dto, shopImg);
