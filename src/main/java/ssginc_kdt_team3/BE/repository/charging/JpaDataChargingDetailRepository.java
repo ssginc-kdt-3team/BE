@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import ssginc_kdt_team3.BE.domain.ChargingDetail;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public interface JpaDataChargingDetailRepository extends JpaRepository<ChargingDetail, Long> {
@@ -16,4 +17,9 @@ public interface JpaDataChargingDetailRepository extends JpaRepository<ChargingD
             "FROM ChargingDetail cd " +
             "WHERE cd.chargingManagement.customer.id = :customerId")
     int findSumCharging(@Param("customerId") Long customerId);
+
+    Optional<ChargingDetail> findFirstByChargingManagement_IdOrderByOperateDateDesc(Long chargingManagementId);
+
+    @Query("select cd from ChargingDetail cd where cd.detailUseId = (select d.detailUseId from ChargingDetail d join d.chargingManagement m where m.id = :chargingManagementId)")
+    List<ChargingDetail> findChargingManagementUsingLog(@Param("chargingManagementId") Long chargingManagementId);
 }

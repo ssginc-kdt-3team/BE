@@ -13,6 +13,7 @@ import ssginc_kdt_team3.BE.DTOs.customer.CustomerChargeDTO;
 import ssginc_kdt_team3.BE.DTOs.customer.CustomerChargingListDTO;
 import ssginc_kdt_team3.BE.DTOs.kakao.KakaoPayApproveResponseDTO;
 import ssginc_kdt_team3.BE.DTOs.kakao.KakaoPayReadyResponseDTO;
+import ssginc_kdt_team3.BE.DTOs.kakao.KakaoRefundFailResponseDTO;
 import ssginc_kdt_team3.BE.DTOs.kakao.KakaoRefundResponseDTO;
 import ssginc_kdt_team3.BE.service.customer.CustomerChargingService;
 import ssginc_kdt_team3.BE.service.customer.CustomerKakaoPayService;
@@ -68,12 +69,17 @@ public class CustomerChargeController {
     /**
      * 환불
      */
-    @PostMapping("/refund")
-    public ResponseEntity refund() {
+    @PostMapping("/refund/{id}")
+    public ResponseEntity refund(@PathVariable(name = "id") Long chargeId) {
 
-        KakaoRefundResponseDTO kakaoCancelResponse = kakaoPayService.kakaoCancel();
+        Object kakaoCancelResponse = kakaoPayService.kakaoCancel(chargeId);
 
-        return new ResponseEntity<>(kakaoCancelResponse, HttpStatus.OK);
+        if (kakaoCancelResponse instanceof KakaoRefundFailResponseDTO) {
+            return ResponseEntity.badRequest().body(((KakaoRefundFailResponseDTO) kakaoCancelResponse).getFailReason());
+        }
+
+
+        return new ResponseEntity<>((KakaoRefundResponseDTO)kakaoCancelResponse, HttpStatus.OK);
     }
 
     /**

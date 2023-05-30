@@ -1,12 +1,14 @@
 package ssginc_kdt_team3.BE.DTOs.kakao;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
 public class KakaoRefundResponseDTO {
     private String aid; // 요청 고유 번호
     private String tid; // 결제 고유 번호
