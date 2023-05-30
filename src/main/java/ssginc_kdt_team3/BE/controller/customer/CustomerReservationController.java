@@ -32,7 +32,7 @@ public class CustomerReservationController {
     private final CustomerReservationService reservationService;
 
     @PostMapping("/add")
-    public ResponseEntity createReservation(@Validated @RequestBody CustomerReservationAddDTO dto, BindingResult bindingResult) {
+    public ResponseEntity createReservation(@Validated @RequestBody CustomerReservationAddDTO dto, BindingResult bindingResult) throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
 
         if (dto.getPeople() <= dto.getChild()) {
             log.info("too many baby");

@@ -1,16 +1,14 @@
-package ssginc_kdt_team3.BE.scheduler;
+package ssginc_kdt_team3.BE.service.customer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 import ssginc_kdt_team3.BE.DTOs.reservation.Alarm.MessageDTO;
 import ssginc_kdt_team3.BE.DTOs.reservation.Alarm.ResponseSmsDTO;
 import ssginc_kdt_team3.BE.domain.Reservation;
 import ssginc_kdt_team3.BE.enums.ReservationStatus;
 import ssginc_kdt_team3.BE.repository.reservation.JpaDataReservationRepository;
-import ssginc_kdt_team3.BE.service.customer.NaverAlarmService;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
@@ -18,16 +16,15 @@ import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Slf4j
-@Component
-@RequiredArgsConstructor
-public class AlarmScheduler {
+@SpringBootTest
+public class CustomerAlarmTest {
 
-    private final JpaDataReservationRepository reservationRepository;
+    @Autowired
+    NaverAlarmService naverAlarmService;
+    @Autowired
+    JpaDataReservationRepository reservationRepository;
 
-    private final NaverAlarmService naverAlarmService;
-
-    @Scheduled(cron = "0 0,30 * * * *")
+    @Test
     public void almostReservationAlarm() throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
 
         LocalDateTime almostTime = LocalDateTime.now().plusMinutes(29);
@@ -36,7 +33,7 @@ public class AlarmScheduler {
 
         MessageDTO messageDTO = new MessageDTO();
 
-        for (Reservation reservation : AlmostReservation){
+        for (Reservation reservation : AlmostReservation) {
             String CustomerName = reservation.getCustomer().getName();
             String CustomerPhoneNumber = reservation.getCustomer().getPhoneNumber();
 
@@ -45,15 +42,12 @@ public class AlarmScheduler {
 
             ResponseSmsDTO responseSmsDTO = naverAlarmService.sendSms(messageDTO);
 
-            log.info("reservation RequestId = {}",responseSmsDTO.getRequestId());
-            log.info("reservation RequestId = {}",responseSmsDTO.getRequestId());
-            log.info("reservation StatusName = {}",responseSmsDTO.getStatusName());
-            log.info("reservation StatusCode = {}",responseSmsDTO.getStatusCode());
+            System.out.println("reponseSmsDTO = "+ responseSmsDTO.getRequestId());
+            System.out.println("reponseSmsDTO = "+ responseSmsDTO.getRequestTime());
+            System.out.println("reponseSmsDTO = "+ responseSmsDTO.getStatusCode());
+            System.out.println("reponseSmsDTO = "+ responseSmsDTO.getStatusName());
 
         }
 
-
     }
-
-
 }
