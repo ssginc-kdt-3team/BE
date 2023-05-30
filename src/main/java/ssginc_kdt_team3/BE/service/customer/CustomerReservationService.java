@@ -200,16 +200,20 @@ public class CustomerReservationService {
                     String CustomerPhone = reservation.getCustomer().getPhoneNumber();
                     String CustomerContent = CustomerName + "님의 예약 취소가 완료되었습니다.";
 
+//                    Alarm alarm = new Alarm();
+//                    alarm.setContents(CustomerContent);
+//                    alarm.setCondition("reservation_Cancel");
+//                    alarm.setTarget("Customer");
+
+
                     MessageDTO messageDTO = new MessageDTO();
                     messageDTO.setTo(CustomerPhone);
                     messageDTO.setContent(CustomerContent);
 
                     ResponseSmsDTO response = naverAlarmService.sendSms(messageDTO);
 
-                    System.out.println("response : " + response);
-                    System.out.println(response.getRequestId());
-                    System.out.println(response.getStatusCode());
-                    System.out.println(response.getRequestTime());
+
+
                     //전액 환불 구현하기
                     Deposit reservationDeposit = depositRepository.findReservationDeposit(reservation.getId());
                     reservationDeposit.setStatus(DepositStatus.RETURN);
