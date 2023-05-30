@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import ssginc_kdt_team3.BE.DTOs.customer.CustomerChargeDTO;
 import ssginc_kdt_team3.BE.DTOs.customer.CustomerChargingListDTO;
@@ -24,7 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
-@RestController
+@Controller
 @RequiredArgsConstructor
 @RequestMapping("/customer/charge")
 public class CustomerChargeController {
@@ -38,6 +39,7 @@ public class CustomerChargeController {
     /**
      * 결제요청
      */
+    @ResponseBody
     @PostMapping("/ready")
     public ResponseEntity readyToKakaoPay(@RequestBody CustomerChargeDTO customerChargeDTO) {
 
@@ -69,6 +71,7 @@ public class CustomerChargeController {
     /**
      * 환불
      */
+    @ResponseBody
     @PostMapping("/refund/{id}")
     public ResponseEntity refund(@PathVariable(name = "id") Long chargeId) {
 
@@ -100,6 +103,7 @@ public class CustomerChargeController {
         return ResponseEntity.badRequest().body("결제에 실패했습니다.");
     }
 
+    @ResponseBody
     @GetMapping("/list/{id}/{type}/{date}/{page}")
     public ResponseEntity showchargeList(@PathVariable(name = "id") Long customerId, @PathVariable(name = "type") String type,
                                          @PathVariable(name = "date") int dateType, @PathVariable(name = "page") int page) {
@@ -126,7 +130,7 @@ public class CustomerChargeController {
         return ResponseEntity.badRequest().body(result);
     }
 
-
+    @ResponseBody
     @GetMapping("/check/{id}")
     public ResponseEntity<Map<String, String>> showHoldingAmount(@PathVariable(name = "id") Long customerId) {
         int sum = customerChargingService.showCustomerChargingValue(customerId);

@@ -5,14 +5,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssginc_kdt_team3.BE.DTOs.customer.*;
-import ssginc_kdt_team3.BE.domain.Customer;
-import ssginc_kdt_team3.BE.domain.Grade;
-import ssginc_kdt_team3.BE.enums.CustomerType;
-import ssginc_kdt_team3.BE.enums.UserRole;
-import ssginc_kdt_team3.BE.enums.UserStatus;
+import ssginc_kdt_team3.BE.domain.*;
+import ssginc_kdt_team3.BE.enums.*;
+import ssginc_kdt_team3.BE.repository.coupon.CouponProvideRepository;
+import ssginc_kdt_team3.BE.repository.coupon.CouponRepository;
 import ssginc_kdt_team3.BE.repository.customer.JpaCustomerRepository;
 import ssginc_kdt_team3.BE.repository.customer.JpaDataCustomerRepository;
+import ssginc_kdt_team3.BE.repository.grade.GradeRepository;
+import ssginc_kdt_team3.BE.service.admin.CouponManagementService;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -25,6 +27,9 @@ public class CustomerService {
 
   private final JpaCustomerRepository customerRepository;
   private final JpaDataCustomerRepository jpaCustomerRepository;
+  private final CouponManagementService couponService;
+  private final CouponProvideRepository couponProvideRepository;
+  private final CouponRepository couponRepository;
 
   // 회원가입
   @Transactional
@@ -45,8 +50,31 @@ public class CustomerService {
     customer.setStatus(UserStatus.ACTIVE);
     customer.setRole(UserRole.CUSTOMER);
 
-    customerRepository.save(customer);
+    // DB에 저장
+    Customer saveCustomer = customerRepository.save(customer);
+
+    // 회원가입 된 다음에 쿠폰 발행
+    Coupon coupon = couponRepository.findByCouponName("신규가입 쿠폰").orElse(null);
+
+    issueCoupon(saveCustomer, CouponStatus.GIVEN, coupon);
+
     return customerJoinDTO;
+  }
+
+  // 신규가입 쿠폰 발행,CouponProvider 바로 사용
+  public void issueCoupon(Customer saveCustomer, CouponStatus status, Coupon coupon) {
+
+    CouponProvide provide = new CouponProvide();
+    provide.setCustomer(saveCustomer);
+    provide.setCoupon(coupon);
+    String random = couponService.createNumber();
+    provide.setCouponCode(random);
+    provide.setGivenDay(LocalDate.now());
+    provide.setOutDay(LocalDate.now().plusMonths(1));
+    provide.setStatus(status);
+    provide.setReason("신규가입 쿠폰");
+
+    couponProvideRepository.save(provide);
   }
 
   public boolean validateDuplicateCustomer(String email) {

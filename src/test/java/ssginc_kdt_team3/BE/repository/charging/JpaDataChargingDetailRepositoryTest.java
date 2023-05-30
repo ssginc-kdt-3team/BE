@@ -34,4 +34,16 @@ class JpaDataChargingDetailRepositoryTest {
             System.out.println("================");
         }
     }
+
+    @Test
+    public void 잔액_조회() {
+        List<Object[]> objects = detailRepository.balanceInquiry(1L);
+        for (Object[] l : objects) {
+            Long s =(Long) l[0];
+            Long s1 =(Long) l[1];
+
+            System.out.println("id = " + s);
+            System.out.println("value = " + s1);
+        }
+    }
 }

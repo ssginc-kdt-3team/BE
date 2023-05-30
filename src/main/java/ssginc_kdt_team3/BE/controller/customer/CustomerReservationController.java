@@ -11,6 +11,7 @@ import org.springframework.security.core.parameters.P;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ssginc_kdt_team3.BE.DTOs.deposit.CustomerDepositDTO;
 import ssginc_kdt_team3.BE.DTOs.reservation.*;
 import ssginc_kdt_team3.BE.service.customer.CustomerReservationService;
 

@@ -21,16 +21,17 @@ public class CouponProvide {
     @Column(name = "coupon_provide_code")
     private String couponCode;
 
-    @Column(name = "coupon_provide_givenday")
+    @Column(name = "coupon_provide_givenDay")
     private LocalDate givenDay;
 
     @Column(name = "coupon_provide_outDay")
-    private LocalDate outDay;
+    private LocalDate outDay; //유효기간
 
-    @Column(name = "coupon_provid_status")
+    @Column(name = "coupon_provide_status")
+    @Enumerated(EnumType.STRING)
     private CouponStatus status;
 
-    @Column(name = "coupon_provid_changing_reason")
+    @Column(name = "coupon_provide_changing_reason")
     private String reason;
 
     @ManyToOne
