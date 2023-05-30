@@ -4,9 +4,12 @@ package ssginc_kdt_team3.BE.DTOs.reservation.Alarm;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.HashMap;
 import java.util.List;
 
+@NoArgsConstructor
 @Builder
 @AllArgsConstructor
 @Data

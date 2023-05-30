@@ -30,6 +30,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,13 +47,34 @@ public class CustomerReservationService {
     private final JpaDataReviewRepository reviewRepository;
     private final NaverAlarmService naverAlarmService;
 
+    MessageDTO customerMessageDTO = new MessageDTO();
+    MessageDTO ownerMessageDTO = new MessageDTO();
 
     @Transactional(readOnly = false)
-    public Long makeReservation(CustomerReservationAddDTO dto) {
+    public Long makeReservation(CustomerReservationAddDTO dto) throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
         Reservation reservation = new Reservation();
 
         Shop shop = shopRepository.findById(dto.getShopId()).get();
         Customer customer = customerRepository.findCustomer(dto.getUserId()).get();
+
+        //알림 메시지 추가
+        String shopName = shop.getName();
+        String ownerName = shop.getOwner().getName();
+        String ownerPhone = shop.getOwner().getPhoneNumber();
+        String customerName = customer.getName();
+        String customerPhone = customer.getPhoneNumber();
+        String reservationDate = dto.getReservationDate();
+
+        //고객용 메시지
+        String customerReservationMessage = customerName + "고객님 예약이 완료되었습니다!\n[예약일시] : " + reservationDate + "\n[예약매장] : " + shopName;
+        customerMessageDTO.setTo(customerPhone);
+        customerMessageDTO.setContent(customerReservationMessage);
+        naverAlarmService.sendSms(customerMessageDTO);
+        //점주용 메시지
+        String ownerReservationMessage = ownerName + "점주님 새로운 예약 내역입니다!\n[예약 일시] : " + reservationDate;
+        ownerMessageDTO.setTo(ownerPhone);
+        ownerMessageDTO.setContent(ownerReservationMessage);
+        naverAlarmService.sendSms(ownerMessageDTO);
 
         //DTO 검증
         setReservationInfo(reservation, dto, shop, customer);
@@ -67,6 +89,7 @@ public class CustomerReservationService {
             deposit.setOrigin_value(3000 * (dto.getPeople() - dto.getChild()));
 
             Deposit saveDeposit = depositRepository.save(deposit);
+
 
             return saveReservation.getId();
 
@@ -196,23 +219,32 @@ public class CustomerReservationService {
                     reservation.setChangeTime(TimeUtils.findNow());
                     reservationRepository.save(reservation);
 
-                    String CustomerName = reservation.getCustomer().getName();
-                    String CustomerPhone = reservation.getCustomer().getPhoneNumber();
-                    String CustomerContent = CustomerName + "님의 예약 취소가 완료되었습니다.";
+                    String customerName = reservation.getCustomer().getName();
+                    String customerPhone = reservation.getCustomer().getPhoneNumber();
+                    LocalDateTime reservationDate = reservation.getReservationDate();
+                    String shopName = reservation.getShop().getName();
+                    String customerContent = "매장명 : " + shopName + "\n예약일시 : " + reservationDate + "\n" + customerName + "님의 예약 취소가 완료되었습니다!";
+                    //고객용 메시지
+                    String ownerName = reservation.getShop().getOwner().getName();
+                    String ownerPhone = reservation.getShop().getOwner().getPhoneNumber();
+                    String reservationCancelMessage = "매장명 : " + shopName + "\n예약일시 : " + reservationDate + "\n" + ownerName + "점주님의 매장 예약이 취소되었습니다." ;
+                    //점주용 메시지
 
-//                    Alarm alarm = new Alarm();
-//                    alarm.setContents(CustomerContent);
-//                    alarm.setCondition("reservation_Cancel");
-//                    alarm.setTarget("Customer");
+                    customerMessageDTO.setTo(customerPhone);
+                    customerMessageDTO.setContent(customerContent);
 
+                    ownerMessageDTO.setTo(ownerPhone);
+                    ownerMessageDTO.setContent(reservationCancelMessage);
 
-                    MessageDTO messageDTO = new MessageDTO();
-                    messageDTO.setTo(CustomerPhone);
-                    messageDTO.setContent(CustomerContent);
+                    ResponseSmsDTO customerResponse = naverAlarmService.sendSms(customerMessageDTO);
 
-                    ResponseSmsDTO response = naverAlarmService.sendSms(messageDTO);
+                    ResponseSmsDTO ownerResponse = naverAlarmService.sendSms(ownerMessageDTO);
 
-
+                    log.info("customerRequestTime = {}", customerResponse.getRequestTime());
+                    log.info("customerStatusCode = {}", customerResponse.getStatusCode());
+                    log.info("ownerRequestTime = {}", ownerResponse.getRequestTime());
+                    log.info("ownerStatusCode = {}", ownerResponse.getStatusCode());
+                    //요청에 대한 응답 출력
 
                     //전액 환불 구현하기
                     Deposit reservationDeposit = depositRepository.findReservationDeposit(reservation.getId());
