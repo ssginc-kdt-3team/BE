@@ -1,6 +1,7 @@
 package ssginc_kdt_team3.BE.service.admin;
 
 import lombok.RequiredArgsConstructor;
+import net.bytebuddy.utility.RandomString;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssginc_kdt_team3.BE.DTOs.coupon.CreateCouponDTO;
@@ -12,9 +13,11 @@ import ssginc_kdt_team3.BE.repository.admin.JpaDateAdminRepository;
 import ssginc_kdt_team3.BE.repository.coupon.CouponManageRepository;
 import ssginc_kdt_team3.BE.repository.coupon.CouponRepository;
 
+import java.security.SecureRandom;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -63,11 +66,11 @@ public class CouponManagementService {
     manageRepository.save(couponManage);
   }
 
-  // 생성한 쿠폰 지급
-  public void issueCoupon() {
-
+  // 쿠폰번호 생성
+  public String createNumber() {
+    String number = UUID.randomUUID().toString().replaceAll("-", "");
+    String substring = number.substring(0, 9);
+    System.out.println(substring);
+    return substring;
   }
-
-
-  //
 }
