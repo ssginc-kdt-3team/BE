@@ -3,6 +3,7 @@ package ssginc_kdt_team3.BE.service.customer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -52,7 +53,7 @@ public class CustomerReservationService {
     MessageDTO ownerMessageDTO = new MessageDTO();
 
     @Transactional(readOnly = false)
-    public Long makeReservation(CustomerReservationAddDTO dto) throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
+    public Long makeReservation(@NotNull CustomerReservationAddDTO dto) throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
         Reservation reservation = new Reservation();
 
         Shop shop = shopRepository.findById(dto.getShopId()).get();
