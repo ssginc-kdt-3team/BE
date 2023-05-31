@@ -24,7 +24,7 @@ public class ChargingManagementService {
     public boolean saveReservationPayment(Deposit deposit) {
 
         ChargingManagement reservationChargingManagement = ChargingManagement.builder()
-                .changeDate(deposit.getReservation().getReservationDate())
+                .changeDate(deposit.getReservation().getApplyTime())
                 .changeReason("예약금 결제")
                 .status(false)
                 .value(deposit.getPayValue())
@@ -36,6 +36,55 @@ public class ChargingManagementService {
 
         return true;
     }
+
+    public boolean saveReservationUpdatePayment(Deposit deposit, int needPayValue) {
+
+        ChargingManagement reservationChargingManagement = ChargingManagement.builder()
+                .changeDate(deposit.getReservation().getChangeTime())
+                .changeReason("예약금 추가 결제")
+                .status(false)
+                .value(needPayValue)
+                .customer(deposit.getReservation().getCustomer())
+                .deposit(deposit).build();
+
+        ChargingManagement saveManagement = chargingManagementRepository.save(reservationChargingManagement);
+        saveChargingDetail(saveManagement);
+
+        return true;
+    }
+
+    public boolean saveRefundPayment(Deposit deposit) {
+
+        ChargingManagement reservationChargingManagement = ChargingManagement.builder()
+                .changeDate(deposit.getReservation().getChangeTime())
+                .changeReason("예약금 환불")
+                .status(true)
+                .value(deposit.getPayValue()-deposit.getPenaltyValue())
+                .customer(deposit.getReservation().getCustomer())
+                .deposit(deposit).build();
+
+        ChargingManagement saveManagement = chargingManagementRepository.save(reservationChargingManagement);
+        saveRefundChargingDetail(saveManagement);
+
+        return true;
+    }
+
+    public boolean savePartRefundPayment(Deposit deposit, int returnMoney) {
+
+        ChargingManagement reservationChargingManagement = ChargingManagement.builder()
+                .changeDate(deposit.getReservation().getChangeTime())
+                .changeReason("예약금 환불")
+                .status(true)
+                .value(returnMoney)
+                .customer(deposit.getReservation().getCustomer())
+                .deposit(deposit).build();
+
+        ChargingManagement saveManagement = chargingManagementRepository.save(reservationChargingManagement);
+        saveRefundChargingDetail(saveManagement);
+
+        return true;
+    }
+
 
     private void saveChargingDetail(ChargingManagement chargingManagement) {
 
@@ -77,5 +126,17 @@ public class ChargingManagementService {
 
             i += 1;
         }
+    }
+
+    private void saveRefundChargingDetail(ChargingManagement chargingManagement) {
+        ChargingDetail refundChargingDetail = ChargingDetail.builder()
+                .operateDate(chargingManagement.getChangeDate())
+                .status(true)
+                .value(chargingManagement.getValue())
+                .chargingManagement(chargingManagement).build();
+
+        ChargingDetail detail = chargingDetailRepository.save(refundChargingDetail);
+        detail.setDetailUseId();
+        chargingDetailRepository.save(detail);
     }
 }
