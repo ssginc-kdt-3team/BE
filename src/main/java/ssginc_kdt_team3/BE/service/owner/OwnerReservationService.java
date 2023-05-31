@@ -9,14 +9,17 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssginc_kdt_team3.BE.DTOs.reservation.OwnerReservationDTO;
 import ssginc_kdt_team3.BE.domain.Deposit;
+import ssginc_kdt_team3.BE.domain.PointManagement;
 import ssginc_kdt_team3.BE.domain.Reservation;
 import ssginc_kdt_team3.BE.domain.Shop;
 import ssginc_kdt_team3.BE.enums.DepositStatus;
 import ssginc_kdt_team3.BE.enums.ReservationStatus;
 import ssginc_kdt_team3.BE.repository.deposit.DepositRepository;
+import ssginc_kdt_team3.BE.repository.point.JpaDataPointManagementRepository;
 import ssginc_kdt_team3.BE.repository.reservation.JpaDataReservationRepository;
 import ssginc_kdt_team3.BE.repository.reservation.OwnerRepository;
 import ssginc_kdt_team3.BE.repository.shop.JpaDataShopRepository;
+import ssginc_kdt_team3.BE.service.pointManagement.PointManagementService;
 import ssginc_kdt_team3.BE.util.TimeUtils;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -35,6 +38,7 @@ public class OwnerReservationService {
     private final DepositRepository depositRepository;
     private final JpaDataShopRepository shopRepository;
     private final OwnerRepository ownerRepository;
+    private final PointManagementService pointManagementService;
 
     //고객 입장 처리
     public boolean customerCome(Long id) {
@@ -49,6 +53,7 @@ public class OwnerReservationService {
                 reservation.setStatus(ReservationStatus.DONE);
                 reservation.setChangeTime(TimeUtils.findNow());
                 reservationRepository.save(reservation);
+
 
                 return true;
             }

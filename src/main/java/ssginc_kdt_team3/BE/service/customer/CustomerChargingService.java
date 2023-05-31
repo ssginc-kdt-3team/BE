@@ -71,14 +71,23 @@ public class CustomerChargingService {
     }
 
     private Page<CustomerChargingListDTO> convertDto(Page<ChargingManagement> chargingDetails) {
+
+        //충전 후 14일 경과 시 환불 불가능
         log.info("convertDTO");
         List<CustomerChargingListDTO> customerChargingList = new ArrayList<>();
 
         for(ChargingManagement c : chargingDetails){
             CustomerChargingListDTO dto = new CustomerChargingListDTO(c);
+            if (c.isStatus() && c.getPaymentManaging()!=null && !c.getChangeDate().plusDays(14).isBefore(LocalDateTime.now())) {
+                List<ChargingDetail> chargeDetails = chargingDetailRepository.findChargingManagementUsingLog(c.getId());
+                if (chargeDetails.size() == 1) {
+                    dto.setCanRefund(true);
+                }
+            }
             customerChargingList.add(dto);
         }
         return new PageImpl<>(customerChargingList, chargingDetails.getPageable(), chargingDetails.getTotalElements());
     }
+
 
 }

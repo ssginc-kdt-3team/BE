@@ -14,6 +14,7 @@ public class CustomerChargingListDTO {
     private String dateTime;
     private String reason;
     private boolean type;
+    private boolean canRefund;
 
     public CustomerChargingListDTO(ChargingManagement chargingManagement) {
         this.id = chargingManagement.getId();
