@@ -1,4 +1,4 @@
-package ssginc_kdt_team3.BE.service.Owner;
+package ssginc_kdt_team3.BE.util.service.Owner;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;

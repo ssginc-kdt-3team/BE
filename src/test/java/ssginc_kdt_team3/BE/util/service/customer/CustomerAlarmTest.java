@@ -1,4 +1,4 @@
-package ssginc_kdt_team3.BE.service.customer;
+package ssginc_kdt_team3.BE.util.service.customer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.Test;
@@ -9,6 +9,8 @@ import ssginc_kdt_team3.BE.DTOs.reservation.Alarm.ResponseSmsDTO;
 import ssginc_kdt_team3.BE.domain.Reservation;
 import ssginc_kdt_team3.BE.enums.ReservationStatus;
 import ssginc_kdt_team3.BE.repository.reservation.JpaDataReservationRepository;
+import ssginc_kdt_team3.BE.service.customer.NaverAlarmService;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;

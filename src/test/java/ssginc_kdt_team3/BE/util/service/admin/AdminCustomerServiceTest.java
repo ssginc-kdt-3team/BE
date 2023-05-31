@@ -1,4 +1,4 @@
-package ssginc_kdt_team3.BE.service.admin;
+package ssginc_kdt_team3.BE.util.service.admin;
 
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;

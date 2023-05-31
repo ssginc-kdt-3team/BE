@@ -5,11 +5,8 @@ import lombok.*;
 import ssginc_kdt_team3.BE.DTOs.shop.OwnerShopUpdateDTO;
 import ssginc_kdt_team3.BE.enums.ShopStatus;
 import ssginc_kdt_team3.BE.util.TimeUtils;
-
 import javax.persistence.*;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @NoArgsConstructor
 @ToString
