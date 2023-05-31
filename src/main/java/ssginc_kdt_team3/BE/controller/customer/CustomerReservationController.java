@@ -49,7 +49,7 @@ public class CustomerReservationController {
             return ResponseEntity.ok().body(aLong + "번 ");
         }
 
-        return ResponseEntity.badRequest().build();
+        return ResponseEntity.badRequest().body("예약 실패했습니다.");
     }
 
     @GetMapping("listAll/{id}/{page}")
@@ -82,7 +82,7 @@ public class CustomerReservationController {
     @PostMapping("/update/{id}")
     public ResponseEntity updateReservation(@Validated @RequestBody CustomerReservationUpdateDTO dto, BindingResult bindingResult, @PathVariable(name = "id") Long id) {
 
-        boolean b = reservationService.updateReservation(id, dto);
+        Map<String, String> result = reservationService.updateReservation(id, dto);
 
         if (dto.getPeople() <= dto.getChild()) {
             log.info("too many baby");
@@ -94,11 +94,11 @@ public class CustomerReservationController {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         }
 
-        if (b) {
-            return ResponseEntity.ok().build();
+        if (result.get("result").equals("true")) {
+            return ResponseEntity.ok().body("변경이 완료되었습니다.");
         }
 
-        return ResponseEntity.badRequest().build();
+        return ResponseEntity.badRequest().body(result.get("error"));
     }
 
     @PostMapping("/cancel/{id}")

@@ -1,5 +1,6 @@
 package ssginc_kdt_team3.BE.service.customer;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,10 @@ import ssginc_kdt_team3.BE.domain.Reservation;
 import ssginc_kdt_team3.BE.enums.ReservationStatus;
 import ssginc_kdt_team3.BE.repository.deposit.DepositRepository;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URISyntaxException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -164,7 +169,7 @@ class CustomerReservationServiceTest {
     }
 
     @Test
-    public void allRefundTest() {
+    public void allRefundTest() throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
         //G
         CustomerReservationAddDTO customerReservationAddDTO = new CustomerReservationAddDTO();
 
@@ -191,7 +196,7 @@ class CustomerReservationServiceTest {
     }
 
     @Test
-    public void halfRefundTest() {
+    public void halfRefundTest() throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
         //G
         CustomerReservationAddDTO customerReservationAddDTO = new CustomerReservationAddDTO();
 
@@ -216,7 +221,7 @@ class CustomerReservationServiceTest {
     }
 
     @Test
-    public void noRefundTest() {
+    public void noRefundTest() throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
         //G
         CustomerReservationAddDTO customerReservationAddDTO = new CustomerReservationAddDTO();
 
@@ -248,7 +253,7 @@ class CustomerReservationServiceTest {
 
     @Test
     public void canReservationTest() {
-        List<reservationPossibleDTO> reservationPossibleDTOS = service.canReservation(1L, "2000-01-04");
+        List<reservationPossibleDTO> reservationPossibleDTOS = service.canReservation(1L, "2023-05-30");
         for (reservationPossibleDTO r :reservationPossibleDTOS) {
             System.out.println(r.toString());
         }

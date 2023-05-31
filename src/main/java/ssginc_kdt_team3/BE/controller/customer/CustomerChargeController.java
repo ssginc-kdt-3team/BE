@@ -61,11 +61,11 @@ public class CustomerChargeController {
      * 결제 성공
      */
     @GetMapping("/success")
-    public ResponseEntity afterPayRequest(@RequestParam("pg_token") String pgToken) {
+    public String afterPayRequest(@RequestParam("pg_token") String pgToken) {
 
         KakaoPayApproveResponseDTO kakaoApprove = kakaoPayService.ApproveResponse(pgToken);
 
-        return new ResponseEntity<>(kakaoApprove, HttpStatus.OK);
+        return "redirect:http://localhost:3000/chargeResult";
     }
 
     /**
@@ -89,23 +89,23 @@ public class CustomerChargeController {
      * 결제 진행 중 취소
      */
     @GetMapping("/cancel")
-    public ResponseEntity<String> cancel() {
+    public String cancel() {
 
-        return ResponseEntity.ok("취소가 완료 되었습니다.");
+        return "redirect:http://localhost:3000/chargeResult";
     }
 
     /**
      * 결제 실패
      */
     @GetMapping("/fail")
-    public ResponseEntity<String> fail() {
+    public String fail() {
 
-        return ResponseEntity.badRequest().body("결제에 실패했습니다.");
+        return "redirect:http://localhost:3000/chargeResult";
     }
 
     @ResponseBody
     @GetMapping("/list/{id}/{type}/{date}/{page}")
-    public ResponseEntity showchargeList(@PathVariable(name = "id") Long customerId, @PathVariable(name = "type") String type,
+    public ResponseEntity showChargeList(@PathVariable(name = "id") Long customerId, @PathVariable(name = "type") String type,
                                          @PathVariable(name = "date") int dateType, @PathVariable(name = "page") int page) {
         Map<String, String> result = new HashMap<>();
 

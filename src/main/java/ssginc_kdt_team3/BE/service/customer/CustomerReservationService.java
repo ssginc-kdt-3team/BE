@@ -3,6 +3,7 @@ package ssginc_kdt_team3.BE.service.customer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -31,9 +32,7 @@ import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -50,6 +49,9 @@ public class CustomerReservationService {
     private final ChargingManagementService chargingManagementService;
     private final NaverAlarmService naverAlarmService;
 
+    @Value("${reservation.depositPerPerson}")
+    private int depositPerPerson;
+
 
     @Transactional(readOnly = false)
     public Long makeReservation(CustomerReservationAddDTO dto) {
@@ -61,8 +63,7 @@ public class CustomerReservationService {
         //DTO 검증
         setReservationInfo(reservation, dto, shop, customer);
         try {
-
-            int depositValue = 3000 * (dto.getPeople() - dto.getChild());
+            int depositValue = calculatingDeposit(dto.getPeople(), dto.getChild());
             //충전금 충분한지 확인
             if (isEnoughMoney(dto.getUserId(), depositValue)) {
                 Reservation saveReservation = reservationRepository.save(reservation);
@@ -123,35 +124,145 @@ public class CustomerReservationService {
     }
 
 
-    public boolean updateReservation(Long id, @Validated CustomerReservationUpdateDTO dto) {
+    public Map<String, String> updateReservation(Long id, @Validated CustomerReservationUpdateDTO dto) {
+
+        Map<String, String> result = new HashMap<>();
 
         if (dto.getPeople() <= dto.getChild()) {
-            return false;
+            result.put("result", "false");
+            result.put("error", "too many baby");
+            return result;
         }
-
-
+        
         Optional<Reservation> byId = reservationRepository.findById(id);
 
         if (byId.isPresent()) {
             Reservation reservation = byId.get();
 
             if (reservation.getStatus() == ReservationStatus.RESERVATION) {
-                update(reservation, dto);
-                try {
-                    reservationRepository.save(reservation);
-                    return true;
-                } catch (Exception e) {
-                    return false;
-                }
+                Deposit oldDeposit = depositRepository.findReservationDeposit(reservation.getId());
+                int originDeposit = oldDeposit.getOrigin_value();
+                int afterDeposit = calculatingDeposit(dto.getPeople(), dto.getChild());
+                // 방문 하루 전에는 변경 불가능
+                if (TimeUtils.findNow().isBefore(reservation.getReservationDate().minusHours(24))) {
+                    if (originDeposit == afterDeposit) {
+                        update(reservation, dto);
+                        try {
+                            reservationRepository.save(reservation);
+                            result.put("result", "true");
+                            return result;
+                        } catch (Exception e) {
+                            result.put("result", "false");
+                            result.put("error", "reservation save error");
+                            return result;
+                        }
+                    } else if (originDeposit > afterDeposit) {
+                        // 원래 금액이 더 많은 경우
+                        // 순수 결제금이 더 많은 경우 -> 그냥 환불
+                        // 포인트, 쿠폰으로 인해 순수 결제금이 변동 금액보다 낮아지는 경우 -> 포인트 환불
 
+                        //3만원 (쿠폰 2만원, 결제 1만원)
+                        //3천원으로 변경됨
+                        //총 환불 7000원
+                        // 충전금 환불 7천원, 포인트 환불 2만원
+                        // 실제 결제 금액 3천원
+
+                        //33000 / 3 / 30
+                        // 12 /
+                        // 21
+                        // 3 / 9
+                        // 9
+                        if (oldDeposit.getPayValue() >= afterDeposit) {
+
+                            update(reservation, dto);
+                            reservationRepository.save(reservation);
+
+                            int returnMoney = oldDeposit.getPayValue() - afterDeposit;
+                            int returnPoint = (oldDeposit.getOrigin_value() - afterDeposit) - returnMoney;
+
+                            oldDeposit.setStatus(DepositStatus.PART_RETURN);
+                            oldDeposit.setOrigin_value(afterDeposit);
+                            oldDeposit.setPayValue(afterDeposit);
+                            oldDeposit.setPointDiscount(0);
+                            oldDeposit.setCouponDiscount(0);
+
+                            Deposit newDeposit = depositRepository.save(oldDeposit);
+
+                            //returnMoney만큼 충전 시켜주고
+                            boolean b = chargingManagementService.savePartRefundPayment(newDeposit,returnMoney);
+                            log.info("================== {} 만큼 충전금 환불 ========================", returnMoney);
+
+                            //returnPoint만큼 포인트 충전
+                            log.info("================== {} 만큼 포인트 충전 ========================", returnPoint);
+
+                            result.put("result", "true");
+                            return result;
+                        } else {
+                            //3만원 쿠폰 1만원, 결제 2만원
+                            //2만5천원 변경
+                            //총 환불 5천원
+                            //충전금 환불 0원, 포인트 환불 5천원
+                            int returnPoint = oldDeposit.getOrigin_value() - afterDeposit;
+
+                            update(reservation, dto);
+                            reservationRepository.save(reservation);
+
+                            oldDeposit.setStatus(DepositStatus.PART_RETURN);
+                            oldDeposit.setOrigin_value(afterDeposit);
+
+                            Deposit newDeposit = depositRepository.save(oldDeposit);
+
+                            //returnPoint만큼 포인트 충전
+                            log.info("================== {} 만큼 포인트 충전 ========================", returnPoint);
+
+                            result.put("result", "true");
+                            return result;
+                        }
+                    } else {
+                        int needPayValue = afterDeposit - originDeposit;
+                        int customerChargingValue = chargingService.showCustomerChargingValue(reservation.getCustomer().getId());
+
+                        // 차액이 얼만지 확인하고 그 차액보다 많이 가지고 있는지 확인한다
+                        if (customerChargingValue >= needPayValue) {
+
+                            update(reservation, dto);
+                            reservationRepository.save(reservation);
+
+                            oldDeposit.setOrigin_value(afterDeposit);
+                            oldDeposit.setPayValue(oldDeposit.getPayValue() + needPayValue);
+                            log.info("old id = {}", oldDeposit.getId());
+
+                            Deposit newDeposit = depositRepository.save(oldDeposit);
+
+                            boolean b = chargingManagementService.saveReservationUpdatePayment(newDeposit, needPayValue);
+
+                            result.put("result", "true");
+                            return result;
+                        }
+                        result.put("result", "false");
+                        result.put("error", "not enough charging value");
+                        return result;
+                    }
+                }
+                result.put("result", "false");
+                result.put("error", "over limit day");
+                return result;
             }
-            return false;
+            result.put("result", "false");
+            result.put("error", "not active reservation");
+            return result;
         }
-        return false;
+        result.put("result", "false");
+        result.put("error", "can't find reservation");
+        return result;
     }
 
-    private boolean isEnoughMoney(Long userId, int depositValue) {
-        return chargingService.showCustomerChargingValue(userId) >= depositValue;
+    private int calculatingDeposit(int people, int child) {
+        return depositPerPerson * (people - child);
+    }
+
+    private boolean isEnoughMoney(Long userId, int value) {
+        return chargingService.showCustomerChargingValue(userId) >= value;
     }
 
     //예약 정보를 dto로 받아온 새로운 정보로 변경
@@ -233,7 +344,9 @@ public class CustomerReservationService {
                     //전액 환불 구현하기
                     Deposit reservationDeposit = depositRepository.findReservationDeposit(reservation.getId());
                     reservationDeposit.setStatus(DepositStatus.RETURN);
-                    depositRepository.save(reservationDeposit);
+                    Deposit saveDeposit = depositRepository.save(reservationDeposit);
+
+                    boolean b = chargingManagementService.saveRefundPayment(saveDeposit);
 
                     //쿠폰, 포인트 환불 구현하기
 
@@ -248,7 +361,9 @@ public class CustomerReservationService {
                     reservationDeposit.setStatus(DepositStatus.HALF_PENALTY);
                     int originValue = reservationDeposit.getOrigin_value();
                     reservationDeposit.setPenaltyValue(originValue / 2);
-                    depositRepository.save(reservationDeposit);
+                    Deposit saveDeposit = depositRepository.save(reservationDeposit);
+
+                    boolean b = chargingManagementService.saveRefundPayment(saveDeposit);
 
                     //쿠폰, 포인트 환불 구현하기
 
@@ -327,16 +442,19 @@ public class CustomerReservationService {
             Shop shop = byId.get();
             int limit = shop.getOperationInfo().getSeats();
             LocalTime openTime = shop.getOperationInfo().getOpenTime();
+            LocalTime nowTime = LocalTime.now();
             LocalTime orderCloseTime = shop.getOperationInfo().getOrderCloseTime();
 
             long temp = 1L;
-            for (LocalTime time = openTime; time.isBefore(orderCloseTime); time = time.plusMinutes(30)) {
+            for (LocalTime time = openTime; time.isBefore(orderCloseTime.plusMinutes(1)); time = time.plusMinutes(30)) {
 
                 LocalDateTime when = LocalDateTime.of(getDate, time);
 
                 int cnt = reservationRepository.countByReservationDateAndShop_Id(when, shopId);
 
-                if (cnt < limit) {
+                if (today.toLocalDate().isEqual(getDate) && nowTime.plusMinutes(30).isAfter(time)) {
+                    result.add(new reservationPossibleDTO(temp, time, false));
+                } else if (cnt < limit) {
                     result.add(new reservationPossibleDTO(temp, time, true));
                 } else {
                     result.add(new reservationPossibleDTO(temp, time, false));
