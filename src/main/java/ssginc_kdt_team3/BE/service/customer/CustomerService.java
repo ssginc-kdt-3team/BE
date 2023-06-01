@@ -81,12 +81,10 @@ public class CustomerService {
     couponProvideRepository.save(provide);
   }
 
-  public boolean validateDuplicateCustomer(String email) {
-    Optional<Customer> byEmail = customerRepository.findByEmail(email);
-    if(byEmail.isPresent()){
-      return false;
-    }
-    return true;
+  public void validateDuplicateCustomer(String email) {
+    customerRepository.findByEmail(email).ifPresent(
+        m -> {throw new IllegalStateException("이미 가입한 이메일입니다.");
+    });
   }
 
   //로그인
