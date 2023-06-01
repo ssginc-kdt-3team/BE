@@ -42,6 +42,6 @@ public interface JpaDataReservationRepository extends JpaRepository<Reservation,
     Page<Reservation> findAllByShop_BranchId(Long branchId, Pageable pageable);
 
     // 0531 이현: 고객 등급변동 조회 위해 추가
-    List<Reservation> findAllByCustomer_IdAndStatusAndReservationDateBetween(Long userId, ReservationStatus status, LocalDateTime startDate, LocalDateTime beforeDate);
+    List<Reservation> findAllByCustomer_IdAndStatusAndReservationDateBetween(Long userId, ReservationStatus status, LocalDateTime startDate, LocalDateTime nowDate);
 
 }

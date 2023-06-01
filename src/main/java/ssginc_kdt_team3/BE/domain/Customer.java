@@ -2,6 +2,7 @@ package ssginc_kdt_team3.BE.domain;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import ssginc_kdt_team3.BE.enums.CustomerType;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @Setter
+@ToString
 public class Customer extends User{
 
   @NotNull
