@@ -17,6 +17,7 @@ import ssginc_kdt_team3.BE.repository.charging.JpaDataChargingManagementReposito
 import ssginc_kdt_team3.BE.repository.customer.JpaCustomerRepository;
 import ssginc_kdt_team3.BE.repository.customer.JpaDataCustomerRepository;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -42,11 +43,13 @@ public class CustomerChargingService {
     }
 
     //고객의 충전, 사용 목록
-    public Page<CustomerChargingListDTO> showCustomerChargingAndUsingList(Long customerId, Pageable pageable) {
+    public Page<CustomerChargingListDTO> showCustomerChargingAndUsingList(Long customerId, Pageable pageable, int dateType) {
         log.info("충전 사용 목록 조회");
 
         if (customerRepository.findById(customerId).isPresent()) {
-            Page<ChargingManagement> chargingManagements = chargingManagementRepository.findAllByCustomer_Id(customerId,pageable);
+            LocalDateTime dateLimit = LocalDateTime.now().minusMonths(dateType);
+            Page<ChargingManagement> chargingManagements =
+                    chargingManagementRepository.findAllByCustomer_IdAndChangeDateIsAfterOrderByChangeDateDesc(customerId,pageable, dateLimit);
             Page<CustomerChargingListDTO> customerChargingListDTOS = convertDto(chargingManagements);
             return customerChargingListDTOS;
         }
@@ -54,31 +57,37 @@ public class CustomerChargingService {
     }
 
     //고객의 충전 or 사용 목록
-    public Page<CustomerChargingListDTO> showCustomerChargingList(Long customerId, Pageable pageable, boolean status) {
+    public Page<CustomerChargingListDTO> showCustomerChargingList(Long customerId, Pageable pageable, boolean status, int dateType) {
 
         if (customerRepository.findById(customerId).isPresent()) {
-            Page<CustomerChargingListDTO> customerChargingListDTOS = getCustomerChargingListFilterDTOS(customerId, pageable, status);
+            LocalDateTime dateLimit = LocalDateTime.now().minusMonths(dateType);
+            Page<ChargingManagement> chargingManagements =
+                    chargingManagementRepository.findAllByCustomer_IdAndStatusAndChangeDateIsAfterOrderByChangeDateDesc(customerId, status, pageable, dateLimit);
+            Page<CustomerChargingListDTO> customerChargingListDTOS = convertDto(chargingManagements);
             return customerChargingListDTOS;
         }
 
         return null;
     }
 
-    private Page<CustomerChargingListDTO> getCustomerChargingListFilterDTOS(Long customerId, Pageable pageable, boolean status) {
-        Page<ChargingManagement> chargingManagements = chargingManagementRepository.findAllByCustomer_IdAndStatus(customerId, status, pageable);
-        Page<CustomerChargingListDTO> customerChargingListDTOS = convertDto(chargingManagements);
-        return customerChargingListDTOS;
-    }
-
     private Page<CustomerChargingListDTO> convertDto(Page<ChargingManagement> chargingDetails) {
+
+        //충전 후 14일 경과 시 환불 불가능
         log.info("convertDTO");
         List<CustomerChargingListDTO> customerChargingList = new ArrayList<>();
 
         for(ChargingManagement c : chargingDetails){
             CustomerChargingListDTO dto = new CustomerChargingListDTO(c);
+            if (c.isStatus() && c.getPaymentManaging()!=null && !c.getChangeDate().plusDays(14).isBefore(LocalDateTime.now())) {
+                List<ChargingDetail> chargeDetails = chargingDetailRepository.findChargingManagementUsingLog(c.getId());
+                if (chargeDetails.size() == 1) {
+                    dto.setCanRefund(true);
+                }
+            }
             customerChargingList.add(dto);
         }
         return new PageImpl<>(customerChargingList, chargingDetails.getPageable(), chargingDetails.getTotalElements());
     }
+
 
 }

@@ -11,18 +11,20 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import ssginc_kdt_team3.BE.DTOs.kakao.KakaoPayApproveResponseDTO;
 import ssginc_kdt_team3.BE.DTOs.kakao.KakaoPayReadyResponseDTO;
+import ssginc_kdt_team3.BE.DTOs.kakao.KakaoRefundFailResponseDTO;
 import ssginc_kdt_team3.BE.DTOs.kakao.KakaoRefundResponseDTO;
-import ssginc_kdt_team3.BE.domain.ChargingDetail;
-import ssginc_kdt_team3.BE.domain.ChargingManagement;
-import ssginc_kdt_team3.BE.domain.Customer;
-import ssginc_kdt_team3.BE.domain.PaymentManaging;
+import ssginc_kdt_team3.BE.domain.*;
 import ssginc_kdt_team3.BE.repository.charging.JpaDataChargingDetailRepository;
 import ssginc_kdt_team3.BE.repository.charging.JpaDataChargingManagementRepository;
 import ssginc_kdt_team3.BE.repository.customer.JpaCustomerRepository;
 import ssginc_kdt_team3.BE.repository.customer.JpaDataCustomerRepository;
 import ssginc_kdt_team3.BE.repository.payManaging.JpaDataPayManagingRepository;
+import ssginc_kdt_team3.BE.util.TimeUtils;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
@@ -149,28 +151,75 @@ public class CustomerKakaoPayService {
     /**
      * 결제 환불
      */
-    public KakaoRefundResponseDTO kakaoCancel() {
+    public KakaoRefundResponseDTO kakaoCancel(Long chargeId) {
 
-        // 카카오페이 요청
-        MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
-        parameters.add("cid", cid);
-        parameters.add("tid", "환불할 결제 고유 번호");
-        parameters.add("cancel_amount", "환불 금액");
-        parameters.add("cancel_tax_free_amount", "환불 비과세 금액");
-        parameters.add("cancel_vat_amount", "환불 부가세");
+        KakaoRefundResponseDTO cancelResponse = new KakaoRefundResponseDTO();
+        KakaoRefundFailResponseDTO failResponseDTO = new KakaoRefundFailResponseDTO();
+        Optional<ChargingManagement> byId = chargingManagementRepository.findById(chargeId);
 
-        // 파라미터, 헤더
-        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(parameters, this.getHeaders());
+        if (byId.isPresent()) {
+            // 카카오페이 요청
+            ChargingManagement chargingManagement = byId.get();
+            log.info("충전일자 =============== {}", chargingManagement.getChangeDate() );
+            log.info("환불 가능 한계일 =============== {}", chargingManagement.getChangeDate().plusDays(14) );
 
-        // 외부에 보낼 url
-        RestTemplate restTemplate = new RestTemplate();
+            //충전 후 14일 경과 시 환불 불가능
+            if (!chargingManagement.getChangeDate().plusDays(14).isBefore(LocalDateTime.now())) {
 
-        KakaoRefundResponseDTO cancelResponse = restTemplate.postForObject(
-                "https://kapi.kakao.com/v1/payment/cancel",
-                requestEntity,
-                KakaoRefundResponseDTO.class);
+                List<ChargingDetail> chargeDetails = chargingDetailRepository.findChargingManagementUsingLog(chargeId);
 
-        return cancelResponse;
+                if (chargeDetails.size() == 1) {
+                    MultiValueMap<String, String> parameters = new LinkedMultiValueMap<>();
+                    parameters.add("cid", cid);
+                    parameters.add("tid", chargingManagement.getPaymentManaging().getTid());
+                    parameters.add("cancel_amount", Integer.toString(chargingManagement.getPaymentManaging().getAmount()));
+                    parameters.add("cancel_tax_free_amount", Integer.toString(chargingManagement.getPaymentManaging().getTexFree()));
+                    parameters.add("cancel_vat_amount", Integer.toString(chargingManagement.getPaymentManaging().getVat()));
+
+                    // 파라미터, 헤더
+                    HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(parameters, this.getHeaders());
+
+                    // 외부에 보낼 url
+                    RestTemplate restTemplate = new RestTemplate();
+
+                    cancelResponse = restTemplate.postForObject(
+                            "https://kapi.kakao.com/v1/payment/cancel",
+                            requestEntity,
+                            KakaoRefundResponseDTO.class);
+
+                    ChargingManagement refundChargingManagement = ChargingManagement.builder()
+                            .changeDate(TimeUtils.stringParseLocalDataTimeT(cancelResponse.getCanceled_at()))
+                            .changeReason("환불")
+                            .status(false)
+                            .value(chargingManagement.getValue())
+                            .customer(chargingManagement.getCustomer())
+                            .paymentManaging(chargingManagement.getPaymentManaging()).build();
+
+                    ChargingManagement saveManagement = chargingManagementRepository.save(refundChargingManagement);
+
+                    ChargingDetail chargeDetail = chargeDetails.get(0);
+
+                    ChargingDetail refundChargingDetail = ChargingDetail.builder()
+                            .detailUseId(chargeDetail.getId())
+                            .operateDate(TimeUtils.stringParseLocalDataTimeT(cancelResponse.getCanceled_at()))
+                            .status(false)
+                            .value(chargeDetail.getValue())
+                            .chargingManagement(saveManagement).build();
+
+                    chargingDetailRepository.save(refundChargingDetail);
+
+                    return cancelResponse;
+                }
+                failResponseDTO.setFailReason("이미 사용된 충전 내역입니다.");
+                return failResponseDTO;
+            }
+
+            failResponseDTO.setFailReason("환불 기한이 초과되었습니다.");
+            return failResponseDTO;
+        }
+
+        failResponseDTO.setFailReason("존재하지 않는 충전 ID입니다.");
+        return failResponseDTO;
     }
 
     /**

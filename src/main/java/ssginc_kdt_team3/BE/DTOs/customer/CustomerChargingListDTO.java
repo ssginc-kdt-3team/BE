@@ -13,11 +13,14 @@ public class CustomerChargingListDTO {
     private int price;
     private String dateTime;
     private String reason;
+    private boolean type;
+    private boolean canRefund;
 
     public CustomerChargingListDTO(ChargingManagement chargingManagement) {
         this.id = chargingManagement.getId();
         this.price = chargingManagement.getValue();
         this.dateTime = TimeUtils.localDataTimeParseString(chargingManagement.getChangeDate());
         this.reason = chargingManagement.getChangeReason();
+        this.type = chargingManagement.isStatus();
     }
 }

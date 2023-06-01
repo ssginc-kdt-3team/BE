@@ -1,5 +1,6 @@
 package ssginc_kdt_team3.BE.controller.customer;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -10,9 +11,14 @@ import org.springframework.security.core.parameters.P;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import ssginc_kdt_team3.BE.DTOs.deposit.CustomerDepositDTO;
 import ssginc_kdt_team3.BE.DTOs.reservation.*;
 import ssginc_kdt_team3.BE.service.customer.CustomerReservationService;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URISyntaxException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -26,7 +32,7 @@ public class CustomerReservationController {
     private final CustomerReservationService reservationService;
 
     @PostMapping("/add")
-    public ResponseEntity createReservation(@Validated @RequestBody CustomerReservationAddDTO dto, BindingResult bindingResult) {
+    public ResponseEntity createReservation(@Validated @RequestBody CustomerReservationAddDTO dto, BindingResult bindingResult) throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
 
         if (dto.getPeople() <= dto.getChild()) {
             log.info("too many baby");
@@ -43,7 +49,7 @@ public class CustomerReservationController {
             return ResponseEntity.ok().body(aLong + "번 ");
         }
 
-        return ResponseEntity.badRequest().build();
+        return ResponseEntity.badRequest().body("예약 실패했습니다.");
     }
 
     @GetMapping("listAll/{id}/{page}")
@@ -76,7 +82,7 @@ public class CustomerReservationController {
     @PostMapping("/update/{id}")
     public ResponseEntity updateReservation(@Validated @RequestBody CustomerReservationUpdateDTO dto, BindingResult bindingResult, @PathVariable(name = "id") Long id) {
 
-        boolean b = reservationService.updateReservation(id, dto);
+        Map<String, String> result = reservationService.updateReservation(id, dto);
 
         if (dto.getPeople() <= dto.getChild()) {
             log.info("too many baby");
@@ -88,15 +94,15 @@ public class CustomerReservationController {
             return ResponseEntity.badRequest().body(bindingResult.getAllErrors());
         }
 
-        if (b) {
-            return ResponseEntity.ok().build();
+        if (result.get("result").equals("true")) {
+            return ResponseEntity.ok().body("변경이 완료되었습니다.");
         }
 
-        return ResponseEntity.badRequest().build();
+        return ResponseEntity.badRequest().body(result.get("error"));
     }
 
     @PostMapping("/cancel/{id}")
-    public ResponseEntity cancelReservation(@PathVariable(name = "id") Long id) {
+    public ResponseEntity cancelReservation(@PathVariable(name = "id") Long id) throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
         boolean b = reservationService.customerCancel(id);
 
         if (b) {
