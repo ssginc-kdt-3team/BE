@@ -12,6 +12,7 @@ import ssginc_kdt_team3.BE.domain.Customer;
 import ssginc_kdt_team3.BE.domain.Reservation;
 import ssginc_kdt_team3.BE.enums.ReservationStatus;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -39,5 +40,8 @@ public interface JpaDataReservationRepository extends JpaRepository<Reservation,
     List<Reservation> findAllByShop_IdAndReservationDateBetweenOrderByReservationDateDesc(Long shopId, LocalDateTime startTime, LocalDateTime endTime);
 
     Page<Reservation> findAllByShop_BranchId(Long branchId, Pageable pageable);
+
+    // 0531 이현: 고객 등급변동 조회 위해 추가
+    List<Reservation> findAllByCustomer_IdAndStatusAndReservationDateBetween(Long userId, ReservationStatus status, LocalDateTime startDate, LocalDateTime beforeDate);
 
 }

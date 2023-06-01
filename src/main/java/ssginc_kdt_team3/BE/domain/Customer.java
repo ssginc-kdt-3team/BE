@@ -6,6 +6,7 @@ import ssginc_kdt_team3.BE.enums.CustomerType;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -23,4 +24,9 @@ public class Customer extends User{
   @Column(name = "customer_type")
   @Enumerated(EnumType.STRING)
   private CustomerType type;
+
+  // 0531 이현: 고객 등급변동일 추가
+  @Column(name = "customer_gradeDate")
+  private LocalDate gradeChangeDate;
+
 }
