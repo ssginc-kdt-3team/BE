@@ -8,10 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssginc_kdt_team3.BE.DTOs.reservation.OwnerReservationDTO;
-import ssginc_kdt_team3.BE.domain.Deposit;
-import ssginc_kdt_team3.BE.domain.PointManagement;
-import ssginc_kdt_team3.BE.domain.Reservation;
-import ssginc_kdt_team3.BE.domain.Shop;
+import ssginc_kdt_team3.BE.domain.*;
 import ssginc_kdt_team3.BE.enums.DepositStatus;
 import ssginc_kdt_team3.BE.enums.ReservationStatus;
 import ssginc_kdt_team3.BE.repository.deposit.DepositRepository;
@@ -55,6 +52,7 @@ public class OwnerReservationService {
                 reservationRepository.save(reservation);
 
 
+                savePoint(id, reservation);
                 return true;
             }
             return false;
@@ -331,6 +329,14 @@ public class OwnerReservationService {
             return toDtoPage(allTime, pageable);
         }
         return null;
+    }
+
+    private void savePoint(Long id, Reservation reservation) {
+        Deposit reservationDeposit = depositRepository.findReservationDeposit(id);
+        Customer customer = reservation.getCustomer();
+        Double rate = customer.getGrade().getRate();
+        int round =(int) Math.round(reservationDeposit.getOrigin_value() * rate);
+        pointManagementService.getPointSave(true, round, "예약 식당 방문", reservation.getCustomer(), reservation.getChangeTime());
     }
 
     // List로 Reservation 받아와서 -> dto -> 페이지로

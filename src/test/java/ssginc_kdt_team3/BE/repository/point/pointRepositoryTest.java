@@ -26,4 +26,18 @@ public class pointRepositoryTest {
             System.out.println("endDate = " + localDate.toString());
         }
     }
+
+    @Test
+    public void 모든사람_잔액_조회() {
+        List<Object[]> objects = pointDetailRepository.expirationPoints();
+        for (Object[] obj : objects) {
+            Long DetailId = (Long) obj[0];
+            Long value = (Long) obj[1];
+
+            System.out.println("id = " + DetailId);
+            System.out.println("value = " + value);
+//            System.out.println("value = " + s1);
+//            System.out.println("endDate = " + localDate.toString());
+        }
+    }
 }

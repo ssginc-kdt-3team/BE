@@ -12,7 +12,7 @@ public interface JpaDataPointDetailRepository extends JpaRepository<PointDetail,
     @Query("SELECT SUM(CASE WHEN pd.status = true THEN pd.value ELSE -pd.value END) " +
             "FROM PointDetail pd " +
             "WHERE pd.pointManagement.customer.id = :customerId")
-    int findSumPoint(@Param("customerId") Long customerId);
+    Integer findSumPoint(@Param("customerId") Long customerId);
 
     @Query("SELECT pd.detailUseId, " +
             "   SUM(CASE WHEN pd.status = true THEN pd.value ELSE -pd.value END) AS total_sum, " +
@@ -23,4 +23,14 @@ public interface JpaDataPointDetailRepository extends JpaRepository<PointDetail,
             "GROUP BY pd.detailUseId " +
             "HAVING SUM(CASE WHEN pd.status = true THEN pd.value ELSE -pd.value END) <> 0")
     List<Object[]> balanceInquiry(@Param("customerId") Long customerId);
+
+    @Query("SELECT pd.detailUseId, " +
+            "   SUM(CASE WHEN pd.status = true THEN pd.value ELSE -pd.value END) AS total_sum " +
+            "FROM PointDetail pd " +
+            "WHERE pd.detailUseId IN " +
+            "   (SELECT pd3.detailUseId FROM PointDetail pd3 " +
+            "   WHERE pd3.endDate = CURRENT_DATE) " +
+            "GROUP BY pd.detailUseId " +
+            "HAVING SUM(CASE WHEN pd.status = true THEN pd.value ELSE -pd.value END) <> 0")
+    List<Object[]> expirationPoints();
 }
