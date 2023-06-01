@@ -34,8 +34,7 @@ public class CustomerReservationAddDTO {
     @Length(max = 100)
     private String memo;
 
-    @Min(value = 1000, message = "포인트는 1000 포인트부터 사용가능합니다.")
-    @Pattern(regexp = "[1-9]\\d{3,}", message = "포인트는 100단위로 사용가능합니다.")
+    @Pattern(regexp = "[1-9]\\d{4,}", message = "포인트는 100단위로 사용가능합니다.")
     private String pointValue;
 
     private Long userId;
