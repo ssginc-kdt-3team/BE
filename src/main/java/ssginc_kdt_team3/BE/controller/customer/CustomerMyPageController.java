@@ -8,8 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ssginc_kdt_team3.BE.DTOs.coupon.CustomerCouponListDTO;
-import ssginc_kdt_team3.BE.domain.CouponProvide;
-import ssginc_kdt_team3.BE.service.customer.CustomerCouponService;
+import ssginc_kdt_team3.BE.service.customer.CustomerMyPageService;
 
 import java.util.List;
 
@@ -18,7 +17,7 @@ import java.util.List;
 @RequestMapping("customer/coupon")
 public class CustomerCouponController {
 
-  private final CustomerCouponService couponService;
+  private final CustomerMyPageService couponService;
 
   @GetMapping("/{id}")
   public ResponseEntity showCouponList(@PathVariable(name = "id") Long userId){
