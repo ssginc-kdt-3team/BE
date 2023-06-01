@@ -33,4 +33,11 @@ class TimeUtilsTest {
         LocalDateTime now = TimeUtils.findNow();
         System.out.println("now = " + now);
     }
+
+    @Test
+    void dateToString() {
+        LocalDate now = LocalDate.now();
+        String s = TimeUtils.localDateParseString(now);
+        System.out.println(s);
+    }
 }

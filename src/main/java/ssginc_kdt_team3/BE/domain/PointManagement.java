@@ -28,10 +28,10 @@ public class PointManagement {
     private int value;
 
     @Column(name = "point_change_date")
-    private LocalDateTime changeDate;
+    private LocalDate changeDate;
 
     @Column(name = "point_end_date")
-    private LocalDateTime endDate;
+    private LocalDate endDate;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
@@ -42,7 +42,7 @@ public class PointManagement {
     private Deposit deposit;
 
     @Builder
-    public PointManagement(boolean status, String changeReason, int value, LocalDateTime changeDate, LocalDateTime endDate, Customer customer, Deposit deposit) {
+    public PointManagement(boolean status, String changeReason, int value, LocalDate changeDate, LocalDate endDate, Customer customer, Deposit deposit) {
         this.status = status;
         this.changeReason = changeReason;
         this.value = value;

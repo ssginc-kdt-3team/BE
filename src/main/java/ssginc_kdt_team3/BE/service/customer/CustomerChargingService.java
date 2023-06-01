@@ -7,19 +7,15 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ssginc_kdt_team3.BE.DTOs.customer.CustomerChargingListDTO;
-import ssginc_kdt_team3.BE.DTOs.owner.OwnerReviewListDTO;
+import ssginc_kdt_team3.BE.DTOs.reservation.charging.CustomerChargingListDTO;
 import ssginc_kdt_team3.BE.domain.ChargingDetail;
 import ssginc_kdt_team3.BE.domain.ChargingManagement;
-import ssginc_kdt_team3.BE.domain.Review;
 import ssginc_kdt_team3.BE.repository.charging.JpaDataChargingDetailRepository;
 import ssginc_kdt_team3.BE.repository.charging.JpaDataChargingManagementRepository;
-import ssginc_kdt_team3.BE.repository.customer.JpaCustomerRepository;
 import ssginc_kdt_team3.BE.repository.customer.JpaDataCustomerRepository;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Slf4j

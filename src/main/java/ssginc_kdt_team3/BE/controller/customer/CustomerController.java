@@ -12,8 +12,11 @@ import ssginc_kdt_team3.BE.domain.Grade;
 import ssginc_kdt_team3.BE.repository.customer.JpaDataCustomerRepository;
 import ssginc_kdt_team3.BE.service.customer.CustomerService;
 import ssginc_kdt_team3.BE.service.customer.KakaoService;
+import ssginc_kdt_team3.BE.service.pointManagement.PointManagementService;
+import ssginc_kdt_team3.BE.util.TimeUtils;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.Optional;
 
@@ -25,6 +28,16 @@ public class CustomerController {
   private final CustomerService customerService;
   private final JpaDataCustomerRepository customerRepository;
   private final KakaoService kakaoService;
+  private final PointManagementService pointManagementService;
+
+  @GetMapping("Test")
+  public boolean test() {
+    Optional<Customer> byId = customerRepository.findById(1L);
+    Customer customer = byId.get();
+    boolean test = pointManagementService.getPointSave(true, 1000, "테스트",customer, TimeUtils.findNow());
+
+    return test;
+  }
 
   // 회원가입
   @PostMapping("/join")

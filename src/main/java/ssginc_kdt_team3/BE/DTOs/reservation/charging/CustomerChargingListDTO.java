@@ -1,4 +1,4 @@
-package ssginc_kdt_team3.BE.DTOs.customer;
+package ssginc_kdt_team3.BE.DTOs.reservation.charging;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
