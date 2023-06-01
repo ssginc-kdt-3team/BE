@@ -40,4 +40,10 @@ public class TimeUtils {
         return format;
     }
 
+    public static String localDateParseString(LocalDate time) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String format = time.format(formatter);
+        return format;
+    }
+
 }

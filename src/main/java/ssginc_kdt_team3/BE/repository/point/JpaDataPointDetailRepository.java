@@ -15,7 +15,8 @@ public interface JpaDataPointDetailRepository extends JpaRepository<PointDetail,
     int findSumPoint(@Param("customerId") Long customerId);
 
     @Query("SELECT pd.detailUseId, " +
-            "    SUM(CASE WHEN pd.status = true THEN pd.value ELSE -pd.value END) AS total_sum " +
+            "   SUM(CASE WHEN pd.status = true THEN pd.value ELSE -pd.value END) AS total_sum, " +
+            "   (select pd2.endDate from PointDetail pd2 where pd2.id = pd.detailUseId)" +
             "FROM PointDetail pd " +
             "JOIN PointManagement pm ON pd.pointManagement.id = pm.id " +
             "WHERE pm.customer.id = :customerId " +

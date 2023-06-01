@@ -13,6 +13,7 @@ import org.springframework.validation.annotation.Validated;
 import ssginc_kdt_team3.BE.DTOs.reservation.*;
 import ssginc_kdt_team3.BE.DTOs.reservation.Alarm.MessageDTO;
 import ssginc_kdt_team3.BE.DTOs.reservation.Alarm.ResponseSmsDTO;
+import ssginc_kdt_team3.BE.DTOs.reservation.pay.CustomerDiscountDTO;
 import ssginc_kdt_team3.BE.domain.*;
 import ssginc_kdt_team3.BE.enums.DepositStatus;
 import ssginc_kdt_team3.BE.enums.ReservationStatus;
@@ -22,6 +23,7 @@ import ssginc_kdt_team3.BE.repository.review.JpaDataReviewRepository;
 import ssginc_kdt_team3.BE.repository.shop.JpaDataShopRepository;
 import ssginc_kdt_team3.BE.repository.reservation.JpaDataReservationRepository;
 import ssginc_kdt_team3.BE.service.chargingManagement.ChargingManagementService;
+import ssginc_kdt_team3.BE.service.pointManagement.PointManagementService;
 import ssginc_kdt_team3.BE.util.TimeUtils;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
@@ -46,6 +48,7 @@ public class CustomerReservationService {
     private final CustomerChargingService chargingService;
     private final ChargingManagementService chargingManagementService;
     private final NaverAlarmService naverAlarmService;
+    private final PointManagementService pointManagementService;
 
     @Value("${reservation.depositPerPerson}")
     private int depositPerPerson;
@@ -88,18 +91,23 @@ public class CustomerReservationService {
                 Reservation saveReservation = reservationRepository.save(reservation);
                 log.info("================================================================can");
 
+                //임시로 할인 정보 생성해서 사용
+                CustomerDiscountDTO customerDiscountDTO = new CustomerDiscountDTO();
+                customerDiscountDTO.setPointDiscount(500);
+
                 //예약금 정보 생성
                 Deposit deposit = new Deposit();
                 deposit.setReservation(saveReservation);
                 deposit.setStatus(DepositStatus.RECEIVE);
                 deposit.setOrigin_value(depositValue);
-                deposit.setPayValue(depositValue);
-                deposit.setPointDiscount(0);
+                deposit.setPayValue(depositValue-customerDiscountDTO.getPointDiscount());
+                deposit.setPointDiscount(customerDiscountDTO.getPointDiscount());
                 deposit.setCouponDiscount(0);
                 Deposit saveDeposit = depositRepository.save(deposit);
 
                 //예약금 결제 정보  생성
                 boolean b = chargingManagementService.saveReservationPayment(saveDeposit);
+                boolean c = pointManagementService.savePointPayment(saveDeposit);
 
                 return saveReservation.getId();
             }
