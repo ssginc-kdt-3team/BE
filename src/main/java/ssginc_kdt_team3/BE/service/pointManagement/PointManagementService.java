@@ -14,6 +14,7 @@ import ssginc_kdt_team3.BE.repository.point.JpaDataPointDetailRepository;
 import ssginc_kdt_team3.BE.repository.point.JpaDataPointManagementRepository;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +67,7 @@ public class PointManagementService {
         log.info("포인트 적립 사용 목록 조회");
 
         if (customerRepository.findById(customerId).isPresent()) {
-            LocalDateTime dateLimit = LocalDateTime.now().minusMonths(dateType);
+            LocalDate dateLimit = LocalDate.now().minusMonths(dateType);
             Page<PointManagement> chargingManagements =
                     jpaDataPointManagementRepository.findAllByCustomer_IdAndChangeDateIsAfterOrderByChangeDateDesc(customerId,pageable, dateLimit);
             Page<CustomerPointListDTO> customerPointListDTOS = convertDto(chargingManagements);
@@ -79,7 +80,7 @@ public class PointManagementService {
     public Page<CustomerPointListDTO> showCustomerPointList(Long customerId, Pageable pageable, boolean status, int dateType) {
 
         if (customerRepository.findById(customerId).isPresent()) {
-            LocalDateTime dateLimit = LocalDateTime.now().minusMonths(dateType);
+            LocalDate dateLimit = LocalDate.now().minusMonths(dateType);
             Page<PointManagement> chargingManagements =
                     jpaDataPointManagementRepository.findAllByCustomer_IdAndStatusAndChangeDateIsAfterOrderByChangeDateDesc(customerId, status, pageable, dateLimit);
             Page<CustomerPointListDTO> customerPointListDTOS = convertDto(chargingManagements);

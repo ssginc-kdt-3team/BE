@@ -6,9 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ssginc_kdt_team3.BE.DTOs.coupon.CreateCouponDTO;
 import ssginc_kdt_team3.BE.domain.Coupon;
-import ssginc_kdt_team3.BE.service.admin.CouponManagementService;
-
-import java.util.List;
+import ssginc_kdt_team3.BE.service.coupon.CouponManagementService;
 
 @RestController
 @RequiredArgsConstructor
