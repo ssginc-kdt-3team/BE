@@ -10,6 +10,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 public class CustomerCouponListDTO {
+  private Long couponId;
   private String couponCode;
   private String couponName;
   private LocalDate givenDay;
@@ -19,6 +20,7 @@ public class CustomerCouponListDTO {
   private int discountValue;
 
   public CustomerCouponListDTO(CouponProvide couponProvide) {
+    this.couponId = couponProvide.getId();
     this.couponCode = couponProvide.getCouponCode();
     this.couponName = couponProvide.getCoupon().getCouponName();
     this.givenDay = couponProvide.getGivenDay();

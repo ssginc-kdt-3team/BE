@@ -11,12 +11,14 @@ import ssginc_kdt_team3.BE.DTOs.customer.ReviewAddRequestDTO;
 import ssginc_kdt_team3.BE.DTOs.customer.ReviewResponseDTO;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerReviewListDTO;
 import ssginc_kdt_team3.BE.domain.Customer;
+import ssginc_kdt_team3.BE.domain.Deposit;
 import ssginc_kdt_team3.BE.domain.Reservation;
 import ssginc_kdt_team3.BE.domain.Review;
 import ssginc_kdt_team3.BE.enums.ReviewStatus;
 import ssginc_kdt_team3.BE.repository.customer.JpaDataCustomerRepository;
 import ssginc_kdt_team3.BE.repository.reservation.JpaDataReservationRepository;
 import ssginc_kdt_team3.BE.repository.review.JpaDataReviewRepository;
+import ssginc_kdt_team3.BE.service.pointManagement.PointManagementService;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -33,6 +35,7 @@ public class CustomerReviewService {
   private final JpaDataCustomerRepository customerRepository;
   private final JpaDataReservationRepository reservationRepository;
   private final JpaDataReviewRepository reviewRepository;
+  private final PointManagementService pointManagementService;
 
 
   public boolean addMyReview(ReviewAddRequestDTO reviewDTO) {
@@ -57,10 +60,17 @@ public class CustomerReviewService {
         review.setStatus(ReviewStatus.SHOW); // 최초상태
         review.setReservation(reservation);
         reviewRepository.save(review);
+
+        saveReviewPoint(customer, writeTime);
+
         return true;
       }
     }
     return false;
+  }
+
+  private void saveReviewPoint(Customer customer, LocalDateTime writeTime) {
+    pointManagementService.getPointSave(true, 200, "리뷰 작성", customer, writeTime);
   }
 
   public boolean deleteMyReview(Long reviewId) {

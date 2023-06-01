@@ -31,8 +31,11 @@ public class CustomerChargingService {
     public int showCustomerChargingValue(Long customerId) {
 
         if (customerRepository.findById(customerId).isPresent()) {
-            int sumCharging = chargingDetailRepository.findSumCharging(customerId);
-            return sumCharging;
+            if (chargingDetailRepository.findSumCharging(customerId) != null) {
+                return chargingDetailRepository.findSumCharging(customerId);
+            }
+
+            return 0;
         }
 
         return -99999;

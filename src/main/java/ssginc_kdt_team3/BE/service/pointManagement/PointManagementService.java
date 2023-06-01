@@ -56,8 +56,10 @@ public class PointManagementService {
     public int showCustomerPointValue(Long customerId) {
 
         if (customerRepository.findById(customerId).isPresent()) {
-            int sumCharging = jpaDataPointDetailRepository.findSumPoint(customerId);
-            return sumCharging;
+            if (jpaDataPointDetailRepository.findSumPoint(customerId) != null) {
+                return jpaDataPointDetailRepository.findSumPoint(customerId);
+            }
+            return 0;
         }
         return -99999;
     }
@@ -99,6 +101,20 @@ public class PointManagementService {
                 .value(deposit.getPointDiscount())
                 .customer(deposit.getReservation().getCustomer())
                 .deposit(deposit).build();
+
+        PointManagement saveManagement = jpaDataPointManagementRepository.save(reservationPointManagement);
+        savePointPayDetail(saveManagement);
+        return true;
+    }
+
+    public boolean saveExpirationPoints(Customer customer, Long value) {
+
+        PointManagement reservationPointManagement = PointManagement.builder()
+                .changeDate(LocalDate.now())
+                .changeReason("포인트 만료")
+                .status(false)
+                .value(Integer.parseInt(Long.toString(value)))
+                .customer(customer).build();
 
         PointManagement saveManagement = jpaDataPointManagementRepository.save(reservationPointManagement);
         savePointPayDetail(saveManagement);
