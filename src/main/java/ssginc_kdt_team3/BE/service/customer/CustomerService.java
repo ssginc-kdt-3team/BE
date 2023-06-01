@@ -52,7 +52,7 @@ public class CustomerService {
     customer.setRole(UserRole.CUSTOMER);
 
     // 등급 부여
-    Grade grade = gradeRepository.findById(3L).get();
+    Grade grade = gradeRepository.findByName(GradeType.Welcome);
     customer.setGrade(grade);
 
     // DB에 저장
@@ -60,7 +60,6 @@ public class CustomerService {
 
     // 회원가입 된 다음에 쿠폰 발행
     Coupon coupon = couponRepository.findByCouponName("신규가입 쿠폰").orElse(null);
-
     issueCoupon(saveCustomer, CouponStatus.GIVEN, coupon);
 
     return customerJoinDTO;

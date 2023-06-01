@@ -10,6 +10,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 public class CustomerCouponListDTO {
+  private Long couponId;
   private String couponCode;
   private String couponName;
   private LocalDate givenDay;
@@ -18,7 +19,9 @@ public class CustomerCouponListDTO {
   private String reason;
   private int discountValue;
 
+  // 모델매퍼로 바꿔보자
   public CustomerCouponListDTO(CouponProvide couponProvide) {
+    this.couponId = couponProvide.getId();
     this.couponCode = couponProvide.getCouponCode();
     this.couponName = couponProvide.getCoupon().getCouponName();
     this.givenDay = couponProvide.getGivenDay();

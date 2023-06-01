@@ -11,6 +11,7 @@ import ssginc_kdt_team3.BE.DTOs.customer.CustomerListDTO;
 import ssginc_kdt_team3.BE.domain.Customer;
 import ssginc_kdt_team3.BE.domain.Grade;
 
+import javax.swing.text.html.Option;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -33,4 +34,5 @@ public interface JpaDataCustomerRepository extends JpaRepository<Customer, Long>
     // 0526 이현: 고객 개인정보찾기 기능위해 추가
     Optional<Customer> findByNameAndPhoneNumber(String name, String phone);
     Optional<Customer> findByNameAndEmailAndPhoneNumber(String name, String email, String phone);
+    List<Customer> findAllByGradeChangeDate(LocalDate start);
 }
