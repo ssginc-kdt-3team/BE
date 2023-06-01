@@ -8,11 +8,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import ssginc_kdt_team3.BE.DTOs.customer.CustomerChargeDTO;
-import ssginc_kdt_team3.BE.DTOs.customer.CustomerChargingListDTO;
+import ssginc_kdt_team3.BE.DTOs.reservation.charging.CustomerChargeDTO;
+import ssginc_kdt_team3.BE.DTOs.reservation.charging.CustomerChargingListDTO;
 import ssginc_kdt_team3.BE.DTOs.kakao.KakaoPayApproveResponseDTO;
 import ssginc_kdt_team3.BE.DTOs.kakao.KakaoPayReadyResponseDTO;
+import ssginc_kdt_team3.BE.DTOs.kakao.KakaoRefundFailResponseDTO;
 import ssginc_kdt_team3.BE.DTOs.kakao.KakaoRefundResponseDTO;
 import ssginc_kdt_team3.BE.service.customer.CustomerChargingService;
 import ssginc_kdt_team3.BE.service.customer.CustomerKakaoPayService;
@@ -23,7 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
-@RestController
+@Controller
 @RequiredArgsConstructor
 @RequestMapping("/customer/charge")
 public class CustomerChargeController {
@@ -37,6 +39,7 @@ public class CustomerChargeController {
     /**
      * 결제요청
      */
+    @ResponseBody
     @PostMapping("/ready")
     public ResponseEntity readyToKakaoPay(@RequestBody CustomerChargeDTO customerChargeDTO) {
 
@@ -58,59 +61,67 @@ public class CustomerChargeController {
      * 결제 성공
      */
     @GetMapping("/success")
-    public ResponseEntity afterPayRequest(@RequestParam("pg_token") String pgToken) {
+    public String afterPayRequest(@RequestParam("pg_token") String pgToken) {
 
         KakaoPayApproveResponseDTO kakaoApprove = kakaoPayService.ApproveResponse(pgToken);
 
-        return new ResponseEntity<>(kakaoApprove, HttpStatus.OK);
+        return "redirect:http://localhost:3000/chargeResult";
     }
 
     /**
      * 환불
      */
-    @PostMapping("/refund")
-    public ResponseEntity refund() {
+    @ResponseBody
+    @PostMapping("/refund/{id}")
+    public ResponseEntity refund(@PathVariable(name = "id") Long chargeId) {
 
-        KakaoRefundResponseDTO kakaoCancelResponse = kakaoPayService.kakaoCancel();
+        Object kakaoCancelResponse = kakaoPayService.kakaoCancel(chargeId);
 
-        return new ResponseEntity<>(kakaoCancelResponse, HttpStatus.OK);
+        if (kakaoCancelResponse instanceof KakaoRefundFailResponseDTO) {
+            return ResponseEntity.badRequest().body(((KakaoRefundFailResponseDTO) kakaoCancelResponse).getFailReason());
+        }
+
+
+        return new ResponseEntity<>((KakaoRefundResponseDTO)kakaoCancelResponse, HttpStatus.OK);
     }
 
     /**
      * 결제 진행 중 취소
      */
     @GetMapping("/cancel")
-    public ResponseEntity<String> cancel() {
+    public String cancel() {
 
-        return ResponseEntity.ok("취소가 완료 되었습니다.");
+        return "redirect:http://localhost:3000/chargeResult";
     }
 
     /**
      * 결제 실패
      */
     @GetMapping("/fail")
-    public ResponseEntity<String> fail() {
+    public String fail() {
 
-        return ResponseEntity.badRequest().body("결제에 실패했습니다.");
+        return "redirect:http://localhost:3000/chargeResult";
     }
 
-    @GetMapping("/list/{id}/{type}/{page}")
-    public ResponseEntity showchargeList(@PathVariable(name = "id") Long customerId,
-                                           @PathVariable(name = "type") String type, @PathVariable(name = "page") int page) {
+    @ResponseBody
+    @GetMapping("/list/{id}/{type}/{date}/{page}")
+    public ResponseEntity showChargeList(@PathVariable(name = "id") Long customerId, @PathVariable(name = "type") String type,
+                                         @PathVariable(name = "date") int dateType, @PathVariable(name = "page") int page) {
         Map<String, String> result = new HashMap<>();
 
         ArrayList<String> typeList = new ArrayList<>(Arrays.asList("all", "get", "lost"));
-        if (typeList.contains(type)) {
+        ArrayList<Integer> dateList = new ArrayList<>(Arrays.asList(12, 1, 3, 6));
+        if (typeList.contains(type) && dateList.contains(dateType)) {
             Pageable pageable = PageRequest.of(page-1, pageSize);
 
             if (type.equals("get")) {
-                Page<CustomerChargingListDTO> customerChargingListDTOS = customerChargingService.showCustomerChargingList(customerId, pageable, true);
+                Page<CustomerChargingListDTO> customerChargingListDTOS = customerChargingService.showCustomerChargingList(customerId, pageable, true, dateType);
                 return getResponseEntity(result, customerChargingListDTOS);
             } else if (type.equals("lost")) {
-                Page<CustomerChargingListDTO> customerChargingListDTOS = customerChargingService.showCustomerChargingList(customerId, pageable, false);
+                Page<CustomerChargingListDTO> customerChargingListDTOS = customerChargingService.showCustomerChargingList(customerId, pageable, false, dateType);
                 return getResponseEntity(result, customerChargingListDTOS);
             } else {
-                Page<CustomerChargingListDTO> customerChargingListDTOS = customerChargingService.showCustomerChargingAndUsingList(customerId, pageable);
+                Page<CustomerChargingListDTO> customerChargingListDTOS = customerChargingService.showCustomerChargingAndUsingList(customerId, pageable, dateType);
                 return getResponseEntity(result, customerChargingListDTOS);
             }
         }
@@ -119,7 +130,7 @@ public class CustomerChargeController {
         return ResponseEntity.badRequest().body(result);
     }
 
-
+    @ResponseBody
     @GetMapping("/check/{id}")
     public ResponseEntity<Map<String, String>> showHoldingAmount(@PathVariable(name = "id") Long customerId) {
         int sum = customerChargingService.showCustomerChargingValue(customerId);

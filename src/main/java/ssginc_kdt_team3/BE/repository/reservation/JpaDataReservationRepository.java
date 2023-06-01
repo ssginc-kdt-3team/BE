@@ -1,14 +1,10 @@
 package ssginc_kdt_team3.BE.repository.reservation;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.Repository;
 import org.springframework.data.repository.query.Param;
-import org.springframework.security.core.parameters.P;
-import ssginc_kdt_team3.BE.domain.Customer;
 import ssginc_kdt_team3.BE.domain.Reservation;
 import ssginc_kdt_team3.BE.enums.ReservationStatus;
 
@@ -41,7 +37,18 @@ public interface JpaDataReservationRepository extends JpaRepository<Reservation,
 
     Page<Reservation> findAllByShop_BranchId(Long branchId, Pageable pageable);
 
+
     // 0531 이현: 고객 등급변동 조회 위해 추가
     List<Reservation> findAllByCustomer_IdAndStatusAndReservationDateBetween(Long userId, ReservationStatus status, LocalDateTime startDate, LocalDateTime nowDate);
+
+//    @Query("SELECT new ssginc_kdt_team3.BE.DTOs.reservation.Alarm.ReservationAlmostAlarmDTO" +
+//            "(r.id, r.status, r.reservationDate, c.id, c.name, c.phoneNumber) " +
+//            "FROM Reservation r " +
+//            "LEFT JOIN Customer c ON c.id = r.customer.id ")
+//    List<ReservationAlmostAlarmDTO> findAlmostReservation();
+
+    @Query("select r from Reservation r where (r.reservationDate >= :almostTime and r.reservationDate <= :almostTime2) and r.status = :condition")
+    List<Reservation> findAlmostReservation(@Param("almostTime") LocalDateTime almostTime, @Param("almostTime2") LocalDateTime almostTime2, @Param("condition") ReservationStatus condition);
+
 
 }

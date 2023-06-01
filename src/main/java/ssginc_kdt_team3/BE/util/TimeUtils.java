@@ -19,8 +19,14 @@ public class TimeUtils {
         return LocalDateTime.parse(time, formatter);
     }
 
+    public static LocalDateTime stringParseLocalDataTimeT(String time) {
+        String time2 = time.replace("T", " ");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return LocalDateTime.parse(time2, formatter);
+    }
+
     public static LocalTime stringParseLocalTime(String time) {
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return LocalTime.parse(time);
     }
 
@@ -30,6 +36,12 @@ public class TimeUtils {
 
     public static String localDataTimeParseString(LocalDateTime time) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String format = time.format(formatter);
+        return format;
+    }
+
+    public static String localDateParseString(LocalDate time) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String format = time.format(formatter);
         return format;
     }
