@@ -13,16 +13,18 @@ import org.springframework.validation.annotation.Validated;
 import ssginc_kdt_team3.BE.DTOs.reservation.*;
 import ssginc_kdt_team3.BE.DTOs.reservation.Alarm.MessageDTO;
 import ssginc_kdt_team3.BE.DTOs.reservation.Alarm.ResponseSmsDTO;
-import ssginc_kdt_team3.BE.DTOs.reservation.pay.CustomerDiscountDTO;
 import ssginc_kdt_team3.BE.domain.*;
+import ssginc_kdt_team3.BE.enums.CouponStatus;
 import ssginc_kdt_team3.BE.enums.DepositStatus;
 import ssginc_kdt_team3.BE.enums.ReservationStatus;
+import ssginc_kdt_team3.BE.repository.coupon.CouponProvideRepository;
 import ssginc_kdt_team3.BE.repository.customer.JpaCustomerRepository;
 import ssginc_kdt_team3.BE.repository.deposit.DepositRepository;
 import ssginc_kdt_team3.BE.repository.review.JpaDataReviewRepository;
 import ssginc_kdt_team3.BE.repository.shop.JpaDataShopRepository;
 import ssginc_kdt_team3.BE.repository.reservation.JpaDataReservationRepository;
 import ssginc_kdt_team3.BE.service.chargingManagement.ChargingManagementService;
+import ssginc_kdt_team3.BE.service.coupon.CouponProvideService;
 import ssginc_kdt_team3.BE.service.pointManagement.PointManagementService;
 import ssginc_kdt_team3.BE.util.TimeUtils;
 import java.io.UnsupportedEncodingException;
@@ -49,6 +51,7 @@ public class CustomerReservationService {
     private final ChargingManagementService chargingManagementService;
     private final NaverAlarmService naverAlarmService;
     private final PointManagementService pointManagementService;
+    private final CouponProvideService couponProvideService;
 
     @Value("${reservation.depositPerPerson}")
     private int depositPerPerson;
@@ -63,51 +66,56 @@ public class CustomerReservationService {
         Shop shop = shopRepository.findById(dto.getShopId()).get();
         Customer customer = customerRepository.findCustomer(dto.getUserId()).get();
 
-        //알림 메시지 추가
-        String shopName = shop.getName();
-        String ownerName = shop.getOwner().getName();
-        String ownerPhone = shop.getOwner().getPhoneNumber();
-        String customerName = customer.getName();
-        String customerPhone = customer.getPhoneNumber();
-        String reservationDate = dto.getReservationDate();
-
-        //고객용 메시지
-        String customerReservationMessage = customerName + "고객님 예약이 완료되었습니다!\n[예약일시] : " + reservationDate + "\n[예약매장] : " + shopName;
-        customerMessageDTO.setTo(customerPhone);
-        customerMessageDTO.setContent(customerReservationMessage);
-        naverAlarmService.sendSms(customerMessageDTO);
-        //점주용 메시지
-        String ownerReservationMessage = ownerName + "점주님 새로운 예약 내역입니다!\n[예약 일시] : " + reservationDate;
-        ownerMessageDTO.setTo(ownerPhone);
-        ownerMessageDTO.setContent(ownerReservationMessage);
-        naverAlarmService.sendSms(ownerMessageDTO);
-
         //DTO 검증
         setReservationInfo(reservation, dto, shop, customer);
         try {
-            int depositValue = calculatingDeposit(dto.getPeople(), dto.getChild());
+            int pointValue = Integer.parseInt(dto.getPointValue());
+            int originValue = calculatingDeposit(dto.getPeople(), dto.getChild());
+
+            //쿠폰 할인
+            int couponDiscount = 0;
+            if (dto.getCouponId() > 0) {
+                couponDiscount = couponProvideService.getCouponDiscount(dto, originValue);
+            }
+
+            //포인트 할인
+            int pointDiscount = 0;
+            if (isEnoughPoint(dto.getUserId(), pointValue)) {
+                pointDiscount += pointValue;
+            } else {
+                return null;
+            }
+
+            //총 할인 금액
+            int discount = couponDiscount + pointDiscount;
+            //실제 계산 금액
+            int needValue = originValue - discount;
+
+
+
+
             //충전금 충분한지 확인
-            if (isEnoughMoney(dto.getUserId(), depositValue)) {
+            if (isEnoughMoney(dto.getUserId(), needValue)) {
                 Reservation saveReservation = reservationRepository.save(reservation);
                 log.info("================================================================can");
-
-                //임시로 할인 정보 생성해서 사용
-                CustomerDiscountDTO customerDiscountDTO = new CustomerDiscountDTO();
-                customerDiscountDTO.setPointDiscount(500);
 
                 //예약금 정보 생성
                 Deposit deposit = new Deposit();
                 deposit.setReservation(saveReservation);
                 deposit.setStatus(DepositStatus.RECEIVE);
-                deposit.setOrigin_value(depositValue);
-                deposit.setPayValue(depositValue-customerDiscountDTO.getPointDiscount());
-                deposit.setPointDiscount(customerDiscountDTO.getPointDiscount());
-                deposit.setCouponDiscount(0);
+                deposit.setOrigin_value(originValue);
+                deposit.setPayValue(needValue);
+                deposit.setPointDiscount(pointDiscount);
+                deposit.setCouponDiscount(couponDiscount);
                 Deposit saveDeposit = depositRepository.save(deposit);
 
                 //예약금 결제 정보  생성
                 boolean b = chargingManagementService.saveReservationPayment(saveDeposit);
                 boolean c = pointManagementService.savePointPayment(saveDeposit);
+                boolean d = couponProvideService.saveReservationCouponUseStatus(saveDeposit, dto.getCouponId());
+
+                //알림 메시지 추가
+                sendMessage(dto, shop, customer);
 
                 return saveReservation.getId();
             }
@@ -284,60 +292,6 @@ public class CustomerReservationService {
         return result;
     }
 
-    private int calculatingDeposit(int people, int child) {
-        return depositPerPerson * (people - child);
-    }
-
-    private boolean isEnoughMoney(Long userId, int value) {
-        return chargingService.showCustomerChargingValue(userId) >= value;
-    }
-
-    //예약 정보를 dto로 받아온 새로운 정보로 변경
-    private void update(Reservation before, CustomerReservationUpdateDTO after) {
-        LocalDateTime updateTime = TimeUtils.findNow();
-        LocalDateTime reservationTime = TimeUtils.stringParseLocalDataTime(after.getReservationDateTime());
-        String memo = after.getMemo();
-        int people = after.getPeople();
-        int child = after.getChild();
-
-        before.setPeople(people);
-        before.setChild(child);
-        before.setMemo(memo);
-        before.setReservationDate(reservationTime);
-        before.setChangeTime(updateTime);
-    }
-
-    private Page<CustomerReservationListDTO> listToDTOList(Pageable pageable, List<Reservation> allBy) {
-        List<CustomerReservationListDTO> customerReservationList = new ArrayList<>();
-
-        for (Reservation r : allBy) {
-            CustomerReservationListDTO dto = new CustomerReservationListDTO(r);
-            customerReservationList.add(dto);
-        }
-
-        final int start = (int) pageable.getOffset();
-        final int end = Math.min((start + pageable.getPageSize()), customerReservationList.size());
-
-        Page<CustomerReservationListDTO> customerReservations = new PageImpl<>(customerReservationList.subList(start, end), pageable, customerReservationList.size());
-        return customerReservations;
-    }
-
-    private void setReservationInfo(Reservation reservation, CustomerReservationAddDTO dto, Shop shop, Customer customer) {
-
-        LocalDateTime reservationTime = TimeUtils.stringParseLocalDataTime(dto.getReservationDate());
-        reservation.setReservationDate(reservationTime);
-        reservation.setPeople(dto.getPeople());
-        reservation.setChild(dto.getChild());
-        reservation.setMemo(dto.getMemo());
-        reservation.setStatus(ReservationStatus.RESERVATION);
-
-        LocalDateTime parse = TimeUtils.findNow();
-        reservation.setApplyTime(parse);
-        reservation.setChangeTime(parse);
-        reservation.setShop(shop);
-        reservation.setCustomer(customer);
-    }
-
     public boolean customerCancel(Long id) throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
         Optional<Reservation> byId = reservationRepository.findById(id);
 
@@ -506,6 +460,84 @@ public class CustomerReservationService {
         }
 
         return result;
+    }
+
+    private void sendMessage(CustomerReservationAddDTO dto, Shop shop, Customer customer) throws UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeyException, JsonProcessingException, URISyntaxException {
+        String shopName = shop.getName();
+        String ownerName = shop.getOwner().getName();
+        String ownerPhone = shop.getOwner().getPhoneNumber();
+        String customerName = customer.getName();
+        String customerPhone = customer.getPhoneNumber();
+        String reservationDate = dto.getReservationDate();
+
+        //고객용 메시지
+        String customerReservationMessage = customerName + "고객님 예약이 완료되었습니다!\n[예약일시] : " + reservationDate + "\n[예약매장] : " + shopName;
+        customerMessageDTO.setTo(customerPhone);
+        customerMessageDTO.setContent(customerReservationMessage);
+        naverAlarmService.sendSms(customerMessageDTO);
+        //점주용 메시지
+        String ownerReservationMessage = ownerName + "점주님 새로운 예약 내역입니다!\n[예약 일시] : " + reservationDate;
+        ownerMessageDTO.setTo(ownerPhone);
+        ownerMessageDTO.setContent(ownerReservationMessage);
+        naverAlarmService.sendSms(ownerMessageDTO);
+    }
+
+    private int calculatingDeposit(int people, int child) {
+        return depositPerPerson * (people - child);
+    }
+
+    private boolean isEnoughMoney(Long userId, int value) {
+        return chargingService.showCustomerChargingValue(userId) >= value;
+    }
+
+    private boolean isEnoughPoint(Long userId, int value) {
+        return pointManagementService.showCustomerPointValue(userId) >= value;
+    }
+
+    //예약 정보를 dto로 받아온 새로운 정보로 변경
+    private void update(Reservation before, CustomerReservationUpdateDTO after) {
+        LocalDateTime updateTime = TimeUtils.findNow();
+        LocalDateTime reservationTime = TimeUtils.stringParseLocalDataTime(after.getReservationDateTime());
+        String memo = after.getMemo();
+        int people = after.getPeople();
+        int child = after.getChild();
+
+        before.setPeople(people);
+        before.setChild(child);
+        before.setMemo(memo);
+        before.setReservationDate(reservationTime);
+        before.setChangeTime(updateTime);
+    }
+
+    private Page<CustomerReservationListDTO> listToDTOList(Pageable pageable, List<Reservation> allBy) {
+        List<CustomerReservationListDTO> customerReservationList = new ArrayList<>();
+
+        for (Reservation r : allBy) {
+            CustomerReservationListDTO dto = new CustomerReservationListDTO(r);
+            customerReservationList.add(dto);
+        }
+
+        final int start = (int) pageable.getOffset();
+        final int end = Math.min((start + pageable.getPageSize()), customerReservationList.size());
+
+        Page<CustomerReservationListDTO> customerReservations = new PageImpl<>(customerReservationList.subList(start, end), pageable, customerReservationList.size());
+        return customerReservations;
+    }
+
+    private void setReservationInfo(Reservation reservation, CustomerReservationAddDTO dto, Shop shop, Customer customer) {
+
+        LocalDateTime reservationTime = TimeUtils.stringParseLocalDataTime(dto.getReservationDate());
+        reservation.setReservationDate(reservationTime);
+        reservation.setPeople(dto.getPeople());
+        reservation.setChild(dto.getChild());
+        reservation.setMemo(dto.getMemo());
+        reservation.setStatus(ReservationStatus.RESERVATION);
+
+        LocalDateTime parse = TimeUtils.findNow();
+        reservation.setApplyTime(parse);
+        reservation.setChangeTime(parse);
+        reservation.setShop(shop);
+        reservation.setCustomer(customer);
     }
 
 

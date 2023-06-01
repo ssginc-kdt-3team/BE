@@ -20,6 +20,9 @@ public class ShopAddDTO {
     private String shopName; // 매장 이름
 
     @NotNull
+    private String phone;
+
+    @NotNull
     @Pattern(regexp = "^[A-Z]{1}[0-9]{2}$")
     private String location; //지점 내 위치
 

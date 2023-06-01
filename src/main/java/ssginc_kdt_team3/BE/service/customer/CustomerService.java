@@ -12,7 +12,7 @@ import ssginc_kdt_team3.BE.repository.coupon.CouponRepository;
 import ssginc_kdt_team3.BE.repository.customer.JpaCustomerRepository;
 import ssginc_kdt_team3.BE.repository.customer.JpaDataCustomerRepository;
 import ssginc_kdt_team3.BE.repository.grade.GradeRepository;
-import ssginc_kdt_team3.BE.service.admin.CouponManagementService;
+import ssginc_kdt_team3.BE.service.coupon.CouponManagementService;
 
 import java.time.LocalDate;
 import java.util.HashMap;
