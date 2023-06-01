@@ -12,7 +12,7 @@ import ssginc_kdt_team3.BE.repository.coupon.CouponRepository;
 import ssginc_kdt_team3.BE.repository.customer.JpaCustomerRepository;
 import ssginc_kdt_team3.BE.repository.customer.JpaDataCustomerRepository;
 import ssginc_kdt_team3.BE.repository.grade.GradeRepository;
-import ssginc_kdt_team3.BE.service.admin.CouponManagementService;
+import ssginc_kdt_team3.BE.service.coupon.CouponManagementService;
 
 import java.time.LocalDate;
 import java.util.HashMap;
@@ -30,6 +30,7 @@ public class CustomerService {
   private final CouponManagementService couponService;
   private final CouponProvideRepository couponProvideRepository;
   private final CouponRepository couponRepository;
+  private final GradeRepository gradeRepository;
 
   // 회원가입
   @Transactional
@@ -49,6 +50,10 @@ public class CustomerService {
     //  검증됐으니까 역할, 상태 부여
     customer.setStatus(UserStatus.ACTIVE);
     customer.setRole(UserRole.CUSTOMER);
+
+    // 등급 부여
+    Grade grade = gradeRepository.findById(3L).get();
+    customer.setGrade(grade);
 
     // DB에 저장
     Customer saveCustomer = customerRepository.save(customer);

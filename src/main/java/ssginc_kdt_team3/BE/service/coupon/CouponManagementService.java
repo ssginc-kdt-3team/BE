@@ -1,4 +1,4 @@
-package ssginc_kdt_team3.BE.service.admin;
+package ssginc_kdt_team3.BE.service.coupon;
 
 import lombok.RequiredArgsConstructor;
 import net.bytebuddy.utility.RandomString;
@@ -8,6 +8,7 @@ import ssginc_kdt_team3.BE.DTOs.coupon.CreateCouponDTO;
 import ssginc_kdt_team3.BE.domain.Admin;
 import ssginc_kdt_team3.BE.domain.Coupon;
 import ssginc_kdt_team3.BE.domain.CouponManage;
+import ssginc_kdt_team3.BE.domain.CouponProvide;
 import ssginc_kdt_team3.BE.enums.CouponManageType;
 import ssginc_kdt_team3.BE.repository.admin.JpaDateAdminRepository;
 import ssginc_kdt_team3.BE.repository.coupon.CouponManageRepository;
@@ -52,7 +53,7 @@ public class CouponManagementService {
   }
 
   // 쿠폰을 생성했다는 기록 생성
-  public void manageCoupon(Coupon coupon, Admin admin, CouponManageType manageType) {
+  private void manageCoupon(Coupon coupon, Admin admin, CouponManageType manageType) {
     // 관리자랑 생성된 쿠폰id 받아와서 수정, 삭제 등 변경내역 기록
 
     // couponManage를 저장해야 돼

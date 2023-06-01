@@ -80,6 +80,7 @@ public class OwnerShopService {
                     .businessImg(businessImgUrl)
                     .shopImg(shopImgUrl)
                     .name(addDTO.getShopName())
+                    .phone((addDTO.getPhone()))
                     .location(addDTO.getLocation())
                     .info(addDTO.getShopInfo())
                     .branch(branch)
