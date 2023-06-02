@@ -5,10 +5,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ssginc_kdt_team3.BE.DTOs.customer.*;
 import ssginc_kdt_team3.BE.domain.Customer;
 import ssginc_kdt_team3.BE.domain.Grade;
+import ssginc_kdt_team3.BE.exception.ErrorResponse;
 import ssginc_kdt_team3.BE.repository.customer.JpaDataCustomerRepository;
 import ssginc_kdt_team3.BE.service.customer.CustomerService;
 import ssginc_kdt_team3.BE.service.customer.KakaoService;
@@ -16,9 +19,10 @@ import ssginc_kdt_team3.BE.service.pointManagement.PointManagementService;
 import ssginc_kdt_team3.BE.util.TimeUtils;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -41,19 +45,25 @@ public class CustomerController {
 
   // 회원가입
   @PostMapping("/join")
-  public ResponseEntity<CustomerJoinDTO> join(@RequestBody CustomerJoinDTO customerJoinDTO){
-    CustomerJoinDTO joinDto = customerService.join(customerJoinDTO);
-    if(joinDto == null) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+  public ResponseEntity join(@Validated @RequestBody CustomerJoinDTO customerJoinDTO, BindingResult bindingResult) {
+    if (bindingResult.hasErrors()) {
+      List<String> errors = bindingResult.getAllErrors().stream().map(e -> e.getDefaultMessage()).collect(Collectors.toList());
+      // 200 response with 404 status code
+      return ResponseEntity.ok(new ErrorResponse("404", "Validation failure", errors));
     }
-    return ResponseEntity.status(HttpStatus.OK).body(joinDto);
+      CustomerJoinDTO joinDto = customerService.join(customerJoinDTO);
+      return ResponseEntity.ok(joinDto);
   }
 
   // 중복이메일 검증
   @PostMapping("/emailCheck")
-  public boolean emailCheck(@RequestBody Map<String, String> email){
+  public ResponseEntity emailCheck(@Validated @RequestBody Map<String, String> email) {
     String email1 = email.get("email");
-    return customerService.validateDuplicateCustomer(email1);
+    if(!email1.isEmpty()){
+      return ResponseEntity.ok(new ErrorResponse("400", "Validation failure","이미 가입한 이메일입니다."));
+    } else {
+      return ResponseEntity.ok(email1);
+    }
   }
 
   // 로그인
