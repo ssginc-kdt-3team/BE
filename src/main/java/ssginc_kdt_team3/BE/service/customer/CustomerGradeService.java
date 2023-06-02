@@ -1,33 +1,25 @@
 package ssginc_kdt_team3.BE.service.customer;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ssginc_kdt_team3.BE.DTOs.coupon.CustomerCouponListDTO;
 import ssginc_kdt_team3.BE.DTOs.customer.CustomerGradeDTO;
-import ssginc_kdt_team3.BE.domain.CouponProvide;
 import ssginc_kdt_team3.BE.domain.Customer;
 import ssginc_kdt_team3.BE.domain.Grade;
 import ssginc_kdt_team3.BE.domain.Reservation;
-import ssginc_kdt_team3.BE.enums.CouponStatus;
 import ssginc_kdt_team3.BE.enums.GradeType;
 import ssginc_kdt_team3.BE.enums.ReservationStatus;
-import ssginc_kdt_team3.BE.repository.coupon.CouponProvideRepository;
 import ssginc_kdt_team3.BE.repository.customer.JpaDataCustomerRepository;
 import ssginc_kdt_team3.BE.repository.grade.GradeRepository;
 import ssginc_kdt_team3.BE.repository.reservation.JpaDataReservationRepository;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
-@Component
 public class CustomerGradeService {
   private final JpaDataCustomerRepository customerRepository;
   private final JpaDataReservationRepository reservationRepository;
@@ -75,19 +67,6 @@ public class CustomerGradeService {
       return save.getGrade().getName();
     }
   }
-
-  @Scheduled(cron = "0 0 0 * * *") // grade 변경되면 3개월 뒤 00시 00분 00초에 등급조건 다시 확인
-  public void gradeCheck(){
-    // gradeChangeDate가 오늘부터 3개월 전과 일치하는 값
-    List<Customer> allByGradeChangeDate = customerRepository.findAllByGradeChangeDate(LocalDate.now().minusMonths(3));
-
-    // List 고객을 각자 조건에 맞는 등급 재조정
-    for(Customer c : allByGradeChangeDate) {
-      getGradeChange(c.getId());
-      System.out.println("스케줄 테스트 ==== 성공");
-    }
-  }
-
 
 }
 
