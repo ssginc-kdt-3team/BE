@@ -1,4 +1,4 @@
-package ssginc_kdt_team3.BE.util.service.customer;
+package ssginc_kdt_team3.BE.repository.customer;
 
 import org.springframework.boot.test.context.SpringBootTest;
 
