@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ssginc_kdt_team3.BE.domain.Shop;
 import ssginc_kdt_team3.BE.domain.ShopMenu;
+import ssginc_kdt_team3.BE.enums.ShopCategory;
 import ssginc_kdt_team3.BE.enums.ShopStatus;
 
 import java.time.LocalTime;
@@ -29,6 +30,8 @@ public class ShopDetailDTO {
 
   //ShopMenu테이블
   List<ShopMenuDto> menus;
+  //shopCategory
+  private ShopCategory shopCategory;
 
   public ShopDetailDTO(Shop shop, List<ShopMenu> shopMenuList) {
     this.branchId = shop.getBranch().getId();
@@ -42,6 +45,7 @@ public class ShopDetailDTO {
     this.shopOpenTime = shop.getOperationInfo().getOpenTime();
     this.shopCloseTime = shop.getOperationInfo().getCloseTime();
     this.orderCloseTime = shop.getOperationInfo().getOrderCloseTime();
+    this.shopCategory = shop.getCategory();
     this.menus = new ArrayList<>();
 
     for (ShopMenu shopMenu: shopMenuList) {

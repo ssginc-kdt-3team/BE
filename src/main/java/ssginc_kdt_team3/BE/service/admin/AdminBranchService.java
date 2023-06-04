@@ -76,7 +76,7 @@ public class AdminBranchService {
             Branch save = branchRepository.save(branch);
 
             return Optional.ofNullable(save.getId());
-        } catch(Exception e) {
+        } catch (Exception e) {
             return Optional.empty();
         }
     }
@@ -106,7 +106,7 @@ public class AdminBranchService {
         return false;
     }
 
-    public boolean updateBranch(Long branchId, BranchUpdateDTO updateDTO, MultipartFile multipartFile){
+    public boolean updateBranch(Long branchId, BranchUpdateDTO updateDTO, MultipartFile multipartFile) {
         Optional<Branch> byId = branchRepository.findById(branchId);
 
         if (byId.isPresent()) {
@@ -131,7 +131,7 @@ public class AdminBranchService {
         List<Branch> all = branchRepository.findAll();
         List<BranchAdminListDTO> result = new ArrayList<>();
         for (Branch branch : all) {
-            result.add( new BranchAdminListDTO(branch));
+            result.add(new BranchAdminListDTO(branch));
         }
 
         return result;

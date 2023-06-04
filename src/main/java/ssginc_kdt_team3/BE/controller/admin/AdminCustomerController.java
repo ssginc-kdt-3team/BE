@@ -46,7 +46,6 @@ public class AdminCustomerController {
 
     @GetMapping("/findById/{id}")
     public Customer findOneCustomer(@PathVariable(name = "id") Long CustomerId) throws JsonProcessingException {
-//        CustomerDetailDTO CustomerDetailDTO = customerService.findCustomerById(CustomerId);
 
         Optional<Customer> customerById = customerService.findRawCustomerById(CustomerId);
 

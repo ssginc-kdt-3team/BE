@@ -4,6 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import ssginc_kdt_team3.BE.DTOs.menu.MenuDTO;
 import ssginc_kdt_team3.BE.domain.Shop;
+import ssginc_kdt_team3.BE.enums.ShopCategory;
 
 import java.util.List;
 
@@ -32,6 +33,8 @@ public class OwnerShopDetailDTO {
     int seat; // 매장 최대 예약 가능 수
 
     List<MenuDTO> menus;
+
+    private ShopCategory shopCategory;
 
     public OwnerShopDetailDTO(Shop shop, List<MenuDTO> menus) {
         this.ownerId = shop.getOwner().getId();

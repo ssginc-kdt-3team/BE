@@ -35,6 +35,8 @@ public class BranchShopController {
                     .body(branchShopListService.BranchShop(BranchId));
     //고객이 지점내 매장조회
     }
+//    @GetMapping("/list/{id}/{userId}")
+//    public
 
     @GetMapping("/detail/{id}")
     public ResponseEntity ShopDetail(@PathVariable("id") Long id) throws Exception {

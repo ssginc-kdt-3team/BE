@@ -5,11 +5,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import ssginc_kdt_team3.BE.DTOs.reservation.CastCsvDTO;
 import ssginc_kdt_team3.BE.domain.Reservation;
 import ssginc_kdt_team3.BE.enums.ReservationStatus;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -38,12 +35,12 @@ public interface JpaDataReservationRepository extends JpaRepository<Reservation,
 
     Page<Reservation> findAllByShop_BranchId(Long branchId, Pageable pageable);
 
-    @Query("SELECT new ssginc_kdt_team3.BE.DTOs.reservation.CastCsvDTO(r.reservationDate, r.id, r.status, s.id, c.id, c.role, c.status, b.id) " +
-            "FROM Reservation r " +
-            "LEFT JOIN r.customer c " +
-            "LEFT JOIN r.shop s " +
-            "LEFT JOIN s.branch b")
-    List<CastCsvDTO> findAllByReservationCsvDate();
+//    @Query("SELECT new ssginc_kdt_team3.BE.DTOs.reservation.CastCsvDTO(r.reservationDate, r.id, r.status, s.id, c.id, c.role, c.status, b.id) " +
+//            "FROM Reservation r " +
+//            "LEFT JOIN r.customer c " +
+//            "LEFT JOIN r.shop s " +
+//            "LEFT JOIN s.branch b")
+//    List<CastCsvDTO> findAllByReservationCsvDate();
 
 //    @Query("SELECT r FROM Reservation r")
 //    List<LocalDateTime> findAllByReservationDateCsv();

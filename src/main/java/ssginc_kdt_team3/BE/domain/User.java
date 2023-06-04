@@ -48,6 +48,9 @@ public class User {
     @Column(name = "user_birthday")
     protected LocalDate birthday;
 
+    @Column(name = "user_age")
+    protected int age;
+
     @Column(name = "user_gender")
     protected Boolean gender;
 

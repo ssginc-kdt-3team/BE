@@ -3,6 +3,7 @@ package ssginc_kdt_team3.BE.domain;
 import com.sun.istack.NotNull;
 import lombok.*;
 import ssginc_kdt_team3.BE.DTOs.shop.OwnerShopUpdateDTO;
+import ssginc_kdt_team3.BE.enums.ShopCategory;
 import ssginc_kdt_team3.BE.enums.ShopStatus;
 import ssginc_kdt_team3.BE.util.TimeUtils;
 import javax.persistence.*;
@@ -31,6 +32,11 @@ public class Shop {
     @Column(name = "shop_status")
     @Enumerated(EnumType.STRING)
     private ShopStatus status;
+
+    @NotNull
+    @Column(name = "shop_category")
+    @Enumerated(EnumType.STRING)
+    private ShopCategory category;
 
     //int -> String으로 수정 (0502 임태경)
     @NotNull
@@ -75,7 +81,7 @@ public class Shop {
 //    private List<Reservation> reservationList = new ArrayList<>();
 
     @Builder
-    public Shop(long id, String name, String info, ShopStatus status, String location, String shopImg, String businessImg, String businessNum, String businessName, Branch branch, Owner owner, ShopOperationInfo operationInfo, String phone) {
+    public Shop(long id, String name, String info, ShopStatus status, String location, String shopImg, String businessImg, String businessNum, String businessName, Branch branch, Owner owner, ShopOperationInfo operationInfo, String phone, ShopCategory category) {
         this.id = id;
         this.name = name;
         this.info = info;
@@ -89,6 +95,7 @@ public class Shop {
         this.owner = owner;
         this.operationInfo = operationInfo;
         this.phone = phone;
+        this.category = category;
     }
 
     public boolean update(Long shopId, OwnerShopUpdateDTO updateDTO) {
