@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -12,6 +13,9 @@ import org.springframework.web.bind.annotation.*;
 import ssginc_kdt_team3.BE.DTOs.branch.BranchShopDTO;
 import ssginc_kdt_team3.BE.DTOs.customer.ReviewResponseDTO;
 import ssginc_kdt_team3.BE.DTOs.shop.ShopDetailDTO;
+import ssginc_kdt_team3.BE.domain.Branch;
+import ssginc_kdt_team3.BE.domain.User;
+import ssginc_kdt_team3.BE.service.customer.CustomerPersonalizeShopService;
 import ssginc_kdt_team3.BE.service.shop.ShopDetailReviewService;
 import ssginc_kdt_team3.BE.service.shop.ShopDetailService;
 import ssginc_kdt_team3.BE.service.branch.BranchShopListService;
@@ -26,6 +30,8 @@ public class BranchShopController {
     private final BranchShopListService branchShopListService;
     private final ShopDetailService detailService;
     private final ShopDetailReviewService reviewService;
+    private final CustomerPersonalizeShopService personalizeShopService;
+    //0604 신영 추가 : 고객 맞춤 매장 추천
 
     @GetMapping("/list/{id}")
     public ResponseEntity<List<BranchShopDTO>> branchShopList(@PathVariable("id")Long BranchId) throws Exception {
@@ -35,8 +41,16 @@ public class BranchShopController {
                     .body(branchShopListService.BranchShop(BranchId));
     //고객이 지점내 매장조회
     }
-//    @GetMapping("/list/{id}/{userId}")
-//    public
+    @PostMapping("list/{branch_id}/{user_id}")
+    public ResponseEntity<List<BranchShopDTO>> branchRecommendShop(@PathVariable("branch_id")Long BranchId,@PathVariable("user_id")Long UserId){
+
+        List<BranchShopDTO> personalizeShop = personalizeShopService.customerPersonalizeShop(BranchId, UserId);
+
+            return ResponseEntity.status(HttpStatus.OK)
+                    .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                    .body(personalizeShop);
+
+    }//0604 신영 추가 : 고객 맞춤 매장 추천
 
     @GetMapping("/detail/{id}")
     public ResponseEntity ShopDetail(@PathVariable("id") Long id) throws Exception {

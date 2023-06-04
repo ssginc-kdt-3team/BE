@@ -83,6 +83,7 @@ public class OwnerShopService {
                     .phone((addDTO.getPhone()))
                     .location(addDTO.getLocation())
                     .info(addDTO.getShopInfo())
+                    .category(addDTO.getShopCategory())
                     .branch(branch)
                     .owner(owner)
                     .status(ShopStatus.OPEN)

@@ -5,6 +5,7 @@ import ssginc_kdt_team3.BE.enums.ShopCategory;
 import ssginc_kdt_team3.BE.enums.ShopStatus;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class BranchShopDTO {
 

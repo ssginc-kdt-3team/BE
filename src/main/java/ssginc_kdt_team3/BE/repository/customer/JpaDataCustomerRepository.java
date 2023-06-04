@@ -31,6 +31,12 @@ public interface JpaDataCustomerRepository extends JpaRepository<Customer, Long>
             "WHERE b.id = :id")
     List<BranchShopDTO> BranchIdByShop(@Param("id")Long id);
 
+    @Query("SELECT new ssginc_kdt_team3.BE.DTOs.branch.BranchShopDTO(s.id, s.name, s.location, s.shopImgUrl,s.status, s.category) " +
+            "FROM Branch b " +
+            "LEFT JOIN Shop s ON b.id = s.branch.id " +
+            "WHERE s.id = :id")
+    BranchShopDTO ShopIdByShop(@Param("id")Long id);
+
     // 0526 이현: 고객 개인정보찾기 기능위해 추가
     Optional<Customer> findByNameAndPhoneNumber(String name, String phone);
     Optional<Customer> findByNameAndEmailAndPhoneNumber(String name, String email, String phone);

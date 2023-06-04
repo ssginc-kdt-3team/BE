@@ -67,12 +67,16 @@ dependencies {
 
 	//알림 서비스 설정 라이브러리 추가 - 신영 0525
 	implementation 'com.squareup.okhttp3:okhttp:4.9.3'
+
+	//고객 맞춤 매장 추천 서비스 - awsSdk추가 신영
+	implementation 'software.amazon.awssdk:sdk-core:2.20.78'
+	implementation 'software.amazon.awssdk:personalizeruntime:2.20.78'
+
 }
 
-
-tasks.named('test') {
-    useJUnitPlatform()
-}
+//tasks.named('test') {
+//    useJUnitPlatform()
+//}
 
 jar {
 	enabled = false

@@ -31,4 +31,7 @@ public class Customer extends User{
   @Column(name = "customer_gradeDate")
   private LocalDate gradeChangeDate;
 
+  //0604 : 신영 ->고객 나이 추가
+  @Column(name = "user_age")
+  protected int age;
 }

@@ -45,7 +45,10 @@ public class CustomerService {
     customer.setBirthday(customerJoinDTO.getBirthday());
     customer.setAddress(customerJoinDTO.getAddress());
     customer.setGender(customerJoinDTO.getGender());
+    customer.setAge(customerJoinDTO.getAge());
+    //0604 신영 추가 : 고객 나이
     customer.setType(CustomerType.NORMAL);
+
 
     //  검증됐으니까 역할, 상태 부여
     customer.setStatus(UserStatus.ACTIVE);
