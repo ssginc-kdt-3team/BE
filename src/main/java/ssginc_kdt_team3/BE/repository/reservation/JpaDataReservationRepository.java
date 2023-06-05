@@ -50,5 +50,10 @@ public interface JpaDataReservationRepository extends JpaRepository<Reservation,
     @Query("select r from Reservation r where (r.reservationDate >= :almostTime and r.reservationDate <= :almostTime2) and r.status = :condition")
     List<Reservation> findAlmostReservation(@Param("almostTime") LocalDateTime almostTime, @Param("almostTime2") LocalDateTime almostTime2, @Param("condition") ReservationStatus condition);
 
+    @Query("select count(r) from Reservation r where (r.reservationDate BETWEEN :startDate AND :endDate) and r.shop.id = :shopId")
+    int countAllReservation(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate, @Param("shopId") Long shopId);
+
+    @Query("select count(r) from Reservation r where (r.reservationDate BETWEEN :startDate AND :endDate) and r.status = :condition and r.shop.id = :shopId")
+    int countReservation(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate, @Param("condition") ReservationStatus condition, @Param("shopId") Long shopId);
 
 }

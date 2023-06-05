@@ -27,7 +27,7 @@ public class Review {
     private String contents;
 
     @NotNull
-    @Column(name = "review_")
+    @Column(name = "review_point")
     private int point;
 
     @NotNull

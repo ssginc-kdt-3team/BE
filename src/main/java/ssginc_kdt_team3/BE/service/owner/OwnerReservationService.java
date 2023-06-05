@@ -7,7 +7,10 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ssginc_kdt_team3.BE.DTOs.reservation.OwnerMainDailyReservationDTO;
+import ssginc_kdt_team3.BE.DTOs.reservation.OwnerMainMonthlyReservationDTO;
 import ssginc_kdt_team3.BE.DTOs.reservation.OwnerReservationDTO;
+import ssginc_kdt_team3.BE.DTOs.reservation.reservationPossibleDTO;
 import ssginc_kdt_team3.BE.domain.Deposit;
 import ssginc_kdt_team3.BE.domain.PointManagement;
 import ssginc_kdt_team3.BE.domain.Reservation;
@@ -21,8 +24,11 @@ import ssginc_kdt_team3.BE.repository.reservation.OwnerRepository;
 import ssginc_kdt_team3.BE.repository.shop.JpaDataShopRepository;
 import ssginc_kdt_team3.BE.service.pointManagement.PointManagementService;
 import ssginc_kdt_team3.BE.util.TimeUtils;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -53,6 +59,10 @@ public class OwnerReservationService {
                 reservation.setStatus(ReservationStatus.DONE);
                 reservation.setChangeTime(TimeUtils.findNow());
                 reservationRepository.save(reservation);
+
+                Deposit reservationDeposit = depositRepository.findReservationDeposit(id);
+                reservationDeposit.setStatus(DepositStatus.PAYMENT);
+                depositRepository.save(reservationDeposit);
 
 
                 return true;
@@ -330,6 +340,64 @@ public class OwnerReservationService {
             List<Reservation> allTime = ownerRepository.findDateBetweenAll(now.with(LocalTime.of(1, 1)), now.with(LocalTime.of(23, 59)), shop.getId());
             return toDtoPage(allTime, pageable);
         }
+        return null;
+    }
+
+    public OwnerMainMonthlyReservationDTO showMainMonthlyReservation(Long ownerId) {
+
+        Optional<Shop> shopByOwnerId = shopRepository.findShopByOwner_id(ownerId);
+
+        if (shopByOwnerId.isPresent()) {
+
+            Shop shop = shopByOwnerId.get();
+
+            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime startOfMonth = now.with(TemporalAdjusters.firstDayOfMonth())
+                    .with(LocalTime.MIN);
+            LocalDateTime endOfMonth = now.with(TemporalAdjusters.lastDayOfMonth())
+                    .with(LocalTime.MAX);
+
+            int whole = reservationRepository.countAllReservation(startOfMonth, endOfMonth, shop.getId());
+            int done = reservationRepository.countReservation(startOfMonth, endOfMonth, ReservationStatus.DONE, shop.getId());
+            int noShow = reservationRepository.countReservation(startOfMonth, endOfMonth, ReservationStatus.NOSHOW, shop.getId());
+            int i4 = reservationRepository.countReservation(startOfMonth, endOfMonth, ReservationStatus.IMMINENT, shop.getId());
+            int i5 = reservationRepository.countReservation(startOfMonth, endOfMonth, ReservationStatus.CANCEL, shop.getId());
+            int cancel = i4 + i5;
+
+            return new OwnerMainMonthlyReservationDTO(whole,
+                    noShow,
+                    (int) Math.round(((double)noShow/(double)whole) * 100),
+                    done,
+                    (int) Math.round((((double)done/(double)whole))*100),
+                    cancel,
+                    (int) Math.round((((double)cancel/(double)whole))*100));
+        }
+
+        return null;
+    }
+
+    public List<OwnerMainDailyReservationDTO> showMainDailyReservationCnt(Long ownerId) {
+
+        Optional<Shop> byId = shopRepository.findShopByOwner_id(ownerId);
+        List<OwnerMainDailyReservationDTO> result = new ArrayList<>();
+
+        if (byId.isPresent()) {
+            Shop shop = byId.get();
+            LocalTime openTime = shop.getOperationInfo().getOpenTime();
+            LocalDate getDate = LocalDate.now();
+            LocalTime orderCloseTime = shop.getOperationInfo().getOrderCloseTime();
+
+            for (LocalTime time = openTime; time.isBefore(orderCloseTime.plusMinutes(1)); time = time.plusMinutes(30)) {
+
+                LocalDateTime when = LocalDateTime.of(getDate, time);
+                int cnt = reservationRepository.countByReservationDateAndShop_Id(when, shop.getId());
+                OwnerMainDailyReservationDTO ownerMainDailyReservationDTO = new OwnerMainDailyReservationDTO(time.toString(), cnt);
+                result.add(ownerMainDailyReservationDTO);
+            }
+
+            return result;
+        }
+
         return null;
     }
 
