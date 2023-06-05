@@ -2,12 +2,14 @@ package ssginc_kdt_team3.BE.service.owner;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssginc_kdt_team3.BE.DTOs.deposit.OwnerDepositDTO;
+import ssginc_kdt_team3.BE.DTOs.deposit.OwnerMainDepositDTO;
 import ssginc_kdt_team3.BE.domain.Deposit;
 import ssginc_kdt_team3.BE.domain.Shop;
 import ssginc_kdt_team3.BE.enums.DepositStatus;
@@ -15,8 +17,10 @@ import ssginc_kdt_team3.BE.repository.deposit.DepositRepository;
 import ssginc_kdt_team3.BE.repository.shop.JpaDataShopRepository;
 
 import java.time.*;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -60,6 +64,34 @@ public class OwnerDepositService {
     }
     return null;
 
+  }
+
+  public OwnerMainDepositDTO showMonthlyDeposit(Long ownerId) {
+
+    Optional<Shop> shopByOwnerId = shopRepository.findShopByOwner_id(ownerId);
+
+    if (shopByOwnerId.isPresent()) {
+      Shop shop = shopByOwnerId.get();
+      LocalDateTime now = LocalDateTime.now();
+      LocalDateTime startOfMonth = now.with(TemporalAdjusters.firstDayOfMonth())
+              .with(LocalTime.MIN);
+      LocalDateTime endOfMonth = now.with(TemporalAdjusters.lastDayOfMonth())
+              .with(LocalTime.MAX);
+
+      return getOwnerMainDepositDTO(shop, startOfMonth, endOfMonth);
+    }
+
+    return null;
+  }
+
+  private OwnerMainDepositDTO getOwnerMainDepositDTO(Shop shop, LocalDateTime startOfMonth, LocalDateTime endOfMonth) {
+    int monthlyAll = depositRepository.findMonthlyAll(shop.getId(), startOfMonth, endOfMonth);
+    int monthlyPenalty = depositRepository.findMonthlyPenalty(shop.getId(), startOfMonth, endOfMonth);
+    int monthlyPartRefund = depositRepository.findMonthlyRefund(shop.getId(), DepositStatus.PART_RETURN, startOfMonth, endOfMonth);
+    int monthlyAllRefund = depositRepository.findMonthlyRefund(shop.getId(), DepositStatus.RETURN, startOfMonth, endOfMonth);
+    int monthlyPayment = depositRepository.findMonthlyPayment(shop.getId(), DepositStatus.PAYMENT, startOfMonth, endOfMonth);
+    OwnerMainDepositDTO ownerMainDepositDTO = new OwnerMainDepositDTO(monthlyAll, monthlyPenalty, monthlyAllRefund + monthlyPartRefund, monthlyPayment);
+    return ownerMainDepositDTO;
   }
 
   // List -> DTO

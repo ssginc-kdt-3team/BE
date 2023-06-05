@@ -8,11 +8,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ssginc_kdt_team3.BE.DTOs.admin.AdminOwnerDetailDTO;
+import ssginc_kdt_team3.BE.DTOs.deposit.OwnerMainDepositDTO;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerJoinDTO;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerLoginDTO;
-import ssginc_kdt_team3.BE.service.owner.OwnerJoinService;
-import ssginc_kdt_team3.BE.service.owner.OwnerLoginService;
-import ssginc_kdt_team3.BE.service.owner.OwnerViewSelfPrivacyService;
+import ssginc_kdt_team3.BE.service.owner.*;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,6 +27,10 @@ public class OwnerController {
     private final OwnerJoinService ownerJoinService;
 
     private final OwnerLoginService Service;
+
+    private final OwnerDepositService depositService;
+
+    private final OwnerReservationService reservationService;
 
     @PostMapping("/join")
     public ResponseEntity<String> joinControl(@RequestBody OwnerJoinDTO ownerJoinDTO) {
@@ -59,5 +63,32 @@ public class OwnerController {
                     .body(ownerViewSelfPrivacyService.ownerViewSelfDetail(id));
 
             return successResponse;
+    }
+
+    @GetMapping("/main/reservation/{id}")
+    public ResponseEntity ownerMainMonthReservation(@PathVariable("id") Long id) {
+        if (reservationService.showMainMonthlyReservation(id) != null) {
+            return ResponseEntity.ok(reservationService.showMainMonthlyReservation(id));
+        }
+
+        return ResponseEntity.badRequest().body("id에 해당하는 점주의 매장이 존재하지 않습니다.");
+    }
+
+    @GetMapping("/main/deposit/{id}")
+    public ResponseEntity ownerMainDeposit(@PathVariable("id") Long id) {
+        if (depositService.showMonthlyDeposit(id) != null) {
+            return ResponseEntity.ok(depositService.showMonthlyDeposit(id));
+        }
+
+        return ResponseEntity.badRequest().body("id에 해당하는 점주의 매장이 존재하지 않습니다.");
+    }
+
+    @GetMapping("/main/today/{id}")
+    public ResponseEntity ownerMainTodayReservation(@PathVariable("id") Long id) {
+        if (reservationService.showMainDailyReservationCnt(id) != null) {
+            return ResponseEntity.ok(reservationService.showMainDailyReservationCnt(id));
+        }
+
+        return ResponseEntity.badRequest().body("id에 해당하는 점주의 매장이 존재하지 않습니다.");
     }
 }

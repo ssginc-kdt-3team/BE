@@ -7,6 +7,8 @@ import ssginc_kdt_team3.BE.domain.Reservation;
 import ssginc_kdt_team3.BE.enums.ReservationStatus;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.temporal.TemporalAdjusters;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -64,4 +66,24 @@ class JpaDataReservationRepositoryTest {
 //            System.out.println(reservation.toString());
 //        }
 //    }
+
+    @Test
+    void cntReservation() {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime startOfMonth = now.with(TemporalAdjusters.firstDayOfMonth())
+                .with(LocalTime.MIN);
+        LocalDateTime endOfMonth = now.with(TemporalAdjusters.lastDayOfMonth())
+                .with(LocalTime.MAX);
+
+        int i = reservationRepository.countAllReservation(startOfMonth, endOfMonth, 1L);
+        int i2 = reservationRepository.countReservation(startOfMonth, endOfMonth, ReservationStatus.DONE, 1L);
+        int i3 = reservationRepository.countReservation(startOfMonth, endOfMonth, ReservationStatus.NOSHOW, 1L);
+        int i4 = reservationRepository.countReservation(startOfMonth, endOfMonth, ReservationStatus.IMMINENT, 1L);
+        int i5 = reservationRepository.countReservation(startOfMonth, endOfMonth, ReservationStatus.CANCEL, 1L);
+
+        System.out.println("전체 " + i);
+        System.out.println("전체 방문 " + i2);
+        System.out.println("전체 노쇼 " + i3);
+        System.out.println("전체 취소 " + i4+i5);
+    }
 }
