@@ -20,7 +20,7 @@ public class OwnerLoginService {
     private final DataOwnerRepository Repo;
 
 
-    public Long loginCheck(OwnerLoginDTO login) throws Exception {
+    public Owner loginCheck(OwnerLoginDTO login) throws Exception {
 
         String email = login.getEmail();
         String pw = login.getPassword();
@@ -38,8 +38,7 @@ public class OwnerLoginService {
             throw new Exception("비밀번호가 일치하지 않습니다!");
         }else {
             Optional<Owner> byEmail = Repo.findByEmail(email);
-            long id = byEmail.get().getId();
-            return id;
+            return byEmail.get();
         }
 
     }

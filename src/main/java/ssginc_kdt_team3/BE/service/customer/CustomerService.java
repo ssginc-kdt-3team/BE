@@ -98,6 +98,7 @@ public class CustomerService {
         log.info("로그인 성공");
         Map map = new HashMap();
         map.put("id", customerInfo.get().getId());
+        map.put("name", customerInfo.get().getName());
         return map;
       } else {
         log.info("비밀번호 불일치 실패");
