@@ -52,7 +52,7 @@ public class CustomerService {
     customer.setRole(UserRole.CUSTOMER);
 
     // 등급 부여
-    Grade grade = gradeRepository.findById(3L).get();
+    Grade grade = gradeRepository.findByName(GradeType.Welcome);
     customer.setGrade(grade);
 
     // DB에 저장
@@ -60,7 +60,6 @@ public class CustomerService {
 
     // 회원가입 된 다음에 쿠폰 발행
     Coupon coupon = couponRepository.findByCouponName("신규가입 쿠폰").orElse(null);
-
     issueCoupon(saveCustomer, CouponStatus.GIVEN, coupon);
 
     return customerJoinDTO;
@@ -82,12 +81,10 @@ public class CustomerService {
     couponProvideRepository.save(provide);
   }
 
-  public boolean validateDuplicateCustomer(String email) {
-    Optional<Customer> byEmail = customerRepository.findByEmail(email);
-    if(byEmail.isPresent()){
-      return false;
-    }
-    return true;
+  public void validateDuplicateCustomer(String email) {
+    customerRepository.findByEmail(email).ifPresent(
+        m -> {throw new IllegalStateException("이미 가입한 이메일입니다.");
+    });
   }
 
   //로그인
