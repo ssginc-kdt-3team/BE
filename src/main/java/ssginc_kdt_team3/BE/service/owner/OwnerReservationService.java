@@ -7,10 +7,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ssginc_kdt_team3.BE.DTOs.reservation.OwnerMainDailyReservationDTO;
-import ssginc_kdt_team3.BE.DTOs.reservation.OwnerMainMonthlyReservationDTO;
-import ssginc_kdt_team3.BE.DTOs.reservation.OwnerReservationDTO;
-import ssginc_kdt_team3.BE.DTOs.reservation.reservationPossibleDTO;
+import ssginc_kdt_team3.BE.DTOs.reservation.*;
 import ssginc_kdt_team3.BE.domain.*;
 import ssginc_kdt_team3.BE.enums.DepositStatus;
 import ssginc_kdt_team3.BE.enums.ReservationStatus;
@@ -397,6 +394,41 @@ public class OwnerReservationService {
         }
 
         return null;
+    }
+
+    public List<OwnerReservationCalculateListDTO> showCalculateLists(Long shopId) {
+        Optional<Shop> byId = shopRepository.findById(shopId);
+        List<OwnerReservationCalculateListDTO> result = new ArrayList<>();
+
+        if (byId.isPresent()) {
+            LocalDateTime startTime = LocalDateTime.now().minusHours(2);
+
+            List<Reservation> reservations = reservationRepository.findAllByStatusAndShop_IdAndReservationDateBetweenOrderByReservationDateDesc(ReservationStatus.DONE, shopId, startTime, LocalDateTime.now());
+            for (Reservation r : reservations) {
+                OwnerReservationCalculateListDTO reservationCalculateListDTO = new OwnerReservationCalculateListDTO(r);
+                result.add(reservationCalculateListDTO);
+            }
+        }
+
+        return result;
+    }
+
+    public String calculatePayment(Long reservationId) {
+
+        Optional<Reservation> byId = reservationRepository.findById(reservationId);
+
+        if (byId.isPresent() && byId.get().getStatus().equals(ReservationStatus.DONE)) {
+            Deposit reservationDeposit = depositRepository.findReservationDeposit(reservationId);
+
+            reservationDeposit.setStatus(DepositStatus.PAYMENT);
+            int discount = reservationDeposit.getOrigin_value();
+            depositRepository.save(reservationDeposit);
+
+            return discount+"원이 계산되었습니다.";
+
+        }
+
+        return "잘못된 요청입니다.";
     }
   
     private void savePoint(Long id, Reservation reservation) {

@@ -11,6 +11,7 @@ import ssginc_kdt_team3.BE.DTOs.admin.AdminOwnerDetailDTO;
 import ssginc_kdt_team3.BE.DTOs.deposit.OwnerMainDepositDTO;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerJoinDTO;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerLoginDTO;
+import ssginc_kdt_team3.BE.domain.Owner;
 import ssginc_kdt_team3.BE.service.owner.*;
 
 import java.util.HashMap;
@@ -48,8 +49,9 @@ public class OwnerController {
 
         try {
             Map map = new HashMap();
-            Long ownerId = Service.loginCheck(ownerLogin);
-            map.put("id", ownerId);
+            Owner owner = Service.loginCheck(ownerLogin);
+            map.put("id", owner.getId());
+            map.put("name", owner.getName());
             return new ResponseEntity<>(map, HttpStatus.OK);
         } catch (Exception e) {
             return null;
