@@ -22,7 +22,7 @@ import java.util.Map;
 public class OwnerReviewController {
   private final OwnerReviewService reviewService;
 
-  @GetMapping("/reviewList/{type}/{id}/{page}")
+  @PostMapping("/reviewList/{type}/{id}/{page}")
   public ResponseEntity<Page<OwnerReviewListDTO>> showReviewList(@PathVariable(name = "type") String type,
                                                                  @PathVariable(name = "id") Long ownerId,
                                                                  @PathVariable(name = "page") int page,

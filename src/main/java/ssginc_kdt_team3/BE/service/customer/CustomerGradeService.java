@@ -48,13 +48,13 @@ public class CustomerGradeService {
     System.out.println("reservationNoShow==" + reservationNoShow.size());
 
     // 2. 예약횟수가 조건 충족하면 grade 변경
-    if (reservationDone.size()-reservationNoShow.size() >= 10) {
+    if (reservationDone.size()-reservationNoShow.size() >= gradeRepository.findByName(GradeType.Gold).getRequirement()) {
       customer.setGrade(gradeRepository.findByName(GradeType.Gold));
       customer.setGradeChangeDate(LocalDate.now());
       Customer save = customerRepository.save(customer);
       return save.getGrade().getName();
 
-    }else if(reservationDone.size()-reservationNoShow.size() >= 5) {
+    }else if(reservationDone.size()-reservationNoShow.size() >= gradeRepository.findByName(GradeType.Green).getRequirement()) {
       customer.setGrade(gradeRepository.findByName(GradeType.Green));
       customer.setGradeChangeDate(LocalDate.now());
       Customer save = customerRepository.save(customer);
