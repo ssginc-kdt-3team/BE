@@ -483,18 +483,17 @@ public class OwnerReservationService {
     private static LocalDateTime getLastQuarterFirstDay(LocalDateTime dateTime) {
         int currentYear = dateTime.getYear();
         int currentQuarter = (dateTime.getMonthValue() - 1) / 3 + 1;
-        int lastQuarter = currentQuarter - 1;
-        int lastQuarterFirstMonth = (lastQuarter - 1) * 3 + 1;
+        int currentQuarterFirstMonth = (currentQuarter - 1) * 3 + 1;
 
-        return LocalDateTime.of(currentYear, Month.of(lastQuarterFirstMonth), 1, 0, 0, 0);
+        return LocalDateTime.of(currentYear, Month.of(currentQuarterFirstMonth), 1, 0, 0, 0);
     }
 
     private static LocalDateTime getLastQuarterLastDay(LocalDateTime dateTime) {
-        LocalDateTime lastQuarterFirstDay = getLastQuarterFirstDay(dateTime);
-        int lastQuarterLastMonth = lastQuarterFirstDay.getMonthValue() + 2;
-        int lastQuarterLastDay = lastQuarterFirstDay.withMonth(lastQuarterLastMonth).withDayOfMonth(1).toLocalDate().lengthOfMonth();
+        LocalDateTime currentQuarterFirstDay = getLastQuarterFirstDay(dateTime);
+        int currentQuarterLastMonth = currentQuarterFirstDay.getMonthValue() + 2;
+        int currentQuarterLastDay = currentQuarterFirstDay.withMonth(currentQuarterLastMonth).withDayOfMonth(1).toLocalDate().lengthOfMonth();
 
-        return LocalDateTime.of(lastQuarterFirstDay.getYear(), lastQuarterLastMonth, lastQuarterLastDay, 23, 59, 59);
+        return LocalDateTime.of(currentQuarterFirstDay.getYear(), currentQuarterLastMonth, currentQuarterLastDay, 23, 59, 59);
     }
   
     private void savePoint(Long id, Reservation reservation) {
