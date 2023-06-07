@@ -12,6 +12,7 @@ import ssginc_kdt_team3.BE.DTOs.shop.AdminShopUpdateDTO;
 import ssginc_kdt_team3.BE.domain.Shop;
 import ssginc_kdt_team3.BE.domain.ShopMenu;
 import ssginc_kdt_team3.BE.domain.ShopOperationInfo;
+import ssginc_kdt_team3.BE.enums.ShopCategory;
 import ssginc_kdt_team3.BE.enums.ShopStatus;
 import ssginc_kdt_team3.BE.repository.menu.JpaDataShopMenuRepository;
 import ssginc_kdt_team3.BE.repository.shop.JpaDataShopOperationInfoRepository;

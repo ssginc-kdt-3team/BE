@@ -2,6 +2,7 @@ package ssginc_kdt_team3.BE.DTOs.shop;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
+import ssginc_kdt_team3.BE.enums.ShopCategory;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -54,4 +55,7 @@ public class ShopAddDTO {
 
     @NotNull
     private int seat;
+
+    @NotNull
+    private ShopCategory shopCategory;
 }

@@ -1,1 +1,9 @@
 rootProject.name = 'BE'
+
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+        maven { url 'https://sdk-for-java.amazonwebservices.com/2/aws-java-sdk-bom' }
+    }
+}
+//고객 맞춤 매장 추천 서비스 - AWS SDK Java 레포지토리 추가

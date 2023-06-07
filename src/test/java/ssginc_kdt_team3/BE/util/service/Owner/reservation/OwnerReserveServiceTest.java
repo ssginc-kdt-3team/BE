@@ -1,4 +1,4 @@
-package ssginc_kdt_team3.BE.service.Owner.reservation;
+package ssginc_kdt_team3.BE.util.service.Owner.reservation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

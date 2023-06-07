@@ -3,6 +3,7 @@ package ssginc_kdt_team3.BE.DTOs.shop;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import ssginc_kdt_team3.BE.enums.ShopCategory;
 import ssginc_kdt_team3.BE.enums.ShopStatus;
 
 import java.time.LocalTime;

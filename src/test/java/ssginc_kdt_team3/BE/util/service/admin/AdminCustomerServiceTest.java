@@ -1,19 +1,6 @@
-package ssginc_kdt_team3.BE.service.admin;
+package ssginc_kdt_team3.BE.util.service.admin;
 
-import org.junit.jupiter.api.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import ssginc_kdt_team3.BE.DTOs.customer.CustomerUpdateDTO;
-import ssginc_kdt_team3.BE.domain.Customer;
-import ssginc_kdt_team3.BE.enums.UserRole;
-import ssginc_kdt_team3.BE.enums.UserStatus;
-import ssginc_kdt_team3.BE.repository.customer.JpaDataCustomerRepository;
-
-
-import java.time.LocalDate;
-import java.util.Optional;
-
-import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 class AdminCustomerServiceTest {
