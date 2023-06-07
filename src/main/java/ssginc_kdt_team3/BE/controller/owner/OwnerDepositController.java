@@ -49,7 +49,7 @@ public class OwnerDepositController {
     return response;
   }
 
-  @PostMapping("/all/{id}")
+  @PostMapping("/penalty/{id}")
   public ResponseEntity<Map<String, String>> getAllPenalty(@PathVariable(name = "id") Long ownerId,
                                             @RequestBody Map<String, String> request) {
     Map<String, String> response = new HashMap<>();
