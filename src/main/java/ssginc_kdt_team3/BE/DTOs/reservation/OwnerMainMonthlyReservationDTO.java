@@ -1,6 +1,7 @@
 package ssginc_kdt_team3.BE.DTOs.reservation;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -16,5 +17,4 @@ public class OwnerMainMonthlyReservationDTO {
     private int doneRate;
     private int cancelValue;
     private int cancelRate;
-
 }

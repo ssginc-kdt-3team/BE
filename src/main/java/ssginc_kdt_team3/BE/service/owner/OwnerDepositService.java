@@ -121,12 +121,11 @@ public class OwnerDepositService {
   }
 
   private OwnerMainDepositDTO getOwnerMainDepositDTO(Shop shop, LocalDateTime startOfMonth, LocalDateTime endOfMonth) {
-    int monthlyAll = depositRepository.findMonthlyAll(shop.getId(), startOfMonth, endOfMonth);
+    int last3MonthlyPenalty = depositRepository.findMonthlyPenalty(shop.getId(), startOfMonth.minusMonths(3), endOfMonth.minusMonths(3));
+    int last2MonthlyPenalty = depositRepository.findMonthlyPenalty(shop.getId(), startOfMonth.minusMonths(2), endOfMonth.minusMonths(2));
+    int lastMonthlyPenalty = depositRepository.findMonthlyPenalty(shop.getId(), startOfMonth.minusMonths(1), endOfMonth.minusMonths(1));
     int monthlyPenalty = depositRepository.findMonthlyPenalty(shop.getId(), startOfMonth, endOfMonth);
-    int monthlyPartRefund = depositRepository.findMonthlyRefund(shop.getId(), DepositStatus.PART_RETURN, startOfMonth, endOfMonth);
-    int monthlyAllRefund = depositRepository.findMonthlyRefund(shop.getId(), DepositStatus.RETURN, startOfMonth, endOfMonth);
-    int monthlyPayment = depositRepository.findMonthlyPayment(shop.getId(), DepositStatus.PAYMENT, startOfMonth, endOfMonth);
-    OwnerMainDepositDTO ownerMainDepositDTO = new OwnerMainDepositDTO(monthlyAll, monthlyPenalty, monthlyAllRefund + monthlyPartRefund, monthlyPayment);
+    OwnerMainDepositDTO ownerMainDepositDTO = new OwnerMainDepositDTO(last3MonthlyPenalty, last2MonthlyPenalty, lastMonthlyPenalty, monthlyPenalty);
     return ownerMainDepositDTO;
   }
 
