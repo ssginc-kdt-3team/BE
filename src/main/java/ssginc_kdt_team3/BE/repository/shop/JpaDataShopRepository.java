@@ -34,4 +34,6 @@ public interface JpaDataShopRepository extends JpaRepository<Shop, Long> {
     List<Object> DetailList(@Param("id") Long id);
 
 
+
+
 }

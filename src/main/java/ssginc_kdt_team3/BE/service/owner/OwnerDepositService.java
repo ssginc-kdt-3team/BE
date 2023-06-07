@@ -20,6 +20,7 @@ import java.time.*;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -63,6 +64,41 @@ public class OwnerDepositService {
       return getDepositDto(allPenalty, pageable);
     }
     return null;
+
+  }
+
+  public Integer showMonthTotalPenalty(Long ownerId, Map<String, String> request) {
+
+    LocalDateTime start = null;
+    LocalDateTime end = null;
+    try {
+      String years = request.get("year");
+      String months = request.get("month");
+
+      int year = Integer.parseInt(years);
+      int month = Integer.parseInt(months);
+
+      YearMonth yearMonth = YearMonth.of(year, month);
+      int lastDayOfMonth = yearMonth.lengthOfMonth();
+
+      // 기본 페이지: 해당 달의 전체 예약금 목록
+      start = LocalDateTime.of(year, month, 1, 0, 0, 0);
+      end = LocalDateTime.of(year, month, lastDayOfMonth, 23, 59, 59);
+
+    } catch (Exception e) {
+      return -9999;
+    }
+
+    Optional<Shop> shopByOwnerId = shopRepository.findShopByOwner_id(ownerId);
+
+    if (shopByOwnerId.isPresent()) {
+      Shop shop = shopByOwnerId.get();
+      return depositRepository.findMonthlyPenalty(shop.getId(), start, end);
+
+    } else {
+      return -9998;
+    }
+
 
   }
 
