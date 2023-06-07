@@ -55,7 +55,7 @@ public class OwnerDepositController {
     Map<String, String> response = new HashMap<>();
     Integer result = depositService.showMonthTotalPenalty(ownerId, request);
 
-    if (result > 0) {
+    if (result >= 0) {
       response.put("result", Integer.toString(result));
       return ResponseEntity.ok().body(response);
     } else {
