@@ -86,4 +86,21 @@ class JpaDataReservationRepositoryTest {
         System.out.println("전체 노쇼 " + i3);
         System.out.println("전체 취소 " + i4+i5);
     }
+
+    @Test
+    void cntRecentlyStatus() {
+        LocalDateTime minusOneMonth = LocalDateTime.now().minusMonths(3);
+        LocalDateTime startOfMonth = minusOneMonth.with(TemporalAdjusters.firstDayOfMonth())
+                .with(LocalTime.MIN);
+
+        LocalDateTime minusThreeMonth = LocalDateTime.now().minusMonths(1);
+        LocalDateTime endOfMonth2 = minusThreeMonth.with(TemporalAdjusters.lastDayOfMonth())
+                .with(LocalTime.MAX);
+
+        LocalTime specificTime = LocalTime.of(12, 30);
+
+        int i = reservationRepository.cntRecentlyStatus(startOfMonth, endOfMonth2, specificTime.getHour(), specificTime.getMinute(), ReservationStatus.NOSHOW);
+
+        System.out.println(i);
+    }
 }

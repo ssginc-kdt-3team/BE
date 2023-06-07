@@ -22,6 +22,7 @@ import ssginc_kdt_team3.BE.util.TimeUtils;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.Month;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
@@ -338,11 +339,13 @@ public class OwnerReservationService {
         return null;
     }
 
-    public OwnerMainMonthlyReservationDTO showMainMonthlyReservation(Long ownerId) {
+    public List<OwnerMainMonthlyReservationDTO> showMainMonthlyReservation(Long ownerId) {
 
         Optional<Shop> shopByOwnerId = shopRepository.findShopByOwner_id(ownerId);
 
         if (shopByOwnerId.isPresent()) {
+
+            List<OwnerMainMonthlyReservationDTO> mainMonthlyReservationDTOS = new ArrayList<>();
 
             Shop shop = shopByOwnerId.get();
 
@@ -352,23 +355,41 @@ public class OwnerReservationService {
             LocalDateTime endOfMonth = now.with(TemporalAdjusters.lastDayOfMonth())
                     .with(LocalTime.MAX);
 
-            int whole = reservationRepository.countAllReservation(startOfMonth, endOfMonth, shop.getId());
-            int done = reservationRepository.countReservation(startOfMonth, endOfMonth, ReservationStatus.DONE, shop.getId());
-            int noShow = reservationRepository.countReservation(startOfMonth, endOfMonth, ReservationStatus.NOSHOW, shop.getId());
-            int i4 = reservationRepository.countReservation(startOfMonth, endOfMonth, ReservationStatus.IMMINENT, shop.getId());
-            int i5 = reservationRepository.countReservation(startOfMonth, endOfMonth, ReservationStatus.CANCEL, shop.getId());
-            int cancel = i4 + i5;
+            LocalDateTime lastMonth = LocalDateTime.now().minusMonths(1);
+            LocalDateTime startOfLastMonth = lastMonth.with(TemporalAdjusters.firstDayOfMonth())
+                    .with(LocalTime.MIN);
+            LocalDateTime endOfLastMonth = lastMonth.with(TemporalAdjusters.lastDayOfMonth())
+                    .with(LocalTime.MAX);
 
-            return new OwnerMainMonthlyReservationDTO(whole,
-                    noShow,
-                    (int) Math.round(((double)noShow/(double)whole) * 100),
-                    done,
-                    (int) Math.round((((double)done/(double)whole))*100),
-                    cancel,
-                    (int) Math.round((((double)cancel/(double)whole))*100));
+            LocalDateTime lastQuarterFirstDay = getLastQuarterFirstDay(now.minusYears(1));
+            LocalDateTime lastQuarterLastDay = getLastQuarterLastDay(now.minusYears(1));
+
+            getMonthlyReservations(mainMonthlyReservationDTOS, shop, startOfMonth, endOfMonth);
+            getMonthlyReservations(mainMonthlyReservationDTOS, shop, startOfLastMonth, endOfLastMonth);
+            getMonthlyReservations(mainMonthlyReservationDTOS, shop, lastQuarterFirstDay, lastQuarterLastDay);
+
+
+            return mainMonthlyReservationDTOS;
         }
 
         return null;
+    }
+
+    private void getMonthlyReservations(List<OwnerMainMonthlyReservationDTO> mainMonthlyReservationDTOS, Shop shop, LocalDateTime startOfMonth, LocalDateTime endOfMonth) {
+        int whole = reservationRepository.countAllReservation(startOfMonth, endOfMonth, shop.getId());
+        int done = reservationRepository.countReservation(startOfMonth, endOfMonth, ReservationStatus.DONE, shop.getId());
+        int noShow = reservationRepository.countReservation(startOfMonth, endOfMonth, ReservationStatus.NOSHOW, shop.getId());
+        int i4 = reservationRepository.countReservation(startOfMonth, endOfMonth, ReservationStatus.IMMINENT, shop.getId());
+        int i5 = reservationRepository.countReservation(startOfMonth, endOfMonth, ReservationStatus.CANCEL, shop.getId());
+        int cancel = i4 + i5;
+
+        mainMonthlyReservationDTOS.add(new OwnerMainMonthlyReservationDTO(whole,
+                noShow,
+                (int) Math.round(((double)noShow/(double)whole) * 100),
+                done,
+                (int) Math.round((((double)done/(double)whole))*100),
+                cancel,
+                (int) Math.round((((double)cancel/(double)whole))*100))) ;
     }
 
     public List<OwnerMainDailyReservationDTO> showMainDailyReservationCnt(Long ownerId) {
@@ -382,11 +403,27 @@ public class OwnerReservationService {
             LocalDate getDate = LocalDate.now();
             LocalTime orderCloseTime = shop.getOperationInfo().getOrderCloseTime();
 
+            LocalDateTime minusOneMonth = LocalDateTime.now().minusMonths(3);
+            LocalDateTime startOfRecent = minusOneMonth.with(TemporalAdjusters.firstDayOfMonth())
+                    .with(LocalTime.MIN);
+
+            LocalDateTime minusThreeMonth = LocalDateTime.now().minusMonths(1);
+            LocalDateTime endOfRecent = minusThreeMonth.with(TemporalAdjusters.lastDayOfMonth())
+                    .with(LocalTime.MAX);
+
+
             for (LocalTime time = openTime; time.isBefore(orderCloseTime.plusMinutes(1)); time = time.plusMinutes(30)) {
 
                 LocalDateTime when = LocalDateTime.of(getDate, time);
                 int cnt = reservationRepository.countByReservationDateAndShop_Id(when, shop.getId());
-                OwnerMainDailyReservationDTO ownerMainDailyReservationDTO = new OwnerMainDailyReservationDTO(time.toString(), cnt);
+
+                double recentlyNoShowRate = getRecentlyNoShowRate(startOfRecent, endOfRecent, time);
+
+                int expectNoShow = (int) Math.round((cnt * recentlyNoShowRate));
+
+                int noShowRate = (int) Math.round(recentlyNoShowRate * 100);
+
+                OwnerMainDailyReservationDTO ownerMainDailyReservationDTO = new OwnerMainDailyReservationDTO(time.toString(), cnt, noShowRate, expectNoShow);
                 result.add(ownerMainDailyReservationDTO);
             }
 
@@ -394,6 +431,18 @@ public class OwnerReservationService {
         }
 
         return null;
+    }
+
+    private double getRecentlyNoShowRate(LocalDateTime startOfRecent, LocalDateTime endOfRecent, LocalTime time) {
+        int recentlyNoShow = reservationRepository.cntRecentlyStatus(startOfRecent, endOfRecent, time.getHour(), time.getMinute(), ReservationStatus.NOSHOW);
+        int recentlyAll = reservationRepository.cntRecentlyAll(startOfRecent, endOfRecent, time.getHour(), time.getMinute());
+
+        if (recentlyNoShow == 0 || recentlyAll == 00) {
+            return 0;
+        }
+
+        double noShowRate = recentlyNoShow / recentlyAll;
+        return noShowRate;
     }
 
     public List<OwnerReservationCalculateListDTO> showCalculateLists(Long shopId) {
@@ -429,6 +478,23 @@ public class OwnerReservationService {
         }
 
         return "잘못된 요청입니다.";
+    }
+
+    private static LocalDateTime getLastQuarterFirstDay(LocalDateTime dateTime) {
+        int currentYear = dateTime.getYear();
+        int currentQuarter = (dateTime.getMonthValue() - 1) / 3 + 1;
+        int lastQuarter = currentQuarter - 1;
+        int lastQuarterFirstMonth = (lastQuarter - 1) * 3 + 1;
+
+        return LocalDateTime.of(currentYear, Month.of(lastQuarterFirstMonth), 1, 0, 0, 0);
+    }
+
+    private static LocalDateTime getLastQuarterLastDay(LocalDateTime dateTime) {
+        LocalDateTime lastQuarterFirstDay = getLastQuarterFirstDay(dateTime);
+        int lastQuarterLastMonth = lastQuarterFirstDay.getMonthValue() + 2;
+        int lastQuarterLastDay = lastQuarterFirstDay.withMonth(lastQuarterLastMonth).withDayOfMonth(1).toLocalDate().lengthOfMonth();
+
+        return LocalDateTime.of(lastQuarterFirstDay.getYear(), lastQuarterLastMonth, lastQuarterLastDay, 23, 59, 59);
     }
   
     private void savePoint(Long id, Reservation reservation) {

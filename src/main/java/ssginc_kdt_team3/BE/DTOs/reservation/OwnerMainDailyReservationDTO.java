@@ -11,4 +11,6 @@ public class OwnerMainDailyReservationDTO {
 
     private String time;
     private int num;
+    private int noShowRate;
+    private int expectationNoShowNum;
 }

@@ -10,9 +10,8 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OwnerMainDepositDTO {
-
-    private int whole;
-    private int penalty;
-    private int refund;
-    private int payment;
+    private int last3MonthPenalty;
+    private int last2MonthPenalty;
+    private int lastMonthPenalty;
+    private int thisMonthPenalty;
 }
