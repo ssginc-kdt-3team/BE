@@ -1,5 +1,6 @@
 package ssginc_kdt_team3.BE.service.owner;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -8,17 +9,22 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssginc_kdt_team3.BE.DTOs.reservation.*;
+import ssginc_kdt_team3.BE.DTOs.reservation.Alarm.MessageDTO;
 import ssginc_kdt_team3.BE.domain.*;
 import ssginc_kdt_team3.BE.enums.DepositStatus;
 import ssginc_kdt_team3.BE.enums.ReservationStatus;
 import ssginc_kdt_team3.BE.repository.deposit.DepositRepository;
-import ssginc_kdt_team3.BE.repository.point.JpaDataPointManagementRepository;
 import ssginc_kdt_team3.BE.repository.reservation.JpaDataReservationRepository;
 import ssginc_kdt_team3.BE.repository.reservation.OwnerRepository;
 import ssginc_kdt_team3.BE.repository.shop.JpaDataShopRepository;
+import ssginc_kdt_team3.BE.service.customer.NaverAlarmService;
 import ssginc_kdt_team3.BE.service.pointManagement.PointManagementService;
 import ssginc_kdt_team3.BE.util.TimeUtils;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URISyntaxException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -40,6 +46,7 @@ public class OwnerReservationService {
     private final JpaDataShopRepository shopRepository;
     private final OwnerRepository ownerRepository;
     private final PointManagementService pointManagementService;
+    private final NaverAlarmService naverAlarmService;
 
     //고객 입장 처리
     public boolean customerCome(Long id) {
@@ -100,14 +107,37 @@ public class OwnerReservationService {
     }
 
     //고객 취소 처리
-    public boolean customerCancel(Long id) {
+    public boolean customerCancel(Long id) throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException, InvalidKeyException, JsonProcessingException {
         Optional<Reservation> byId = reservationRepository.findById(id);
+
+        log.info("================== 테스트 ==================");
+        log.info("reservation = {}",byId);
 
         if (byId.isPresent()) {
             Reservation reservation = byId.get();
 
             ReservationStatus status = reservation.getStatus();
 
+            boolean alarmReceive = reservation.getCustomer().isAlarmBoolean();
+
+            if (alarmReceive){
+                MessageDTO messageDTO = new MessageDTO();
+
+                String customerPhone = reservation.getCustomer().getPhoneNumber();
+                String customerName = reservation.getCustomer().getName();
+                LocalDateTime reservationDate = reservation.getReservationDate();
+                String shopName = reservation.getShop().getName();
+
+                log.info("전화번호 = {}",customerPhone);
+                log.info("예약 일시 = {}",reservationDate);
+
+                String content = customerName + " 고객님, 해당 예약이 취소되었습니다.\n예약 일시: " + reservationDate + "\n매장명: " + shopName;
+
+                messageDTO.setTo(customerPhone);
+                messageDTO.setContent(content);
+
+                naverAlarmService.sendSms(messageDTO);
+            }
             if (status == ReservationStatus.RESERVATION) {
                 reservation.setStatus(ReservationStatus.CANCEL);
                 reservation.setChangeTime(TimeUtils.findNow());
@@ -273,8 +303,8 @@ public class OwnerReservationService {
 
 
     /*
-    * 이현님 reserveService랑 합침
-    * */
+     * 이현님 reserveService랑 합침
+     * */
 
 
     // 활성화된 예약 조회: ReservationStatus가 RESERVATION인 경우
@@ -495,7 +525,7 @@ public class OwnerReservationService {
 
         return LocalDateTime.of(currentQuarterFirstDay.getYear(), currentQuarterLastMonth, currentQuarterLastDay, 23, 59, 59);
     }
-  
+
     private void savePoint(Long id, Reservation reservation) {
         Deposit reservationDeposit = depositRepository.findReservationDeposit(id);
         Customer customer = reservation.getCustomer();

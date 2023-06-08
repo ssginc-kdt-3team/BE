@@ -167,7 +167,7 @@ public class CustomerReservationService {
             result.put("error", "too many baby");
             return result;
         }
-        
+
         Optional<Reservation> byId = reservationRepository.findById(id);
 
         if (byId.isPresent()) {
@@ -297,12 +297,14 @@ public class CustomerReservationService {
         if (byId.isPresent()) {
 
             Reservation reservation = byId.get();
+
             LocalDateTime expectedTime = reservation.getReservationDate();
 
             if (reservation.getStatus() == ReservationStatus.RESERVATION) {
 
                 if (TimeUtils.findNow().isBefore(expectedTime.minusHours(24))) {
                     //방문 에정일자보다 24시간 이상 여유 있는 경우
+
                     reservation.setStatus(ReservationStatus.CANCEL);
                     reservation.setChangeTime(TimeUtils.findNow());
                     reservationRepository.save(reservation);
@@ -311,28 +313,33 @@ public class CustomerReservationService {
                     String customerPhone = reservation.getCustomer().getPhoneNumber();
                     LocalDateTime reservationDate = reservation.getReservationDate();
                     String shopName = reservation.getShop().getName();
-                    String customerContent = "매장명 : " + shopName + "\n예약일시 : " + reservationDate + "\n" + customerName + "님의 예약 취소가 완료되었습니다!";
-                    //고객용 메시지
+
                     String ownerName = reservation.getShop().getOwner().getName();
                     String ownerPhone = reservation.getShop().getOwner().getPhoneNumber();
                     String reservationCancelMessage = "매장명 : " + shopName + "\n예약일시 : " + reservationDate + "\n" + ownerName + "점주님의 매장 예약이 취소되었습니다." ;
                     //점주용 메시지
 
-                    customerMessageDTO.setTo(customerPhone);
-                    customerMessageDTO.setContent(customerContent);
-
                     ownerMessageDTO.setTo(ownerPhone);
                     ownerMessageDTO.setContent(reservationCancelMessage);
 
-                    ResponseSmsDTO customerResponse = naverAlarmService.sendSms(customerMessageDTO);
-
                     ResponseSmsDTO ownerResponse = naverAlarmService.sendSms(ownerMessageDTO);
 
-                    log.info("customerRequestTime = {}", customerResponse.getRequestTime());
-                    log.info("customerStatusCode = {}", customerResponse.getStatusCode());
+                    if (reservation.getCustomer().isAlarmBoolean()){
+                        String customerContent = "매장명 : " + shopName + "\n예약일시 : " + reservationDate + "\n" + customerName + "님의 예약 취소가 완료되었습니다!";
+                        //고객용 메시지
+
+                        customerMessageDTO.setTo(customerPhone);
+                        customerMessageDTO.setContent(customerContent);
+
+                        ResponseSmsDTO customerResponse = naverAlarmService.sendSms(customerMessageDTO);
+
+                        log.info("customerRequestTime = {}", customerResponse.getRequestTime());
+                        log.info("customerStatusCode = {}", customerResponse.getStatusCode());
+                        //요청에 대한 응답 출력 -> 고객꺼만
+                    }
                     log.info("ownerRequestTime = {}", ownerResponse.getRequestTime());
                     log.info("ownerStatusCode = {}", ownerResponse.getStatusCode());
-                    //요청에 대한 응답 출력
+                    //요청에 대한 응답 출력 -> 점주꺼만
 
                     //전액 환불 구현하기
                     Deposit reservationDeposit = depositRepository.findReservationDeposit(reservation.getId());
@@ -374,7 +381,6 @@ public class CustomerReservationService {
                     depositRepository.save(reservationDeposit);
 
                     //쿠폰, 포인트 환불 X
-
                 }
                 return true;
             }

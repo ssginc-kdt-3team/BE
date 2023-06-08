@@ -37,18 +37,21 @@ public class AlarmScheduler {
         MessageDTO messageDTO = new MessageDTO();
 
         for (Reservation reservation : AlmostReservation){
-            String CustomerName = reservation.getCustomer().getName();
-            String CustomerPhoneNumber = reservation.getCustomer().getPhoneNumber();
+            if (reservation.getCustomer().isAlarmBoolean()) {
 
-            messageDTO.setTo(CustomerPhoneNumber);
-            messageDTO.setContent(CustomerName + "님 입장시간 30분 남았습니다!");
+                String CustomerName = reservation.getCustomer().getName();
+                String CustomerPhoneNumber = reservation.getCustomer().getPhoneNumber();
 
-            ResponseSmsDTO responseSmsDTO = naverAlarmService.sendSms(messageDTO);
+                messageDTO.setTo(CustomerPhoneNumber);
+                messageDTO.setContent(CustomerName + "님 입장시간 30분 남았습니다!");
 
-            log.info("reservation RequestId = {}",responseSmsDTO.getRequestId());
-            log.info("reservation RequestId = {}",responseSmsDTO.getRequestId());
-            log.info("reservation StatusName = {}",responseSmsDTO.getStatusName());
-            log.info("reservation StatusCode = {}",responseSmsDTO.getStatusCode());
+                ResponseSmsDTO responseSmsDTO = naverAlarmService.sendSms(messageDTO);
+
+                log.info("reservation RequestId = {}", responseSmsDTO.getRequestId());
+                log.info("reservation RequestId = {}", responseSmsDTO.getRequestId());
+                log.info("reservation StatusName = {}", responseSmsDTO.getStatusName());
+                log.info("reservation StatusCode = {}", responseSmsDTO.getStatusCode());
+            }
 
         }
 
