@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ssginc_kdt_team3.BE.DTOs.branch.BranchShopDTO;
+import ssginc_kdt_team3.BE.DTOs.customer.CustomerPersonalizeShopDTO;
 import ssginc_kdt_team3.BE.DTOs.customer.ReviewResponseDTO;
 import ssginc_kdt_team3.BE.DTOs.shop.ShopDetailDTO;
 import ssginc_kdt_team3.BE.domain.Branch;
@@ -41,14 +42,15 @@ public class BranchShopController {
                     .body(branchShopListService.BranchShop(BranchId));
     //고객이 지점내 매장조회
     }
-    @PostMapping("list/{branch_id}/{user_id}")
-    public ResponseEntity<List<BranchShopDTO>> branchRecommendShop(@PathVariable("branch_id")Long BranchId,@PathVariable("user_id")Long UserId){
+    @PostMapping("/list/{id}")
+    public ResponseEntity<List<CustomerPersonalizeShopDTO>> branchRecommendShop
+            (@PathVariable("id")Long UserId)
+    {
+        List<CustomerPersonalizeShopDTO> personalizeShop = personalizeShopService.customerPersonalizeShop(UserId);
 
-        List<BranchShopDTO> personalizeShop = personalizeShopService.customerPersonalizeShop(BranchId, UserId);
-
-            return ResponseEntity.status(HttpStatus.OK)
-                    .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                    .body(personalizeShop);
+        return ResponseEntity.status(HttpStatus.OK)
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .body(personalizeShop);
 
     }//0604 신영 추가 : 고객 맞춤 매장 추천
 

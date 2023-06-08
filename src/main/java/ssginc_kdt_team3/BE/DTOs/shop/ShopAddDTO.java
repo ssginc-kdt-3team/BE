@@ -56,6 +56,5 @@ public class ShopAddDTO {
     @NotNull
     private int seat;
 
-    @NotNull
     private ShopCategory shopCategory;
 }
