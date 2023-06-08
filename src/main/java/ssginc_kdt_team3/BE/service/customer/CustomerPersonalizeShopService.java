@@ -23,6 +23,26 @@ public class CustomerPersonalizeShopService {
 
     public List<CustomerPersonalizeShopDTO> customerPersonalizeShop(Long UserId){
 
+        List<CustomerPersonalizeShopDTO> personalizeShopDTOS = new ArrayList<>();
+
+        if(UserId == -1) {//로그인한 상태가 아닐경우 랜덤으로 매장8개 추천
+
+            Random random = new Random();
+
+            long[] longTypeNumbers = new long[8];
+
+            for (int i = 0; i < longTypeNumbers.length; i++) {
+
+                longTypeNumbers[i] = (long) random.nextInt(20) + 1;
+
+                personalizeShopDTOS.add(repository.ShopIdByPersonalizeShop(longTypeNumbers[i]));
+
+                log.info("no Account! = {}", "존재하지 않는 회원입니다!");
+            }
+            return personalizeShopDTOS;
+        }
+
+
         // Personalize 서비스 클라이언트 생성
         PersonalizeRuntimeClient personalizeClient = PersonalizeRuntimeClient.builder()
                 .region(Region.AP_NORTHEAST_2)
@@ -43,21 +63,21 @@ public class CustomerPersonalizeShopService {
         // GetRecommendations 요청 보내기
         GetRecommendationsResponse response = personalizeClient.getRecommendations(request);
 
-
-
         List<PredictedItem> items = response.itemList();
 
-        List<CustomerPersonalizeShopDTO> personalizeShopDTOS = new ArrayList<>();
+        CustomerPersonalizeShopDTO dto = new CustomerPersonalizeShopDTO();
 
         for (PredictedItem item: items) {
+
             Long shopId = Long.valueOf(item.itemId());
+            //스키마에는 String 타입으로 정의되어 있어서 Long 타입으로 다시 변환
+            //itemId = ShopId
 
             log.info("UserId = {}",UserId);
             log.info("Response ShopId = {}",shopId);
 
-            //스키마에는 String 타입으로 정의되어 있어서 Long 타입으로 다시 변환
-            //itemId = ShopId
-            CustomerPersonalizeShopDTO dto = repository.ShopIdByPersonalizeShop(shopId);
+            dto = repository.ShopIdByPersonalizeShop(shopId);
+
             if (dto != null){
 
                 personalizeShopDTOS.add(dto);
@@ -65,11 +85,10 @@ public class CustomerPersonalizeShopService {
                 log.info("ShopId = {}",dto.getShopId());
                 log.info("ShopName = {}",dto.getShopName());
                 log.info("ShopStatus = {}",dto.getShopInfo());
-                log.info("BrnachId = {}",dto.getBranchId());
+                log.info("BranchId = {}",dto.getBranchId());
             }
         }
         return personalizeShopDTOS;
     }
-
 
 }
