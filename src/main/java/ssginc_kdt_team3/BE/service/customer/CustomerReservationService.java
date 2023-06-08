@@ -167,7 +167,7 @@ public class CustomerReservationService {
             result.put("error", "too many baby");
             return result;
         }
-        
+
         Optional<Reservation> byId = reservationRepository.findById(id);
 
         if (byId.isPresent()) {
@@ -297,12 +297,14 @@ public class CustomerReservationService {
         if (byId.isPresent()) {
 
             Reservation reservation = byId.get();
+
             LocalDateTime expectedTime = reservation.getReservationDate();
 
             if (reservation.getStatus() == ReservationStatus.RESERVATION) {
 
                 if (TimeUtils.findNow().isBefore(expectedTime.minusHours(24))) {
                     //방문 에정일자보다 24시간 이상 여유 있는 경우
+
                     reservation.setStatus(ReservationStatus.CANCEL);
                     reservation.setChangeTime(TimeUtils.findNow());
                     reservationRepository.save(reservation);
@@ -317,7 +319,6 @@ public class CustomerReservationService {
                     String ownerPhone = reservation.getShop().getOwner().getPhoneNumber();
                     String reservationCancelMessage = "매장명 : " + shopName + "\n예약일시 : " + reservationDate + "\n" + ownerName + "점주님의 매장 예약이 취소되었습니다." ;
                     //점주용 메시지
-
                     customerMessageDTO.setTo(customerPhone);
                     customerMessageDTO.setContent(customerContent);
 
@@ -374,7 +375,6 @@ public class CustomerReservationService {
                     depositRepository.save(reservationDeposit);
 
                     //쿠폰, 포인트 환불 X
-
                 }
                 return true;
             }

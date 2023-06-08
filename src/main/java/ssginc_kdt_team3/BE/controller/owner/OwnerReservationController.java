@@ -1,5 +1,6 @@
 package ssginc_kdt_team3.BE.controller.owner;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,10 @@ import org.springframework.web.bind.annotation.*;
 import ssginc_kdt_team3.BE.DTOs.reservation.OwnerReservationDTO;
 import ssginc_kdt_team3.BE.service.owner.OwnerReservationService;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URISyntaxException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 import java.util.Optional;
 
@@ -52,7 +57,9 @@ public class  OwnerReservationController {
     }
 
     @PostMapping("reject/{id}")
-    public ResponseEntity updateCancel(@PathVariable(name = "id") Long reservationId) {
+    public ResponseEntity updateCancel(@PathVariable(name = "id") Long reservationId) throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
+        log.info("================== 테스트 ==================");
+        log.info("reservationId = {}",reservationId);
         boolean b = ownerReservationService.customerCancel(reservationId);
 
         if (b) {

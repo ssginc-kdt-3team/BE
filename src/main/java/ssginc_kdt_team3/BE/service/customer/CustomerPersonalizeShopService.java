@@ -29,14 +29,22 @@ public class CustomerPersonalizeShopService {
 
             Random random = new Random();
 
-            long[] longTypeNumbers = new long[8];
+            long[] randomNumbers = new long[8];
 
-            for (int i = 0; i < longTypeNumbers.length; i++) {
+            Set<Long> setNumbers = new HashSet<>();
 
-                longTypeNumbers[i] = (long) random.nextInt(20) + 1;
+            for (int i = 0; i < randomNumbers.length; i++) {
 
-                personalizeShopDTOS.add(repository.ShopIdByPersonalizeShop(longTypeNumbers[i]));
+                long randomNum;
+                do{
+                    randomNum = (long)random.nextInt(20) + 1;
+                }while(setNumbers.contains(randomNum));{
+                    randomNumbers[i] = randomNum;
+                    setNumbers.add(randomNum);
 
+                    personalizeShopDTOS.add(repository.ShopIdByPersonalizeShop(randomNumbers[i]));
+                    log.info("random number = {}",randomNum);
+                }
                 log.info("no Account! = {}", "존재하지 않는 회원입니다!");
             }
             return personalizeShopDTOS;
