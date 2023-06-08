@@ -118,23 +118,26 @@ public class OwnerReservationService {
 
             ReservationStatus status = reservation.getStatus();
 
-            MessageDTO messageDTO = new MessageDTO();
+            boolean alarmReceive = reservation.getCustomer().isAlarmBoolean();
 
-            String customerPhone = reservation.getCustomer().getPhoneNumber();
-            String customerName = reservation.getCustomer().getName();
-            LocalDateTime reservationDate = reservation.getReservationDate();
-            String shopName = reservation.getShop().getName();
+            if (alarmReceive){
+                MessageDTO messageDTO = new MessageDTO();
 
-            log.info("전화번호 = {}",customerPhone);
-            log.info("예약 일시 = {}",reservationDate);
+                String customerPhone = reservation.getCustomer().getPhoneNumber();
+                String customerName = reservation.getCustomer().getName();
+                LocalDateTime reservationDate = reservation.getReservationDate();
+                String shopName = reservation.getShop().getName();
 
-            String content = customerName + " 고객님, 해당 예약이 취소되었습니다.\n예약 일시: " + reservationDate + "\n매장명: " + shopName;
+                log.info("전화번호 = {}",customerPhone);
+                log.info("예약 일시 = {}",reservationDate);
 
-            messageDTO.setTo(customerPhone);
-            messageDTO.setContent(content);
+                String content = customerName + " 고객님, 해당 예약이 취소되었습니다.\n예약 일시: " + reservationDate + "\n매장명: " + shopName;
 
-            naverAlarmService.sendSms(messageDTO);
+                messageDTO.setTo(customerPhone);
+                messageDTO.setContent(content);
 
+                naverAlarmService.sendSms(messageDTO);
+            }
             if (status == ReservationStatus.RESERVATION) {
                 reservation.setStatus(ReservationStatus.CANCEL);
                 reservation.setChangeTime(TimeUtils.findNow());
