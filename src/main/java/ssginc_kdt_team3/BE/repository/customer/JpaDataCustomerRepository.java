@@ -52,4 +52,6 @@ public interface JpaDataCustomerRepository extends JpaRepository<Customer, Long>
     @Query("SELECT g FROM Grade g WHERE g.id = :id")
     Grade gradeFindById(@Param("id") Long id);
 
+    Optional<Customer> findByEmail(String email);
+
 }
