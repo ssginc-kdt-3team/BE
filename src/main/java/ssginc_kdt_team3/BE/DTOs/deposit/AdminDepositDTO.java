@@ -3,7 +3,6 @@ package ssginc_kdt_team3.BE.DTOs.deposit;
 import lombok.Data;
 import ssginc_kdt_team3.BE.domain.Deposit;
 import ssginc_kdt_team3.BE.enums.DepositStatus;
-import ssginc_kdt_team3.BE.enums.ReservationStatus;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

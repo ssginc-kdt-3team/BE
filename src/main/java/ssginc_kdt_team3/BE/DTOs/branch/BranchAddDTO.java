@@ -1,6 +1,8 @@
 package ssginc_kdt_team3.BE.DTOs.branch;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import ssginc_kdt_team3.BE.DTOs.Address;
 
 import javax.persistence.Embedded;

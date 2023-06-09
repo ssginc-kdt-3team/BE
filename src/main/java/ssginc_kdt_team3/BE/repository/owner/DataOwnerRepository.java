@@ -18,14 +18,11 @@ public class DataOwnerRepository{
                 .setParameter("email", email)
                 .getSingleResult();
 
-        boolean emailCheck = count > 0;
-        //이메일이 존재하면 1
-        //1 > 0 = emailCheck = true(1)
-        //이메일 존재시 true반환
+        boolean emailCheck;
 
-        //이메일이 존재하지않으면 0
-        //1 > 0 = emailCheck = false(0)
-        //이메일이 존재하지 않으면 false반환
+        emailCheck = count != 0;
+        //이메일이 존재하지 않으면 false
+        //이메일이 존재하면 true
         return emailCheck;
     }
 

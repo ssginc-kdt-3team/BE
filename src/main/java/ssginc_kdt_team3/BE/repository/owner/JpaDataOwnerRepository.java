@@ -1,11 +1,13 @@
 package ssginc_kdt_team3.BE.repository.owner;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.lang.NonNullApi;
 import org.springframework.stereotype.Repository;
 import ssginc_kdt_team3.BE.DTOs.admin.AdminBranchOwnerDTO;
 import ssginc_kdt_team3.BE.DTOs.admin.AdminOwnerDetailDTO;
@@ -35,6 +37,7 @@ public interface JpaDataOwnerRepository extends JpaRepository<Owner, Long> {
     void updateByOwner(@Param("id") Long id, @Param("name") String name, @Param("phone")String phone,
                         @Param("city")String city, @Param("district")String district,@Param("detail")String detail,@Param("zipCode")String zipCode);
     //점주 & 관리자가 있었는데 제외됨 : 점주 정보 수정 - 고신영 0524
+
     boolean existsByid(Long id);
 
     Optional<Owner> findByEmail(String email);
@@ -62,6 +65,10 @@ public interface JpaDataOwnerRepository extends JpaRepository<Owner, Long> {
             "WHERE o.id = :id")
     @Modifying
     int ownerStatusDelete(@Param("id")Long id,@Param("status") UserStatus status);
+
+    @Query("UPDATE Owner o SET o.password = :password WHERE o.id = :id")
+    @Modifying
+    void ownerNewPassword (@Param("password")String password,@Param("id")Long id);
 
 }
 
