@@ -57,13 +57,10 @@ public class CustomerController {
 
   // 중복이메일 검증
   @PostMapping("/emailCheck")
-  public ResponseEntity emailCheck(@Validated @RequestBody Map<String, String> email) {
+  public boolean emailCheck(@RequestBody Map<String, String> email) {
     String email1 = email.get("email");
-    if(!email1.isEmpty()){
-      return ResponseEntity.ok(new ErrorResponse("400", "Validation failure","이미 가입한 이메일입니다."));
-    } else {
-      return ResponseEntity.ok(email1);
-    }
+    // 오류 있으면 중복 => try catch, 지금은 오류를 던짐
+    return customerService.validateDuplicateCustomer(email1);
   }
 
   // 로그인

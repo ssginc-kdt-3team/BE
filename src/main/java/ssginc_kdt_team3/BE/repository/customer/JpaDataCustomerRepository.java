@@ -48,4 +48,6 @@ public interface JpaDataCustomerRepository extends JpaRepository<Customer, Long>
     Optional<Customer> findByNameAndPhoneNumber(String name, String phone);
     Optional<Customer> findByNameAndEmailAndPhoneNumber(String name, String email, String phone);
     List<Customer> findAllByGradeChangeDate(LocalDate start);
+
+    Optional<Customer> findByEmail(String email);
 }
