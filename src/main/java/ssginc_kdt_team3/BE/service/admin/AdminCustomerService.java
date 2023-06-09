@@ -71,9 +71,7 @@ public class AdminCustomerService {
     }
 
     public boolean updateCustomerInfo(Long customerId, CustomerUpdateDTO customerDTO) {
-
         Optional<Customer> customer = customerRepository.findById(customerId);
-
 
         String name = customerDTO.getName();
         String password = customerDTO.getPassword();
@@ -82,8 +80,8 @@ public class AdminCustomerService {
         UserStatus status = customerDTO.getStatus();
         Grade grade = customerDTO.getGrade();
 
-
         if (customer.isPresent()) {
+
             Customer findCustomer = customer.get();
 
             findCustomer.setPassword(password);
@@ -92,9 +90,9 @@ public class AdminCustomerService {
             findCustomer.setAddress(address);
             findCustomer.setStatus(status);
             findCustomer.setGrade(grade);
-
             return true;
-        } else {
+        }
+        else {
             return false;
         }
     }

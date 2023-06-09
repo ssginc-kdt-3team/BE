@@ -26,7 +26,7 @@ public class OwnerJoinService {
         if (emailCheck){
             throw new Exception("중복된 이메일 입니다.");
         }
-        log.info("log info = {}",emailCheck);
+
         Owner owner = new Owner();
 
         owner.setEmail(ownerJoinDTO.getEmail());
@@ -35,21 +35,13 @@ public class OwnerJoinService {
         owner.setPhoneNumber(ownerJoinDTO.getPhone());
         owner.setGender(ownerJoinDTO.isGender());
         owner.setAddress(ownerJoinDTO.getAddress());
-
         owner.setBirthday(ownerJoinDTO.getBirthday());
 
         owner.setRole(UserRole.OWNER);
         owner.setStatus(UserStatus.ACTIVE);
 
-        log.info("log info = {}",owner);
-        log.info("log info = {}",emailCheck);
-
         repo.save(owner);
 
-        log.info("log info = {}",owner.getEmail());
-        log.info("log info = {}",owner.getName());
-        log.info("log info = {}",owner.getBirthday());
-        log.info("log info = {}",owner.getRole());
     }
 
 }

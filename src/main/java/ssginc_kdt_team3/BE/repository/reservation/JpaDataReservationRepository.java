@@ -10,6 +10,7 @@ import ssginc_kdt_team3.BE.enums.ReservationStatus;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface JpaDataReservationRepository extends JpaRepository<Reservation, Long> {
 
@@ -24,6 +25,8 @@ public interface JpaDataReservationRepository extends JpaRepository<Reservation,
 
     int countByReservationDateAndShop_Id(LocalDateTime time, Long shopId);
 
+//    Optional<Reservation> findByrReservationId(Long id);
+
     List<Reservation> findAllByStatusAndShop_IdAndReservationDateBetweenOrderByReservationDateDesc(ReservationStatus status, Long shopId, LocalDateTime startTime, LocalDateTime endTime);
 
     Page<Reservation> findAllByStatusAndShop_BranchId(ReservationStatus status, Long branchId, Pageable pageable);
@@ -36,6 +39,8 @@ public interface JpaDataReservationRepository extends JpaRepository<Reservation,
 
     Page<Reservation> findAllByShop_BranchId(Long branchId, Pageable pageable);
 
+//    @Query("SELECT r.status FROM Reservation r WHERE r.id = :id")
+//    ReservationStatus reservationStatusFindByReservationId(@Param("id") Long id);
 //    @Query("SELECT new ssginc_kdt_team3.BE.DTOs.reservation.CastCsvDTO(r.reservationDate, r.id, r.status, s.id, c.id, c.role, c.status, b.id) " +
 //            "FROM Reservation r " +
 //            "LEFT JOIN r.customer c " +

@@ -10,8 +10,6 @@ import ssginc_kdt_team3.BE.service.admin.AdminOwnerService;
 import ssginc_kdt_team3.BE.service.owner.OwnerChangePwService;
 import ssginc_kdt_team3.BE.service.owner.OwnerFindPwService;
 
-
-
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/owner/update")
@@ -34,9 +32,7 @@ public class OwnerDataController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
         //점주 정보 수정
-
     }
-
     @PostMapping("/findPassword")
     public ResponseEntity<String> OwnerFindPw(@RequestBody OwnerFindPwDTO ownerFindPwDTO) throws Exception{
 
@@ -46,18 +42,25 @@ public class OwnerDataController {
         }catch (Exception e){
             return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
         }//비밀번호 찾기 - 이메일 , 이름 , 전화번호 인증
-
+        //비밀번호 찾기 & 비밀번호 변경에서 인증성공시 -> 새로운 비밀번호변경 창 표시
     }
-    @PostMapping("/newPassword")
-    public ResponseEntity<String> newPw(@RequestBody OwnerNewPwDTO newPwDTO){
+//    @PostMapping("/newPassword")
+//    public ResponseEntity<String> newPw(@RequestBody OwnerNewPwDTO newPwDTO){
+//        try {
+//            ser.NewPw(newPwDTO);
+//            return new ResponseEntity<>("비밀번호 변경이 완료되었습니다.",HttpStatus.OK);
+//        }catch (Exception e){
+//            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
+//        }
+//    }
+    @PostMapping("/newPassword/{id}")
+    public ResponseEntity<String> newPw(@RequestBody OwnerNewPwDTO newPwDTO,@PathVariable("id") Long ownerId){
         try {
-            ser.NewPw(newPwDTO);
+            ser.NewPw(newPwDTO,ownerId);
+            return new ResponseEntity<>("비밀번호 변경이 완료되었습니다.",HttpStatus.OK);
         }catch (Exception e){
             return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>("비밀번호 변경이 완료되었습니다.",HttpStatus.OK);
-        //비밀번호 찾기 & 비밀번호 변경에서 인증성공시 -> 새로운 비밀번호변경 창 표시
-
     }
     @PostMapping("/passwordCheck")
     public ResponseEntity<String> pwCheckController (@RequestBody CheckPwDTO check) {
@@ -68,14 +71,5 @@ public class OwnerDataController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }//비밀번호 "변경"에서 인증 성공시
     }
-//    @PostMapping("/changepassword")
-//    public ResponseEntity<String> pwChangeController(@RequestBody OwnerChangePwDTO changePwDTO){
-//        try {
-//            changePwSer.ChangePw(changePwDTO);
-//            return new ResponseEntity<>("비밀번호 변경이 완료되었습니다.",HttpStatus.OK);
-//        }catch (Exception e){
-//            return new ResponseEntity<>("비밀번호가 서로 다릅니다.",HttpStatus.BAD_REQUEST);
-//        }중복이라 주석 처리
-//    }
 
 }

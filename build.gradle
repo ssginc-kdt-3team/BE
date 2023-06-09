@@ -71,6 +71,9 @@ dependencies {
 	//고객 맞춤 매장 추천 서비스 - awsSdk추가 신영
 	implementation 'software.amazon.awssdk:sdk-core:2.20.78'
 	implementation 'software.amazon.awssdk:personalizeruntime:2.20.78'
+	//Test 클래스에서 log 사용하려고 추가 0609 - 신영
+	testCompileOnly 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
 
 }
 

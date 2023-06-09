@@ -45,17 +45,11 @@ public class OwnerController {
 
     }
     @PostMapping("/login")
-    public ResponseEntity<Map> loginCheck(@RequestBody OwnerLoginDTO ownerLogin) {
-
+    public ResponseEntity<Map<String,Object>> loginCheck(@RequestBody OwnerLoginDTO ownerLogin) {
         try {
-            Map map = new HashMap();
-            Owner owner = Service.loginCheck(ownerLogin);
-            map.put("id", owner.getId());
-            map.put("name", owner.getName());
-            return new ResponseEntity<>(map, HttpStatus.OK);
+            return new ResponseEntity<>(Service.loginCheck(ownerLogin),HttpStatus.OK);
         } catch (Exception e) {
-            return null;
-//            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
     @GetMapping("/detail/{id}")

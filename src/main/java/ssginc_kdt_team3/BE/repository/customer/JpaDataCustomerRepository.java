@@ -49,5 +49,9 @@ public interface JpaDataCustomerRepository extends JpaRepository<Customer, Long>
     Optional<Customer> findByNameAndEmailAndPhoneNumber(String name, String email, String phone);
     List<Customer> findAllByGradeChangeDate(LocalDate start);
 
+    @Query("SELECT g FROM Grade g WHERE g.id = :id")
+    Grade gradeFindById(@Param("id") Long id);
+
     Optional<Customer> findByEmail(String email);
+
 }
