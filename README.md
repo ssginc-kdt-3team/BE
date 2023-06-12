@@ -9,14 +9,21 @@
 <section>
   <div align="center" style="width: 250px;">
     
-  ## 🏷️ 프로젝트 주제 및 개요 
-  ### 🔶 프로젝트 주제 - 노쇼 방지 예약 시스템
-  ```
-예약금 사전 결제로 노쇼를 방지하고, 고객에게는 포인트, 등급, 쿠폰 등의 혜택을 적용하는 
-노쇼 방지 시스템을 개발하고자 합니다.
-  ```
- ## 🔷 프로젝트 개요
+  ### 🏷️ 프로젝트 주제 및 기획 배경
+  #### ❗ 주제 - 노쇼 방지 예약 시스템
 
+**예약금 사전 결제로 노쇼를 방지하고,**  
+**고객에게는 포인트, 등급, 쿠폰 등의 혜택을 적용하는**  
+**노쇼 방지 시스템을 개발하고자 합니다.**
+
+ #### ❗ 프로젝트 내용 & 기획 배경
+**스타필드는 다양한 즐길거리와 먹거리를 제공하는 복합 쇼핑몰로 많은 이용객을 유치하고 있습니다.  
+    그러나 주말에는 이용객이 집중되어 긴 식사 대기열이 발생하는 문제가 있습니다.  
+    이를 해결하기 위해 원격 예약 시스템을 도입하려고 합니다. 
+    그러나 예약 시스템에는 노쇼라는 문제가 있습니다.  
+    이러한 노쇼로 인한 피해를 최소화하기 위해 예약금 결제 시스템을 도입하고,  
+    예약금에 대한 부정적인 인식을 개선하고자 쿠폰,포인트등의 리워드를 제공합니다.  
+    또한 등급제도와 알림 시스템을 활용하여 사용자들이 스스로 노쇼에 대한 인식을 개선할 수 있도록 합니다.**
   </div>
 <div align="center">
   
@@ -26,36 +33,50 @@
   <tbody>
     <tr>
       <td align="center">
-        <a href="">
-          <img src="https://social-phinf.pstatic.net/20210217_88/1613528653819oixEa_JPEG/F093FFDA-0903-4BB7-9A56-558C3CE43810.jpeg" width="200px;" hight="200px;" alt=""/><br /><sub><b>
-          BE 팀장 : 임태경
-          </b></sub></a><br/>
+          <img src="https://social-phinf.pstatic.net/20210217_88/1613528653819oixEa_JPEG/F093FFDA-0903-4BB7-9A56-558C3CE43810.jpeg" width="200px;" hight="200px;" alt=""/><br>
+          <sub><b>
+          BE 팀장 : 임태경<br>
+          ▶ DB 설계<br>
+          ▶ 고객 예약 및 예약 처리 시스템 설계 및 구현
+          </b></sub><br>
           </td>
       <td align="center">
-          <a href="">
-            <img src="https://pbs.twimg.com/profile_images/1219857043298775041/VpnfMJqB_400x400.jpg" width="200px;" hight="200px;" alt=""/><br /><sub><b>BE 팀원 : 고신영</b></sub>
-        </a><br />
+            <img src="https://pbs.twimg.com/profile_images/1219857043298775041/VpnfMJqB_400x400.jpg" width="200px;" hight="200px;" alt=""/><br>
+        <sub><b>
+          BE 팀원 : 고신영<br>
+          ▶ 점주 회원관리 관련 시스템 설계 및 구현<br>
+          ▶ 알림 서비스 구현
+          </b></sub>
+       <br>
       </td>
       <td align="center">
-          <a href="">
-            <img src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzAxMTRfMTUz%2FMDAxNjczNjc1NzU1NTkz.vRld2PRCL-A273Tan4JyEz4x3ZWbP98t-yOptM94S00g.zUEIauEhUuZiKD67d-gJSvXD4AJnWVS7UAxS9PegKkEg.JPEG.watergus99%2F%25C3%25B6%25BC%25F65.jpg&type=a340" width="200px;" hight="200px;" alt=""/><br /><sub><b>BE 팀원 : 김서윤</b></sub>
-        </a><br />
+            <img src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzAxMTRfMTUz%2FMDAxNjczNjc1NzU1NTkz.vRld2PRCL-A273Tan4JyEz4x3ZWbP98t-yOptM94S00g.zUEIauEhUuZiKD67d-gJSvXD4AJnWVS7UAxS9PegKkEg.JPEG.watergus99%2F%25C3%25B6%25BC%25F65.jpg&type=a340" width="200px;" hight="200px;" alt=""/><br><sub><b>
+            BE 팀원 : 김서윤<br>
+            ▶ AWS 기반 CI/CD 구현<br>
+            ▶ 아키텍처 설계
+      </b></sub><br>
       </td>
      </tr>
       <td align="center">
-        <a href="">
-          <img src="https://i.pinimg.com/736x/53/7e/f5/537ef59499259ba707068742f91a10f8.jpg" width="200px;" hight="200px;" alt=""/><br /><sub><b>FE 팀원 : 김태윤</b></sub>
-        </a><br />
-    </td>
+          <img src="https://i.pinimg.com/736x/53/7e/f5/537ef59499259ba707068742f91a10f8.jpg" width="200px;" hight="200px;" alt=""/><br><sub><b>
+          FE 팀원 : 김태윤<br>
+          ▶ 화면 설계<br>
+          ▶ 관리자, 점주 페이지 구현
+          </b></sub><br>
+      </td>
       <td align="center">
-        <a href="">
-          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1fupg4Q5ifZdTrqNFmVX5LbT502O8q9pDOHCsbWxWSaHPDdlRrIZB8C29iC_SegMmDMA&usqp=CAU" width="200px;" hight="200px;" alt=""/><br /><sub><b>FE 팀원 : 윤주현</b></sub>
-        </a><br />
-    </td>
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1fupg4Q5ifZdTrqNFmVX5LbT502O8q9pDOHCsbWxWSaHPDdlRrIZB8C29iC_SegMmDMA&usqp=CAU" width="200px;" hight="200px;" alt=""/><br><sub><b>
+          FE 팀원 : 윤주현<br>
+          ▶ 화면 설계<br>
+          ▶ 사용자 페이지 구현
+        </b></sub><br>
+      </td>
       <td align="center">
-        <a href="">
-          <img src="https://i.pinimg.com/originals/23/83/95/2383951c6a815809c05d4aed4db94866.jpg" width="200px;" hight="200px;" alt=""/><br /><sub><b>BE 팀원 : 전이현</b></sub>
-        </a><br />
+          <img src="https://i.pinimg.com/originals/23/83/95/2383951c6a815809c05d4aed4db94866.jpg" width="200px;" hight="200px;" alt=""/><br><sub><b>
+          BE 팀원 : 전이현<br>
+          ▶사용자 관련 시스템 설계 및 구현<br>
+          ▶점주 예약 관리 시스템 구현
+          </b></sub><br>
     </td>
     </tr>
   </tbody>
