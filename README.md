@@ -11,13 +11,55 @@
     
   ## 🏷️ 프로젝트 주제 - 노쇼 방지 예약 시스템
   ### ❗ 프로젝트 주요기능
-**1. 예약 시스템 범용 기능**
-**2. 예약 결제 처리 기능**
-**3. 고객 관리 기능**
-    
-</div>
+**1. 예약 시스템 범용 기능**  
+**2. 예약 결제 처리 기능**  
+**3. 고객 관리 기능**  
+  </div>
 <div align="center">
   
+  ## 🧑 팀원 소개👩  
+    
+ <table>
+  <tbody>
+    <tr>
+      <td align="center">
+        <a href="">
+          <img src="https://social-phinf.pstatic.net/20210217_88/1613528653819oixEa_JPEG/F093FFDA-0903-4BB7-9A56-558C3CE43810.jpeg" width="200px;" hight="200px;" alt=""/><br /><sub><b>
+          BE 팀장 : 임태경
+          </b></sub></a><br/>
+          </td>
+      <td align="center">
+          <a href="">
+            <img src="https://pbs.twimg.com/profile_images/1219857043298775041/VpnfMJqB_400x400.jpg" width="200px;" hight="200px;" alt=""/><br /><sub><b>BE 팀원 : 고신영</b></sub>
+        </a><br />
+      </td>
+      <td align="center">
+          <a href="">
+            <img src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyMzAxMTRfMTUz%2FMDAxNjczNjc1NzU1NTkz.vRld2PRCL-A273Tan4JyEz4x3ZWbP98t-yOptM94S00g.zUEIauEhUuZiKD67d-gJSvXD4AJnWVS7UAxS9PegKkEg.JPEG.watergus99%2F%25C3%25B6%25BC%25F65.jpg&type=a340" width="200px;" hight="200px;" alt=""/><br /><sub><b>BE 팀원 : 김서윤</b></sub>
+        </a><br />
+      </td>
+     </tr>
+      <td align="center">
+        <a href="">
+          <img src="https://i.pinimg.com/736x/53/7e/f5/537ef59499259ba707068742f91a10f8.jpg" width="200px;" hight="200px;" alt=""/><br /><sub><b>FE 팀원 : 김태윤</b></sub>
+        </a><br />
+    </td>
+      <td align="center">
+        <a href="">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1fupg4Q5ifZdTrqNFmVX5LbT502O8q9pDOHCsbWxWSaHPDdlRrIZB8C29iC_SegMmDMA&usqp=CAU" width="200px;" hight="200px;" alt=""/><br /><sub><b>FE 팀원 : 윤주현</b></sub>
+        </a><br />
+    </td>
+      <td align="center">
+        <a href="">
+          <img src="https://i.pinimg.com/originals/23/83/95/2383951c6a815809c05d4aed4db94866.jpg" width="200px;" hight="200px;" alt=""/><br /><sub><b>BE 팀원 : 전이현</b></sub>
+        </a><br />
+    </td>
+    </tr>
+  </tbody>
+</table>
+</div>
+  <div align="center">
+   
 ## 🛠️ 프로젝트 구축 기술 및 사용 소프트웨어
 #### 🌈Front-end🌈
 <img src="https://img.shields.io/badge/npm-CB3837?style=flat-square&logo=npm&logoColor=white"/>  <img src="https://img.shields.io/badge/HTML-E34F26?style=flat-square&logo=HTML5&logoColor=white"/> <img src="https://img.shields.io/badge/css3-F4842D?style=flat-square&logo=css3&logoColor=white"/>  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=JavaScript&logoColor=white"/> <img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=Node.js&logoColor=white"/>  <img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=React&logoColor=white"/> <img src="https://img.shields.io/badge/googlechrome-4285F4?style=flat-square&logo=googlechrome&logoColor=white"/>  <img src="https://img.shields.io/badge/visualstudiocode-007ACC?style=flat-square&logo=visualstudiocode&logoColor=white"/>
