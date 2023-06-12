@@ -2,23 +2,14 @@
   ## 🏷️ 프로젝트 주제 - 노쇼 방지 예약 시스템
   ### ❗ 프로젝트 주요기능
 1. **예약 시스템 범용 기능**
-
-```
-- 고객은 캘린더를 사용하여 날짜와 시간을 선택하고 예약할 수 있습니다.
-- 예약 관리를 위하여 고객, 점주, 관리자 각각의 역할에 따른 권한이 제한됩니다.
-```
-
 2. **예약 결제 처리 기능**
-
-```
-- 예약 신청 시 인원 수에 따라 예약금을 지불해야 예약이 가능합니다.
-- 고객은 충전금을 카드, 페이, 입금 등의 방법으로 충전한 후 예약금으로 사용할 수 있습니다.
-- 노쇼의 경우 예약금이 자동으로 위약금으로 처리되어 점주에게 지급됩니다.
-```
-
 3. **고객 관리 기능**
 
-```
-- 고객의 등급에 따라 포인트 획득 비율과 쿠폰 지급 등의 혜택을 받을 수 있습니다.
-- 개인정보와 매장 이용 정보를 기반으로 고객에게 적합한 서비스를 추천합니다.
-```
+## 🛠️ 프로젝트 구축 기술 및 사용 소프트웨어
+#### 🌈Front-end🌈
+<img src="https://img.shields.io/badge/HTML-E34F26?style=flat-square&logo=HTML5&logoColor=white"/> <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=JavaScript&logoColor=white"/> <img src="https://img.shields.io/badge/Node.js-339933?style=flat-square&logo=Node.js&logoColor=white"/>  <img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=React&logoColor=white"/> <img src="https://img.shields.io/badge/googlechrome-4285F4?style=flat-square&logo=googlechrome&logoColor=white"/>  <img src="https://img.shields.io/badge/visualstudiocode-007ACC?style=flat-square&logo=visualstudiocode&logoColor=white"/>
+#### ⭐Back-end⭐
+<img src="https://img.shields.io/badge/springboot-6DB33F?style=flat-square&logo=springboot&logoColor=white"/>  <img src="https://img.shields.io/badge/Java-F7DF1E?style=flat-square&logo=Java&logoColor=white"/>  <img src="https://img.shields.io/badge/mariadb-003545?style=flat-square&logo=mariadb&logoColor=white"/>  <img src="https://img.shields.io/badge/intellijidea-000000?style=flat-square&logo=intellijidea&logoColor=white"/>  
+#### CI-CD Tools
+#### Cowork-Tool
+<img src="https://img.shields.io/badge/postman-FF6C37?style=flat-square&logo=postman&logoColor=white"/>  <img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=React&logoColor=white"/>  <img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=React&logoColor=white"/>
