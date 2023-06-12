@@ -7,10 +7,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ssginc_kdt_team3.BE.DTOs.admin.AdminReviewListDTO;
 import ssginc_kdt_team3.BE.DTOs.reservation.AdminReservationListDTO;
 import ssginc_kdt_team3.BE.domain.Reservation;
-import ssginc_kdt_team3.BE.domain.Review;
 import ssginc_kdt_team3.BE.enums.ReservationStatus;
 import ssginc_kdt_team3.BE.repository.reservation.JpaDataReservationRepository;
 

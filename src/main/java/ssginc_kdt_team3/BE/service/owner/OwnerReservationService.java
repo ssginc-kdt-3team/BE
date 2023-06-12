@@ -131,7 +131,7 @@ public class OwnerReservationService {
                 log.info("전화번호 = {}",customerPhone);
                 log.info("예약 일시 = {}",reservationDate);
 
-                String content = customerName + " 고객님, 해당 예약이 취소되었습니다.\n예약 일시: " + reservationDate + "\n매장명: " + shopName;
+                String content = customerName + " 고객님, 해당 예약이 취소되었습니다.\n[예약 일시] : " + reservationDate + "\n[매장명] : " + shopName + "\n[취소 사유] : " + reservation.getCancelReason();
 
                 messageDTO.setTo(customerPhone);
                 messageDTO.setContent(content);

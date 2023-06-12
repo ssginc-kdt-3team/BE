@@ -81,8 +81,16 @@ public class NaverAlarmService {
         headers.set("x-ncp-apigw-signature-v2", makeSignature(time));
         //헤더 생성(타입, 시간, accessKey,암호화된 secretKey등등 설정)
 
+        String alarmType;
+
+        if (requestContent.getContent().length() > 80){
+            alarmType = "LMS";
+        }
+        else{
+            alarmType = "SMS";
+        }
         RequestSmsDTO request = RequestSmsDTO.builder()
-                .type("SMS")
+                .type(alarmType)
                 .contentType("COMM")//COMM / AD 2가지 옵션있음(AD는 광고용)
                 .countryCode("82")//국가 코드
                 .from(senderPhone) //발신자 번호
