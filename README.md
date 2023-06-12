@@ -1,7 +1,9 @@
 <header>
-  
+  <div align="center">
+    
 ![header](https://capsule-render.vercel.app/api?type=waving&color=96C8AC&height=225&section=header&text=TEAM%20%20Yes!&stroke=FFFFFF&strokeWidth=1.2&fontAlign=50&fontAlignY=45&fontSize=48&descAlign=10&fontColor=498263&desc=Spharos%20K-DT&descAlignY=15&descSize=18)
-  
+    
+  </div>
 </header>
  
 <section>
