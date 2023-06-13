@@ -17,6 +17,7 @@ import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @SpringBootTest
@@ -44,7 +45,7 @@ public class alarmServiceTest {
             String ownerPhone = reservation.getShop().getOwner().getPhoneNumber();
             String ownerName = reservation.getShop().getOwner().getName();
             LocalDateTime reservationDate = reservation.getReservationDate();
-            String content = ownerName + " 점주님의 매장에 노쇼가 발생하였습니다!\n예약 ID : " + reservation.getId() + "\n예약 일시 : " + reservationDate +
+            String content = ownerName + " 점주님의 매장에 노쇼가 발생하였습니다!\n예약 ID : " + reservation.getId() + "\n예약 일시 : " + reservationDate.format(DateTimeFormatter.ofPattern("yyyy.MM.dd")) +
                     "\n노쇼 발생시간 : " + reservation.getChangeTime();
             message.setTo(ownerPhone);
             message.setContent(content);
