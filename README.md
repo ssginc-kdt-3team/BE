@@ -7,23 +7,14 @@
 </header>
 
 <section>  
-<div>
   
 ### 💡 예약 및 노쇼 관리 시스템 -  노예S
-  
-```
-  
-- **일시 4/20 목 ~ 6/21 수**  
-- 구글 드라이브 : https://drive.google.com/drive/folders/1Uolkp75BysIOg0k7zg8y3AgRXWQEyCiu  
-- ERD : https://www.erdcloud.com/d/vNJpJXtbNsE6m8hce  
-- GITHUB : https://github.com/ssginc-kdt-3team  
-  
-```
-  
-</div>    
+
+<br>
 <div>
     
   ### 🏷️ 프로젝트 주제 및 기획 배경
+**일시 4/20 목 ~ 6/21 수**
   #### ❗ 주제 - 노쇼 방지 예약 시스템
 
 예약금 사전 결제로 **노쇼를 방지**하고,  
