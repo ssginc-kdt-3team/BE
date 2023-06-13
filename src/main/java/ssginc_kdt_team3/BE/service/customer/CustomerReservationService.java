@@ -33,7 +33,10 @@ import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+
+import static com.sun.tools.javac.util.Constants.format;
 
 @Slf4j
 @Service
@@ -314,7 +317,7 @@ public class CustomerReservationService {
 
                     String ownerName = reservation.getShop().getOwner().getName();
                     String ownerPhone = reservation.getShop().getOwner().getPhoneNumber();
-                    String reservationCancelMessage = "[매장명] : " + shopName + "\n[예약일시] : " + reservationDate + "\n" + ownerName + "점주님의 매장 예약이 취소되었습니다." ;
+                    String reservationCancelMessage = "[매장명] : " + shopName + "\n[예약일시] : " + reservationDate.format(DateTimeFormatter.ofPattern("yyyy.MM.dd")) + "\n" + ownerName + "점주님의 매장 예약이 취소되었습니다." ;
                     //점주용 메시지
 
                     ownerMessageDTO.setTo(ownerPhone);
@@ -323,7 +326,7 @@ public class CustomerReservationService {
                     ResponseSmsDTO ownerResponse = naverAlarmService.sendSms(ownerMessageDTO);
 
                     if (reservation.getCustomer().isAlarmBoolean()){
-                        String customerContent = "[매장명] : " + shopName + "\n[예약일시] : " + reservationDate + "\n" + customerName + " 고객님의 예약 취소가 완료되었습니다!";
+                        String customerContent = "[매장명] : " + shopName + "\n[예약일시] : " + reservationDate.format(DateTimeFormatter.ofPattern("yyyy.MM.dd")) + "\n" + customerName + " 고객님의 예약 취소가 완료되었습니다!";
                         //고객용 메시지
 
                         customerMessageDTO.setTo(customerPhone);
@@ -471,7 +474,7 @@ public class CustomerReservationService {
         String ownerPhone = shop.getOwner().getPhoneNumber();
         String customerName = customer.getName();
         String customerPhone = customer.getPhoneNumber();
-        String reservationDate = dto.getReservationDate();
+        String reservationDate = dto.getReservationDate().format(String.valueOf(DateTimeFormatter.ofPattern("yyyy.MM.dd")));
 
         //고객용 메시지
         String customerReservationMessage = customerName + " 고객님! 예약이 완료되었습니다!\n[예약일시] : " + reservationDate + "\n[예약매장] : " + shopName;
