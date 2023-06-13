@@ -5,9 +5,23 @@
     
   </div>
 </header>
- 
-<section>
-  <div>
+
+<section>  
+<div>
+  
+### 💡 예약 및 노쇼 관리 시스템 -  노예S
+  
+```
+  
+- **일시 4/20 목 ~ 6/21 수**  
+- 구글 드라이브 : https://drive.google.com/drive/folders/1Uolkp75BysIOg0k7zg8y3AgRXWQEyCiu  
+- ERD : https://www.erdcloud.com/d/vNJpJXtbNsE6m8hce  
+- GITHUB : https://github.com/ssginc-kdt-3team  
+  
+```
+  
+</div>    
+<div>
     
   ### 🏷️ 프로젝트 주제 및 기획 배경
   #### ❗ 주제 - 노쇼 방지 예약 시스템
@@ -93,7 +107,7 @@
 #### 🍀CI-CD Tools🍀
 <img src="https://img.shields.io/badge/amazonaws-232F3E?style=flat-square&logo=amazonaws&logoColor=white"/>  <img src="https://img.shields.io/badge/amazonapigateway-FF4F8B?style=flat-square&logo=amazonapigateway&logoColor=white"/>  <img src="https://img.shields.io/badge/amazonec2-FF9900?style=flat-square&logo=amazonec2&logoColor=white"/>  <img src="https://img.shields.io/badge/amazons3-569A31?style=flat-square&logo=amazons3&logoColor=white"/>  <img src="https://img.shields.io/badge/amazonrds-527FFF?style=flat-square&logo=amazonrds&logoColor=white"/>
 #### ✨Cowork-Tool✨
-<img src="https://img.shields.io/badge/figma-F24E1E?style=flat-square&logo=figma&logoColor=white"/>  <img src="https://img.shields.io/badge/postman-FF6C37?style=flat-square&logo=PostMan&logoColor=white"/>  <img src="https://img.shields.io/badge/miro-F39914?style=flat-square&logo=miro&logoColor=white"/>  <img src="https://img.shields.io/badge/slack-4A154B?style=flat-square&logo=slack&logoColor=white"/>  <img src="https://img.shields.io/badge/github-181717?style=flat-square&logo=github&logoColor=white"/>  <img src="https://img.shields.io/badge/notion-000000?style=flat-square&logo=notion&logoColor=white"/>
+<img src="https://img.shields.io/badge/figma-F24E1E?style=flat-square&logo=figma&logoColor=white"/>  <img src="https://img.shields.io/badge/postman-FF6C37?style=flat-square&logo=PostMan&logoColor=white"/>  <a href="https://miro.com/app/dashboard/"><img src="https://img.shields.io/badge/miro-F39914?style=flat-square&logo=miro&logoColor=white"/></a>  <img src="https://img.shields.io/badge/slack-4A154B?style=flat-square&logo=slack&logoColor=white"/>  <img src="https://img.shields.io/badge/github-181717?style=flat-square&logo=github&logoColor=white"/>  <img src="https://img.shields.io/badge/notion-000000?style=flat-square&logo=notion&logoColor=white"/>
   
   </div>
   </section> 
