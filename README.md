@@ -58,8 +58,8 @@
       <td align="center">
           <img src="https://i.pinimg.com/originals/23/83/95/2383951c6a815809c05d4aed4db94866.jpg" width="200px;" hight="200px;" alt=""/><br><sub><b>
           BE 팀원 : 전이현<br>
-          ▶사용자 관련 시스템 설계 및 구현<br>
-          ▶점주 예약 관리 시스템 구현
+          ▶ 고객 시스템 설계 및 구현<br>
+          ▶ 점주 예약 관리 시스템 구현
           </b></sub><br>
     </td>
     </tr>
