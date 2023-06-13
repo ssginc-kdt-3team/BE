@@ -34,7 +34,7 @@ public class OwnerShopDetailDTO {
 
     List<MenuDTO> menus;
 
-    private ShopCategory shopCategory;
+    ShopCategory shopCategory;
 
     public OwnerShopDetailDTO(Shop shop, List<MenuDTO> menus) {
         this.ownerId = shop.getOwner().getId();
@@ -47,6 +47,8 @@ public class OwnerShopDetailDTO {
         this.shopInfo = shop.getInfo();
         this.branchName = shop.getBranch().getName();
         this.ownerName = shop.getOwner().getName();
+
+        this.shopCategory = shop.getCategory();
 
         this.openTime = shop.getOperationInfo().getOpenTime().toString();
         this.orderCloseTime = shop.getOperationInfo().getOrderCloseTime().toString();
