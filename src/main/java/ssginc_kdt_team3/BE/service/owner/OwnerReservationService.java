@@ -29,6 +29,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
@@ -129,7 +130,7 @@ public class OwnerReservationService {
                 String shopName = reservation.getShop().getName();
 
                 log.info("전화번호 = {}",customerPhone);
-                log.info("예약 일시 = {}",reservationDate);
+                log.info("예약 일시 = {}",reservationDate.format(DateTimeFormatter.ofPattern("yyyy.MM.dd")));
 
                 String content = customerName + " 고객님, 해당 예약이 취소되었습니다.\n[예약 일시] : " + reservationDate + "\n[매장명] : " + shopName + "\n[취소 사유] : " + reservation.getCancelReason();
 
