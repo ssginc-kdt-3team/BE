@@ -118,7 +118,7 @@
     
 <br>
 <img src="https://img.shields.io/badge/amazonaws-232F3E?style=flat-square&logo=amazonaws&logoColor=white"/>  <img src="https://img.shields.io/badge/amazonapigateway-FF4F8B?style=flat-square&logo=amazonapigateway&logoColor=white"/><br>  <img src="https://img.shields.io/badge/amazonec2-FF9900?style=flat-square&logo=amazonec2&logoColor=white"/>  <img src="https://img.shields.io/badge/amazons3-569A31?style=flat-square&logo=amazons3&logoColor=white"/>  <img src="https://img.shields.io/badge/amazonrds-527FFF?style=flat-square&logo=amazonrds&logoColor=white"/>
-<br>
+<br><br><br><br>
     
   </div>
   </section> 
