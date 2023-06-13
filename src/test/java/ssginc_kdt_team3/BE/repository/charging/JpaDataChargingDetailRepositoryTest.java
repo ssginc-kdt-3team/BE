@@ -19,7 +19,7 @@ class JpaDataChargingDetailRepositoryTest {
 
     @Test
     public void findSum() {
-        int sumCharging = detailRepository.findSumCharging(1L);
+        int sumCharging = detailRepository.findSumCharging(15L);
         System.out.println(sumCharging);
 
     }

@@ -50,7 +50,7 @@ class JpaDataReservationRepositoryTest {
 //            System.out.println(reservation.toString());
 //        }
 //    }
-
+//
 //    @Test
 //    void findReservationByBranchId() {
 //        List<Reservation> allByStatusAndShopBranchId = reservationRepository.findAllByShop_BranchId(2L);

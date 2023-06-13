@@ -44,7 +44,8 @@ public class NoShowScheduler {
             String ownerPhone = reservation.getShop().getOwner().getPhoneNumber();
             String ownerName = reservation.getShop().getOwner().getName();
             LocalDateTime reservationDate = reservation.getReservationDate();
-            String content = ownerName + " 점주님의 매장에 노쇼가 발생하였습니다!\n예약 일시 : " + reservationDate;
+            String content = ownerName + " 점주님의 매장에 노쇼가 발생하였습니다!\n예약 ID : " + reservation.getId() + "\n예약 일시 : " + reservationDate +
+                    "\n노쇼 발생시간 : " + reservation.getChangeTime();
             message.setTo(ownerPhone);
             message.setContent(content);
             //신영 추가 0608 -> 노쇼시 점주에게 문자알림

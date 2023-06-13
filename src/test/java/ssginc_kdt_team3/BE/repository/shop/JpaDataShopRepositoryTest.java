@@ -18,7 +18,7 @@ class JpaDataShopRepositoryTest {
 
     @Test
     void findShopByOwner_id() {
-        Long ownerId = 1L;
+        Long ownerId = 7L;
 
         Optional<Shop> shopByOwnerId = repository.findShopByOwner_id(ownerId);
         Assertions.assertThat(shopByOwnerId.get().getOwner().getId()).isEqualTo(ownerId);

@@ -60,17 +60,16 @@ public class CustomerReservationService {
 
     @Transactional(readOnly = false)
     public Long makeReservation(@NotNull CustomerReservationAddDTO dto) throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
-        Reservation reservation = new Reservation();
 
         Shop shop = shopRepository.findById(dto.getShopId()).get();
-        Customer customer = customerRepository.findCustomer(dto.getUserId()).get();
 
+        Customer customer = customerRepository.findCustomer(dto.getUserId()).get();
         //DTO 검증
-        setReservationInfo(reservation, dto, shop, customer);
+        Reservation reservation = setReservationInfo(dto, shop, customer);
+
         try {
             int pointValue = Integer.parseInt(dto.getPointValue());
             int originValue = calculatingDeposit(dto.getPeople(), dto.getChild());
-
             //쿠폰 할인
             int couponDiscount = 0;
             if (dto.getCouponId() > 0) {
@@ -84,17 +83,16 @@ public class CustomerReservationService {
             } else {
                 return null;
             }
-
+            log.info("=====================================");
             //총 할인 금액
             int discount = couponDiscount + pointDiscount;
             //실제 계산 금액
             int needValue = originValue - discount;
-
-
-
+            log.info("필요한 금액 : {}",needValue);
 
             //충전금 충분한지 확인
             if (isEnoughMoney(dto.getUserId(), needValue)) {
+
                 Reservation saveReservation = reservationRepository.save(reservation);
                 log.info("================================================================can");
 
@@ -316,7 +314,7 @@ public class CustomerReservationService {
 
                     String ownerName = reservation.getShop().getOwner().getName();
                     String ownerPhone = reservation.getShop().getOwner().getPhoneNumber();
-                    String reservationCancelMessage = "매장명 : " + shopName + "\n예약일시 : " + reservationDate + "\n" + ownerName + "점주님의 매장 예약이 취소되었습니다." ;
+                    String reservationCancelMessage = "[매장명] : " + shopName + "\n[예약일시] : " + reservationDate + "\n" + ownerName + "점주님의 매장 예약이 취소되었습니다." ;
                     //점주용 메시지
 
                     ownerMessageDTO.setTo(ownerPhone);
@@ -325,7 +323,7 @@ public class CustomerReservationService {
                     ResponseSmsDTO ownerResponse = naverAlarmService.sendSms(ownerMessageDTO);
 
                     if (reservation.getCustomer().isAlarmBoolean()){
-                        String customerContent = "매장명 : " + shopName + "\n예약일시 : " + reservationDate + "\n" + customerName + "님의 예약 취소가 완료되었습니다!";
+                        String customerContent = "[매장명] : " + shopName + "\n[예약일시] : " + reservationDate + "\n" + customerName + " 고객님의 예약 취소가 완료되었습니다!";
                         //고객용 메시지
 
                         customerMessageDTO.setTo(customerPhone);
@@ -476,12 +474,12 @@ public class CustomerReservationService {
         String reservationDate = dto.getReservationDate();
 
         //고객용 메시지
-        String customerReservationMessage = customerName + "고객님 예약이 완료되었습니다!\n[예약일시] : " + reservationDate + "\n[예약매장] : " + shopName;
+        String customerReservationMessage = customerName + " 고객님! 예약이 완료되었습니다!\n[예약일시] : " + reservationDate + "\n[예약매장] : " + shopName;
         customerMessageDTO.setTo(customerPhone);
         customerMessageDTO.setContent(customerReservationMessage);
         naverAlarmService.sendSms(customerMessageDTO);
         //점주용 메시지
-        String ownerReservationMessage = ownerName + "점주님 새로운 예약 내역입니다!\n[예약 일시] : " + reservationDate;
+        String ownerReservationMessage = ownerName + " 점주님! 새로운 예약 내역입니다!\n[예약 일시] : " + reservationDate;
         ownerMessageDTO.setTo(ownerPhone);
         ownerMessageDTO.setContent(ownerReservationMessage);
         naverAlarmService.sendSms(ownerMessageDTO);
@@ -494,7 +492,6 @@ public class CustomerReservationService {
     private boolean isEnoughMoney(Long userId, int value) {
         return chargingService.showCustomerChargingValue(userId) >= value;
     }
-
     private boolean isEnoughPoint(Long userId, int value) {
         return pointManagementService.showCustomerPointValue(userId) >= value;
     }
@@ -529,7 +526,9 @@ public class CustomerReservationService {
         return customerReservations;
     }
 
-    private void setReservationInfo(Reservation reservation, CustomerReservationAddDTO dto, Shop shop, Customer customer) {
+    private Reservation setReservationInfo(CustomerReservationAddDTO dto, Shop shop, Customer customer) {
+
+        Reservation reservation = new Reservation();
 
         LocalDateTime reservationTime = TimeUtils.stringParseLocalDataTime(dto.getReservationDate());
         reservation.setReservationDate(reservationTime);
@@ -543,6 +542,8 @@ public class CustomerReservationService {
         reservation.setChangeTime(parse);
         reservation.setShop(shop);
         reservation.setCustomer(customer);
+
+        return reservation;
     }
 
 
