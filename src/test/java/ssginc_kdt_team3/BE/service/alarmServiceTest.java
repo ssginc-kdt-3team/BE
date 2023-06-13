@@ -55,4 +55,8 @@ public class alarmServiceTest {
         }
 
     }
+    @Test
+    void AlarmTest(){
+
+    }
 }
