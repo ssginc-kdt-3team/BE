@@ -18,7 +18,7 @@ public interface JpaDataChargingDetailRepository extends JpaRepository<ChargingD
             "WHERE cd.chargingManagement.customer.id = :customerId")
     Integer findSumCharging(@Param("customerId") Long customerId);
 
-    @Query("select cd from ChargingDetail cd where cd.detailUseId = (select d.detailUseId from ChargingDetail d join d.chargingManagement m where m.id = :chargingManagementId)")
+    @Query("select cd from ChargingDetail cd where cd.detailUseId = (select d.detailUseId from ChargingDetail d join d.chargingManagement m where m.id = :chargingManagementId) order by cd.operateDate desc")
     List<ChargingDetail> findChargingManagementUsingLog(@Param("chargingManagementId") Long chargingManagementId);
 
     @Query("SELECT cd.detailUseId, " +

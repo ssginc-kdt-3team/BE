@@ -28,7 +28,7 @@ public class AdminReservationService {
         if (type.equals("branch")) {
             if (status.equals("ALL")) {
 
-                Page<Reservation> allByShopBranchId = reservationRepository.findAllByShop_BranchId(id, pageable);
+                Page<Reservation> allByShopBranchId = reservationRepository.findAllByShop_BranchIdOrderByReservationDateDesc(id, pageable);
                 return convertDto(allByShopBranchId);
             }
 
@@ -36,7 +36,7 @@ public class AdminReservationService {
                 ReservationStatus reservationStatus = ReservationStatus.valueOf(status);
 
                 //타입이 branch에 status에 해당하는 예약만 조회하는 경우
-                Page<Reservation> allByStatusAndShopBranchId = reservationRepository.findAllByStatusAndShop_BranchId(reservationStatus, id, pageable);
+                Page<Reservation> allByStatusAndShopBranchId = reservationRepository.findAllByStatusAndShop_BranchIdOrderByReservationDateDesc(reservationStatus, id, pageable);
                 return convertDto(allByStatusAndShopBranchId);
 
             } catch (IllegalArgumentException e) {
@@ -46,7 +46,7 @@ public class AdminReservationService {
         } else if (type.equals("shop")) {
             //타입이 shop에 필터링 없이 모두 조회하는 경우
             if (status.equals("ALL")) {
-                Page<Reservation> allByShopBranchId = reservationRepository.findAllByShop_Id(id, pageable);
+                Page<Reservation> allByShopBranchId = reservationRepository.findAllByShop_IdOrderByReservationDateDesc(id, pageable);
                 return convertDto(allByShopBranchId);
             }
 
@@ -54,7 +54,7 @@ public class AdminReservationService {
                 ReservationStatus reservationStatus = ReservationStatus.valueOf(status);
 
                 //타입이 shop에 status에 해당하는 예약만 조회하는 경우
-                Page<Reservation> allByStatusAndShopId = reservationRepository.findAllByStatusAndShop_Id(reservationStatus, id, pageable);
+                Page<Reservation> allByStatusAndShopId = reservationRepository.findAllByStatusAndShop_IdOrderByReservationDateDesc(reservationStatus, id, pageable);
                 return convertDto(allByStatusAndShopId);
 
             } catch (IllegalArgumentException e) {

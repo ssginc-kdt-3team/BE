@@ -25,7 +25,7 @@ public class ShopDetailReviewService {
         // 매장 상세페이지 하단 고객후기
         //리스트 -> dtoList -> Page, 해당 shop 의 모든 review 가져오기
 
-        List<Review> allByReservationShopId = reviewRepository.findAllByReservation_ShopId(shopId);
+        List<Review> allByReservationShopId = reviewRepository.findAllByReservation_ShopIdOrderByIdDesc(shopId);
         List<ReviewResponseDTO> reviewResponse = new ArrayList<>();
         for (Review review : allByReservationShopId) {
             System.out.println("review =============> " + review.getTitle());
