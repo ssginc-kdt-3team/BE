@@ -14,10 +14,10 @@ import java.util.Optional;
 
 public interface JpaDataReservationRepository extends JpaRepository<Reservation, Long> {
 
-    @Query("select r from Reservation r where r.customer.id = :customerId and r.status = :status order by r.reservationDate desc")
+    @Query("select r from Reservation r where r.customer.id = :customerId and r.status = :status order by r.reservationDate")
     List<Reservation> findAllActive(@Param("customerId") Long customerId, @Param("status")ReservationStatus status);
 
-    @Query("select r from Reservation r where r.customer.id = :customerId order by r.reservationDate desc")
+    @Query("select r from Reservation r where r.customer.id = :customerId order by r.id desc")
     List<Reservation> findAllMy(@Param("customerId") Long customerId);
 
     @Query("select r from Reservation r where r.reservationDate <= :limit and r.status = :condition order by r.reservationDate desc")
