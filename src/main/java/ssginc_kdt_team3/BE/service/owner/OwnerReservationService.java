@@ -468,11 +468,18 @@ public class OwnerReservationService {
         int recentlyNoShow = reservationRepository.cntRecentlyStatus(startOfRecent, endOfRecent, time.getHour(), time.getMinute(), ReservationStatus.NOSHOW);
         int recentlyAll = reservationRepository.cntRecentlyAll(startOfRecent, endOfRecent, time.getHour(), time.getMinute());
 
-        if (recentlyNoShow == 0 || recentlyAll == 00) {
+        log.info("Noshow Num  = {} ", recentlyNoShow);
+        log.info("recentlyAll Num  = {} ", recentlyAll);
+
+        if (recentlyNoShow == 0 || recentlyAll == 0) {
+            log.info("zero");
             return 0;
         }
 
-        double noShowRate = recentlyNoShow / recentlyAll;
+        double noShowRate = (double) recentlyNoShow / recentlyAll;
+
+        log.info("noShowRate  = {} ", noShowRate);
+
         return noShowRate;
     }
 

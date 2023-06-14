@@ -69,7 +69,10 @@ public interface JpaDataReservationRepository extends JpaRepository<Reservation,
     int countReservation(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate, @Param("condition") ReservationStatus condition, @Param("shopId") Long shopId);
 
     //최근 3개월 특정 시간별 노쇼 수
-    @Query("SELECT COUNT(r) FROM Reservation r WHERE r.reservationDate >= :startDateTime AND r.reservationDate <= :endDateTime AND FUNCTION('HOUR', r.reservationDate) = :hour AND FUNCTION('MINUTE', r.reservationDate) = :minute AND r.status = :status")
+//    @Query("SELECT COUNT(r) FROM Reservation r WHERE r.reservationDate >= :startDateTime AND r.reservationDate <= :endDateTime AND FUNCTION('HOUR', r.reservationDate) = :hour AND FUNCTION('MINUTE', r.reservationDate) = :minute AND r.status = :status")
+//    int cntRecentlyStatus(@Param("startDateTime") LocalDateTime startDateTime, @Param("endDateTime") LocalDateTime endDateTime, @Param("hour") int hour, @Param("minute") int minute, @Param("status") ReservationStatus status);
+
+    @Query("SELECT COUNT(r) FROM Reservation r WHERE (r.reservationDate BETWEEN :startDateTime AND :endDateTime) AND FUNCTION('HOUR', r.reservationDate) = :hour AND FUNCTION('MINUTE', r.reservationDate) = :minute AND r.status = :status")
     int cntRecentlyStatus(@Param("startDateTime") LocalDateTime startDateTime, @Param("endDateTime") LocalDateTime endDateTime, @Param("hour") int hour, @Param("minute") int minute, @Param("status") ReservationStatus status);
 
     //최근 3개월 특정 시간별 전체 예약 수
