@@ -190,7 +190,7 @@ public class OwnerReservationService {
             LocalDateTime endTime = TimeUtils.stringParseLocalDataTime(end);
 
             List<Reservation> reservationList =
-                    reservationRepository.findAllByShop_IdAndReservationDateBetweenOrderByReservationDateDesc(shop.getId(), startTime, endTime);
+                    reservationRepository.findAllByShop_IdAndReservationDateBetweenOrderByIdDesc(shop.getId(), startTime, endTime);
             return toDtoPage(reservationList, pageable);
         }
 
