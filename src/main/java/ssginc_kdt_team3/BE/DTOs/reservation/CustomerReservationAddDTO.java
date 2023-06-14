@@ -34,7 +34,7 @@ public class CustomerReservationAddDTO {
     @Length(max = 100)
     private String memo;
 
-    @Pattern(regexp = "(0|[1-9][0-9]{3,})", message = "1000포인트 이상만 사용가능합니다.")
+    @Pattern(regexp = "\\d+", message = "0 이상의 숫자만 입력가능합니다.")
     private String pointValue;
 
     private Long userId;
