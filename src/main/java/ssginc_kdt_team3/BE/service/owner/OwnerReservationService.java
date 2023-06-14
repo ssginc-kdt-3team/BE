@@ -126,11 +126,11 @@ public class OwnerReservationService {
 
                 String customerPhone = reservation.getCustomer().getPhoneNumber();
                 String customerName = reservation.getCustomer().getName();
-                String reservationDateTime = String.valueOf(reservation.getReservationDate());
-                String reservationDate = reservationDateTime.substring(0, reservationDateTime.length() - 3);
+                LocalDateTime reservationDate = reservation.getReservationDate();
                 String shopName = reservation.getShop().getName();
 
                 log.info("전화번호 = {}",customerPhone);
+                log.info("예약 일시 = {}",reservationDate.format(DateTimeFormatter.ofPattern("yyyy.MM.dd")));
 
                 String content = customerName + " 고객님, 해당 예약이 취소되었습니다.\n[예약 일시] : " + reservationDate + "\n[매장명] : " + shopName + "\n[취소 사유] : " + reservation.getCancelReason();
 
