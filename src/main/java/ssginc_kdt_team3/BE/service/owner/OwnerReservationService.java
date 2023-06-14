@@ -189,13 +189,38 @@ public class OwnerReservationService {
             LocalDateTime startTime = TimeUtils.stringParseLocalDataTime(start);
             LocalDateTime endTime = TimeUtils.stringParseLocalDataTime(end);
 
-            List<Reservation> reservationList =
-                    reservationRepository.findAllByShop_IdAndReservationDateBetweenOrderByReservationDateDesc(shop.getId(), startTime, endTime);
-            return toDtoPage(reservationList, pageable);
+            Page<Reservation> reservationList =
+                    reservationRepository.findAllByShop_IdAndReservationDateBetweenOrderByReservationDateDesc(shop.getId(), startTime, endTime, pageable);
+
+            Page<OwnerReservationDTO> dtoPage = toDtoList(reservationList);
+
+            return dtoPage;
         }
 
         return null;
     }
+
+    /* Page<Entity> -> Page<Dto> 변환처리 */
+    private Page<OwnerReservationDTO> toDtoList(Page<Reservation> reservationList){
+        Page<OwnerReservationDTO> dtoPage = reservationList.map(m -> OwnerReservationDTO.builder()
+                .id(m.getId())
+                .ownerID(m.getShop().getOwner().getId())
+                .customerID(m.getCustomer().getId())
+                .name(m.getCustomer().getName())
+                .phoneNumber(m.getCustomer().getPhoneNumber())
+                .email(m.getCustomer().getEmail())
+                .people(m.getPeople())
+                .child(m.getChild())
+                .reservationDate(m.getReservationDate())
+                .status(m.getStatus())
+                .memo(m.getMemo())
+                .originValue(depositRepository.findReservationDeposit(m.getId()).getOrigin_value())
+                .penaltyValue(depositRepository.findReservationDeposit(m.getId()).getPenaltyValue())
+                .build());
+
+        return dtoPage;
+    }
+
 
     public Page<OwnerReservationDTO> showShopReservationReservation(Long ownerId, Pageable pageable, Map<String,String> request) {
         Optional<Shop> shopByOwnerId = shopRepository.findShopByOwner_id(ownerId);
@@ -209,10 +234,13 @@ public class OwnerReservationService {
             LocalDateTime startTime = TimeUtils.stringParseLocalDataTime(start);
             LocalDateTime endTime = TimeUtils.stringParseLocalDataTime(end);
 
-            List<Reservation> reservationList =
+            Page<Reservation> reservationList =
                     reservationRepository.findAllByStatusAndShop_IdAndReservationDateBetweenOrderByReservationDateDesc
-                            (ReservationStatus.RESERVATION, shop.getId(), startTime, endTime);
-            return toDtoPage(reservationList, pageable);
+                            (ReservationStatus.RESERVATION, shop.getId(), startTime, endTime, pageable);
+
+            Page<OwnerReservationDTO> dtoPage = toDtoList(reservationList);
+
+            return dtoPage;
         }
 
         return null;
@@ -230,10 +258,13 @@ public class OwnerReservationService {
             LocalDateTime startTime = TimeUtils.stringParseLocalDataTime(start);
             LocalDateTime endTime = TimeUtils.stringParseLocalDataTime(end);
 
-            List<Reservation> reservationList =
+            Page<Reservation> reservationList =
                     reservationRepository.findAllByStatusAndShop_IdAndReservationDateBetweenOrderByReservationDateDesc
-                            (ReservationStatus.DONE, shop.getId(), startTime, endTime);
-            return toDtoPage(reservationList, pageable);
+                            (ReservationStatus.DONE, shop.getId(), startTime, endTime, pageable);
+
+            Page<OwnerReservationDTO> dtoPage = toDtoList(reservationList);
+
+            return dtoPage;
         }
 
         return null;
@@ -251,10 +282,13 @@ public class OwnerReservationService {
             LocalDateTime startTime = TimeUtils.stringParseLocalDataTime(start);
             LocalDateTime endTime = TimeUtils.stringParseLocalDataTime(end);
 
-            List<Reservation> reservationList =
+            Page<Reservation> reservationList =
                     reservationRepository.findAllByStatusAndShop_IdAndReservationDateBetweenOrderByReservationDateDesc
-                            (ReservationStatus.CANCEL, shop.getId(), startTime, endTime);
-            return toDtoPage(reservationList, pageable);
+                            (ReservationStatus.CANCEL, shop.getId(), startTime, endTime, pageable);
+
+            Page<OwnerReservationDTO> dtoPage = toDtoList(reservationList);
+
+            return dtoPage;
         }
 
         return null;
@@ -272,10 +306,13 @@ public class OwnerReservationService {
             LocalDateTime startTime = TimeUtils.stringParseLocalDataTime(start);
             LocalDateTime endTime = TimeUtils.stringParseLocalDataTime(end);
 
-            List<Reservation> reservationList =
+            Page<Reservation> reservationList =
                     reservationRepository.findAllByStatusAndShop_IdAndReservationDateBetweenOrderByReservationDateDesc
-                            (ReservationStatus.IMMINENT, shop.getId(), startTime, endTime);
-            return toDtoPage(reservationList, pageable);
+                            (ReservationStatus.IMMINENT, shop.getId(), startTime, endTime, pageable);
+
+            Page<OwnerReservationDTO> dtoPage = toDtoList(reservationList);
+
+            return dtoPage;
         }
 
         return null;
@@ -293,10 +330,13 @@ public class OwnerReservationService {
             LocalDateTime startTime = TimeUtils.stringParseLocalDataTime(start);
             LocalDateTime endTime = TimeUtils.stringParseLocalDataTime(end);
 
-            List<Reservation> reservationList =
+            Page<Reservation> reservationList =
                     reservationRepository.findAllByStatusAndShop_IdAndReservationDateBetweenOrderByReservationDateDesc
-                            (ReservationStatus.NOSHOW, shop.getId(), startTime, endTime);
-            return toDtoPage(reservationList, pageable);
+                            (ReservationStatus.NOSHOW, shop.getId(), startTime, endTime, pageable);
+
+            Page<OwnerReservationDTO> dtoPage = toDtoList(reservationList);
+
+            return dtoPage;
         }
 
         return null;
@@ -468,11 +508,18 @@ public class OwnerReservationService {
         int recentlyNoShow = reservationRepository.cntRecentlyStatus(startOfRecent, endOfRecent, time.getHour(), time.getMinute(), ReservationStatus.NOSHOW);
         int recentlyAll = reservationRepository.cntRecentlyAll(startOfRecent, endOfRecent, time.getHour(), time.getMinute());
 
-        if (recentlyNoShow == 0 || recentlyAll == 00) {
+        log.info("Noshow Num  = {} ", recentlyNoShow);
+        log.info("recentlyAll Num  = {} ", recentlyAll);
+
+        if (recentlyNoShow == 0 || recentlyAll == 0) {
+            log.info("zero");
             return 0;
         }
 
-        double noShowRate = recentlyNoShow / recentlyAll;
+        double noShowRate = (double) recentlyNoShow / recentlyAll;
+
+        log.info("noShowRate  = {} ", noShowRate);
+
         return noShowRate;
     }
 

@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface CouponProvideRepository extends JpaRepository<CouponProvide, Long> {
 
-  List<CouponProvide> findAllByStatusAndCustomer_Id(CouponStatus status, Long userId);
+  List<CouponProvide> findAllByStatusAndCustomer_IdOrderByGivenDay(CouponStatus status, Long userId);
 
 
 

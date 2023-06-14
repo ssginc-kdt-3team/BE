@@ -33,9 +33,7 @@ import java.security.NoSuchAlgorithmException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
-
 
 @Slf4j
 @Service
@@ -110,7 +108,11 @@ public class CustomerReservationService {
 
                 //예약금 결제 정보  생성
                 boolean b = chargingManagementService.saveReservationPayment(saveDeposit);
-                boolean c = pointManagementService.savePointPayment(saveDeposit);
+
+                if (pointDiscount != 0) {
+                    boolean c = pointManagementService.savePointPayment(saveDeposit);
+                }
+
                 boolean d = couponProvideService.saveReservationCouponUseStatus(saveDeposit, dto.getCouponId());
 
                 //알림 메시지 추가

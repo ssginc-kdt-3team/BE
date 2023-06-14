@@ -33,7 +33,7 @@ public class CustomerCouponService {
 
   // 쿠폰목록 조회
   public List<CustomerCouponListDTO> getMyCoupon(Long userId){
-    List<CouponProvide> findCoupon = provideRepository.findAllByStatusAndCustomer_Id(CouponStatus.GIVEN, userId);
+    List<CouponProvide> findCoupon = provideRepository.findAllByStatusAndCustomer_IdOrderByGivenDay(CouponStatus.GIVEN, userId);
 
     List<CustomerCouponListDTO> result = new ArrayList<>();
     for(CouponProvide provide : findCoupon){

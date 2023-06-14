@@ -33,6 +33,22 @@ public class OwnerReservationDTO { //점주(Owner)의 예약내역 확인용 DTO
   private int originValue; //예약금
   private int penaltyValue; //위약금
 
+  @Builder
+  public OwnerReservationDTO(Long id, Long ownerID, Long customerID, String name, String phoneNumber, String email, int people, int child, LocalDateTime reservationDate, ReservationStatus status, String memo, int originValue, int penaltyValue) {
+    this.id = id;
+    this.ownerID = ownerID;
+    this.customerID = customerID;
+    this.name = name;
+    this.phoneNumber = phoneNumber;
+    this.email = email;
+    this.people = people;
+    this.child = child;
+    this.reservationDate = reservationDate;
+    this.status = status;
+    this.memo = memo;
+    this.originValue = originValue;
+    this.penaltyValue = penaltyValue;
+  }
 
   // 생성자 -> Service 코드에서 사용
   public OwnerReservationDTO(Reservation reserve, Deposit deposit) {

@@ -14,30 +14,30 @@ import java.util.Optional;
 
 public interface JpaDataReservationRepository extends JpaRepository<Reservation, Long> {
 
-    @Query("select r from Reservation r where r.customer.id = :customerId and r.status = :status")
+    @Query("select r from Reservation r where r.customer.id = :customerId and r.status = :status order by r.reservationDate")
     List<Reservation> findAllActive(@Param("customerId") Long customerId, @Param("status")ReservationStatus status);
 
-    @Query("select r from Reservation r where r.customer.id = :customerId")
+    @Query("select r from Reservation r where r.customer.id = :customerId order by r.id desc")
     List<Reservation> findAllMy(@Param("customerId") Long customerId);
 
-    @Query("select r from Reservation r where r.reservationDate <= :limit and r.status = :condition")
+    @Query("select r from Reservation r where r.reservationDate <= :limit and r.status = :condition order by r.reservationDate desc")
     List<Reservation> findNoShow(@Param("limit") LocalDateTime limit, @Param("condition") ReservationStatus condition);
 
     int countByReservationDateAndShop_Id(LocalDateTime time, Long shopId);
 
 //    Optional<Reservation> findByrReservationId(Long id);
 
-    List<Reservation> findAllByStatusAndShop_IdAndReservationDateBetweenOrderByReservationDateDesc(ReservationStatus status, Long shopId, LocalDateTime startTime, LocalDateTime endTime);
+    Page<Reservation> findAllByStatusAndShop_IdAndReservationDateBetweenOrderByReservationDateDesc(ReservationStatus status, Long shopId, LocalDateTime startTime, LocalDateTime endTime, Pageable pageable);
 
-    Page<Reservation> findAllByStatusAndShop_BranchId(ReservationStatus status, Long branchId, Pageable pageable);
+    Page<Reservation> findAllByStatusAndShop_BranchIdOrderByReservationDateDesc(ReservationStatus status, Long branchId, Pageable pageable);
 
-    Page<Reservation> findAllByStatusAndShop_Id(ReservationStatus status, Long shopId, Pageable pageable);
+    Page<Reservation> findAllByStatusAndShop_IdOrderByReservationDateDesc(ReservationStatus status, Long shopId, Pageable pageable);
 
-    Page<Reservation> findAllByShop_Id(Long shopId, Pageable pageable);
+    Page<Reservation> findAllByShop_IdOrderByReservationDateDesc(Long shopId, Pageable pageable);
 
-    List<Reservation> findAllByShop_IdAndReservationDateBetweenOrderByReservationDateDesc(Long shopId, LocalDateTime startTime, LocalDateTime endTime);
+    Page<Reservation> findAllByShop_IdAndReservationDateBetweenOrderByReservationDateDesc(Long shopId, LocalDateTime startTime, LocalDateTime endTime, Pageable pageable);
 
-    Page<Reservation> findAllByShop_BranchId(Long branchId, Pageable pageable);
+    Page<Reservation> findAllByShop_BranchIdOrderByReservationDateDesc(Long branchId, Pageable pageable);
 
 //    @Query("SELECT r.status FROM Reservation r WHERE r.id = :id")
 //    ReservationStatus reservationStatusFindByReservationId(@Param("id") Long id);
@@ -50,6 +50,7 @@ public interface JpaDataReservationRepository extends JpaRepository<Reservation,
 
 //    @Query("SELECT r FROM Reservation r")
 //    List<LocalDateTime> findAllByReservationDateCsv();
+
     // 0531 이현: 고객 등급변동 조회 위해 추가
     List<Reservation> findAllByCustomer_IdAndStatusAndReservationDateBetween(Long userId, ReservationStatus status, LocalDateTime startDate, LocalDateTime nowDate);
 
@@ -69,7 +70,10 @@ public interface JpaDataReservationRepository extends JpaRepository<Reservation,
     int countReservation(@Param("startDate") LocalDateTime startDate, @Param("endDate") LocalDateTime endDate, @Param("condition") ReservationStatus condition, @Param("shopId") Long shopId);
 
     //최근 3개월 특정 시간별 노쇼 수
-    @Query("SELECT COUNT(r) FROM Reservation r WHERE r.reservationDate >= :startDateTime AND r.reservationDate <= :endDateTime AND FUNCTION('HOUR', r.reservationDate) = :hour AND FUNCTION('MINUTE', r.reservationDate) = :minute AND r.status = :status")
+//    @Query("SELECT COUNT(r) FROM Reservation r WHERE r.reservationDate >= :startDateTime AND r.reservationDate <= :endDateTime AND FUNCTION('HOUR', r.reservationDate) = :hour AND FUNCTION('MINUTE', r.reservationDate) = :minute AND r.status = :status")
+//    int cntRecentlyStatus(@Param("startDateTime") LocalDateTime startDateTime, @Param("endDateTime") LocalDateTime endDateTime, @Param("hour") int hour, @Param("minute") int minute, @Param("status") ReservationStatus status);
+
+    @Query("SELECT COUNT(r) FROM Reservation r WHERE (r.reservationDate BETWEEN :startDateTime AND :endDateTime) AND FUNCTION('HOUR', r.reservationDate) = :hour AND FUNCTION('MINUTE', r.reservationDate) = :minute AND r.status = :status")
     int cntRecentlyStatus(@Param("startDateTime") LocalDateTime startDateTime, @Param("endDateTime") LocalDateTime endDateTime, @Param("hour") int hour, @Param("minute") int minute, @Param("status") ReservationStatus status);
 
     //최근 3개월 특정 시간별 전체 예약 수
