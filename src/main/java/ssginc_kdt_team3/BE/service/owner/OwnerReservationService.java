@@ -201,7 +201,7 @@ public class OwnerReservationService {
     }
 
     /* Page<Entity> -> Page<Dto> 변환처리 */
-    public Page<OwnerReservationDTO> toDtoList(Page<Reservation> reservationList){
+    private Page<OwnerReservationDTO> toDtoList(Page<Reservation> reservationList){
         Page<OwnerReservationDTO> dtoPage = reservationList.map(m -> OwnerReservationDTO.builder()
                 .id(m.getId())
                 .ownerID(m.getShop().getOwner().getId())
@@ -234,10 +234,13 @@ public class OwnerReservationService {
             LocalDateTime startTime = TimeUtils.stringParseLocalDataTime(start);
             LocalDateTime endTime = TimeUtils.stringParseLocalDataTime(end);
 
-            List<Reservation> reservationList =
+            Page<Reservation> reservationList =
                     reservationRepository.findAllByStatusAndShop_IdAndReservationDateBetweenOrderByReservationDateDesc
-                            (ReservationStatus.RESERVATION, shop.getId(), startTime, endTime);
-            return toDtoPage(reservationList, pageable);
+                            (ReservationStatus.RESERVATION, shop.getId(), startTime, endTime, pageable);
+
+            Page<OwnerReservationDTO> dtoPage = toDtoList(reservationList);
+
+            return dtoPage;
         }
 
         return null;
@@ -255,10 +258,13 @@ public class OwnerReservationService {
             LocalDateTime startTime = TimeUtils.stringParseLocalDataTime(start);
             LocalDateTime endTime = TimeUtils.stringParseLocalDataTime(end);
 
-            List<Reservation> reservationList =
+            Page<Reservation> reservationList =
                     reservationRepository.findAllByStatusAndShop_IdAndReservationDateBetweenOrderByReservationDateDesc
-                            (ReservationStatus.DONE, shop.getId(), startTime, endTime);
-            return toDtoPage(reservationList, pageable);
+                            (ReservationStatus.DONE, shop.getId(), startTime, endTime, pageable);
+
+            Page<OwnerReservationDTO> dtoPage = toDtoList(reservationList);
+
+            return dtoPage;
         }
 
         return null;
@@ -276,10 +282,13 @@ public class OwnerReservationService {
             LocalDateTime startTime = TimeUtils.stringParseLocalDataTime(start);
             LocalDateTime endTime = TimeUtils.stringParseLocalDataTime(end);
 
-            List<Reservation> reservationList =
+            Page<Reservation> reservationList =
                     reservationRepository.findAllByStatusAndShop_IdAndReservationDateBetweenOrderByReservationDateDesc
-                            (ReservationStatus.CANCEL, shop.getId(), startTime, endTime);
-            return toDtoPage(reservationList, pageable);
+                            (ReservationStatus.CANCEL, shop.getId(), startTime, endTime, pageable);
+
+            Page<OwnerReservationDTO> dtoPage = toDtoList(reservationList);
+
+            return dtoPage;
         }
 
         return null;
@@ -297,10 +306,13 @@ public class OwnerReservationService {
             LocalDateTime startTime = TimeUtils.stringParseLocalDataTime(start);
             LocalDateTime endTime = TimeUtils.stringParseLocalDataTime(end);
 
-            List<Reservation> reservationList =
+            Page<Reservation> reservationList =
                     reservationRepository.findAllByStatusAndShop_IdAndReservationDateBetweenOrderByReservationDateDesc
-                            (ReservationStatus.IMMINENT, shop.getId(), startTime, endTime);
-            return toDtoPage(reservationList, pageable);
+                            (ReservationStatus.IMMINENT, shop.getId(), startTime, endTime, pageable);
+
+            Page<OwnerReservationDTO> dtoPage = toDtoList(reservationList);
+
+            return dtoPage;
         }
 
         return null;
@@ -318,10 +330,13 @@ public class OwnerReservationService {
             LocalDateTime startTime = TimeUtils.stringParseLocalDataTime(start);
             LocalDateTime endTime = TimeUtils.stringParseLocalDataTime(end);
 
-            List<Reservation> reservationList =
+            Page<Reservation> reservationList =
                     reservationRepository.findAllByStatusAndShop_IdAndReservationDateBetweenOrderByReservationDateDesc
-                            (ReservationStatus.NOSHOW, shop.getId(), startTime, endTime);
-            return toDtoPage(reservationList, pageable);
+                            (ReservationStatus.NOSHOW, shop.getId(), startTime, endTime, pageable);
+
+            Page<OwnerReservationDTO> dtoPage = toDtoList(reservationList);
+
+            return dtoPage;
         }
 
         return null;
