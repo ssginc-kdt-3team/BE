@@ -14,13 +14,13 @@ import java.util.Optional;
 
 public interface JpaDataReservationRepository extends JpaRepository<Reservation, Long> {
 
-    @Query("select r from Reservation r where r.customer.id = :customerId and r.status = :status order by r.reservationDate")
+    @Query("select r from Reservation r where r.customer.id = :customerId and r.status = :status order by r.reservationDate desc")
     List<Reservation> findAllActive(@Param("customerId") Long customerId, @Param("status")ReservationStatus status);
 
-    @Query("select r from Reservation r where r.customer.id = :customerId order by r.reservationDate")
+    @Query("select r from Reservation r where r.customer.id = :customerId order by r.reservationDate desc")
     List<Reservation> findAllMy(@Param("customerId") Long customerId);
 
-    @Query("select r from Reservation r where r.reservationDate <= :limit and r.status = :condition order by r.reservationDate")
+    @Query("select r from Reservation r where r.reservationDate <= :limit and r.status = :condition order by r.reservationDate desc")
     List<Reservation> findNoShow(@Param("limit") LocalDateTime limit, @Param("condition") ReservationStatus condition);
 
     int countByReservationDateAndShop_Id(LocalDateTime time, Long shopId);
