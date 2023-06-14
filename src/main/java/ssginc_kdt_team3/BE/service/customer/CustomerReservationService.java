@@ -112,7 +112,7 @@ public class CustomerReservationService {
                 //예약금 결제 정보  생성
                 boolean b = chargingManagementService.saveReservationPayment(saveDeposit);
 
-                if (pointValue != 0) {
+                if (pointDiscount != 0) {
                     boolean c = pointManagementService.savePointPayment(saveDeposit);
                 }
 
