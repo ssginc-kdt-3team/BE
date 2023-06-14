@@ -83,7 +83,7 @@ public class NaverAlarmService {
 
         String alarmType;
 
-        if (requestContent.getContent().length() >= 72){
+        if (requestContent.getContent().length() > 72){
             requestContent.setSubject("안녕하세요!");
             alarmType = "LMS";
 
