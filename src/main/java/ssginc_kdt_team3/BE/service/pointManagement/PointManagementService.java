@@ -71,7 +71,7 @@ public class PointManagementService {
         if (customerRepository.findById(customerId).isPresent()) {
             LocalDate dateLimit = LocalDate.now().minusMonths(dateType);
             Page<PointManagement> chargingManagements =
-                    jpaDataPointManagementRepository.findAllByCustomer_IdAndChangeDateIsAfterOrderByChangeDateDesc(customerId,pageable, dateLimit);
+                    jpaDataPointManagementRepository.findAllByCustomer_IdAndChangeDateIsAfterOrderByIdDesc(customerId,pageable, dateLimit);
             Page<CustomerPointListDTO> customerPointListDTOS = convertDto(chargingManagements);
             return customerPointListDTOS;
         }
@@ -84,7 +84,7 @@ public class PointManagementService {
         if (customerRepository.findById(customerId).isPresent()) {
             LocalDate dateLimit = LocalDate.now().minusMonths(dateType);
             Page<PointManagement> chargingManagements =
-                    jpaDataPointManagementRepository.findAllByCustomer_IdAndStatusAndChangeDateIsAfterOrderByChangeDateDesc(customerId, status, pageable, dateLimit);
+                    jpaDataPointManagementRepository.findAllByCustomer_IdAndStatusAndChangeDateIsAfterOrderByIdDesc(customerId, status, pageable, dateLimit);
             Page<CustomerPointListDTO> customerPointListDTOS = convertDto(chargingManagements);
             return customerPointListDTOS;
         }

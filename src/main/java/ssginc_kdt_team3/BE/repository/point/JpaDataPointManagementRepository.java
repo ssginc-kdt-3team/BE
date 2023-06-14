@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 
 public interface JpaDataPointManagementRepository extends JpaRepository<PointManagement, Long> {
 
-    Page<PointManagement> findAllByCustomer_IdAndStatusAndChangeDateIsAfterOrderByChangeDateDesc(Long customerId, Boolean status, Pageable pageable, LocalDate changeDate);
+    Page<PointManagement> findAllByCustomer_IdAndStatusAndChangeDateIsAfterOrderByIdDesc(Long customerId, Boolean status, Pageable pageable, LocalDate changeDate);
 
-    Page<PointManagement> findAllByCustomer_IdAndChangeDateIsAfterOrderByChangeDateDesc(Long customerId, Pageable pageable, LocalDate changeDate);
+    Page<PointManagement> findAllByCustomer_IdAndChangeDateIsAfterOrderByIdDesc(Long customerId, Pageable pageable, LocalDate changeDate);
 }
