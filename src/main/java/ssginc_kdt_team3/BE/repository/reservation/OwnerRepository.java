@@ -34,7 +34,7 @@ public class OwnerRepository {
 
   // 활성화된 예약 조회
   public List<Reservation> findByStatus(Long shopId){
-    return em.createQuery("SELECT r FROM Reservation r WHERE r.status = :status AND r.shop.id = :shopId", Reservation.class)
+    return em.createQuery("SELECT r FROM Reservation r WHERE r.status = :status AND r.shop.id = :shopId order by r.reservationDate", Reservation.class)
         .setParameter("status", ReservationStatus.RESERVATION)
         .setParameter("shopId", shopId)
         .getResultList();
@@ -42,7 +42,7 @@ public class OwnerRepository {
 
   // 당일예약 시간별 조회
   public List<Reservation> findDateBetween(LocalDateTime startTime, LocalDateTime endTime, Long shopId){
-    return em.createQuery("SELECT r FROM Reservation r WHERE r.reservationDate BETWEEN :startTime AND :endTime AND (r.status = :status1 OR r.status = :status2 OR r.status = :status3) AND r.shop.id = :shopId", Reservation.class)
+    return em.createQuery("SELECT r FROM Reservation r WHERE r.reservationDate BETWEEN :startTime AND :endTime AND (r.status = :status1 OR r.status = :status2 OR r.status = :status3) AND r.shop.id = :shopId order by r.reservationDate", Reservation.class)
         .setParameter("startTime", startTime)
         .setParameter("endTime", endTime)
         .setParameter("status1", ReservationStatus.RESERVATION)
@@ -53,7 +53,7 @@ public class OwnerRepository {
   }
 
   public List<Reservation> findDateBetweenAll(LocalDateTime startTime, LocalDateTime endTime, Long shopId){
-    return em.createQuery("SELECT r FROM Reservation r WHERE r.reservationDate BETWEEN :startTime AND :endTime AND r.shop.id = :shopId", Reservation.class)
+    return em.createQuery("SELECT r FROM Reservation r WHERE (r.reservationDate BETWEEN :startTime AND :endTime) AND r.shop.id = :shopId order by r.reservationDate", Reservation.class)
             .setParameter("startTime", startTime)
             .setParameter("endTime", endTime)
             .setParameter("shopId", shopId)

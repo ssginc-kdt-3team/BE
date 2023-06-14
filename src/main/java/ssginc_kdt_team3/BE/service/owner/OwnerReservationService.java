@@ -189,13 +189,38 @@ public class OwnerReservationService {
             LocalDateTime startTime = TimeUtils.stringParseLocalDataTime(start);
             LocalDateTime endTime = TimeUtils.stringParseLocalDataTime(end);
 
-            List<Reservation> reservationList =
-                    reservationRepository.findAllByShop_IdAndReservationDateBetweenOrderByIdDesc(shop.getId(), startTime, endTime);
-            return toDtoPage(reservationList, pageable);
+            Page<Reservation> reservationList =
+                    reservationRepository.findAllByShop_IdAndReservationDateBetweenOrderByIdDesc(shop.getId(), startTime, endTime, pageable);
+
+            Page<OwnerReservationDTO> dtoPage = toDtoList(reservationList);
+
+            return dtoPage;
         }
 
         return null;
     }
+
+    /* Page<Entity> -> Page<Dto> 변환처리 */
+    public Page<OwnerReservationDTO> toDtoList(Page<Reservation> reservationList){
+        Page<OwnerReservationDTO> dtoPage = reservationList.map(m -> OwnerReservationDTO.builder()
+                .id(m.getId())
+                .ownerID(m.getShop().getOwner().getId())
+                .customerID(m.getCustomer().getId())
+                .name(m.getCustomer().getName())
+                .phoneNumber(m.getCustomer().getPhoneNumber())
+                .email(m.getCustomer().getEmail())
+                .people(m.getPeople())
+                .child(m.getChild())
+                .reservationDate(m.getReservationDate())
+                .status(m.getStatus())
+                .memo(m.getMemo())
+                .originValue(depositRepository.findReservationDeposit(m.getId()).getOrigin_value())
+                .penaltyValue(depositRepository.findReservationDeposit(m.getId()).getPenaltyValue())
+                .build());
+
+        return dtoPage;
+    }
+
 
     public Page<OwnerReservationDTO> showShopReservationReservation(Long ownerId, Pageable pageable, Map<String,String> request) {
         Optional<Shop> shopByOwnerId = shopRepository.findShopByOwner_id(ownerId);
