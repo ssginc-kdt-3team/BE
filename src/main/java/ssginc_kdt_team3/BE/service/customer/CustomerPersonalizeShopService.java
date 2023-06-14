@@ -63,7 +63,7 @@ public class CustomerPersonalizeShopService {
         String userId = String.valueOf(UserId);
 
         GetRecommendationsRequest request = GetRecommendationsRequest.builder()
-                .campaignArn("arn:aws:personalize:ap-northeast-2:556683426101:campaign/noye-s-team-project-compaign")
+                .campaignArn("arn:aws:personalize:ap-northeast-2:556683426101:campaign/noye-s-team-compaign")
                 .numResults(8)
                 .userId(userId)
                 .build();

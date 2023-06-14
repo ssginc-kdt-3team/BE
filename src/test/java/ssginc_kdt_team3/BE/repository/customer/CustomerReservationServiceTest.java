@@ -34,7 +34,7 @@ class CustomerReservationServiceTest {
         //G
         CustomerReservationAddDTO customerReservationAddDTO = new CustomerReservationAddDTO();
 
-        customerReservationAddDTO.setUserId(15L);
+        customerReservationAddDTO.setUserId(77L);
         customerReservationAddDTO.setShopId(1L);
         customerReservationAddDTO.setPeople(4);
         customerReservationAddDTO.setChild(1);
@@ -58,7 +58,7 @@ class CustomerReservationServiceTest {
         //G
         CustomerReservationAddDTO customerReservationAddDTO = new CustomerReservationAddDTO();
 
-        customerReservationAddDTO.setUserId(15L);
+        customerReservationAddDTO.setUserId(77L);
         customerReservationAddDTO.setShopId(1L);
         customerReservationAddDTO.setPeople(4);
         customerReservationAddDTO.setChild(1);
@@ -90,7 +90,7 @@ class CustomerReservationServiceTest {
         //G
         CustomerReservationAddDTO customerReservationAddDTO = new CustomerReservationAddDTO();
 
-        customerReservationAddDTO.setUserId(15L);
+        customerReservationAddDTO.setUserId(77L);
         customerReservationAddDTO.setShopId(5L);
         customerReservationAddDTO.setPeople(3);
         customerReservationAddDTO.setChild(1);
@@ -126,7 +126,7 @@ class CustomerReservationServiceTest {
         //G
         CustomerReservationAddDTO customerReservationAddDTO = new CustomerReservationAddDTO();
 
-        customerReservationAddDTO.setUserId(15L);
+        customerReservationAddDTO.setUserId(77L);
         customerReservationAddDTO.setShopId(1L);
         customerReservationAddDTO.setPeople(10);
         customerReservationAddDTO.setChild(4);
@@ -161,7 +161,7 @@ class CustomerReservationServiceTest {
         //G
         CustomerReservationAddDTO customerReservationAddDTO = new CustomerReservationAddDTO();
 
-        customerReservationAddDTO.setUserId(15L);
+        customerReservationAddDTO.setUserId(77L);
         customerReservationAddDTO.setShopId(1L);
         customerReservationAddDTO.setPeople(10);
         customerReservationAddDTO.setChild(4);
@@ -193,7 +193,7 @@ class CustomerReservationServiceTest {
         //G
         CustomerReservationAddDTO customerReservationAddDTO = new CustomerReservationAddDTO();
 
-        customerReservationAddDTO.setUserId(15L);
+        customerReservationAddDTO.setUserId(77L);
         customerReservationAddDTO.setShopId(1L);
         customerReservationAddDTO.setPeople(10);
         customerReservationAddDTO.setChild(4);
@@ -222,7 +222,7 @@ class CustomerReservationServiceTest {
         //G
         CustomerReservationAddDTO customerReservationAddDTO = new CustomerReservationAddDTO();
 
-        customerReservationAddDTO.setUserId(15L);
+        customerReservationAddDTO.setUserId(77L);
         customerReservationAddDTO.setShopId(1L);
         customerReservationAddDTO.setPeople(10);
         customerReservationAddDTO.setChild(4);
@@ -249,7 +249,7 @@ class CustomerReservationServiceTest {
         //G
         CustomerReservationAddDTO customerReservationAddDTO = new CustomerReservationAddDTO();
 
-        customerReservationAddDTO.setUserId(15L);
+        customerReservationAddDTO.setUserId(77L);
         customerReservationAddDTO.setShopId(1L);
         customerReservationAddDTO.setPeople(10);
         customerReservationAddDTO.setChild(4);
