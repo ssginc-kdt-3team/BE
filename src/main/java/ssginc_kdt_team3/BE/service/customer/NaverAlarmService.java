@@ -70,7 +70,7 @@ public class NaverAlarmService {
     public ResponseSmsDTO sendSms(MessageDTO requestContent) throws UnsupportedEncodingException, NoSuchAlgorithmException, InvalidKeyException, JsonProcessingException, URISyntaxException {
 
         List<MessageDTO> message = new ArrayList<>();
-        message.add(requestContent);
+
 
         Long time = System.currentTimeMillis();
 
@@ -83,12 +83,19 @@ public class NaverAlarmService {
 
         String alarmType;
 
-        if (requestContent.getContent().length() > 80){
+        if (requestContent.getContent().length() > 72){
+            requestContent.setSubject("안녕하세요!");
             alarmType = "LMS";
+
         }
         else{
+            String hello = "안녕하세요!\n";
+            requestContent.setContent(hello + requestContent.getContent());
             alarmType = "SMS";
         }
+
+        message.add(requestContent);
+
         RequestSmsDTO request = RequestSmsDTO.builder()
                 .type(alarmType)
                 .contentType("COMM")//COMM / AD 2가지 옵션있음(AD는 광고용)

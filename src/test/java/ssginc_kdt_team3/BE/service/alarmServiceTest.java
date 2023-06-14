@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+
 @SpringBootTest
 public class alarmServiceTest {
 
@@ -56,7 +57,23 @@ public class alarmServiceTest {
 
     }
     @Test
-    void AlarmTest(){
+    void LmsTest() throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
+        MessageDTO messageTestDTO = new MessageDTO();
+        messageTestDTO.setTo("01032028829");
+        messageTestDTO.setContent("TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest");
+        alarmService.sendSms(messageTestDTO);
+    }
+    @Test
+    void SmsTest() throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
 
+        String reservationDate = String.valueOf(TimeUtils.findNow());
+        String reservationDateType = reservationDate.substring(0,reservationDate.length() - 9);
+
+        String content = "고신영 점주님! 새로운 예약내역입니다!\n[예약 일시]: " + reservationDateType;
+
+        MessageDTO messageTestDTO = new MessageDTO();
+        messageTestDTO.setTo("01032028829");
+        messageTestDTO.setContent(content);
+        alarmService.sendSms(messageTestDTO);
     }
 }
