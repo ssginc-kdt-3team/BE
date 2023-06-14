@@ -24,7 +24,7 @@ public interface JpaDataReviewRepository extends JpaRepository<Review, Long> {
 ////    @Query("SELECT r FROM Review r INNER JOIN WHERE r.reservation.id = :reservationId ")
 //    List<Review> findReviewByShopId(@Param(value = "shopId") Long shopId);
 
-    List<Review> findAllByReservation_ShopId(@Param(value = "shopId") Long shopId);
+    List<Review> findAllByReservation_ShopIdOrderByIdDesc(@Param(value = "shopId") Long shopId);
 
 
     /*
@@ -32,17 +32,17 @@ public interface JpaDataReviewRepository extends JpaRepository<Review, Long> {
      * */
 
     // 1. 지점선택: 해당 지점의 모든 매장들 후기 조회, AdminReviewService
-    Page<Review> findAllByReservation_Shop_Branch_Id(Long branchId, Pageable pageable);
+    Page<Review> findAllByReservation_Shop_Branch_IdOrderByIdDesc(Long branchId, Pageable pageable);
 
     // 2. 매장선택: 해당 매장의 후기 조회
-    Page<Review> findAllByReservation_Shop_Id(Long shopId, Pageable pageable);
+    Page<Review> findAllByReservation_Shop_IdOrderByIdDesc(Long shopId, Pageable pageable);
 
     // 점주: 후기목록 조회 사용
-    Page<Review> findAllByReservation_Shop_Owner_Id(Long ownerId, Pageable pageable);
+    Page<Review> findAllByReservation_Shop_Owner_IdOrderByIdDesc(Long ownerId, Pageable pageable);
     Page<Review> findAllByReservation_Shop_Owner_IdOrderByPointAsc(Long ownerId, Pageable pageable);
     Page<Review> findAllByReservation_Shop_Owner_IdOrderByPointDesc(Long ownerId, Pageable pageable);
-    Page<Review> findAllByReservation_Shop_Owner_IdAndTimeBetween(Long ownerId, LocalDateTime start, LocalDateTime end, Pageable pageable);
+    Page<Review> findAllByReservation_Shop_Owner_IdAndTimeBetweenOrderByIdDesc(Long ownerId, LocalDateTime start, LocalDateTime end, Pageable pageable);
 
     // 고객: 본인이 작성한 모든 후기 조회
-    Page<Review> findAllByStatusAndReservation_Customer_Id(ReviewStatus status, Long userId, Pageable pageable);
+    Page<Review> findAllByStatusAndReservation_Customer_IdOrderByIdDesc(ReviewStatus status, Long userId, Pageable pageable);
 }

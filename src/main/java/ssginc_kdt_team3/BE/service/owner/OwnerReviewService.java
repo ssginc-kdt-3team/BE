@@ -32,12 +32,12 @@ public class OwnerReviewService {
 
     } else if (type.equals("date")) {
       // 필터2. 달력에 기간 정해서 조회, LocalDate :start, end
-      Page<Review> timeBetween = reviewRepository.findAllByReservation_Shop_Owner_IdAndTimeBetween(ownerId, start, end, pageRequest);
+      Page<Review> timeBetween = reviewRepository.findAllByReservation_Shop_Owner_IdAndTimeBetweenOrderByIdDesc(ownerId, start, end, pageRequest);
       System.out.println("timeBetween ===========" + timeBetween);
       return convertDto(timeBetween);
     }
     // 기본 페이지: 작성시간 최신순 정렬
-    Page<Review> defaultPage = reviewRepository.findAllByReservation_Shop_Owner_Id(ownerId, pageRequest);
+    Page<Review> defaultPage = reviewRepository.findAllByReservation_Shop_Owner_IdOrderByIdDesc(ownerId, pageRequest);
     return convertDto(defaultPage);
   }
 

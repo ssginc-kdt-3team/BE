@@ -90,7 +90,7 @@ public class CustomerReviewService {
 
   // 마이페이지: 본인이 작성한 모든 후기 조회
   public Page<ReviewResponseDTO> getReviewList(Long userId, Pageable pageRequest) {
-    Page<Review> allReviews = reviewRepository.findAllByStatusAndReservation_Customer_Id(ReviewStatus.SHOW, userId, pageRequest);
+    Page<Review> allReviews = reviewRepository.findAllByStatusAndReservation_Customer_IdOrderByIdDesc(ReviewStatus.SHOW, userId, pageRequest);
     return convertDto(allReviews);
   }
 

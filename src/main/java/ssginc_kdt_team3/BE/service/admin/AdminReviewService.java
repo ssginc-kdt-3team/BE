@@ -26,12 +26,12 @@ public class AdminReviewService {
 
     // 1. 지점 선택: 지점의 전체 후기 가져온다.
     if(type.equals("branch")){
-        Page<Review> allReviews = reviewRepository.findAllByReservation_Shop_Branch_Id(branchId, pageRequest);
+        Page<Review> allReviews = reviewRepository.findAllByReservation_Shop_Branch_IdOrderByIdDesc(branchId, pageRequest);
         return convertDto(allReviews);
 
     } else if(type.equals("shop")){
       // 2. 매장 선택: 해당 매장의 모든 후기 가져온다.
-      Page<Review> allReviewsByShop = reviewRepository.findAllByReservation_Shop_Id(shopId, pageRequest);
+      Page<Review> allReviewsByShop = reviewRepository.findAllByReservation_Shop_IdOrderByIdDesc(shopId, pageRequest);
       return convertDto(allReviewsByShop);
     }
     return null;
