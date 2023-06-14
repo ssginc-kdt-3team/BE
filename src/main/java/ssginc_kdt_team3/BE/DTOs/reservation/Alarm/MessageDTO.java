@@ -11,5 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class MessageDTO {
   String to;//수신자 번호
+  String subject;// LMS인경우 제목
   String content;// 개별 메시지 내용
 }

@@ -481,7 +481,7 @@ public class CustomerReservationService {
 
 
         //고객용 메시지
-        String customerReservationMessage = customerName + "고객님! 예약이 완료되었습니다!\n[예약일시]: " + reservationFormatter + "\n[예약매장]: " + shopName;
+        String customerReservationMessage = customerName + " 고객님! 예약이 완료되었습니다!\n[예약일시]: " + reservationFormatter + "\n[예약매장]: " + shopName;
         customerMessageDTO.setTo(customerPhone);
         customerMessageDTO.setContent(customerReservationMessage);
         naverAlarmService.sendSms(customerMessageDTO);

@@ -56,7 +56,10 @@ public class alarmServiceTest {
 
     }
     @Test
-    void AlarmTest(){
-
+    void AlarmTest() throws UnsupportedEncodingException, NoSuchAlgorithmException, URISyntaxException, InvalidKeyException, JsonProcessingException {
+        MessageDTO messageTestDTO = new MessageDTO();
+        messageTestDTO.setTo("01032028829");
+        messageTestDTO.setContent("TestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTestTest");
+        alarmService.sendSms(messageTestDTO);
     }
 }
