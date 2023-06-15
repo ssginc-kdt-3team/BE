@@ -41,7 +41,7 @@ public class CustomerKakaoPayService {
     static final String cid = "TC0ONETIME"; // 가맹점 테스트 코드
 
     @Value("${kakaoAdmin}")
-    private String admin_Key; // 공개 조심! 본인 애플리케이션의 어드민 키를 넣어주세요
+    private String admin_Key;
 
     private KakaoPayReadyResponseDTO kakaoReady;
     private Long customerId;
