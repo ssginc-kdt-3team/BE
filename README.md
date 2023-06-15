@@ -76,7 +76,7 @@
 #####  ↓  🖱️ 클릭시 해당 페이지로 이동합니다!!
     
 <br>
-<a href="https://www.figma.com/file/eHXeFV3LPoy4Sec02N1yq8/Untitled?node-id=0%3A1&t=XhCRQ6ffLQFFJbwr-1" target="_blank"><img src="https://img.shields.io/badge/figma-F24E1E?style=flat-square&logo=figma&logoColor=white"/></a>    <a href="https://miro.com/app/dashboard" target="_blank"><img src="https://img.shields.io/badge/miro-F39914?style=flat-square&logo=miro&logoColor=white"/></a>  <a href="https://drive.google.com/drive/folders/1Uolkp75BysIOg0k7zg8y3AgRXWQEyCiu/" target="_blank"><img src="https://img.shields.io/badge/googledrive-4285F4?style=flat-square&logo=googledrive&logoColor=white"/></a>  <a href="https://ssginc.atlassian.net/jira/software/c/projects/SSGIN/boards/1" target="_blank"><img src="https://img.shields.io/badge/jira-0052CC?style=flat-square&logo=jira&logoColor=white"/></a><br>  <a href="https://www.erdcloud.com/d/vNJpJXtbNsE6m8hce" target="_blank"><img src="https://img.shields.io/badge/erd-7F2B7B?style=flat-square&logo=erd&logoColor=white"/></a>  <a href="https://app.slack.com/client/T0560966GNM/C055Q5S0F9A" target="_blank"><img src="https://img.shields.io/badge/slack-4A154B?style=flat-square&logo=slack&logoColor=white"/></a>  <a href="https://github.com/ssginc-kdt-3team" target="_blank"><img src="https://img.shields.io/badge/github-181717?style=flat-square&logo=github&logoColor=white"/></a>  <a href="https://www.notion.so/TEAM-Yes-64bfc71a9cd742f4834b00aba9e61e59" target="_blank"><img src="https://img.shields.io/badge/notion-000000?style=flat-square&logo=notion&logoColor=white"/></a>    
+<a href="https://docs.google.com/spreadsheets/d/1ZG6e_FWndWUnwVbRYls-yXvOTHbC2Unk/edit#gid=1789139678" target="_blank"><img src="https://img.shields.io/badge/googledrive-4285F4?style=flat-square&logo=googledrive&logoColor=white"/></a>  <a href="https://www.erdcloud.com/d/vNJpJXtbNsE6m8hce" target="_blank"><img src="https://img.shields.io/badge/erd-7F2B7B?style=flat-square&logo=erd&logoColor=white"/></a>  <a href="https://www.notion.so/TEAM-Yes-64bfc71a9cd742f4834b00aba9e61e59" target="_blank"><img src="https://img.shields.io/badge/notion-000000?style=flat-square&logo=notion&logoColor=white"/></a>    
 <br><br>
     
   #### ❗ 주제 - 노쇼 방지 예약 시스템
@@ -118,7 +118,12 @@
     
 <br>
 <img src="https://img.shields.io/badge/amazonaws-232F3E?style=flat-square&logo=amazonaws&logoColor=white"/>  <img src="https://img.shields.io/badge/amazonapigateway-FF4F8B?style=flat-square&logo=amazonapigateway&logoColor=white"/><br>  <img src="https://img.shields.io/badge/amazonec2-FF9900?style=flat-square&logo=amazonec2&logoColor=white"/>  <img src="https://img.shields.io/badge/amazons3-569A31?style=flat-square&logo=amazons3&logoColor=white"/>  <img src="https://img.shields.io/badge/amazonrds-527FFF?style=flat-square&logo=amazonrds&logoColor=white"/>
-<br><br><br>
+<br>
+    
+#### 🔗Team Collaboration Tool🔗    
+    
+<br>  
+<img src="https://img.shields.io/badge/figma-F24E1E?style=flat-square&logo=figma&logoColor=white"/>  <img src="https://img.shields.io/badge/miro-F39914?style=flat-square&logo=miro&logoColor=white"/>  <img src="https://img.shields.io/badge/jira-0052CC?style=flat-square&logo=jira&logoColor=white"/>  <br><img src="https://img.shields.io/badge/slack-4A154B?style=flat-square&logo=slack&logoColor=white"/>  <img src="https://img.shields.io/badge/github-181717?style=flat-square&logo=github&logoColor=white"/><br><br>
     
   </div>
   </section> 
