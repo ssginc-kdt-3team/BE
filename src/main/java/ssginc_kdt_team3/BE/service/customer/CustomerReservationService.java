@@ -193,28 +193,21 @@ public class CustomerReservationService {
                             return result;
                         }
                     } else if (originDeposit > afterDeposit) {
-                        // 원래 금액이 더 많은 경우
-                        // 순수 결제금이 더 많은 경우 -> 그냥 환불
-                        // 포인트, 쿠폰으로 인해 순수 결제금이 변동 금액보다 낮아지는 경우 -> 포인트 환불
 
-                        //3만원 (쿠폰 2만원, 결제 1만원)
-                        //3천원으로 변경됨
-                        //총 환불 7000원
-                        // 충전금 환불 7천원, 포인트 환불 2만원
-                        // 실제 결제 금액 3천원
-
-                        //33000 / 3 / 30
-                        // 12 /
-                        // 21
-                        // 3 / 9
-                        // 9
                         if (oldDeposit.getPayValue() >= afterDeposit) {
 
                             update(reservation, dto);
                             reservationRepository.save(reservation);
 
-                            int returnMoney = oldDeposit.getPayValue() - afterDeposit;
-                            int returnPoint = (oldDeposit.getOrigin_value() - afterDeposit) - returnMoney;
+                            int afterNeed = afterDeposit - (oldDeposit.getPointDiscount() + oldDeposit.getCouponDiscount());
+                            int returnMoney = 0;
+                            int returnPoint = 0;
+
+                            if (oldDeposit.getPayValue() - afterNeed >= 0) {
+                                returnMoney = oldDeposit.getPayValue() - afterNeed;
+                            } else {
+                                returnPoint = afterNeed - oldDeposit.getPayValue();
+                            }
 
                             oldDeposit.setStatus(DepositStatus.PART_RETURN);
                             oldDeposit.setOrigin_value(afterDeposit);
@@ -225,11 +218,19 @@ public class CustomerReservationService {
                             Deposit newDeposit = depositRepository.save(oldDeposit);
 
                             //returnMoney만큼 충전 시켜주고
-                            boolean b = chargingManagementService.savePartRefundPayment(newDeposit,returnMoney);
-                            log.info("================== {} 만큼 충전금 환불 ========================", returnMoney);
+                            if (returnMoney > 0) {
+                                boolean b = chargingManagementService.savePartRefundPayment(newDeposit,returnMoney);
+                                log.info("================== {} 만큼 충전금 환불 ========================", returnMoney);
+                            }
+
+                            if (returnPoint > 0) {
+                                pointManagementService.getPointSave(true, returnPoint, "예약 수정 차액 환불", reservation.getCustomer(), LocalDateTime.now());
+                                log.info("================== {} 만큼 포인트 충전 ========================", returnPoint);
+                            }
+
 
                             //returnPoint만큼 포인트 충전
-                            log.info("================== {} 만큼 포인트 충전 ========================", returnPoint);
+
 
                             result.put("result", "true");
                             return result;
@@ -238,6 +239,7 @@ public class CustomerReservationService {
                             //2만5천원 변경
                             //총 환불 5천원
                             //충전금 환불 0원, 포인트 환불 5천원
+
                             int returnPoint = oldDeposit.getOrigin_value() - afterDeposit;
 
                             update(reservation, dto);
