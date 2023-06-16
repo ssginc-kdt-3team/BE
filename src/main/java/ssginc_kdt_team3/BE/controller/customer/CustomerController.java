@@ -14,11 +14,9 @@ import ssginc_kdt_team3.BE.domain.Grade;
 import ssginc_kdt_team3.BE.exception.ErrorResponse;
 import ssginc_kdt_team3.BE.repository.customer.JpaDataCustomerRepository;
 import ssginc_kdt_team3.BE.service.customer.CustomerService;
-import ssginc_kdt_team3.BE.service.customer.KakaoService;
 import ssginc_kdt_team3.BE.service.pointManagement.PointManagementService;
 import ssginc_kdt_team3.BE.util.TimeUtils;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -31,7 +29,6 @@ import java.util.stream.Collectors;
 public class CustomerController {
   private final CustomerService customerService;
   private final JpaDataCustomerRepository customerRepository;
-  private final KakaoService kakaoService;
   private final PointManagementService pointManagementService;
 
   @GetMapping("Test")
@@ -59,7 +56,6 @@ public class CustomerController {
   @PostMapping("/emailCheck")
   public boolean emailCheck(@RequestBody Map<String, String> email) {
     String email1 = email.get("email");
-    // 오류 있으면 중복 => try catch, 지금은 오류를 던짐
     return customerService.validateDuplicateCustomer(email1);
   }
 
@@ -81,8 +77,6 @@ public class CustomerController {
     EmailFindDTO findDTO = new EmailFindDTO();
     findDTO.setName(emailFindDTO.getName());
     findDTO.setPhone(emailFindDTO.getPhone());
-
-    // 서비스 코드에서 옵셔널로 커스토머 자체를 던지고, 컨트롤러에서 값이 있으면 성공, 없으면 에러로 분기처리
 
     Optional<Customer> findCustomer = customerService.getCustomerEmail(findDTO.getName(), findDTO.getPhone());
 
@@ -109,55 +103,11 @@ public class CustomerController {
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body("일치하는 정보가 없습니다.");
   }
 
-  // 개인정보 변경
-//  @PostMapping("/updateInfo/{id}")
-//  public void updateInfo(@PathVariable(name = "id") Long customerId,
-//                             @RequestBody CustomerUpdateDTO updateDTO) {
-//    customerService.updateInfo(updateDTO, customerId);
-//  }
-
-  // 비밀번호 변경
-//  @PostMapping("/updatePwd/{id}")
-//  public void updatePassword(@PathVariable(name = "id") Long customerId,
-//                                @RequestBody PwdUpdateDTO updateDTO) {
-//    customerService.updatePassword(updateDTO, customerId);
-//  }
-
-
-  // 카카오 로그인: 미완성
-  @GetMapping("/kakao")
-  public void kakao(@RequestParam("code") String code)  {
-    System.out.println("인가코드: "+code);
-    try {
-      String access_token = kakaoService.getToken(code);
-      System.out.println("토큰:" + access_token);
-
-      // 사용자정보 가져오기
-      Map<String, Object> userInfo = kakaoService.getUserInfo(access_token);
-      System.out.println("userInfo:" + userInfo);
-
-//      if(userInfo.get("email") == customerService.){
-//        System.out.println("로그인 성공");
-//      } else {
-
-//      }
-    } catch (IOException e) {
-      throw new RuntimeException(e);
-    }
-
-
-
-
-  }
-
   // 등급조회
   @PostMapping("/grade/{id}")
   public ResponseEntity<Grade> getGradeInfo(@PathVariable(name = "id") Long customerId){
     Grade grade = customerService.gradeInfo(customerId);
     return ResponseEntity.status(HttpStatus.OK).body(grade);
   }
-
-
-
 }
 

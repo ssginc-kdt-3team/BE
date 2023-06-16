@@ -20,20 +20,20 @@ public class AdminDepositRepositoryTest {
     @Autowired
     DepositRepository repository;
 
-    @Test
-    public void DepositList() {
-        //w
-
-        //t
-        List<Deposit> depositList = repository.findShopDepositList(1L);
-        System.out.println(depositList.size());
-    }
-
-    @Test
-    public void DepositList2() {
-        List<Deposit> depositList = repository.findBranchDepositList(2L);
-        System.out.println(depositList.size());
-    }
+//    @Test
+//    public void DepositList() {
+//        //w
+//
+//        //t
+//        List<Deposit> depositList = repository.findShopDepositList(1L);
+//        System.out.println(depositList.size());
+//    }
+//
+//    @Test
+//    public void DepositList2() {
+//        List<Deposit> depositList = repository.findBranchDepositList(2L);
+//        System.out.println(depositList.size());
+//    }
 
     @Test
     public void MonthlyDeposit() {

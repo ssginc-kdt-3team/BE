@@ -90,7 +90,6 @@ public class CustomerService {
       return false;
     }
     return true;
-
   }
 
   //로그인
@@ -100,7 +99,7 @@ public class CustomerService {
     Optional<Customer> customerInfo = customerRepository.findByEmail(email);
 
     if(customerInfo.isPresent()) { //이메일 존재하면
-      if (customerInfo.get().getPassword().equals(password)) { // .get으로 옵셔널 벗겨서 비교
+      if (customerInfo.get().getPassword().equals(password)) {
         log.info("로그인 성공");
         Map map = new HashMap();
         map.put("id", customerInfo.get().getId());

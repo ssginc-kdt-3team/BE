@@ -54,7 +54,7 @@ public class AdminReservationController {
     }
 
     // 상세 예약내역 조회
-    @GetMapping("/detail/{id}") // 지점정보는 바디에서 찍으니까 디테일에 예약아이디로 넘어가야지
+    @GetMapping("/detail/{id}")
     public ResponseEntity<List<AdminReservationListDTO>> AdminDetail(@PathVariable("id") Long reserveId){
 
         List<AdminReservationListDTO> reservationDetail = reservationService.getReservationDetail(reserveId);
