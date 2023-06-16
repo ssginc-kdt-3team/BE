@@ -69,5 +69,4 @@ public class JpaCustomerRepository implements CustomerRepository {
         .stream()
         .findAny();
   }
-
 }

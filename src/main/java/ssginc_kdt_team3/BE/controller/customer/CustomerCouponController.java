@@ -28,5 +28,4 @@ public class CustomerCouponController {
     return ResponseEntity.status(HttpStatus.OK).body(myCoupon);
   }
 
-
 }

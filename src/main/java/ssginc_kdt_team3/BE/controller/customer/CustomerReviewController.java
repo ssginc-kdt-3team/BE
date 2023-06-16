@@ -36,11 +36,11 @@ public class CustomerReviewController {
 
       boolean resultTrue = reviewService.deleteMyReview(reviewId);
 
-      if(resultTrue){ //이미 얘가 값을 가진애라 검증 불필요
+      if(resultTrue){
         return ResponseEntity.status(HttpStatus.OK).body(resultTrue);
       }
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-  } // 서비스 결과는 true, false 주니까 컨트롤러에서는 바꼈는지 알려줘야 돼
+  }
 
   @GetMapping("/all/{id}/{page}")
   public ResponseEntity<Page<ReviewResponseDTO>> showReviewList(@PathVariable(name = "id") Long userId,
@@ -53,7 +53,4 @@ public class CustomerReviewController {
     }
     return ResponseEntity.status(HttpStatus.OK).body(reviewList);
   }
-
-
-
 }

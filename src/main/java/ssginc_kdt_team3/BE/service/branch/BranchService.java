@@ -29,7 +29,6 @@ public class BranchService {
   public List<BranchDTO> getAllBranch() {
     List<Branch> allBranch = branchRepository.findAllBranch();
 
-    //먼저 선언 하고 -> for문 값을 넣어줘야 돼
     List<BranchDTO> branchDTOList = new ArrayList<>();
 
     for (Branch b : allBranch) {

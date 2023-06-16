@@ -77,7 +77,6 @@ public class CustomerReviewService {
     // 2) 본인이 작성한 후기가 맞는지 검증
     Review review = reviewRepository.findById(reviewId).orElse(null);
 
-    // 프론트에서 reviewId만 보내주는데 customer 검증을 어떻게 해
     if(review.getStatus().equals(ReviewStatus.SHOW)){
       review.setStatus(ReviewStatus.DELETE); // 3) status.SHOW -> DELETE 변경
 
@@ -104,7 +103,4 @@ public class CustomerReviewService {
     }
     return new PageImpl<>(reviewDTOList, reviews.getPageable(), reviews.getTotalElements());
   }
-
-
-
 }
