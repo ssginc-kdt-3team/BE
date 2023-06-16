@@ -22,8 +22,6 @@ public interface JpaDataCustomerRepository extends JpaRepository<Customer, Long>
     @Query("select new ssginc_kdt_team3.BE.DTOs.customer.CustomerListDTO(c.id, c.name, c.email, c.status, c.grade.name) from Customer c")
     Page<CustomerListDTO> findAllBy(Pageable pageable);
 
-//    Page<Customer> findAllBy(Pageable pageable);
-//    @Query("select c from Customer c inner join User u on c.id = u.id where u.email = :Email")
     Optional<Customer> findCustomerByEmail(String email);
 
     @Query("SELECT new ssginc_kdt_team3.BE.DTOs.branch.BranchShopDTO(s.id, s.name, s.location, s.shopImgUrl,s.status, s.category) " +
@@ -31,12 +29,6 @@ public interface JpaDataCustomerRepository extends JpaRepository<Customer, Long>
             "LEFT JOIN Shop s ON b.id = s.branch.id " +
             "WHERE b.id = :id")
     List<BranchShopDTO> BranchIdByShop(@Param("id")Long id);
-
-//    @Query("SELECT new ssginc_kdt_team3.BE.DTOs.branch.BranchShopDTO(s.id, s.name, s.location, s.shopImgUrl,s.status, s.category) " +
-//            "FROM Branch b " +
-//            "LEFT JOIN Shop s ON b.id = s.branch.id " +
-//            "WHERE s.id = :id")
-//    BranchShopDTO ShopIdByShop(@Param("id")Long id);
 
     @Query("SELECT new ssginc_kdt_team3.BE.DTOs.customer.CustomerPersonalizeShopDTO(s.id, s.name, s.shopImgUrl, s.info, b.id) " +
             "FROM Shop s " +

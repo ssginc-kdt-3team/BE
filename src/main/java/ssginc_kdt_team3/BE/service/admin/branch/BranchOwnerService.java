@@ -42,31 +42,6 @@ public class BranchOwnerService {
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND,e.getMessage());
             }
 
-
-
-
-//        List<AdminBranchOwnerDTO> objectList = new ArrayList<>();
-//
-//        for (Object[] object : BranchIdMatchList) {
-//
-//            AdminBranchOwnerDTO abo = new AdminBranchOwnerDTO();
-//
-//            Shop shop = (Shop)object[0];
-//            abo.setShopName(shop.getName());
-//            abo.setShopLocation(shop.getLocation());
-//
-//            Owner owner = (Owner)object[1];
-//            abo.setOwnerId(owner.getId());
-//            abo.setOwnerName(owner.getName());
-//            abo.setOwnerPhone(owner.getPhoneNumber());
-//
-//            Branch branch = (Branch)object[2];
-//            abo.setBranchName(branch.getName());
-//
-//            objectList.add(abo);
-//    }
-//        Page<AdminBranchOwnerDTO> BranchByOwnersList = new PageImpl<>(objectList,pageable, objectList.size());
-
     }
 
 }

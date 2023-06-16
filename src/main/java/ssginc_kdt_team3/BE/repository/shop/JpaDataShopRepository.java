@@ -27,15 +27,11 @@ public interface JpaDataShopRepository extends JpaRepository<Shop, Long> {
 
     Optional<Shop> findShopByOwner_id(Long ownerId);
 
-//    List<Shop> findByShop(Long ShopId);
-
     @Query("SELECT o FROM Shop o " +
             "LEFT JOIN ShopMenu m ON o.id = m.shop.id " +
             "LEFT JOIN ShopOperationInfo i ON o.operationInfo.id = i.id " +
             "WHERE o.id = :id")
     List<Object> DetailList(@Param("id") Long id);
-
-
 
 
 }
