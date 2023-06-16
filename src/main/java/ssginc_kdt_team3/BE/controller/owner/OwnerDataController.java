@@ -44,15 +44,7 @@ public class OwnerDataController {
         }//비밀번호 찾기 - 이메일 , 이름 , 전화번호 인증
         //비밀번호 찾기 & 비밀번호 변경에서 인증성공시 -> 새로운 비밀번호변경 창 표시
     }
-//    @PostMapping("/newPassword")
-//    public ResponseEntity<String> newPw(@RequestBody OwnerNewPwDTO newPwDTO){
-//        try {
-//            ser.NewPw(newPwDTO);
-//            return new ResponseEntity<>("비밀번호 변경이 완료되었습니다.",HttpStatus.OK);
-//        }catch (Exception e){
-//            return new ResponseEntity<>(e.getMessage(),HttpStatus.BAD_REQUEST);
-//        }
-//    }
+
     @PostMapping("/newPassword/{id}")
     public ResponseEntity<String> newPw(@RequestBody OwnerNewPwDTO newPwDTO,@PathVariable("id") Long ownerId){
         try {

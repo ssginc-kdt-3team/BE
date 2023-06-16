@@ -15,8 +15,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BranchShopListService {
 
-//    private final BranchRepository repo;
-//    private final JpaDataOwnerRepository repo;
     private final JpaDataCustomerRepository repo;
 
     public List<BranchShopDTO> BranchShop(Long BranchId) throws Exception {

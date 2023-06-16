@@ -26,27 +26,6 @@ public class DataOwnerRepository{
         return emailCheck;
     }
 
-//    public void save(Owner owner){
-//        em.createQuery("INSERT INTO Owner(email, password, name, phone,birthday, gender, address, status, role)" +
-//                        "VALUES(:email, :password, :name, :phone, :birthday, :gender, :address, :status, :role)")
-//                .setParameter("email", owner.getEmail())
-//                .setParameter("password", owner.getPassword())
-//                .setParameter("name", owner.getName())
-//                .setParameter("phone", owner.getPhoneNumber())
-//                .setParameter("birthday", owner.getBirthday())
-//                .setParameter("gender", owner.getGender())
-//                .setParameter("address", owner.getAddress())
-//                .setParameter("status", owner.getStatus())
-//                .setParameter("role", owner.getRole())
-//                .executeUpdate();
-//    }
-
-//    public void delete(String email){
-//        em.createQuery("DELETE FROM Owner o WHERE o.email = :email")
-//                .setParameter("email", email)
-//                .executeUpdate();
-//    }
-
     public Optional<Owner> findByEmail(String email){
         try {
             return Optional.of(em.createQuery("SELECT o FROM Owner o WHERE o.email = :email", Owner.class)
