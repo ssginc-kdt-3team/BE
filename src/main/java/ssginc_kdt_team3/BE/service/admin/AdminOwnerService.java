@@ -1,18 +1,19 @@
 package ssginc_kdt_team3.BE.service.admin;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ssginc_kdt_team3.BE.DTOs.customer.Address;
+import org.springframework.web.server.ResponseStatusException;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerUpdateDTO;
 import ssginc_kdt_team3.BE.domain.Owner;
 import ssginc_kdt_team3.BE.enums.UserStatus;
 import ssginc_kdt_team3.BE.repository.owner.JpaDataOwnerRepository;
 //import ssginc_kdt_team3.BE.repository.owner.JpaDataOwnerRepository;
-
-import java.time.LocalDate;
+import javax.persistence.NoResultException;
 import java.util.Optional;
 
 @Slf4j
@@ -28,37 +29,47 @@ public class AdminOwnerService {
     }
 
     public Optional<Owner> findOne(Long id) {
+
         return ownerRepository.findById(id);
     }
 
-    public boolean updateOwnerInfo(Long id, OwnerUpdateDTO updateDTO) {
-        Optional<Owner> byId = ownerRepository.findById(id);
+    public void updateOwnerInfo(Long id, OwnerUpdateDTO updateDTO) {
 
-        if (byId.isPresent()) {
-            Owner owner = byId.get();
+        boolean existence = ownerRepository.existsByid(id);
 
+            if (!existence){
+                throw new NoResultException("ID를 다시 입력해주세요!");
+            }
             String name = updateDTO.getName();
             String phone = updateDTO.getPhone();
-            String password = updateDTO.getPassword();
-            LocalDate birthday = updateDTO.getBirthday();
-            Address adddress = updateDTO.getAdddress();
-            UserStatus userStatus = updateDTO.getUserStatus();
+            String city = updateDTO.getCity();
+            String district = updateDTO.getDistrict();
+            String detail = updateDTO.getDetail();
+            String zipCode = updateDTO.getZipCode();
 
-            owner.setName(name);
-            owner.setPhoneNumber(phone);
-            owner.setPassword(password);
-            owner.setBirthday(birthday);
-            owner.setAddress(adddress);
-            owner.setStatus(userStatus);
 
-            try {
-                ownerRepository.save(owner);
-                return true;
-            } catch (Exception e) {
-                return false;
+            try{
+
+                ownerRepository.updateByOwner(id,name,phone,city,district,detail,zipCode);
+
+            }catch (Exception e){
+                throw new DataIntegrityViolationException("업데이트 하려는 값이 잘못되었습니다!");
+
             }
-        } else {
-            return false;
+
+    }
+    public void ownerViewsDelete(Long id){
+
+        UserStatus status = UserStatus.QUIT;
+        try {
+
+            int updateRows = ownerRepository.ownerStatusDelete(id, status);
+
+            if (updateRows < 1){
+                throw new Exception("탈퇴에 실패하였습니다.");
+            }
+        }catch(Exception e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,e.getMessage());
         }
     }
 

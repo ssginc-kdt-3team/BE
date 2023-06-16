@@ -2,29 +2,21 @@ package ssginc_kdt_team3.BE.DTOs.owner;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import ssginc_kdt_team3.BE.DTOs.customer.Address;
-import ssginc_kdt_team3.BE.enums.UserStatus;
-import javax.persistence.Embedded;
-import java.time.LocalDate;
+import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class OwnerUpdateDTO {
 
-    String name;
-
-    String password;
-
-    LocalDate birthday;
+    private String name;
 
     private String phone;
 
-    @Embedded
-    private Address adddress;
+    private String city;
+    private String district;
+    private String detail;
+    private String zipCode;
 
-    private UserStatus userStatus;
 
-    public OwnerUpdateDTO(){
-
-    }
 }

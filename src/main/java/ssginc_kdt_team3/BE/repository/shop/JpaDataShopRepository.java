@@ -5,11 +5,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 import ssginc_kdt_team3.BE.domain.Shop;
+
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public interface JpaDataShopRepository extends JpaRepository<Shop, Long> {
 
     @Query("select s from Shop s " +
@@ -17,9 +20,18 @@ public interface JpaDataShopRepository extends JpaRepository<Shop, Long> {
             " where br.id = :storeId")
     Page<Shop> findAllByStoreId (@Param("storeId") Long storeId, Pageable pageable);
 
+    Page<Shop> findAllByBranchId(@Param("storeId") Long storeId, Pageable pageable);
+
     @Query("select s from Shop s where s.branch.id = :id")
     List<Shop> findBranchShop(@Param("id") Long id);
 
     Optional<Shop> findShopByOwner_id(Long ownerId);
+
+    @Query("SELECT o FROM Shop o " +
+            "LEFT JOIN ShopMenu m ON o.id = m.shop.id " +
+            "LEFT JOIN ShopOperationInfo i ON o.operationInfo.id = i.id " +
+            "WHERE o.id = :id")
+    List<Object> DetailList(@Param("id") Long id);
+
 
 }

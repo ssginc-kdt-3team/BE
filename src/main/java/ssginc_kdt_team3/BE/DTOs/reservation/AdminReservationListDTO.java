@@ -15,11 +15,11 @@ public class AdminReservationListDTO {
 
     private String reservationTime;
     private int people;
+    private int child;
     private ReservationStatus status;
 
     private String customerName;
     private String customerPhone;
-
     private String branchName;
     private String shopName;
 
@@ -30,6 +30,7 @@ public class AdminReservationListDTO {
         this.customerId = reservation.getCustomer().getId();
         this.reservationTime = TimeUtils.localDataTimeParseString(reservation.getReservationDate());
         this.people = reservation.getPeople();
+        this.child = reservation.getChild();
         this.status = reservation.getStatus();
         this.customerName = reservation.getCustomer().getName();
         this.customerPhone = reservation.getCustomer().getPhoneNumber();

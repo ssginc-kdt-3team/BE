@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.Length;
-import ssginc_kdt_team3.BE.DTOs.customer.Address;
+import ssginc_kdt_team3.BE.DTOs.Address;
 import ssginc_kdt_team3.BE.enums.UserRole;
 import ssginc_kdt_team3.BE.enums.UserStatus;
 
@@ -23,7 +23,7 @@ public class User {
     @Id
     @Column(name = "user_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    protected long id;
+    protected Long id;
 
     @Column(name = "user_email", unique = true, nullable = false, length = 20)
     @NotBlank
@@ -52,8 +52,8 @@ public class User {
     protected Boolean gender;
 
     //Column명 각각 지정하는 방식으로 변경 (0502 임태경)
-    @AttributeOverride(name = "city", column = @Column(name = "user_city"))
-    @AttributeOverride(name = "district", column = @Column(name = "user_district"))
+    @AttributeOverride(name = "address", column = @Column(name = "user_address"))
+    @AttributeOverride(name = "extraAddress", column = @Column(name = "user_extraAddress"))
     @AttributeOverride(name = "detail", column = @Column(name = "user_detail"))
     @AttributeOverride(name = "zipCode", column = @Column(name = "user_zipCode"))
     protected Address address;

@@ -1,17 +1,10 @@
 package ssginc_kdt_team3.BE.DTOs.reservation;
 
 import lombok.Data;
-import ssginc_kdt_team3.BE.domain.Customer;
 import ssginc_kdt_team3.BE.domain.Deposit;
 import ssginc_kdt_team3.BE.domain.Reservation;
-import ssginc_kdt_team3.BE.domain.Shop;
-import ssginc_kdt_team3.BE.enums.DepositStatus;
 import ssginc_kdt_team3.BE.enums.ReservationStatus;
 import ssginc_kdt_team3.BE.util.TimeUtils;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 @Data
 public class CustomerReservationDetailDTO {
@@ -33,11 +26,13 @@ public class CustomerReservationDetailDTO {
     private int deposit;
     private String cancelReason;
 
-    public CustomerReservationDetailDTO(Reservation reservation, Deposit deposit) {
+    private boolean canReview;
+
+    public CustomerReservationDetailDTO(Reservation reservation, Deposit deposit, boolean canReview) {
         this.reservationId = reservation.getId();
         this.shopName = reservation.getShop().getName();
         this.shopLocation = reservation.getShop().getLocation();
-        this.shopImgUrl = reservation.getShop().getShopImg();
+        this.shopImgUrl = reservation.getShop().getShopImgUrl();
         this.customerName = reservation.getCustomer().getName();
         this.customerEmail = reservation.getCustomer().getEmail();
         this.customerPhone = reservation.getCustomer().getPhoneNumber();
@@ -48,6 +43,7 @@ public class CustomerReservationDetailDTO {
         this.reservationStatus = reservation.getStatus();
         this.deposit = deposit.getOrigin_value();
         this.cancelReason = reservation.getCancelReason();
+        this.canReview = canReview;
     }
 
     public CustomerReservationDetailDTO() {

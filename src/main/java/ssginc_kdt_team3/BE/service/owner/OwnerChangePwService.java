@@ -1,57 +1,39 @@
 package ssginc_kdt_team3.BE.service.owner;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssginc_kdt_team3.BE.DTOs.owner.CheckPwDTO;
-import ssginc_kdt_team3.BE.DTOs.owner.OwnerChangePwDTO;
 import ssginc_kdt_team3.BE.domain.Owner;
-import ssginc_kdt_team3.BE.repository.owner.DataOwnerRepository;
-
-
+import ssginc_kdt_team3.BE.repository.owner.JpaDataOwnerRepository;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
-
 public class OwnerChangePwService{
 
-    private final DataOwnerRepository repo;
-
-    private String email;
+    private final JpaDataOwnerRepository repo;
 
     public void CheckPw(CheckPwDTO checkPwDTO) throws Exception{
 
-        this.email = checkPwDTO.getEmail();
+        String email = checkPwDTO.getEmail();
         String name = checkPwDTO.getName();
+        String phone = checkPwDTO.getPhone();
         String in_Password = checkPwDTO.getPassword();
 
-        Optional<Owner> PwCheck = repo.findByEmail(this.email);
+        Optional<Owner> ownerInfo = repo.findByEmail(email);
 
-        if (PwCheck.equals(Optional.empty())){
+        if (!ownerInfo.isPresent()){
             throw new Exception("존재하지 않는 회원입니다!");
         }
-        Owner owner = PwCheck.get();
-        String Rpassword = owner.getPassword();
-        String Rname = owner.getName();
+        Owner owner = ownerInfo.get();
 
-        if (!Rpassword.equals(in_Password)) {
-            throw new Exception("비밀번호가 일치하지 않습니다!");
-        }
-        else if(!Rname.equals(name)){
-            throw new Exception("이름이 일치하지 않습니다!");
+        String ownerName = owner.getName();
+        String ownerPassword = owner.getPassword();
+        String ownerPhone = owner.getPhoneNumber();
+        if(!ownerName.equals(name) || !ownerPassword.equals(in_Password) || !ownerPhone.equals(phone)){
+            throw new IllegalStateException("입력하신 정보를 다시 확인해주세요!");
         }
     }
-    public void ChangePw(OwnerChangePwDTO changePwDTO) throws Exception{
-        String pw1 = changePwDTO.getNewPassword1();
-        String pw2 = changePwDTO.getNewPassword2();
-
-        if (!pw1.equals(pw2)){
-            throw new Exception("비밀번호가 서로 일치하지 않습니다!");
-        }
-        repo.updatePassword(this.email,pw1);
-    }
-
 }

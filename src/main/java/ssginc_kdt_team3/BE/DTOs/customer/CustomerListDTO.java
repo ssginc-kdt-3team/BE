@@ -1,15 +1,11 @@
 package ssginc_kdt_team3.BE.DTOs.customer;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import ssginc_kdt_team3.BE.enums.GradeType;
 import ssginc_kdt_team3.BE.enums.UserStatus;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class CustomerListDTO {

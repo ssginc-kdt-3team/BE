@@ -1,12 +1,11 @@
 package ssginc_kdt_team3.BE.service.admin;
 
-import com.querydsl.jpa.JPQLQueryFactory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ssginc_kdt_team3.BE.DTOs.customer.Address;
+import ssginc_kdt_team3.BE.DTOs.Address;
 import ssginc_kdt_team3.BE.DTOs.customer.CustomerListDTO;
 import ssginc_kdt_team3.BE.DTOs.customer.CustomerUpdateDTO;
 
@@ -15,9 +14,8 @@ import ssginc_kdt_team3.BE.domain.Grade;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import ssginc_kdt_team3.BE.DTOs.customer.*;
-import ssginc_kdt_team3.BE.domain.QCustomer;
 import ssginc_kdt_team3.BE.enums.UserStatus;
-import ssginc_kdt_team3.BE.repository.customer.JpaDateCustomerRepository;
+import ssginc_kdt_team3.BE.repository.customer.JpaDataCustomerRepository;
 
 
 import java.util.Optional;
@@ -28,7 +26,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AdminCustService {
 
-    private final JpaDateCustomerRepository customerRepository;
+    private final JpaDataCustomerRepository customerRepository;
 //    private final EntityManager em;
 
 //    JPQLQueryFactory queryFactory;
@@ -47,9 +45,7 @@ public class AdminCustService {
 
         if (byId.isPresent()) {
             Customer customer = byId.get();
-            CustomerDetailDTO customerDetailDTO = new CustomerDetailDTO(customer.getId(), customer.getEmail(), customer.getPassword(),
-                customer.getName(), customer.getPhoneNumber(), customer.getGender(), customer.getBirthday(), customer.getAddress(),
-                customer.getRole(), customer.getStatus(), customer.getGrade().toString());
+            CustomerDetailDTO customerDetailDTO = new CustomerDetailDTO(customer);
             // 0506 이현: Grade name부분 enum 추가로 기존 Customer.getGrade().getName() 에러 -> Customer.getGrade().toString() 으로 수정
 
 
@@ -64,9 +60,7 @@ public class AdminCustService {
 
         if (byEmail.isPresent()) {
             Customer customer = byEmail.get();
-            CustomerDetailDTO customerDetailDTO = new CustomerDetailDTO(customer.getId(), customer.getEmail(), customer.getPassword(),
-                customer.getName(), customer.getPhoneNumber(), customer.getGender(), customer.getBirthday(), customer.getAddress(),
-                customer.getRole(), customer.getStatus(), customer.getGrade().toString());
+            CustomerDetailDTO customerDetailDTO = new CustomerDetailDTO(customer);
 
 
             return customerDetailDTO;

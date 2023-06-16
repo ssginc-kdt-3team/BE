@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -30,9 +31,13 @@ public class AdminCustomerController {
 
     private final AdminCustomerService customerService;
 
+    @Value("${admin.pageSize}")
+    private int pageSize;
+
     @GetMapping("/findAll/{page}")
     public ResponseEntity<Page<CustomerListDTO>> findAllCustomer( @PathVariable(name = "page") int page) {
-        Pageable pageable = PageRequest.of(page-1, 5);
+        log.info("{}",pageSize);
+        Pageable pageable = PageRequest.of(page-1,pageSize);
         ResponseEntity<Page<CustomerListDTO>> response = ResponseEntity.ok()
                 .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .body(customerService.findAllCustomer(pageable));
@@ -41,9 +46,8 @@ public class AdminCustomerController {
 
     @GetMapping("/findById/{id}")
     public Customer findOneCustomer(@PathVariable(name = "id") Long CustomerId) throws JsonProcessingException {
-        CustomerDetailDTO CustomerDetailDTO = customerService.findCustomerById(CustomerId);
 
-        Optional<Customer> customerById = customerService.temp(CustomerId);
+        Optional<Customer> customerById = customerService.findRawCustomerById(CustomerId);
 
         if (customerById.isPresent()) {
             Customer Customer = customerById.get();
@@ -75,7 +79,7 @@ public class AdminCustomerController {
 //        }
     }
 
-    @GetMapping("/findByEmail")
+    @PostMapping("/findByEmail")
     public CustomerDetailDTO findOneCustomerByName(@RequestBody HashMap map) {
         String email = map.get("email").toString();
         log.info("email = {}", email);

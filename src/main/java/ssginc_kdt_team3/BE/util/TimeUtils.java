@@ -1,5 +1,6 @@
 package ssginc_kdt_team3.BE.util;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -18,8 +19,29 @@ public class TimeUtils {
         return LocalDateTime.parse(time, formatter);
     }
 
+    public static LocalDateTime stringParseLocalDataTimeT(String time) {
+        String time2 = time.replace("T", " ");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return LocalDateTime.parse(time2, formatter);
+    }
+
+    public static LocalTime stringParseLocalTime(String time) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        return LocalTime.parse(time);
+    }
+
+    public static LocalDate stringParseLocalDate(String time) {
+        return LocalDate.parse(time);
+    }
+
     public static String localDataTimeParseString(LocalDateTime time) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String format = time.format(formatter);
+        return format;
+    }
+
+    public static String localDateParseString(LocalDate time) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String format = time.format(formatter);
         return format;
     }

@@ -1,14 +1,16 @@
 package ssginc_kdt_team3.BE.DTOs.deposit;
 
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import ssginc_kdt_team3.BE.domain.Deposit;
 import ssginc_kdt_team3.BE.enums.DepositStatus;
-import ssginc_kdt_team3.BE.enums.ReservationStatus;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Data
+@NoArgsConstructor
 public class AdminDepositDTO {
 
     private Long reservationId;
@@ -28,6 +30,19 @@ public class AdminDepositDTO {
     private LocalTime expectedTime;
 
     private DepositStatus status;
+
+    @Builder
+    public AdminDepositDTO(Long reservationId, Long customerId, String customerName, int originDeposit, int payDeposit, int penalty, LocalDate expectedDay, LocalTime expectedTime, DepositStatus status) {
+        this.reservationId = reservationId;
+        this.customerId = customerId;
+        this.customerName = customerName;
+        this.originDeposit = originDeposit;
+        this.payDeposit = payDeposit;
+        this.penalty = penalty;
+        this.expectedDay = expectedDay;
+        this.expectedTime = expectedTime;
+        this.status = status;
+    }
 
     public AdminDepositDTO(Deposit deposit) {
         this.reservationId = deposit.getId();

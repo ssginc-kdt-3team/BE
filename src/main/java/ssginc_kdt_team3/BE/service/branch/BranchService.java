@@ -29,15 +29,17 @@ public class BranchService {
   public List<BranchDTO> getAllBranch() {
     List<Branch> allBranch = branchRepository.findAllBranch();
 
-    //먼저 선언 하고 -> for문 값을 넣어줘야 돼
     List<BranchDTO> branchDTOList = new ArrayList<>();
 
     for (Branch b : allBranch) {
       Long id = b.getId();
       String name = b.getName();
+      String url = b.getImgUrl();
+
       BranchDTO branchDTO = new BranchDTO();
       branchDTO.setId(id);
       branchDTO.setName(name);
+      branchDTO.setBranchImgUrl(url);
 
       branchDTOList.add(branchDTO);
     }

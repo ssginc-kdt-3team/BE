@@ -5,11 +5,18 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssginc_kdt_team3.BE.DTOs.customer.*;
-import ssginc_kdt_team3.BE.domain.Customer;
-import ssginc_kdt_team3.BE.enums.UserRole;
-import ssginc_kdt_team3.BE.enums.UserStatus;
+import ssginc_kdt_team3.BE.domain.*;
+import ssginc_kdt_team3.BE.enums.*;
+import ssginc_kdt_team3.BE.repository.coupon.CouponProvideRepository;
+import ssginc_kdt_team3.BE.repository.coupon.CouponRepository;
 import ssginc_kdt_team3.BE.repository.customer.JpaCustomerRepository;
-import java.util.NoSuchElementException;
+import ssginc_kdt_team3.BE.repository.customer.JpaDataCustomerRepository;
+import ssginc_kdt_team3.BE.repository.grade.GradeRepository;
+import ssginc_kdt_team3.BE.service.coupon.CouponManagementService;
+
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
@@ -19,86 +26,116 @@ import java.util.Optional;
 public class CustomerService {
 
   private final JpaCustomerRepository customerRepository;
+  private final JpaDataCustomerRepository jpaCustomerRepository;
+  private final CouponManagementService couponService;
+  private final CouponProvideRepository couponProvideRepository;
+  private final CouponRepository couponRepository;
+  private final GradeRepository gradeRepository;
 
   // 회원가입
   @Transactional
   public CustomerJoinDTO join (CustomerJoinDTO customerJoinDTO) {
-    validateDuplicateCustomer(customerJoinDTO); //중복회원 검증
+    validateDuplicateCustomer(customerJoinDTO.getEmail()); //중복회원 검증
 
     Customer customer = new Customer();
     customer.setEmail(customerJoinDTO.getEmail());
     customer.setPassword(customerJoinDTO.getPassword());
     customer.setName(customerJoinDTO.getName());
     customer.setPhoneNumber(customerJoinDTO.getPhone());
+    customer.setBirthday(customerJoinDTO.getBirthday());
+    customer.setAddress(customerJoinDTO.getAddress());
+    customer.setGender(customerJoinDTO.getGender());
+    customer.setAge(customerJoinDTO.getAge());
+    //0604 신영 추가 : 고객 나이
+    customer.setType(CustomerType.NORMAL);
+
 
     //  검증됐으니까 역할, 상태 부여
-    customer.setStatus(UserStatus.valueOf("ACTIVE"));
-    customer.setRole(UserRole.valueOf("Customer"));
+    customer.setStatus(UserStatus.ACTIVE);
+    customer.setRole(UserRole.CUSTOMER);
 
-    customerRepository.save(customer);
+    // 등급 부여
+    Grade grade = gradeRepository.findByName(GradeType.Welcome);
+    customer.setGrade(grade);
+
+    // DB에 저장
+    Customer saveCustomer = customerRepository.save(customer);
+
+    // 회원가입 된 다음에 쿠폰 발행
+    Coupon coupon = couponRepository.findByCouponName("신규가입 쿠폰").orElse(null);
+    issueCoupon(saveCustomer, CouponStatus.GIVEN, coupon);
+
     return customerJoinDTO;
   }
 
-  private void validateDuplicateCustomer(CustomerJoinDTO CustomerJoinDTO) {
-    Optional<Customer> findCustomer = customerRepository.findByEmail(CustomerJoinDTO.getEmail());
+  // 신규가입 쿠폰 발행,CouponProvider 바로 사용
+  public void issueCoupon(Customer saveCustomer, CouponStatus status, Coupon coupon) {
 
-    if(!findCustomer.isEmpty()) {
-      throw new IllegalStateException("이미 가입된 이메일입니다.");
+    CouponProvide provide = new CouponProvide();
+    provide.setCustomer(saveCustomer);
+    provide.setCoupon(coupon);
+    String random = couponService.createNumber();
+    provide.setCouponCode(random);
+    provide.setGivenDay(LocalDate.now());
+    provide.setOutDay(LocalDate.now().plusMonths(1));
+    provide.setStatus(status);
+    provide.setReason("신규가입 쿠폰");
+
+    couponProvideRepository.save(provide);
+  }
+
+  public boolean validateDuplicateCustomer(String email) {
+    Optional<Customer> byEmail = customerRepository.findByEmail(email);
+    if(byEmail.isPresent()) {
+      return false;
     }
+    return true;
   }
 
   //로그인
-  public boolean login (CustomerLoginDTO customerLoginDTO) {
+  public Map login (CustomerLoginDTO customerLoginDTO) {
     String email = customerLoginDTO.getEmail();
     String password = customerLoginDTO.getPassword();
     Optional<Customer> customerInfo = customerRepository.findByEmail(email);
 
-    // CustomerInfo가 널인지 아닌지 모르니까 Optional 을 isPresent로 체크한다
-    if(customerInfo.isPresent()) { //null이 아니면(이메일 존재하면)
-      log.info("이메일 일치");
-
-      if(customerInfo.get().getPassword().equals(password)) { // .get으로 옵셔널 벗겨서 비교
+    if(customerInfo.isPresent()) { //이메일 존재하면
+      if (customerInfo.get().getPassword().equals(password)) {
         log.info("로그인 성공");
-        return true;
+        Map map = new HashMap();
+        map.put("id", customerInfo.get().getId());
+        map.put("name", customerInfo.get().getName());
+        return map;
+      } else {
+        log.info("비밀번호 불일치 실패");
       }
-
     } else {
-      log.info("로그인 실패");
+      log.info("아이디 X 실패");
     }
-    return false;
+    return null;
   }
 
-  // Email 찾기 : phone 으로 찾기
-  public Customer getCustomerEmail(CustomerFindDTO customerFindDTO) {
-    Customer customer = new Customer();
-    customer.setPhoneNumber(customerFindDTO.getPhone());
-
-    //이메일이 있다고 가정하고 -> phone과 일치하는 경우 (PK: 중복X)
-    Optional<Customer> emailByPhone = customerRepository.findEmailByPhone(customer.getPhoneNumber());
-    return emailByPhone.orElseThrow(() -> new NoSuchElementException("일치하는 정보가 없습니다."));
+  // Email 찾기 : name & phone 으로 찾기
+  public Optional<Customer> getCustomerEmail(String name, String phone) {
+    //이메일이 있다고 가정하고 -> DB에 일치하는 값 찾기
+    Optional<Customer> findInfo = jpaCustomerRepository.findByNameAndPhoneNumber(name, phone);
+    return findInfo;
   }
 
-
-  // PW 찾기
-  public Customer getCustomerPassword (CustomerFindDTO customerFindDTO) {
-    Customer customer = new Customer();
-    customer.setEmail(customerFindDTO.getEmail());
-    customer.setPhoneNumber(customerFindDTO.getPhone());
-
-    Optional<Customer> emailAndPhone = customerRepository.findEmailAndPhone(customerFindDTO.getEmail(), customer.getPhoneNumber());
-    System.out.println("emailAndPhone :" + emailAndPhone);
-
-    return emailAndPhone.orElseThrow(() -> new NoSuchElementException("일치하는 정보가 없습니다."));
+  // PW 찾기: email, name, phone 으로 찾기
+  public Optional<Customer> getCustomerPassword(PasswordFindDTO findDTO) {
+    Optional<Customer> findInfo = jpaCustomerRepository.findByNameAndEmailAndPhoneNumber(findDTO.getName(), findDTO.getEmail(), findDTO.getPhone());
+    return findInfo;
   }
 
   // 개인정보 변경
   @Transactional
-  public void updateInfo(CustomerUpdateDTO customerUpdateDTO, Long id) { //이게 Customer의 id인지 어떻게 알아 ? 내가 repository findCustomer에 Long id 싸놔서 ...?
+  public void updateInfo(CustomerUpdateDTO customerUpdateDTO, Long id) {
     // 로그인 후 -> Customer의 id 정보 필요
     Customer findCustomerId = customerRepository.findCustomer(id).get();
     findCustomerId.setPhoneNumber(customerUpdateDTO.getPhone());
-    findCustomerId.setAddress(customerUpdateDTO.getAddress()); // 알아서 update 쿼리가 날아간다고 ..?
-  }
+    findCustomerId.setAddress(customerUpdateDTO.getAddress());
+  } // 알아서 update 쿼리가 날아간다..
+
 
   // PW 변경
   @Transactional
@@ -126,5 +163,12 @@ public class CustomerService {
 
 
   // 등급조회
+  public Grade gradeInfo(Long customerId){
+    // 로그인 한 회원 기준
+    Customer customer = customerRepository.findCustomer(customerId).get();
+    Grade grade = customer.getGrade();
+    log.info("grade=================>" + grade);
+    return grade;
+  }
 
 }

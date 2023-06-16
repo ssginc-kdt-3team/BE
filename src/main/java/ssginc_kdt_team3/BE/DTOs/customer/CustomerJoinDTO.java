@@ -2,6 +2,8 @@ package ssginc_kdt_team3.BE.DTOs.customer;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
+import ssginc_kdt_team3.BE.DTOs.Address;
+
 import javax.persistence.Embedded;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -21,6 +23,8 @@ public class CustomerJoinDTO {
     @NotEmpty(message = "연락처는 필수 입력 값입니다.")
     private String phone;
     private LocalDate birthday;
+    private int age;
+
     @Embedded
     private Address address;
     private Boolean gender;

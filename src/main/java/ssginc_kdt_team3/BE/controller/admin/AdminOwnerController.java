@@ -5,18 +5,18 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ssginc_kdt_team3.BE.DTOs.admin.AdminBranchOwnerDTO;
+import ssginc_kdt_team3.BE.DTOs.admin.AdminOwnerDetailDTO;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerJoinDTO;
-import ssginc_kdt_team3.BE.DTOs.owner.OwnerUpdateDTO;
 import ssginc_kdt_team3.BE.domain.Owner;
+import ssginc_kdt_team3.BE.service.admin.AdminOwnerDetailService;
 import ssginc_kdt_team3.BE.service.admin.AdminOwnerService;
+import ssginc_kdt_team3.BE.service.admin.branch.BranchOwnerService;
 import ssginc_kdt_team3.BE.service.owner.OwnerJoinService;
-//import ssginc_kdt_team3.BE.service.owner.OwnerJoinService;
-//import ssginc_kdt_team3.BE.service.owner.OwnerJoinService;
-
-import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -26,6 +26,8 @@ public class AdminOwnerController {
 
     private final OwnerJoinService joinService;
     private final AdminOwnerService ownerService;
+    private final BranchOwnerService branchOwnerService;
+    private final AdminOwnerDetailService adminOwnerDetailService;
 
     @PostMapping("/join")
     public ResponseEntity<String> ownerJoin(@RequestBody OwnerJoinDTO ownerJoinDTO) {
@@ -46,23 +48,42 @@ public class AdminOwnerController {
 
         return response;
     }
+    @GetMapping("/findAll/{id}/{page}")
+    public ResponseEntity<Page<AdminBranchOwnerDTO>> AdminBranchOwnerList
+            (@PathVariable(name = "id")Long id
+            , @PathVariable(name = "page") int page) throws Exception{
 
+        Pageable pageable = PageRequest.of(page-1, 10);
+
+        ResponseEntity<Page<AdminBranchOwnerDTO>> response = ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .body(branchOwnerService.branchMatchOwner(id, pageable));
+
+        return response;
+
+    }
     @GetMapping("/findOne/{id}")
-    public ResponseEntity<Owner> findOne(@PathVariable(name = "id") Long ownerId) {
+    public ResponseEntity<AdminOwnerDetailDTO> AdminOwnerDetailController(@PathVariable("id")Long id){
 
-        Optional<Owner> one = ownerService.findOne(ownerId);
+            AdminOwnerDetailDTO CheckAdminOwnerDetail = adminOwnerDetailService.checkAdminOwnerDetail(id);
 
-        if (one.isPresent()) {
-            return ResponseEntity.ok(one.get());
-        } else {
-            return null;
-        }
+            try {
+                ResponseEntity<AdminOwnerDetailDTO> response = ResponseEntity.ok()
+                        .header(HttpHeaders.CONTENT_TYPE,MediaType.APPLICATION_JSON_VALUE)
+                        .body(CheckAdminOwnerDetail);
+                return response;
+            }catch (Exception e){
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(null);
+            }
+
+    }
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<String> ownerViewDelete(@PathVariable("id")Long id){
+        ownerService.ownerViewsDelete(id);
+
+        return ResponseEntity.status(HttpStatus.OK).body("회원 탈퇴에 성공하셨습니다.");
+
     }
 
-    @PostMapping("/update/{id}")
-    public boolean updateOwner(@PathVariable(name = "id") Long ownerId,
-                               @RequestBody OwnerUpdateDTO ownerUpdateDTO) {
-
-        return ownerService.updateOwnerInfo(ownerId, ownerUpdateDTO);
-    }
 }

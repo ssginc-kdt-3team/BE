@@ -8,6 +8,7 @@ import ssginc_kdt_team3.BE.DTOs.owner.OwnerFindPwDTO;
 import ssginc_kdt_team3.BE.DTOs.owner.OwnerNewPwDTO;
 import ssginc_kdt_team3.BE.domain.Owner;
 import ssginc_kdt_team3.BE.repository.owner.DataOwnerRepository;
+import ssginc_kdt_team3.BE.repository.owner.JpaDataOwnerRepository;
 
 
 import java.util.Optional;
@@ -19,49 +20,35 @@ import java.util.Optional;
 
 public class OwnerFindPwService{
 
-    private final DataOwnerRepository repo;
+    private final JpaDataOwnerRepository repo;
 
-    private String email;
+    public void findPw(OwnerFindPwDTO ownerFindPwDTO){
 
-    public void findPw(OwnerFindPwDTO ownerFindPwDTO) throws Exception{
-
-        this.email = ownerFindPwDTO.getEmail();
+        String email = ownerFindPwDTO.getEmail();
         String name = ownerFindPwDTO.getName();
         String phone = ownerFindPwDTO.getPhone();
 
-        boolean emailCheck = repo.existsEmail(this.email);
+        Optional<Owner> owner = repo.findByEmail(email);
 
-        if(!emailCheck){
-            throw new Exception("존재하지 않는 회원입니다.");
+        if(!owner.isPresent()){
+            throw new IllegalStateException("존재하지 않는 회원입니다.");
         }
+        Owner ownerInfo = owner.get();
+        String ownerName = ownerInfo.getName();
+        String ownerPhone = ownerInfo.getPhoneNumber();
 
-        Optional<Owner> InfoOwner = repo.findByEmail(email);
-
-        Owner EmaillMat = InfoOwner.get();
-
-        String RepoName = EmaillMat.getName();
-        String RepoPhone = EmaillMat.getPhoneNumber();
-//        Repo에서 넘어온 email이 속해있는 레코드의 필드 값들
-//        email과 같은 레코드에 있는 name,phone인지 확인
-
-        if (!RepoName.equals(name)){
-            throw new Exception("이름이 다릅니다.");
-
-        }
-        else if(!RepoPhone.equals(phone)){
-            throw new Exception("전화번호가 다릅니다.");
+        if (!ownerName.equals(name) || !ownerPhone.equals(phone)) {
+            throw new IllegalStateException("이름 또는 전화번호를 다시 확인해주세요!");
         }
     }
-    public void NewPw(OwnerNewPwDTO newPwDTO) throws Exception {
+    public void NewPw(OwnerNewPwDTO newPwDTO,Long ownerId) throws Exception {
         String pw1 = newPwDTO.getNewPassword1();
         String pw2 = newPwDTO.getNewPassword2();
 
         if (!pw1.equals(pw2)) {
             throw new Exception("비밀번호가 서로 다릅니다!");
-        }else {
-            repo.updatePassword(this.email,pw1);
         }
+            repo.ownerNewPassword(pw1,ownerId);
     }
-
 
 }

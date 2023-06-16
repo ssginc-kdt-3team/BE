@@ -2,14 +2,18 @@ package ssginc_kdt_team3.BE.DTOs.owner;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
-import ssginc_kdt_team3.BE.DTOs.customer.Address;
+import ssginc_kdt_team3.BE.DTOs.Address;
 
+import javax.persistence.Embedded;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class OwnerJoinDTO {
 
@@ -24,12 +28,9 @@ public class OwnerJoinDTO {
     @NotEmpty(message = "전화번호는 필수 입력값입니다.")
     private String phone;
     private LocalDate birthday;
-
     private boolean gender;
-    private Address adddress;
-
-    public OwnerJoinDTO(){
-
-    }
+    @NotNull
+    @Embedded
+    private Address address;
 
 }

@@ -50,39 +50,23 @@ public class JpaCustomerRepository implements CustomerRepository {
   public void update(Long id, Customer Customer) {
   }
 
+  // ID 찾기
   @Override
-  public Optional<Customer> findEmailByPhone(String phoneNumber) {
-    return em.createQuery("SELECT c FROM Customer c WHERE c.phoneNumber = :phoneNumber", Customer.class)
-        .setParameter("phoneNumber", phoneNumber)
+  public Optional<Customer> findEmailByPhone(String phone) {
+    return em.createQuery("SELECT c FROM Customer c WHERE c.phoneNumber = :phone", Customer.class)
+        .setParameter("phone", phone)
         .getResultList()
         .stream()
         .findAny();
   }
-
-//  public List<Customer> findByGrade (Long CustomerId) { // 등급조회
-//    return em.createQuery("SELECT c FROM Customer c INNER JOIN Grade g ON c.gId = g.gId WHERE g.getName() = :name", Customer.class)
-//        .setParameter("name", name)
-//        .getResultList()
-//        .stream()
-//        .findAny();
-//  }
-//
-//  public Grade findGradeId(Long id) {
-//    return em.createQuery("SELECT c FROM Customer c INNER JOIN Grade g ON c.gradeId = g.id WHERE g.name=:gradeName()", Customer.class)
-//        .setParameter()
-//        .getResultList()
-//        .stream()
-//        .findAny();
-//  }
 
   // PW 찾기
-  public Optional<Customer> findEmailAndPhone(String email, String phoneNumber){
-    return em.createQuery("SELECT c FROM Customer c WHERE c.email = :email AND c.phoneNumber = :phoneNumber", Customer.class)
+  public Optional<Customer> findEmailAndPhone(String email, String phone){
+    return em.createQuery("SELECT c FROM Customer c WHERE c.email = :email AND c.phoneNumber = :phone", Customer.class)
         .setParameter("email", email)
-        .setParameter("phoneNumber", phoneNumber)
+        .setParameter("phone", phone)
         .getResultList()
         .stream()
         .findAny();
   }
-
 }
