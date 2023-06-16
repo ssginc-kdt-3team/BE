@@ -49,7 +49,7 @@ public class CustomerReservationController {
             return ResponseEntity.ok().body(aLong + "번 ");
         }
 
-        return ResponseEntity.badRequest().body("예약 실패했습니다.");
+        return ResponseEntity.badRequest().body("예약 등록에 실패하였습니다.");
     }
 
     @GetMapping("listAll/{id}/{page}")
@@ -95,7 +95,7 @@ public class CustomerReservationController {
         }
 
         if (result.get("result").equals("true")) {
-            return ResponseEntity.ok().body("변경이 완료되었습니다.");
+            return ResponseEntity.ok().body("예약이 수정되었습니다.");
         }
 
         return ResponseEntity.badRequest().body(result.get("error"));
