@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ssginc_kdt_team3.BE.DTOs.deposit.OwnerDepositDTO;
 import ssginc_kdt_team3.BE.DTOs.deposit.OwnerMainDepositDTO;
+import ssginc_kdt_team3.BE.DTOs.owner.OwnerReviewListDTO;
 import ssginc_kdt_team3.BE.domain.Deposit;
+import ssginc_kdt_team3.BE.domain.Review;
 import ssginc_kdt_team3.BE.domain.Shop;
 import ssginc_kdt_team3.BE.enums.DepositStatus;
 import ssginc_kdt_team3.BE.repository.deposit.DepositRepository;
@@ -44,24 +46,24 @@ public class OwnerDepositService {
 
 
     if (status.equals("ALL")) {
-      List<Deposit> defaultPage = depositRepository.findShopDepositListBetween(shop.getId(), start, end);
-      return getDepositDto(defaultPage, pageable);
+      Page<Deposit> pages = depositRepository.findDepositByReservation_Shop_IdAndReservation_ReservationDateBetween(shop.getId(), start, end, pageable);
+      return convertDto(pages);
 
       } else if(status.equals("RECEIVE")) {
-      List<Deposit> receive = depositRepository.findDepositByStatusBetween(shop.getId(),DepositStatus.RECEIVE, start, end);
-      return getDepositDto(receive, pageable);
+      Page<Deposit> pages = depositRepository.findDepositByReservation_Shop_IdAndStatusAndReservation_ReservationDateBetween(shop.getId(), DepositStatus.RECEIVE, start, end, pageable);
+      return convertDto(pages);
 
     } else if(status.equals("RETURN")) {
-      List<Deposit> aReturn = depositRepository.findDepositByStatusBetween(shop.getId(),DepositStatus.RETURN, start, end);
-      return getDepositDto(aReturn, pageable);
+      Page<Deposit> pages = depositRepository.findDepositByReservation_Shop_IdAndStatusAndReservation_ReservationDateBetween(shop.getId(), DepositStatus.RECEIVE, start, end, pageable);
+      return convertDto(pages);
 
     } else if(status.equals("HALF_PENALTY")) {
-      List<Deposit> halfPenalty = depositRepository.findDepositByStatusBetween(shop.getId(),DepositStatus.HALF_PENALTY, start, end);
-      return getDepositDto(halfPenalty, pageable);
+      Page<Deposit> pages = depositRepository.findDepositByReservation_Shop_IdAndStatusAndReservation_ReservationDateBetween(shop.getId(), DepositStatus.RECEIVE, start, end, pageable);
+      return convertDto(pages);
 
     } else if(status.equals("ALL_PENALTY")) {
-      List<Deposit> allPenalty = depositRepository.findDepositByStatusBetween(shop.getId(),DepositStatus.ALL_PENALTY, start, end);
-      return getDepositDto(allPenalty, pageable);
+      Page<Deposit> pages = depositRepository.findDepositByReservation_Shop_IdAndStatusAndReservation_ReservationDateBetween(shop.getId(), DepositStatus.RECEIVE, start, end, pageable);
+      return convertDto(pages);
     }
     return null;
 
@@ -129,22 +131,15 @@ public class OwnerDepositService {
     return ownerMainDepositDTO;
   }
 
-  // List -> DTO
-  public static Page<OwnerDepositDTO> getDepositDto(List<Deposit> deposits, Pageable pageable){
-    log.info("페이지 처리");
-    List<OwnerDepositDTO> dtoList = new ArrayList<>();
-    for(Deposit d : deposits) {
-      log.info("");
-      OwnerDepositDTO dto = new OwnerDepositDTO(d);
-      dtoList.add(dto);
+  // Page로 받은 Review 엔티티를 DTO로 변환
+  private Page<OwnerDepositDTO> convertDto(Page<Deposit> deposits) {
+    List<OwnerDepositDTO> depositDTOList = new ArrayList<>();
+
+    for(Deposit d : deposits){
+      OwnerDepositDTO depositDTO = new OwnerDepositDTO(d);
+      depositDTOList.add(depositDTO);
     }
-
-    // DTO -> PAGE 변경
-    final int start = (int) pageable.getOffset();
-    final int end = Math.min((start + pageable.getPageSize()), dtoList.size());
-
-    Page<OwnerDepositDTO> depositPage = new PageImpl<>(dtoList.subList(start, end), pageable, dtoList.size());
-
-    return depositPage;
+    return new PageImpl<>(depositDTOList, deposits.getPageable(), deposits.getTotalElements());
   }
+
 }

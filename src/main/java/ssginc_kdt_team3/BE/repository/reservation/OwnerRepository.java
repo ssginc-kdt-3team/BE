@@ -23,23 +23,6 @@ public class OwnerRepository {
     return reserve;
   }
 
-  // 조회
-  public Optional<Reservation> findReserve(Long id){
-    return Optional.ofNullable(em.find(Reservation.class, id));
-  }
-
-  // 변경
-  public void updateReserve(Long id, Reservation reserve){
-  }
-
-  // 활성화된 예약 조회
-  public List<Reservation> findByStatus(Long shopId){
-    return em.createQuery("SELECT r FROM Reservation r WHERE r.status = :status AND r.shop.id = :shopId order by r.reservationDate", Reservation.class)
-        .setParameter("status", ReservationStatus.RESERVATION)
-        .setParameter("shopId", shopId)
-        .getResultList();
-  }
-
   // 당일예약 시간별 조회
   public List<Reservation> findDateBetween(LocalDateTime startTime, LocalDateTime endTime, Long shopId){
     return em.createQuery("SELECT r FROM Reservation r WHERE r.reservationDate BETWEEN :startTime AND :endTime AND (r.status = :status1 OR r.status = :status2 OR r.status = :status3) AND r.shop.id = :shopId order by r.reservationDate", Reservation.class)
