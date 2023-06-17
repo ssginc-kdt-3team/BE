@@ -24,7 +24,7 @@ public class OwnerLoginService {
 
         String email = login.getEmail();
         String pw = login.getPassword();
-//        입력받은 거
+
         Optional<Owner> findEmail = JpaRepo.findByEmail(email);
 
         if (!findEmail.isPresent()){

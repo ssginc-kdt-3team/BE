@@ -57,11 +57,10 @@ public class CustomerPersonalizeShopService {
                 .credentialsProvider(DefaultCredentialsProvider.create())
                 .build();
 
-        // GetRecommendations 요청 생성
-//        Map<String,String> filterValues = new HashMap<>(); 필터 사용안함
+
 
         String userId = String.valueOf(UserId);
-
+        // GetRecommendations 요청 생성
         GetRecommendationsRequest request = GetRecommendationsRequest.builder()
                 .campaignArn("arn:aws:personalize:ap-northeast-2:556683426101:campaign/noye-s-team-compaign")
                 .numResults(8)
@@ -78,8 +77,6 @@ public class CustomerPersonalizeShopService {
         for (PredictedItem item: items) {
 
             Long shopId = Long.valueOf(item.itemId());
-            //스키마에는 String 타입으로 정의되어 있어서 Long 타입으로 다시 변환
-            //itemId = ShopId
 
             log.info("UserId = {}",UserId);
             log.info("Response ShopId = {}",shopId);

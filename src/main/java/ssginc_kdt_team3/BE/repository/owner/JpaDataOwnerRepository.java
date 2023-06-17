@@ -21,10 +21,6 @@ public interface JpaDataOwnerRepository extends JpaRepository<Owner, Long> {
 
     boolean existsByEmail(String email);
 
-//    @Query("SELECT o.password FROM Owner o WHERE o.email = :email")
-//    String PasswordMatchEmail(@Param("email")String email);
-
-
     @Query("UPDATE Owner o SET " +
             "o.name = CASE WHEN :name IS NOT NULL THEN :name ELSE o.name END, " +
             "o.phoneNumber = CASE WHEN :phone IS NOT NULL THEN :phone ELSE o.phoneNumber END, " +

@@ -8,9 +8,7 @@ import org.springframework.data.repository.query.Param;
 import ssginc_kdt_team3.BE.domain.Reservation;
 import ssginc_kdt_team3.BE.enums.ReservationStatus;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
-import java.util.Optional;
 
 public interface JpaDataReservationRepository extends JpaRepository<Reservation, Long> {
 

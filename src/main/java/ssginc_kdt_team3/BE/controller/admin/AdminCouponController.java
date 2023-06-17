@@ -26,6 +26,4 @@ public class AdminCouponController {
     return ResponseEntity.status(HttpStatus.OK).body(coupon);
   }
 
-  // 쿠폰 지급
-
 }
