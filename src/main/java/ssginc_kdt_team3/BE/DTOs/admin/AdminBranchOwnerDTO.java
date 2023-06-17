@@ -26,7 +26,6 @@ public class AdminBranchOwnerDTO {
         this.branchName = branchName;
     }
     public AdminBranchOwnerDTO(){
-
     }
 
 }
