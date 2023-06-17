@@ -65,12 +65,12 @@ public class CustomerKakaoPayService {
             parameters.add("total_amount", price);
             parameters.add("vat_amount", Integer.toString(Integer.parseInt(price)/10));
             parameters.add("tax_free_amount", "0");
-            // parameters.add("approval_url", "http://localhost:8080/customer/charge/success"); // 성공 시 redirect url
-            // parameters.add("cancel_url", "http://localhost:8080/customer/charge/cancel"); // 취소 시 redirect url
-            // parameters.add("fail_url", "http://localhost:8080/customer/charge/fail"); // 실패 시 redirect url
-            parameters.add("approval_url", "http://10.10.10.67:8080/customer/charge/success"); // 성공 시 redirect url
-            parameters.add("cancel_url", "http://10.10.10.67:8080/customer/charge/cancel"); // 취소 시 redirect url
-            parameters.add("fail_url", "http://10.10.10.67:8080/customer/charge/fail"); // 실패 시 redirect url
+             parameters.add("approval_url", "http://localhost:8080/customer/charge/success"); // 성공 시 redirect url
+             parameters.add("cancel_url", "http://localhost:8080/customer/charge/cancel"); // 취소 시 redirect url
+             parameters.add("fail_url", "http://localhost:8080/customer/charge/fail"); // 실패 시 redirect url
+//            parameters.add("approval_url", "http://10.10.10.67:8080/customer/charge/success"); // 성공 시 redirect url
+//            parameters.add("cancel_url", "http://10.10.10.67:8080/customer/charge/cancel"); // 취소 시 redirect url
+//            parameters.add("fail_url", "http://10.10.10.67:8080/customer/charge/fail"); // 실패 시 redirect url
 
             // 파라미터, 헤더
             HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(parameters, this.getHeaders());
