@@ -74,7 +74,7 @@ public class CustomerChargeController {
 
         KakaoPayApproveResponseDTO kakaoApprove = kakaoPayService.ApproveResponse(pgToken);
 
-        return "redirect:" + customerUrl + "chargeResult";
+        return "redirect:https://fe-cust.vercel.app/chargeResult";
     }
 
     /**
@@ -100,7 +100,7 @@ public class CustomerChargeController {
     @GetMapping("/cancel")
     public String cancel() {
 
-        return "redirect:" + customerUrl + " chargeResult";
+        return "redirect:https://fe-cust.vercel.app/chargeResult";
     }
 
     /**
@@ -109,7 +109,7 @@ public class CustomerChargeController {
     @GetMapping("/fail")
     public String fail() {
 
-        return "redirect:" + customerUrl + "chargeResult";
+        return "redirect:https://fe-cust.vercel.app/chargeResult";
     }
 
     @ResponseBody

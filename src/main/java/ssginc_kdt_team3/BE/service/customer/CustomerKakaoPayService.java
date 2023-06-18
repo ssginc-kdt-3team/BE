@@ -71,9 +71,9 @@ public class CustomerKakaoPayService {
             parameters.add("total_amount", price);
             parameters.add("vat_amount", Integer.toString(Integer.parseInt(price)/10));
             parameters.add("tax_free_amount", "0");
-            parameters.add("approval_url", distribution + "customer/charge/success"); // 성공 시 redirect url
-            parameters.add("cancel_url", distribution +  "customer/charge/cancel"); // 취소 시 redirect url
-            parameters.add("fail_url", distribution +  "customer/charge/fail"); // 실패 시 redirect url
+            parameters.add("approval_url", "https://www.teamyes.xyz/customer/charge/success"); // 성공 시 redirect url
+            parameters.add("cancel_url", "https://www.teamyes.xyz/customer/charge/cancel"); // 취소 시 redirect url
+            parameters.add("fail_url", "https://www.teamyes.xyz/customer/charge/fail"); // 실패 시 redirect url
 //          parameters.add("approval_url", local + "customer/charge/success"); // 성공 시 redirect url
 //          parameters.add("cancel_url", local + "customer/charge/cancel"); // 취소 시 redirect url
 //          parameters.add("fail_url", local + "customer/charge/fail"); // 실패 시 redirect url
