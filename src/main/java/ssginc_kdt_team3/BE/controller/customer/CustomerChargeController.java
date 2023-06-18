@@ -39,6 +39,9 @@ public class CustomerChargeController {
     @Value("${distributionAddress}")
     private String distribution;
 
+    @Value("${customerAddress}")
+    private String customerUrl;
+
     private final CustomerKakaoPayService kakaoPayService;
     private final CustomerChargingService customerChargingService;
 
@@ -71,7 +74,7 @@ public class CustomerChargeController {
 
         KakaoPayApproveResponseDTO kakaoApprove = kakaoPayService.ApproveResponse(pgToken);
 
-        return "redirect:" + distribution + "chargeResult";
+        return "redirect:" + customerUrl + "chargeResult";
     }
 
     /**
@@ -97,7 +100,7 @@ public class CustomerChargeController {
     @GetMapping("/cancel")
     public String cancel() {
 
-        return "redirect:" + distribution + " chargeResult";
+        return "redirect:" + customerUrl + " chargeResult";
     }
 
     /**
@@ -106,7 +109,7 @@ public class CustomerChargeController {
     @GetMapping("/fail")
     public String fail() {
 
-        return "redirect:" + distribution + "chargeResult";
+        return "redirect:" + customerUrl + "chargeResult";
     }
 
     @ResponseBody
