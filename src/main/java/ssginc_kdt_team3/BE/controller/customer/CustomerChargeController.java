@@ -33,6 +33,12 @@ public class CustomerChargeController {
     @Value("${admin.pageSize}")
     private int pageSize;
 
+    @Value("${localAddress}")
+    private String local;
+
+    @Value("${distributionAddress}")
+    private String distribution;
+
     private final CustomerKakaoPayService kakaoPayService;
     private final CustomerChargingService customerChargingService;
 
@@ -65,7 +71,7 @@ public class CustomerChargeController {
 
         KakaoPayApproveResponseDTO kakaoApprove = kakaoPayService.ApproveResponse(pgToken);
 
-        return "redirect:http://localhost:3000/chargeResult";
+        return "redirect:" + distribution + "chargeResult";
     }
 
     /**
@@ -91,7 +97,7 @@ public class CustomerChargeController {
     @GetMapping("/cancel")
     public String cancel() {
 
-        return "redirect:http://localhost:3000/chargeResult";
+        return "redirect:" + distribution + " chargeResult";
     }
 
     /**
@@ -100,7 +106,7 @@ public class CustomerChargeController {
     @GetMapping("/fail")
     public String fail() {
 
-        return "redirect:http://localhost:3000/chargeResult";
+        return "redirect:" + distribution + "chargeResult";
     }
 
     @ResponseBody
