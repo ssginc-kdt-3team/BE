@@ -217,7 +217,6 @@ public class CustomerReservationService {
 
                             Deposit newDeposit = depositRepository.save(oldDeposit);
 
-                            //returnMoney만큼 충전 시켜주고
                             if (returnMoney > 0) {
                                 boolean b = chargingManagementService.savePartRefundPayment(newDeposit,returnMoney);
                                 log.info("================== {} 만큼 충전금 환불 ========================", returnMoney);
@@ -229,16 +228,9 @@ public class CustomerReservationService {
                             }
 
 
-                            //returnPoint만큼 포인트 충전
-
-
                             result.put("result", "true");
                             return result;
                         } else {
-                            //3만원 쿠폰 1만원, 결제 2만원
-                            //2만5천원 변경
-                            //총 환불 5천원
-                            //충전금 환불 0원, 포인트 환불 5천원
 
                             int returnPoint = oldDeposit.getOrigin_value() - afterDeposit;
 
