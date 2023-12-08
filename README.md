@@ -73,11 +73,6 @@
    
 ### 일시 4/20 목 ~ 6/21 수
 #### 🔅 프로젝트 관련 정보
-#####  ↓  🖱️ 클릭시 해당 페이지로 이동합니다!!
-    
-<br>
-<a href="https://docs.google.com/spreadsheets/d/1ZG6e_FWndWUnwVbRYls-yXvOTHbC2Unk/edit#gid=1789139678" target="_blank"><img src="https://img.shields.io/badge/googledrive-4285F4?style=flat-square&logo=googledrive&logoColor=white"/></a>  <a href="https://www.erdcloud.com/d/vNJpJXtbNsE6m8hce" target="_blank"><img src="https://img.shields.io/badge/erd-7F2B7B?style=flat-square&logo=erd&logoColor=white"/></a>  <a href="https://www.notion.so/TEAM-Yes-64bfc71a9cd742f4834b00aba9e61e59" target="_blank"><img src="https://img.shields.io/badge/notion-000000?style=flat-square&logo=notion&logoColor=white"/></a>    
-<br><br>
     
   #### ❗ 주제 - 노쇼 방지 예약 시스템
 
